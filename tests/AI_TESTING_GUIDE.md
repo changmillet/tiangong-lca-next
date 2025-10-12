@@ -53,17 +53,68 @@ Use the appropriate pattern from this guide:
 - Unit tests: See [Unit Test Patterns](#unit-test-patterns)
 - Always use helpers from tests/helpers/
 
+CRITICAL RULES TO PREVENT INFINITE LOOPS:
+
+- ✅ Mock ALL services in `beforeEach` BEFORE rendering components
+- ✅ Use `mockResolvedValue` for stable responses
+- ✅ Mock auth session if component uses authentication
+- ✅ Verify API call counts with `toHaveBeenCalledTimes(expected)`
+- ❌ NEVER render component before mocking services
+- ❌ NEVER use `mockImplementation` that creates new objects on each call
+
 ### STEP 5: Execute Quality Gates
 
 ```bash
-# Run tests
-npm test -- tests/integration/[feature]/ --no-coverage
+# Run tests with timeout protection (auto-kills after 10 seconds)
+# Using Python subprocess for cross-platform reliability
+python3 - <<'PY'
+import subprocess, sys
+cmd = ["npm", "test", "--", "tests/integration/[feature]/", "--no-coverage"]
+try:
+    completed = subprocess.run(cmd, cwd=".", timeout=10, start_new_session=True)
+    sys.exit(completed.returncode)
+except subprocess.TimeoutExpired:
+    sys.exit(124)
+PY
 
 # MANDATORY: Run linter
 npm run lint
 
 # Fix any errors, then verify again
 ```
+
+⚠️ **IMPORTANT: Test Running Time Monitoring**
+
+The Python subprocess wrapper will **automatically stop** tests if they run longer than 10 seconds, preventing infinite loops from blocking your workflow.
+
+**Why Python subprocess instead of `timeout` command?**
+
+- ✅ Cross-platform: Works on macOS, Linux, Windows
+- ✅ Consistent behavior: Same timeout mechanism everywhere
+- ✅ Standard library: No extra dependencies needed
+- ✅ Reliable exit codes: Always returns 124 on timeout
+
+If tests are stopped by timeout (exit code 124):
+
+1. This indicates an infinite loop or missing mock
+2. Review the test code for:
+   - Missing mocks in `beforeEach`
+   - Mock setup after `render()` call
+   - Missing `await` on async operations
+3. Add debug logging to identify the issue:
+   ```typescript
+   getData.mockImplementation(() => {
+     console.log('getData called');
+     return Promise.resolve({ data: [], error: null });
+   });
+   ```
+4. Fix the issue and re-run with timeout protection
+
+**Expected Test Duration:**
+
+- Unit tests: < 5 seconds per file
+- Integration tests: < 15 seconds per file
+- If longer: investigate for infinite loops or missing mocks
 
 ### STEP 6: Report Completion
 
@@ -184,15 +235,20 @@ DO:
 - Test behavior, not implementation - focus on what the code does, not how it does it
 - Write descriptive test names - "should fetch active teams ordered by rank"
 - Clear mocks - use beforeEach(() => jest.clearAllMocks())
+- Mock ALL services BEFORE rendering components - prevents infinite loops
+- Use mockResolvedValue for stable responses - avoid mockImplementation with object creation
 - Use fixtures - import test data from tests/helpers/testData.ts
 - Await async operations
 - Use semantic queries (getByRole, getByLabelText)
+- Verify API calls are made reasonable number of times (use toHaveBeenCalledTimes)
 - ALWAYS run linter after writing tests - ALL lint errors must be fixed before completion
 
 DO NOT:
 
 - Create inline query builders (use createQueryBuilder from helpers)
 - Create inline test data (use fixtures from testData.ts)
+- Render components before mocking required services (causes "Maximum update depth exceeded")
+- Use mockImplementation that creates new objects on each call (causes infinite loops)
 - Test implementation details (focus on observable behavior)
 - Forget to await async calls
 - Use generic test names like "should work"
@@ -655,8 +711,16 @@ describe('unauthenticated operations', () => {
 CRITICAL: Execute ALL steps below. Do not skip any step.
 
 ```bash
-# Step 1: Run the tests
-npm test -- tests/unit/services/[module] --no-coverage
+# Step 1: Run the tests with timeout protection (auto-kills after 10 seconds)
+python3 - <<'PY'
+import subprocess, sys
+cmd = ["npm", "test", "--", "tests/unit/services/[module]", "--no-coverage"]
+try:
+    completed = subprocess.run(cmd, cwd=".", timeout=10, start_new_session=True)
+    sys.exit(completed.returncode)
+except subprocess.TimeoutExpired:
+    sys.exit(124)
+PY
 
 # Step 2: If tests fail, diagnose (see Core Principles section)
 # - Business code issue? Use it.skip() and add TODO
@@ -671,6 +735,13 @@ npx jest --coverage --collectCoverageFrom="src/services/[module]/api.ts"
 # Step 5: View detailed coverage report
 open coverage/lcov-report/src/services/[module]/api.ts.html
 ```
+
+⚠️ **TIME MONITORING**: If Python subprocess exits with code 124, investigate:
+
+- Add call counter to mocks to detect infinite loops
+- Check if all mocks are properly set up
+- Look for missing `await` statements
+- Review error messages carefully
 
 REQUIREMENTS BEFORE COMPLETION:
 
@@ -829,6 +900,19 @@ const { getData, createData, updateData } = jest.requireMock('@/services/[module
 describe('[Workflow] Integration', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+
+    // CRITICAL: Setup default mocks for ALL services used by the page
+    // This prevents "Maximum update depth exceeded" errors
+
+    // Mock auth session (if page checks authentication)
+    const session = createMockSession('user-123', 'token-abc');
+    supabase.auth.getSession.mockResolvedValue(session);
+
+    // Mock default data responses (override in individual tests as needed)
+    getData.mockResolvedValue({ data: [], error: null });
+
+    // Mock other common services if used (user roles, permissions, etc.)
+    // getUserRole.mockResolvedValue({ data: { role: 'member' }, error: null });
   });
 
   it('completes the expected user journey', async () => {
@@ -860,7 +944,7 @@ it('loads page and displays data from API', async () => {
     expect(screen.getByText('Item 2')).toBeInTheDocument();
   });
 
-  // Verify API was called
+  // Verify API was called reasonable number of times (should be 1 for initial load)
   expect(getData).toHaveBeenCalledTimes(1);
 });
 ```
@@ -1119,8 +1203,16 @@ it('navigates through paginated results', async () => {
 CRITICAL: Execute ALL steps below. Do not skip any step.
 
 ```bash
-# Step 1: Run the integration tests
-npm test -- tests/integration/[feature]/[Workflow].integration.test.tsx --no-coverage
+# Step 1: Run the integration tests with timeout protection (auto-kills after 10 seconds)
+python3 - <<'PY'
+import subprocess, sys
+cmd = ["npm", "test", "--", "tests/integration/[feature]/[Workflow].integration.test.tsx", "--no-coverage"]
+try:
+    completed = subprocess.run(cmd, cwd=".", timeout=10, start_new_session=True)
+    sys.exit(completed.returncode)
+except subprocess.TimeoutExpired:
+    sys.exit(124)
+PY
 
 # Step 2: If tests fail, diagnose (see Core Principles section)
 
@@ -1128,10 +1220,32 @@ npm test -- tests/integration/[feature]/[Workflow].integration.test.tsx --no-cov
 npm run lint
 ```
 
+⚠️ **TIME MONITORING**: If Python subprocess exits with code 124, this indicates infinite loop!
+
+This indicates "Maximum update depth exceeded" or infinite loop. Common causes:
+
+1. Component rendered BEFORE mocks set up
+2. Missing auth session mock
+3. Mock returns new object reference each call
+4. Missing dependency in useEffect
+
+**Quick fix pattern:**
+
+```typescript
+beforeEach(() => {
+  jest.clearAllMocks();
+  // Mock EVERYTHING the page uses BEFORE any test renders it
+  supabase.auth.getSession.mockResolvedValue(createMockSession('user', 'token'));
+  getData.mockResolvedValue({ data: [], error: null });
+  getUserRole.mockResolvedValue({ data: { role: 'member' }, error: null });
+});
+```
+
 REQUIREMENTS BEFORE COMPLETION:
 
 - ALL tests must pass
 - ALL linter errors must be fixed (npm run lint returns no errors)
+- Each integration test completes in < 15 seconds
 
 ---
 
@@ -1347,8 +1461,16 @@ it('announces changes to screen readers', () => {
 CRITICAL: Execute ALL steps below. Do not skip any step.
 
 ```bash
-# Step 1: Run the component tests
-npm test -- tests/unit/components/[Component].test.tsx --no-coverage
+# Step 1: Run the component tests with timeout protection (auto-kills after 10 seconds)
+python3 - <<'PY'
+import subprocess, sys
+cmd = ["npm", "test", "--", "tests/unit/components/[Component].test.tsx", "--no-coverage"]
+try:
+    completed = subprocess.run(cmd, cwd=".", timeout=10, start_new_session=True)
+    sys.exit(completed.returncode)
+except subprocess.TimeoutExpired:
+    sys.exit(124)
+PY
 
 # Step 2: If tests fail, diagnose (see Core Principles section)
 
@@ -1487,24 +1609,76 @@ render(<Component />);
 
 ## COMMAND REFERENCE
 
+### Test Runner Helper Function
+
+For convenience, you can define this bash function (or use the Python one-liner below):
+
+```bash
+# Option 1: Bash function (add to your session or script)
+run_test_with_timeout() {
+    local timeout_seconds=$1
+    shift
+    python3 - <<PY
+import subprocess, sys
+cmd = ["npm", "test", "--"] + "$@".split()
+try:
+    completed = subprocess.run(cmd, cwd=".", timeout=$timeout_seconds, start_new_session=True)
+    sys.exit(completed.returncode)
+except subprocess.TimeoutExpired:
+    sys.exit(124)
+PY
+}
+
+# Usage:
+# run_test_with_timeout 10 tests/unit/services/contacts/
+# run_test_with_timeout 10 tests/integration/reviews/
+```
+
 ### Running Tests
 
 ```bash
-# Run all tests
-npm test
+# Run all tests (with timeout protection via Python subprocess)
+python3 - <<'PY'
+import subprocess, sys
+try:
+    completed = subprocess.run(["npm", "test"], cwd=".", timeout=60, start_new_session=True)
+    sys.exit(completed.returncode)
+except subprocess.TimeoutExpired:
+    sys.exit(124)
+PY
 
-# Run specific test type
-npm test -- tests/unit/services/
-npm test -- tests/integration/
-npm test -- tests/unit/components/
+# Run specific test type (examples)
+# Unit tests (5s timeout)
+python3 - <<'PY'
+import subprocess, sys
+try:
+    completed = subprocess.run(["npm", "test", "--", "tests/unit/services/", "--no-coverage"], cwd=".", timeout=5, start_new_session=True)
+    sys.exit(completed.returncode)
+except subprocess.TimeoutExpired:
+    sys.exit(124)
+PY
+
+# Integration tests (15s timeout)
+python3 - <<'PY'
+import subprocess, sys
+try:
+    completed = subprocess.run(["npm", "test", "--", "tests/integration/", "--no-coverage"], cwd=".", timeout=15, start_new_session=True)
+    sys.exit(completed.returncode)
+except subprocess.TimeoutExpired:
+    sys.exit(124)
+PY
 
 # Run specific test file
-npm test -- tests/unit/services/contacts/api.test.ts
+python3 - <<'PY'
+import subprocess, sys
+try:
+    completed = subprocess.run(["npm", "test", "--", "tests/unit/services/contacts/api.test.ts", "--no-coverage"], cwd=".", timeout=5, start_new_session=True)
+    sys.exit(completed.returncode)
+except subprocess.TimeoutExpired:
+    sys.exit(124)
+PY
 
-# Run without coverage (faster during development)
-npm test -- tests/unit/services/ --no-coverage
-
-# Watch mode (re-runs tests on file changes)
+# Watch mode (no timeout - for development)
 npm test -- tests/unit/services/teams/ --watch
 
 # Update snapshots
@@ -1512,6 +1686,9 @@ npm test -- -u
 
 # Verbose output
 npm test -- --verbose
+
+# Note: Python subprocess exits with code 124 if timeout occurs
+# This helps catch infinite loops automatically across all platforms
 ```
 
 ### Coverage Commands
@@ -1568,16 +1745,156 @@ grep -r "mockTeam" tests/unit/
 ### Quick Reference
 
 ```bash
-# Common workflow
-npm test -- tests/unit/services/[module] --no-coverage  # Run tests
-npm run lint                                             # Check linting
-npx jest --coverage --collectCoverageFrom="[path]"      # Check coverage
-open coverage/lcov-report/index.html                     # View report
+# Common workflow (with timeout protection via Python subprocess)
+python3 - <<'PY'
+import subprocess, sys
+try:
+    completed = subprocess.run(["npm", "test", "--", "tests/unit/services/[module]", "--no-coverage"], cwd=".", timeout=5, start_new_session=True)
+    sys.exit(completed.returncode)
+except subprocess.TimeoutExpired:
+    sys.exit(124)
+PY
+
+npm run lint                                                         # Check linting
+npx jest --coverage --collectCoverageFrom="[path]"                  # Check coverage
+open coverage/lcov-report/index.html                                 # View report
+
+# Check exit code
+echo $?  # Returns 124 if timeout occurred (indicates infinite loop)
+         # Returns 0 if all tests passed
+         # Returns 1 if tests failed
 ```
 
 ---
 
 ## TROUBLESHOOTING
+
+### Problem: Tests running too long
+
+⚠️ **SOLUTION: Use Python subprocess for cross-platform timeout protection**
+
+```bash
+# Unit tests: 5 second timeout (单个测试文件应该很快)
+python3 - <<'PY'
+import subprocess, sys
+try:
+    completed = subprocess.run(["npm", "test", "--", "tests/unit/services/[module]", "--no-coverage"], cwd=".", timeout=5, start_new_session=True)
+    sys.exit(completed.returncode)
+except subprocess.TimeoutExpired:
+    sys.exit(124)
+PY
+
+# Integration tests: 15 second timeout (集成测试可能涉及更多交互)
+python3 - <<'PY'
+import subprocess, sys
+try:
+    completed = subprocess.run(["npm", "test", "--", "tests/integration/[feature]/", "--no-coverage"], cwd=".", timeout=15, start_new_session=True)
+    sys.exit(completed.returncode)
+except subprocess.TimeoutExpired:
+    sys.exit(124)
+PY
+
+# Check if timeout occurred
+echo $?  # Exit code 124 = timeout occurred (infinite loop detected)
+```
+
+**Why Python subprocess?**
+
+- ✅ **Cross-platform**: Works identically on macOS, Linux, Windows
+- ✅ **Reliable**: Standard library, no external dependencies
+- ✅ **Consistent**: Same timeout behavior everywhere
+- ✅ **Simple**: No need to install `gtimeout` on macOS
+
+CAUSE: Infinite loop due to improper mocking or useEffect dependencies.
+
+DIAGNOSIS STEPS (if timeout occurs):
+
+```bash
+# 1. The Python subprocess automatically stopped the hanging test
+# 2. Look for the last test name printed before timeout
+# 3. Check that specific test for common issues:
+grep -A 20 "it('test name" tests/[path]/file.test.tsx
+```
+
+COMMON ROOT CAUSES:
+
+1. **Mock setup after render** (MOST COMMON)
+
+```typescript
+// ❌ WRONG - causes infinite loop
+it('should work', async () => {
+  render(<Component />); // Component tries to call getData
+  getData.mockResolvedValue({ data: [] }); // Too late!
+});
+
+// ✅ CORRECT
+it('should work', async () => {
+  getData.mockResolvedValue({ data: [] }); // Mock first
+  render(<Component />); // Now component can work
+});
+```
+
+2. **Missing mocks in beforeEach**
+
+```typescript
+// ❌ WRONG - page calls getUserRole but it's not mocked
+beforeEach(() => {
+  jest.clearAllMocks();
+  getData.mockResolvedValue({ data: [] });
+  // Missing: getUserRole, getSession, etc.
+});
+
+// ✅ CORRECT - mock ALL services page uses
+beforeEach(() => {
+  jest.clearAllMocks();
+  getData.mockResolvedValue({ data: [] });
+  getUserRole.mockResolvedValue({ data: { role: 'member' } });
+  supabase.auth.getSession.mockResolvedValue(createMockSession('user', 'token'));
+});
+```
+
+3. **Mock creates new objects** (causes re-render loop)
+
+```typescript
+// ❌ WRONG - new object each call
+getData.mockImplementation(() => ({
+  data: [{ id: '1' }], // New array reference every call!
+  error: null,
+}));
+
+// ✅ CORRECT - stable reference
+const stableData = [{ id: '1' }];
+getData.mockResolvedValue({ data: stableData, error: null });
+```
+
+EMERGENCY DEBUG PATTERN:
+
+```typescript
+it('identify infinite loop', async () => {
+  let callCount = 0;
+  getData.mockImplementation(() => {
+    callCount++;
+    console.log(`🔥 getData call #${callCount}`);
+    if (callCount > 5) {
+      throw new Error('INFINITE LOOP DETECTED!');
+    }
+    return Promise.resolve({ data: [], error: null });
+  });
+
+  render(<Component />);
+  await waitFor(() => expect(screen.getByText('Loaded')).toBeInTheDocument());
+
+  console.log(`✅ Total calls: ${callCount}`); // Should be 1-2
+});
+```
+
+**IMMEDIATE ACTIONS:**
+
+1. Press Ctrl+C to stop test
+2. Add call counter to identify which service is looping
+3. Check that service is mocked in beforeEach
+4. Ensure mock is set BEFORE render()
+5. Use mockResolvedValue, not mockImplementation with object creation
 
 ### Problem: "Cannot read property 'select' of undefined"
 
@@ -1716,6 +2033,179 @@ it('should work', async () => {
   const result = await getData(); // Then call
   expect(result.data).toEqual(mockData);
 });
+```
+
+### Problem: "Maximum update depth exceeded" - Infinite Loop
+
+CAUSE: Component has `useEffect` that triggers state updates infinitely. Common scenarios:
+
+1. Missing dependency array in useEffect
+2. Dependency changes on every render (object/array reference)
+3. Mock function causes re-render loop
+
+SOLUTION 1: Mock ALL dependencies properly BEFORE rendering
+
+```typescript
+it('should load data on mount', async () => {
+  // CRITICAL: Setup ALL mocks BEFORE render
+  const mockData = [{ id: '1', name: 'Item' }];
+
+  // Mock the initial data fetch
+  getData.mockResolvedValue({ data: mockData, error: null });
+
+  // Mock session if component checks auth
+  const session = createMockSession('user-123', 'token-abc');
+  supabase.auth.getSession.mockResolvedValue(session);
+
+  // Mock any other services the component uses
+  getUserRole.mockResolvedValue({ data: { role: 'member' }, error: null });
+
+  // NOW render - all mocks are ready
+  render(<FeaturePage />);
+
+  // Wait for async operations
+  await waitFor(() => {
+    expect(screen.getByText('Item')).toBeInTheDocument();
+  });
+});
+```
+
+SOLUTION 2: Use stable mock functions
+
+```typescript
+describe('MyComponent', () => {
+  // CORRECT: Create mock once outside tests
+  const mockGetData = jest.fn();
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    // Set return value, but mock function reference is stable
+    mockGetData.mockResolvedValue({ data: [], error: null });
+  });
+
+  it('should work', async () => {
+    render(<Component getData={mockGetData} />);
+    await waitFor(() => {
+      expect(screen.getByText('Loaded')).toBeInTheDocument();
+    });
+  });
+});
+```
+
+SOLUTION 3: Mock with consistent object references
+
+```typescript
+it('should not cause infinite loop', async () => {
+  // WRONG: Creating new object on every mock call
+  // getData.mockImplementation(() => Promise.resolve({ data: [{id: '1'}], error: null }));
+
+  // CORRECT: Use mockResolvedValue with stable reference
+  const stableResponse = { data: [{ id: '1', name: 'Item' }], error: null };
+  getData.mockResolvedValue(stableResponse);
+
+  render(<FeaturePage />);
+
+  await waitFor(() => {
+    expect(screen.getByText('Item')).toBeInTheDocument();
+  });
+
+  // Verify getData was called only once (not infinite loop)
+  expect(getData).toHaveBeenCalledTimes(1);
+});
+```
+
+SOLUTION 4: Debug infinite loops
+
+```typescript
+it('should identify what causes infinite loop', async () => {
+  // Add call counter to mock
+  let callCount = 0;
+  getData.mockImplementation(() => {
+    callCount++;
+    console.log(`getData called ${callCount} times`);
+    if (callCount > 10) {
+      throw new Error('Infinite loop detected! Check useEffect dependencies');
+    }
+    return Promise.resolve({ data: [], error: null });
+  });
+
+  render(<FeaturePage />);
+
+  await waitFor(() => {
+    expect(screen.getByText('Loaded')).toBeInTheDocument();
+  });
+
+  // Should be called reasonable number of times
+  expect(callCount).toBeLessThan(5);
+});
+```
+
+PREVENTION CHECKLIST:
+
+- ✅ Mock ALL services before render
+- ✅ Use `mockResolvedValue` instead of `mockImplementation` when possible
+- ✅ Mock auth session if component uses authentication
+- ✅ Mock user roles/permissions if component checks them
+- ✅ Use `waitFor` for all async assertions
+- ✅ Verify mock functions called reasonable number of times
+- ✅ Clear mocks in `beforeEach` to ensure clean state
+
+COMMON PATTERNS THAT CAUSE INFINITE LOOPS:
+
+```typescript
+// PATTERN 1: Missing dependency array
+useEffect(() => {
+  fetchData(); // Runs on every render!
+}); // ❌ No dependency array
+
+// FIX: Add dependency array
+useEffect(() => {
+  fetchData();
+}, []); // ✅ Runs once on mount
+
+// PATTERN 2: Object dependency changes every render
+useEffect(() => {
+  fetchData(filters); // filters is new object each render
+}, [filters]); // ❌ filters = {status: 'active'} recreated every render
+
+// FIX: Mock with stable reference or use primitive dependencies
+const stableFilters = { status: 'active' }; // Define outside component
+useEffect(() => {
+  fetchData(stableFilters);
+}, [stableFilters]); // ✅ Stable reference
+
+// PATTERN 3: setState in useEffect without proper condition
+useEffect(() => {
+  if (data) {
+    setProcessedData(processData(data)); // Runs every time data changes
+  }
+}, [data]); // ❌ If processData returns new object, causes re-render
+
+// FIX: Use useMemo or check if update needed
+const processedData = useMemo(() => processData(data), [data]); // ✅
+```
+
+### Problem: Test timeout with no error message
+
+CAUSE: Often related to infinite loop but test times out before error appears.
+
+SOLUTION:
+
+```typescript
+// Set shorter timeout to fail faster
+it('should not timeout', async () => {
+  getData.mockResolvedValue({ data: [], error: null });
+
+  render(<FeaturePage />);
+
+  // Use shorter timeout to catch issues faster
+  await waitFor(
+    () => {
+      expect(screen.getByText('Loaded')).toBeInTheDocument();
+    },
+    { timeout: 2000 }, // Fail after 2 seconds instead of default 5
+  );
+}, 5000); // Test timeout
 ```
 
 ---

@@ -1,5 +1,5 @@
 import { FormFlow } from '@/services/flows/data';
-import { createFlow as createTidasFlow } from '@tiangong-lca/tidas-sdk';
+import { createFlow as createTidasFlow, Flow } from '@tiangong-lca/tidas-sdk';
 import {
   classificationToJsonList,
   classificationToStringList,
@@ -36,7 +36,7 @@ export function genFlowJsonOrdered(id: string, data: any) {
         uncertaintyDistributionType: item?.['uncertaintyDistributionType'],
         relativeStandardDeviation95In: item?.['relativeStandardDeviation95In'],
         dataDerivationTypeStatus: item?.['dataDerivationTypeStatus'],
-        ['common:generalComment']: getLangJson(item?.['common:generalComment']),
+        generalComment: getLangJson(item?.generalComment),
       };
     }) ?? [];
   let flowPropertyJson: any = {};
@@ -544,32 +544,38 @@ export function genFlowFromData(data: any): FormFlow {
         },
       },
       flowProperties: {
-        flowProperty: flowPropertyList?.map((item) => {
-          return {
-            '@dataSetInternalID': item?.['@dataSetInternalID'],
-            referenceToFlowPropertyDataSet: {
-              '@refObjectId': item?.referenceToFlowPropertyDataSet?.['@refObjectId'],
-              '@type': item?.referenceToFlowPropertyDataSet?.['@type'],
-              '@uri': item?.referenceToFlowPropertyDataSet?.['@uri'],
-              '@version': item?.referenceToFlowPropertyDataSet?.['@version'],
-              'common:shortDescription': getLangList(
-                item?.referenceToFlowPropertyDataSet?.['common:shortDescription'],
-              ),
-            },
-            meanValue: item?.['meanValue'],
-            minimumValue: item?.['minimumValue'],
-            maximumValue: item?.['maximumValue'],
-            uncertaintyDistributionType: item?.['uncertaintyDistributionType'],
-            relativeStandardDeviation95In: item?.['relativeStandardDeviation95In'],
-            dataDerivationTypeStatus: item?.['dataDerivationTypeStatus'],
-            ['common:generalComment']: getLangJson(item?.['common:generalComment']),
-            quantitativeReference:
-              item?.['@dataSetInternalID'] ===
-              data?.flowInformation?.quantitativeReference?.referenceToReferenceFlowProperty
-                ? true
-                : false,
-          };
-        }) as any,
+        flowProperty: flowPropertyList?.map(
+          (
+            item,
+          ): Flow['flowDataSet']['flowProperties']['flowProperty'][number] & {
+            quantitativeReference?: boolean;
+          } => {
+            return {
+              '@dataSetInternalID': item?.['@dataSetInternalID'],
+              referenceToFlowPropertyDataSet: {
+                '@refObjectId': item?.referenceToFlowPropertyDataSet?.['@refObjectId'],
+                '@type': item?.referenceToFlowPropertyDataSet?.['@type'],
+                '@uri': item?.referenceToFlowPropertyDataSet?.['@uri'],
+                '@version': item?.referenceToFlowPropertyDataSet?.['@version'],
+                'common:shortDescription': getLangList(
+                  item?.referenceToFlowPropertyDataSet?.['common:shortDescription'],
+                ),
+              },
+              meanValue: item?.['meanValue'],
+              minimumValue: item?.['minimumValue'],
+              maximumValue: item?.['maximumValue'],
+              uncertaintyDistributionType: item?.['uncertaintyDistributionType'],
+              relativeStandardDeviation95In: item?.['relativeStandardDeviation95In'],
+              dataDerivationTypeStatus: item?.['dataDerivationTypeStatus'],
+              generalComment: getLangList(item?.generalComment),
+              quantitativeReference:
+                item?.['@dataSetInternalID'] ===
+                data?.flowInformation?.quantitativeReference?.referenceToReferenceFlowProperty
+                  ? true
+                  : false,
+            };
+          },
+        ),
       },
     },
   });
@@ -593,7 +599,18 @@ export function genFlowPropertyTabTableData(data: any, lang: string) {
       dataList = data;
     }
     return dataList?.map((item: any) => {
-      return removeEmptyObjects({
+      const hasNamespacedComment = Object.prototype.hasOwnProperty.call(
+        item ?? {},
+        'common:generalComment',
+      );
+      const hasPlainComment = Object.prototype.hasOwnProperty.call(item ?? {}, 'generalComment');
+      const rawGeneralComment = hasNamespacedComment
+        ? item?.['common:generalComment']
+        : item?.generalComment;
+      const generalCommentText =
+        rawGeneralComment !== undefined ? getLangText(rawGeneralComment, lang) : undefined;
+
+      const baseRow = {
         key: item?.['@dataSetInternalID'] ?? '-',
         dataSetInternalID: item?.['@dataSetInternalID'] ?? '-',
         referenceToFlowPropertyDataSetId:
@@ -612,8 +629,17 @@ export function genFlowPropertyTabTableData(data: any, lang: string) {
         uncertaintyDistributionType: item?.['uncertaintyDistributionType'],
         relativeStandardDeviation95In: item?.['relativeStandardDeviation95In'],
         dataDerivationTypeStatus: item?.['dataDerivationTypeStatus'],
-        ['common:generalComment']: getLangText(item?.['common:generalComment'], lang),
-      });
+      } as Record<string, any>;
+
+      if (generalCommentText !== undefined) {
+        if (hasNamespacedComment) {
+          baseRow['common:generalComment'] = generalCommentText;
+        } else if (hasPlainComment) {
+          baseRow.generalComment = generalCommentText;
+        }
+      }
+
+      return removeEmptyObjects(baseRow);
     });
   }
   return [];

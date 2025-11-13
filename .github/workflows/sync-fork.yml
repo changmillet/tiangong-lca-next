@@ -1,0 +1,91 @@
+name: Sync Fork (FF push or create PR)
+
+on:
+  schedule:
+    - cron: '30 3 * * *'    # 每天 03:30 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+env:
+  UPSTREAM_REPO: linancn/tiangong-lca-next
+  UPSTREAM_BRANCH: main
+  TARGET_BRANCH: main
+  SYNC_BRANCH: sync-upstream-main   # 用于自动开 PR 的分支
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout fork
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Configure git
+        run: |
+          git config --global user.name  "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Add remotes & fetch
+        run: |
+          git remote add upstream https://github.com/${{ env.UPSTREAM_REPO }}.git
+          git fetch --prune upstream
+          git fetch --prune origin
+
+      - name: Prepare local target branch
+        run: |
+          git checkout -B ${{ env.TARGET_BRANCH }} origin/${{ env.TARGET_BRANCH }}
+
+      - name: Try fast-forward merge
+        id: ff
+        run: |
+          set -e
+          BEFORE=$(git rev-parse HEAD)
+          if git merge --ff-only upstream/${{ env.UPSTREAM_BRANCH }} 2>/dev/null; then
+            AFTER=$(git rev-parse HEAD)
+            if [ "$BEFORE" = "$AFTER" ]; then
+              echo "status=up_to_date" >> $GITHUB_OUTPUT
+            else
+              echo "status=fast_forwarded" >> $GITHUB_OUTPUT
+            fi
+          else
+            echo "status=ff_failed" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Push fast-forwarded changes
+        if: steps.ff.outputs.status == 'fast_forwarded'
+        run: |
+          git push origin ${{ env.TARGET_BRANCH }}
+          echo "Pushed upstream updates to origin/${{ env.TARGET_BRANCH }}"
+
+      - name: Done - already up to date
+        if: steps.ff.outputs.status == 'up_to_date'
+        run: echo "Already up to date."
+
+      # 当无法 fast-forward（产生分叉/潜在冲突）时：创建或更新一个 PR
+      - name: Create or update sync branch from upstream
+        if: steps.ff.outputs.status == 'ff_failed'
+        run: |
+          # 用上游最新状态覆盖/更新本地同步分支
+          git checkout -B ${{ env.SYNC_BRANCH }} upstream/${{ env.UPSTREAM_BRANCH }}
+          git push -f origin ${{ env.SYNC_BRANCH }}
+
+      - name: Open PR to ${ { env.TARGET_BRANCH } } if needed
+        if: steps.ff.outputs.status == 'ff_failed'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore: sync from upstream"
+          title: "🔄 Sync from upstream/${{ env.UPSTREAM_BRANCH }}"
+          body: |
+            This PR is opened automatically because a fast-forward sync was not possible.
+            - Upstream: `${{ env.UPSTREAM_REPO }}@${{ env.UPSTREAM_BRANCH }}`
+            - Target: `${{ env.TARGET_BRANCH }}`
+            
+            Please review and merge. If conflicts exist, resolve them in this PR.
+          branch: ${{ env.SYNC_BRANCH }}
+          base: ${{ env.TARGET_BRANCH }}
+          delete-branch: false

@@ -1534,13 +1534,7 @@ const AssignmentReview = ({
                     if (mainName && mainName !== '-') return mainName;
                     const cachedName = reviewNamesRef.current[reviewId];
                     if (cachedName) return cachedName;
-                    const reference = Object.values(subTableData)
-                      .flat()
-                      .find((item) => item.reference_review_id === reviewId);
-                    const referenceName = reference
-                      ? genProcessName(reference.data_name ?? {}, lang)
-                      : undefined;
-                    return referenceName && referenceName !== '-' ? referenceName : undefined;
+                    return undefined;
                   }}
                   allowApprove={
                     tableType === 'in-progress' ||

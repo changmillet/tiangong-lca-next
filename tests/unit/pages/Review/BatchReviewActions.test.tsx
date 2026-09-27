@@ -647,7 +647,7 @@ describe('BatchReviewActions', () => {
 
   it('shows a safe fallback when a submitted opinion lookup fails or has changed', async () => {
     eligibilityMock.mockResolvedValueOnce({
-      data: ['failed', 'changed'].map((reviewId, ordinal) => ({
+      data: ['failed', 'missing', 'changed'].map((reviewId, ordinal) => ({
         ordinal: ordinal + 1,
         review_id: reviewId,
         eligible: false,
@@ -661,13 +661,14 @@ describe('BatchReviewActions', () => {
     });
     commentMock.mockImplementation(async (reviewId) => {
       if (reviewId === 'failed') throw new Error('temporary lookup failure');
+      if (reviewId === 'missing') return { data: [], error: null } as never;
       return { data: [{ state_code: 0 }], error: null } as never;
     });
 
     render(
       <BatchReviewActions
         role='reviewer'
-        reviewIds={['failed', 'changed']}
+        reviewIds={['failed', 'missing', 'changed']}
         allowApprove={false}
         getReviewName={(reviewId) => `Data ${reviewId}`}
         onFinished={jest.fn()}
@@ -675,13 +676,16 @@ describe('BatchReviewActions', () => {
     );
     fireEvent.click(screen.getByRole('button', { name: 'Batch reject' }));
 
-    const dialog = await screen.findByRole('region', { name: 'Reject 2 selected reviews' });
+    const dialog = await screen.findByRole('region', { name: 'Reject 3 selected reviews' });
     const rows = within(dialog).getAllByRole('listitem');
     expect(rows[0]).toHaveTextContent(
       '1.Data failedOpinion submitted; its outcome is temporarily unavailable.',
     );
     expect(rows[1]).toHaveTextContent(
-      '2.Data changedYour opinion status has changed; you cannot submit again.',
+      '2.Data missingOpinion submitted; its outcome is temporarily unavailable.',
+    );
+    expect(rows[2]).toHaveTextContent(
+      '3.Data changedYour opinion status has changed; you cannot submit again.',
     );
   });
 

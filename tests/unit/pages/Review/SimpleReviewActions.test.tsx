@@ -102,6 +102,7 @@ jest.mock('antd', () => {
       size,
       type,
       danger,
+      disabled,
     }: {
       icon?: import('react').ReactNode;
       onClick?: () => void;
@@ -110,9 +111,11 @@ jest.mock('antd', () => {
       shape?: string;
       type?: string;
       danger?: boolean;
+      disabled?: boolean;
     }) => (
       <button
         type='button'
+        disabled={disabled}
         data-button-shape={shape}
         data-button-size={size}
         data-button-type={type ?? 'default'}
@@ -147,6 +150,27 @@ describe('SimpleReviewActions', () => {
     jest.clearAllMocks();
     mockConfirm.mockImplementation(({ onOk }: { onOk?: () => void }) => onOk?.());
     mockValidateFields.mockResolvedValue({ reason: 'needs correction' });
+  });
+
+  it('disables the admin approval button with the supplied reviewer-opinion reason', () => {
+    render(
+      <SimpleReviewActions
+        reviewId='review-id'
+        targetTable='processes'
+        role='admin'
+        actionRef={{ current: { reload: jest.fn() } }}
+        approveDisabledReason='All reviewers rejected this task; approval is unavailable.'
+      />,
+    );
+
+    const approveButton = screen.getByText('approve-icon').closest('button');
+    expect(approveButton).toBeDisabled();
+    expect(approveButton?.parentElement).toHaveAttribute(
+      'aria-label',
+      'All reviewers rejected this task; approval is unavailable.',
+    );
+    fireEvent.click(approveButton!);
+    expect(mockConfirm).not.toHaveBeenCalled();
   });
 
   it('lets an admin approve and exposes the existing admin rejection action', async () => {

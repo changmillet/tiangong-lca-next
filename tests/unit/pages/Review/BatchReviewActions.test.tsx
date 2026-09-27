@@ -534,6 +534,45 @@ describe('BatchReviewActions', () => {
     expect(adminDecisionMock).not.toHaveBeenCalled();
   });
 
+  it('explains each ineligible admin review by name in the batch preview', async () => {
+    const reasons = [
+      ['REVIEW_NOT_FOUND', 'Review not found or unavailable.'],
+      ['REVIEW_NOT_IN_PROGRESS', 'This review is not in progress.'],
+      ['REVIEWER_REQUIRED', 'No reviewer is assigned, or you are not assigned to this review.'],
+      ['REVIEWER_OPINIONS_PENDING', 'Some reviewers have not submitted their opinions.'],
+    ] as const;
+    eligibilityMock.mockResolvedValueOnce({
+      data: reasons.map(([reason_code], ordinal) => ({
+        ordinal: ordinal + 1,
+        review_id: `review-${ordinal + 1}`,
+        eligible: false,
+        reason_code,
+        reviewer_count: 1,
+        submitted_opinion_count: 0,
+        approve_opinion_count: 0,
+        reject_opinion_count: 0,
+      })),
+      error: null,
+    });
+
+    render(
+      <BatchReviewActions
+        role='admin'
+        reviewIds={reasons.map((_, index) => `review-${index + 1}`)}
+        allowApprove
+        getReviewName={(reviewId) => `Data ${reviewId.slice(-1)}`}
+        onFinished={jest.fn()}
+      />,
+    );
+    fireEvent.click(screen.getByRole('button', { name: 'Batch reject' }));
+
+    const dialog = await screen.findByRole('region', { name: 'Reject 4 selected reviews' });
+    const rows = within(dialog).getAllByRole('listitem');
+    reasons.forEach(([, description], index) => {
+      expect(rows[index]).toHaveTextContent(`${index + 1}.Data ${index + 1}${description}`);
+    });
+  });
+
   it('shows the current reviewer opinion for already submitted items, without inferring from totals', async () => {
     eligibilityMock.mockResolvedValueOnce({
       data: [
@@ -604,6 +643,46 @@ describe('BatchReviewActions', () => {
       '3.Data COpinion submitted; its outcome is temporarily unavailable.',
     );
     expect(commentMock).toHaveBeenCalledTimes(3);
+  });
+
+  it('shows a safe fallback when a submitted opinion lookup fails or has changed', async () => {
+    eligibilityMock.mockResolvedValueOnce({
+      data: ['failed', 'changed'].map((reviewId, ordinal) => ({
+        ordinal: ordinal + 1,
+        review_id: reviewId,
+        eligible: false,
+        reason_code: 'OPINION_ALREADY_SUBMITTED',
+        reviewer_count: 1,
+        submitted_opinion_count: 1,
+        approve_opinion_count: 0,
+        reject_opinion_count: 1,
+      })),
+      error: null,
+    });
+    commentMock.mockImplementation(async (reviewId) => {
+      if (reviewId === 'failed') throw new Error('temporary lookup failure');
+      return { data: [{ state_code: 0 }], error: null } as never;
+    });
+
+    render(
+      <BatchReviewActions
+        role='reviewer'
+        reviewIds={['failed', 'changed']}
+        allowApprove={false}
+        getReviewName={(reviewId) => `Data ${reviewId}`}
+        onFinished={jest.fn()}
+      />,
+    );
+    fireEvent.click(screen.getByRole('button', { name: 'Batch reject' }));
+
+    const dialog = await screen.findByRole('region', { name: 'Reject 2 selected reviews' });
+    const rows = within(dialog).getAllByRole('listitem');
+    expect(rows[0]).toHaveTextContent(
+      '1.Data failedOpinion submitted; its outcome is temporarily unavailable.',
+    );
+    expect(rows[1]).toHaveTextContent(
+      '2.Data changedYour opinion status has changed; you cannot submit again.',
+    );
   });
 
   it('disables actions for explicit disablement and empty selections', () => {

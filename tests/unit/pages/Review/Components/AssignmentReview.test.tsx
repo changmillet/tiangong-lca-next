@@ -678,6 +678,56 @@ describe('AssignmentReview', () => {
     consoleSpy.mockRestore();
   });
 
+  it('ignores a reference opinion result after switching review tabs', async () => {
+    let resolveEligibility: (value: any) => void = () => undefined;
+    mockGetRootReviewReferenceProgress.mockResolvedValueOnce({
+      data: [
+        {
+          reference_review_id: 'stale-reference',
+          target_table: 'flows',
+          data_id: 'flow-1',
+          data_version: '1.0.0',
+          data_name: {},
+          state_code: 1,
+          reviewer_count: 1,
+          completed_reviewer_count: 1,
+        },
+      ],
+      error: null,
+    });
+    mockGetReviewBatchEligibility.mockReturnValueOnce(
+      new Promise((resolve) => {
+        resolveEligibility = resolve;
+      }),
+    );
+
+    const actionRef = { current: { reload: jest.fn() } };
+    const { rerender } = render(
+      <AssignmentReview
+        userData={{ user_id: 'admin-1', role: 'review-admin' }}
+        tableType='in-progress'
+        actionRef={actionRef}
+      />,
+    );
+    await userEvent.click(await screen.findByRole('button', { name: 'expand-review-1' }));
+    await waitFor(() => expect(mockGetReviewBatchEligibility).toHaveBeenCalledTimes(1));
+
+    rerender(
+      <AssignmentReview
+        userData={{ user_id: 'admin-1', role: 'review-admin' }}
+        tableType='completed'
+        actionRef={actionRef}
+      />,
+    );
+    await act(async () => {
+      resolveEligibility({
+        data: [{ review_id: 'stale-reference', reject_opinion_count: 1 }],
+        error: null,
+      });
+    });
+    expect(screen.queryByTestId('subrow-stale-reference')).not.toBeInTheDocument();
+  });
+
   it('shows readable review data beside a plain task name without exposing unreadable data', async () => {
     mockGetReviewsTableDataOfReviewAdmin.mockResolvedValueOnce({
       success: true,

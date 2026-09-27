@@ -13,6 +13,7 @@ import { act, render, screen, waitFor } from '../../../../helpers/testUtils';
 
 let mockLocale = 'en-US';
 let mockMainTableProps: any;
+const mockResolvedReviewName = jest.fn();
 
 jest.mock('@umijs/max', () => ({
   __esModule: true,
@@ -112,9 +113,7 @@ jest.mock('@/pages/Review/Components/reviewProcess', () => ({
 
 jest.mock('@/pages/Review/Components/ReviewProgress', () => ({
   __esModule: true,
-  default: ({ reviewId, actionType }: any) => (
-    <span data-testid='review-progress'>{`${reviewId}:${actionType}`}</span>
-  ),
+  default: ({ reviewId }: any) => <span data-testid='review-progress'>{reviewId}</span>,
 }));
 
 jest.mock('@/pages/Review/Components/SelectReviewer', () => ({
@@ -128,10 +127,20 @@ jest.mock('@/pages/Review/Components/SelectReviewer', () => ({
 
 jest.mock('@/pages/Review/Components/BatchReviewActions', () => ({
   __esModule: true,
-  default: ({ role, reviewIds, allowApprove, disabled, onFinished }: any) => (
-    <div data-testid='batch-review-actions' data-disabled={String(!!disabled)}>
+  default: ({ role, reviewIds, allowApprove, disabled, onFinished, getReviewName }: any) => (
+    <div
+      data-testid='batch-review-actions'
+      data-disabled={String(!!disabled)}
+      data-root-name={getReviewName?.('review-1')}
+    >
       {`${role}:${String(allowApprove)}:${JSON.stringify(reviewIds)}`}
-      <button type='button' onClick={() => onFinished?.([...reviewIds, 'reference-review-1'])}>
+      <button
+        type='button'
+        onClick={() => {
+          mockResolvedReviewName(getReviewName?.('reference-review-1'));
+          onFinished?.([...reviewIds, 'reference-review-1']);
+        }}
+      >
         finish-batch-with-failures
       </button>
     </div>
@@ -140,10 +149,11 @@ jest.mock('@/pages/Review/Components/BatchReviewActions', () => ({
 
 jest.mock('@/pages/Review/Components/SimpleReviewActions', () => ({
   __esModule: true,
-  default: ({ reviewId, role, targetTable, actionRef }: any) => (
+  default: ({ reviewId, role, targetTable, actionRef, approveDisabledReason }: any) => (
     <button
       type='button'
       data-testid='simple-review-actions'
+      data-approve-disabled-reason={approveDisabledReason}
       onClick={() => actionRef?.current?.reload?.()}
     >
       {`${reviewId}:${role}:${targetTable}`}
@@ -337,7 +347,7 @@ const MockProTable = ({
       {(dataSource ?? rows).map((row) => (
         <div key={row.id} data-testid={`row-${row.id}`}>
           {columns.map((column: any, index: number) => (
-            <div key={index}>
+            <div key={index} data-testid={`column-${row.id}-${column.dataIndex ?? column.key}`}>
               {column.render
                 ? column.render(row[column.dataIndex], row, index)
                 : row[column.dataIndex]}
@@ -401,12 +411,14 @@ jest.mock('@ant-design/pro-components', () => ({
 }));
 
 const mockGetRootReviewReferenceProgress = jest.fn();
+const mockGetReviewBatchEligibility = jest.fn();
 const mockGetReviewsTableDataOfReviewAdmin = jest.fn();
 const mockGetReviewsTableDataOfReviewMember = jest.fn();
 
 jest.mock('@/services/reviews/api', () => ({
   __esModule: true,
   getRootReviewReferenceProgress: (...args: any[]) => mockGetRootReviewReferenceProgress(...args),
+  getReviewBatchEligibility: (...args: any[]) => mockGetReviewBatchEligibility(...args),
   getReviewsTableDataOfReviewAdmin: (...args: any[]) =>
     mockGetReviewsTableDataOfReviewAdmin(...args),
   getReviewsTableDataOfReviewMember: (...args: any[]) =>
@@ -505,6 +517,7 @@ describe('AssignmentReview', () => {
       '[aria-label^="2/3"]',
     );
     expect(progress).toHaveTextContent('2/3');
+    expect(screen.getAllByText('In progress')).toHaveLength(3);
     expect(progress).toHaveAttribute('tabindex', '0');
     expect(progress).toHaveAttribute(
       'aria-label',
@@ -531,6 +544,138 @@ describe('AssignmentReview', () => {
       'title',
       'Reviewer opinions: Approve: 0; reject: 0; pending: 2.',
     );
+  });
+
+  it('disables admin approval only when every current reviewer rejected', async () => {
+    mockGetReviewsTableDataOfReviewAdmin.mockResolvedValueOnce({
+      success: true,
+      data: [
+        {
+          id: 'all-rejected',
+          reviewKind: 'root',
+          targetTable: 'processes',
+          reviewerCount: 2,
+          completedReviewerCount: 2,
+          rejectOpinionCount: 2,
+          json: { data: { id: 'process-1', version: '1.0.0' } },
+        },
+        {
+          id: 'mixed-opinions',
+          reviewKind: 'root',
+          targetTable: 'processes',
+          reviewerCount: 2,
+          completedReviewerCount: 2,
+          rejectOpinionCount: 1,
+          json: { data: { id: 'process-2', version: '1.0.0' } },
+        },
+      ],
+      total: 2,
+    });
+
+    render(
+      <AssignmentReview
+        userData={{ user_id: 'admin-1', role: 'review-admin' }}
+        tableType='in-progress'
+        actionRef={{ current: { reload: jest.fn() } }}
+      />,
+    );
+
+    await screen.findByTestId('row-all-rejected');
+    expect(
+      screen
+        .getByTestId('column-all-rejected-actions')
+        .querySelector('[data-testid="simple-review-actions"]'),
+    ).toHaveAttribute(
+      'data-approve-disabled-reason',
+      'All reviewers rejected this task; approval is unavailable.',
+    );
+    expect(
+      screen
+        .getByTestId('column-mixed-opinions-actions')
+        .querySelector('[data-testid="simple-review-actions"]'),
+    ).not.toHaveAttribute('data-approve-disabled-reason');
+  });
+
+  it('checks expanded reference opinions before enabling admin approval', async () => {
+    mockGetRootReviewReferenceProgress.mockResolvedValueOnce({
+      data: [
+        {
+          reference_review_id: 'rejected-reference',
+          target_table: 'flows',
+          data_id: 'flow-1',
+          data_version: '1.0.0',
+          data_name: {},
+          state_code: 1,
+          reviewer_count: 1,
+          completed_reviewer_count: 1,
+        },
+      ],
+      error: null,
+    });
+    mockGetReviewBatchEligibility.mockResolvedValueOnce({
+      data: [{ review_id: 'rejected-reference', reject_opinion_count: 1 }],
+      error: null,
+    });
+
+    render(
+      <AssignmentReview
+        userData={{ user_id: 'admin-1', role: 'review-admin' }}
+        tableType='in-progress'
+        actionRef={{ current: { reload: jest.fn() } }}
+      />,
+    );
+    await userEvent.click(await screen.findByRole('button', { name: 'expand-review-1' }));
+    const reference = await screen.findByTestId('subrow-rejected-reference');
+    expect(mockGetReviewBatchEligibility).toHaveBeenCalledWith(
+      ['rejected-reference'],
+      'admin-approve',
+    );
+    expect(reference.querySelector('[data-testid="simple-review-actions"]')).toHaveAttribute(
+      'data-approve-disabled-reason',
+      'All reviewers rejected this task; approval is unavailable.',
+    );
+  });
+
+  it('keeps expanded reference approval disabled when opinion verification fails', async () => {
+    const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    mockGetRootReviewReferenceProgress.mockResolvedValueOnce({
+      data: [
+        {
+          reference_review_id: 'unverified-reference',
+          target_table: 'flows',
+          data_id: 'flow-1',
+          data_version: '1.0.0',
+          data_name: {},
+          state_code: 1,
+          reviewer_count: 1,
+          completed_reviewer_count: 1,
+        },
+      ],
+      error: null,
+    });
+    mockGetReviewBatchEligibility.mockResolvedValueOnce({
+      data: [],
+      error: new Error('opinion lookup failed'),
+    });
+
+    render(
+      <AssignmentReview
+        userData={{ user_id: 'admin-1', role: 'review-admin' }}
+        tableType='in-progress'
+        actionRef={{ current: { reload: jest.fn() } }}
+      />,
+    );
+    await userEvent.click(await screen.findByRole('button', { name: 'expand-review-1' }));
+    const reference = await screen.findByTestId('subrow-unverified-reference');
+    expect(reference.querySelector('[data-testid="simple-review-actions"]')).toHaveAttribute(
+      'data-approve-disabled-reason',
+      'Unable to verify reviewer opinions. Refresh and try again.',
+    );
+    expect(consoleSpy).toHaveBeenCalledWith(
+      'Failed to verify reference reviewer opinions:',
+      expect.any(Error),
+    );
+    consoleSpy.mockRestore();
   });
 
   it('shows readable review data beside a plain task name without exposing unreadable data', async () => {
@@ -657,6 +802,10 @@ describe('AssignmentReview', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     mockLocale = 'en-US';
+    mockGetReviewBatchEligibility.mockImplementation(async (reviewIds: string[]) => ({
+      data: reviewIds.map((reviewId) => ({ review_id: reviewId, reject_opinion_count: 0 })),
+      error: null,
+    }));
     mockGetRootReviewReferenceProgress.mockResolvedValue({
       data: [
         {
@@ -665,7 +814,7 @@ describe('AssignmentReview', () => {
           data_id: 'flow-1',
           data_version: '1.0.0',
           data_name: {
-            baseName: { en: 'Reference Flow' },
+            baseName: { '@xml:lang': 'en', '#text': 'Reference Flow' },
           },
           state_code: 0,
           completed_reviewer_count: 0,
@@ -845,7 +994,10 @@ describe('AssignmentReview', () => {
     expect(screen.getByTestId('batch-review-actions')).toHaveTextContent(
       'admin:false:["review-1","reference-review-1"]',
     );
-
+    expect(screen.getByTestId('batch-review-actions')).toHaveAttribute(
+      'data-root-name',
+      'Model Review',
+    );
     await userEvent.click(screen.getByRole('button', { name: 'expand-review-1' }));
     await waitFor(() =>
       expect(mockGetRootReviewReferenceProgress).toHaveBeenCalledWith('review-1'),
@@ -859,6 +1011,7 @@ describe('AssignmentReview', () => {
 
     await userEvent.click(screen.getByRole('button', { name: 'select-child-reference-review-1' }));
     await userEvent.click(screen.getByRole('button', { name: 'finish-batch-with-failures' }));
+    expect(mockResolvedReviewName).toHaveBeenLastCalledWith('Reference Flow');
     await waitFor(() =>
       expect(screen.getByTestId('batch-review-actions')).toHaveTextContent(
         'admin:false:["review-1","reference-review-1"]',
@@ -1753,7 +1906,19 @@ describe('AssignmentReview', () => {
     expect(screen.getByTestId('simple-review-actions')).toHaveTextContent(
       'review-3:admin:undefined',
     );
-    expect(screen.getByTestId('review-progress')).toHaveTextContent('review-3:model');
+    expect(screen.getByTestId('column-review-3-progress')).toContainElement(
+      screen.getByTestId('review-progress'),
+    );
+    expect(screen.getByTestId('column-review-3-actions')).not.toContainElement(
+      screen.getByTestId('review-progress'),
+    );
+    expect(screen.getByTestId('column-review-3-actions')).toContainElement(
+      screen.getByTestId('review-lifecycle-detail'),
+    );
+    expect(screen.getByTestId('review-lifecycle-detail')).toHaveTextContent(
+      'view:assigned:review-3',
+    );
+    expect(screen.getByTestId('review-progress')).toHaveTextContent('review-3');
   });
 
   it('loads assigned process reviews, falls back to zero progress without comments, and renders process actions', async () => {
@@ -1791,7 +1956,55 @@ describe('AssignmentReview', () => {
     expect(screen.getByTestId('simple-review-actions')).toHaveTextContent(
       'review-3b:admin:processes',
     );
-    expect(screen.getByTestId('review-progress')).toHaveTextContent('review-3b:process');
+    expect(screen.getByTestId('column-review-3b-progress')).toContainElement(
+      screen.getByTestId('review-progress'),
+    );
+    expect(screen.getByTestId('column-review-3b-actions')).toContainElement(
+      screen.getByTestId('review-process-detail'),
+    );
+    expect(screen.getByTestId('review-process-detail')).toHaveTextContent(
+      'view:assigned:review-3b:show',
+    );
+    expect(screen.getByTestId('review-progress')).toHaveTextContent('review-3b');
+  });
+
+  it('keeps the review-detail action in the admin in-progress tab', async () => {
+    mockGetReviewsTableDataOfReviewAdmin.mockResolvedValueOnce({
+      success: true,
+      data: [
+        {
+          id: 'review-in-progress',
+          name: 'In-progress Process Review',
+          userName: 'Owner',
+          reviewKind: 'root',
+          targetTable: 'processes',
+          reviewerCount: 1,
+          completedReviewerCount: 0,
+          json: { data: { id: 'process-in-progress', version: '1.0.0' } },
+        },
+      ],
+      total: 1,
+    });
+
+    render(
+      <AssignmentReview
+        userData={{ user_id: 'admin-1', role: 'review-admin' }}
+        tableType='in-progress'
+        actionRef={{ current: { reload: jest.fn() } }}
+      />,
+    );
+
+    const row = await screen.findByTestId('row-review-in-progress');
+    expect(row).toBeInTheDocument();
+    expect(screen.getByTestId('column-review-in-progress-actions')).toContainElement(
+      screen.getByTestId('review-process-detail'),
+    );
+    expect(screen.getByTestId('review-process-detail')).toHaveTextContent(
+      'view:assigned:review-in-progress:show',
+    );
+    expect(screen.getByTestId('column-review-in-progress-progress')).toContainElement(
+      screen.getByTestId('review-progress'),
+    );
   });
 
   it('renders simple root-data actions for an assigned admin review', async () => {
@@ -1831,6 +2044,9 @@ describe('AssignmentReview', () => {
     expect(screen.queryByRole('link', { name: 'View' })).not.toBeInTheDocument();
 
     expect(screen.queryByRole('button', { name: 'expand-review-contact' })).not.toBeInTheDocument();
+    expect(screen.queryByTestId('review-progress')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('review-process-detail')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('review-lifecycle-detail')).not.toBeInTheDocument();
     expect(mockGetRootReviewReferenceProgress).not.toHaveBeenCalled();
   });
 

@@ -109,7 +109,10 @@ const Review = () => {
         {
           key: 'in-progress',
           label: (
-            <FormattedMessage id='pages.review.tabs.inProgress' defaultMessage='In Progress' />
+            <FormattedMessage
+              id='pages.review.tabs.inProgress'
+              defaultMessage='Review Tasks in Progress'
+            />
           ),
           children: (
             <AssignmentReview
@@ -122,7 +125,12 @@ const Review = () => {
         },
         {
           key: 'completed',
-          label: <FormattedMessage id='pages.review.tabs.completed' defaultMessage='Completed' />,
+          label: (
+            <FormattedMessage
+              id='pages.review.tabs.completed'
+              defaultMessage='Completed Review Tasks'
+            />
+          ),
           children: (
             <AssignmentReview
               actionRef={completedTableRef}
@@ -140,7 +148,12 @@ const Review = () => {
     : [
         {
           key: 'pending',
-          label: <FormattedMessage id='pages.review.tabs.pending' />,
+          label: (
+            <FormattedMessage
+              id='pages.review.tabs.pending'
+              defaultMessage='Pending Review Tasks'
+            />
+          ),
           disabled: !profileReady,
           children: (
             <AssignmentReview actionRef={pendingTableRef} tableType='pending' userData={userData} />
@@ -165,7 +178,12 @@ const Review = () => {
         },
         {
           key: 'completed',
-          label: <FormattedMessage id='pages.review.tabs.completed' defaultMessage='Completed' />,
+          label: (
+            <FormattedMessage
+              id='pages.review.tabs.completed'
+              defaultMessage='Completed Review Tasks'
+            />
+          ),
           disabled: !profileReady,
           children: (
             <AssignmentReview

@@ -1,10 +1,11 @@
 import BatchReviewActions from '@/pages/Review/Components/BatchReviewActions';
+import { getCommentApi } from '@/services/comments/api';
 import {
   getReviewBatchEligibility,
   submitAdminReviewBatchDecision,
   submitReviewerBatchDecision,
 } from '@/services/reviews/api';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 
 const mockConfirm = jest.fn();
 const mockResetFields = jest.fn();
@@ -23,6 +24,8 @@ jest.mock('@/services/reviews/api', () => ({
   submitAdminReviewBatchDecision: jest.fn(),
   submitReviewerBatchDecision: jest.fn(),
 }));
+
+jest.mock('@/services/comments/api', () => ({ getCommentApi: jest.fn() }));
 
 jest.mock('@umijs/max', () => ({
   useIntl: () => ({
@@ -56,17 +59,21 @@ jest.mock('antd', () => {
     children,
     open,
     title,
+    width,
+    okText,
     onCancel,
     onOk,
   }: {
     children: import('react').ReactNode;
     open?: boolean;
     title?: string;
+    width?: number;
+    okText?: string;
     onCancel?: () => void;
     onOk?: () => void;
   }) =>
     open ? (
-      <section aria-label={title}>
+      <section aria-label={title} data-modal-width={width} data-ok-text={okText}>
         {children}
         <button type='button' onClick={onCancel}>
           cancel
@@ -87,7 +94,13 @@ jest.mock('antd', () => {
   const App = { useApp: () => ({ message, modal }) };
 
   return {
-    Alert: ({ description, title }: { description?: string; title?: string }) => (
+    Alert: ({
+      description,
+      title,
+    }: {
+      description?: import('react').ReactNode;
+      title?: string;
+    }) => (
       <div>
         {title}: {description}
       </div>
@@ -132,7 +145,11 @@ jest.mock('antd', () => {
       </button>
     ),
     Form,
-    Input: { TextArea: () => <textarea aria-label='review-reason' /> },
+    Input: {
+      TextArea: ({ placeholder }: { placeholder?: string }) => (
+        <textarea aria-label='review-reason' placeholder={placeholder} />
+      ),
+    },
     message,
     Modal,
     Space: ({ children, size }: { children: import('react').ReactNode; size?: number }) => (
@@ -156,6 +173,7 @@ jest.mock('antd', () => {
 const adminDecisionMock = jest.mocked(submitAdminReviewBatchDecision);
 const reviewerDecisionMock = jest.mocked(submitReviewerBatchDecision);
 const eligibilityMock = jest.mocked(getReviewBatchEligibility);
+const commentMock = jest.mocked(getCommentApi);
 
 const successfulResult = (reviewIds: string[]) => ({
   ok: true,
@@ -170,6 +188,7 @@ describe('BatchReviewActions', () => {
     jest.clearAllMocks();
     mockConfirm.mockImplementation(({ onOk }: { onOk?: () => void }) => onOk?.());
     mockValidateFields.mockResolvedValue({ reason: 'insufficient evidence' });
+    commentMock.mockResolvedValue({ data: [], error: null });
     eligibilityMock.mockImplementation(async (reviewIds) => ({
       data: reviewIds.map((reviewId, ordinal) => ({
         ordinal,
@@ -271,6 +290,60 @@ describe('BatchReviewActions', () => {
     expect(onFinished).toHaveBeenCalledWith(['review-2']);
   });
 
+  it('skips all-rejected tasks during admin batch approval', async () => {
+    const onFinished = jest.fn();
+    eligibilityMock.mockResolvedValueOnce({
+      data: [
+        {
+          ordinal: 0,
+          review_id: 'all-rejected',
+          eligible: true,
+          reviewer_count: 2,
+          submitted_opinion_count: 2,
+          approve_opinion_count: 0,
+          reject_opinion_count: 2,
+        },
+        {
+          ordinal: 1,
+          review_id: 'mixed-opinions',
+          eligible: true,
+          reviewer_count: 2,
+          submitted_opinion_count: 2,
+          approve_opinion_count: 1,
+          reject_opinion_count: 1,
+        },
+      ],
+      error: null,
+    });
+    adminDecisionMock.mockResolvedValue({
+      data: [successfulResult(['mixed-opinions'])],
+      error: null,
+    } as never);
+
+    render(
+      <BatchReviewActions
+        role='admin'
+        reviewIds={['all-rejected', 'mixed-opinions']}
+        allowApprove
+        onFinished={onFinished}
+      />,
+    );
+    fireEvent.click(screen.getByRole('button', { name: 'Batch approve' }));
+
+    await waitFor(() =>
+      expect(adminDecisionMock).toHaveBeenCalledWith(['mixed-opinions'], 'approve', undefined),
+    );
+    expect(onFinished).toHaveBeenCalledWith(['all-rejected']);
+    expect(mockConfirm).toHaveBeenCalledWith(
+      expect.objectContaining({ title: 'Approve 1 selected reviews?' }),
+    );
+    const preview = mockConfirm.mock.calls[0][0].content;
+    const { container } = render(preview);
+    expect(container).toHaveTextContent(
+      'All reviewers rejected this task; approval is unavailable.',
+    );
+  });
+
   it('submits a reviewer rejection as an advisory opinion and reports partial results', async () => {
     const onFinished = jest.fn();
     reviewerDecisionMock.mockResolvedValue({
@@ -309,6 +382,10 @@ describe('BatchReviewActions', () => {
     expect(
       await screen.findByRole('region', { name: 'Reject 2 selected reviews' }),
     ).toBeInTheDocument();
+    expect(screen.getByRole('region', { name: 'Reject 2 selected reviews' })).toHaveAttribute(
+      'data-ok-text',
+      'Batch reject 2 items',
+    );
     fireEvent.click(screen.getByRole('button', { name: 'cancel' }));
     expect(screen.queryByRole('region')).not.toBeInTheDocument();
 
@@ -392,7 +469,7 @@ describe('BatchReviewActions', () => {
     expect(adminDecisionMock).not.toHaveBeenCalled();
   });
 
-  it('shows ineligible reason counts and does not submit an empty eligible scope', async () => {
+  it('shows each skipped item with a readable reason and does not submit an empty eligible scope', async () => {
     eligibilityMock.mockResolvedValueOnce({
       data: [
         {
@@ -424,21 +501,109 @@ describe('BatchReviewActions', () => {
         role='admin'
         reviewIds={['review-1', 'review-2']}
         allowApprove
+        getReviewName={(reviewId) => (reviewId === 'review-2' ? 'Data B' : undefined)}
         onFinished={jest.fn()}
       />,
     );
 
     fireEvent.click(screen.getByRole('button', { name: 'Batch reject' }));
 
-    expect(
-      await screen.findByRole('region', { name: 'Reject 2 selected reviews' }),
-    ).toHaveTextContent('NOT_APPLICABLE: 1; REVIEW_ALREADY_COMPLETED: 1');
+    const dialog = await screen.findByRole('region', { name: 'Reject 2 selected reviews' });
+    expect(dialog).toHaveAttribute('data-modal-width', '760');
+    expect(dialog).toHaveAttribute('data-ok-text', 'Batch reject 0 items');
+    expect(within(dialog).getByRole('textbox', { name: 'review-reason' })).toHaveAttribute(
+      'placeholder',
+      'Enter a reject reason for the 0 eligible tasks',
+    );
+    const rows = within(dialog).getAllByRole('listitem');
+    expect(rows).toHaveLength(2);
+    expect(rows[0]).toHaveTextContent('1.Review name unavailableThis review cannot be processed.');
+    expect(rows[1]).toHaveTextContent('2.Data BThis review is already completed.');
+    expect(rows[1].querySelectorAll('span')[1]).toHaveAttribute('title', 'Data B');
+    expect(rows[1].querySelectorAll('span')[2]).toHaveAttribute(
+      'title',
+      'This review is already completed.',
+    );
+    expect(rows[0]).not.toHaveTextContent('review-1');
+    expect(rows[0].parentElement).toHaveStyle({ maxHeight: '208px', overflowY: 'auto' });
     fireEvent.click(screen.getByRole('button', { name: 'confirm reject' }));
 
     await waitFor(() =>
       expect(mockWarning).toHaveBeenCalledWith('None of the selected reviews can be processed.'),
     );
     expect(adminDecisionMock).not.toHaveBeenCalled();
+  });
+
+  it('shows the current reviewer opinion for already submitted items, without inferring from totals', async () => {
+    eligibilityMock.mockResolvedValueOnce({
+      data: [
+        {
+          ordinal: 1,
+          review_id: 'approved',
+          eligible: false,
+          reason_code: 'OPINION_ALREADY_SUBMITTED',
+          reviewer_count: 3,
+          submitted_opinion_count: 3,
+          approve_opinion_count: 1,
+          reject_opinion_count: 2,
+        },
+        {
+          ordinal: 2,
+          review_id: 'rejected',
+          eligible: false,
+          reason_code: 'OPINION_ALREADY_SUBMITTED',
+          reviewer_count: 3,
+          submitted_opinion_count: 3,
+          approve_opinion_count: 2,
+          reject_opinion_count: 1,
+        },
+        {
+          ordinal: 3,
+          review_id: 'unknown',
+          eligible: false,
+          reason_code: 'OPINION_ALREADY_SUBMITTED',
+          reviewer_count: 1,
+          submitted_opinion_count: 1,
+          approve_opinion_count: 1,
+          reject_opinion_count: 0,
+        },
+      ],
+      error: null,
+    });
+    commentMock.mockImplementation(async (reviewId) => {
+      if (reviewId === 'unknown') return { data: [], error: true };
+      return {
+        data: [
+          {
+            review_id: reviewId,
+            reviewer_id: 'me',
+            state_code: reviewId === 'approved' ? 1 : -3,
+            json: {},
+          },
+        ],
+        error: null,
+      };
+    });
+
+    render(
+      <BatchReviewActions
+        role='reviewer'
+        reviewIds={['approved', 'rejected', 'unknown']}
+        allowApprove={false}
+        getReviewName={(id) => ({ approved: 'Data A', rejected: 'Data B', unknown: 'Data C' })[id]}
+        onFinished={jest.fn()}
+      />,
+    );
+    fireEvent.click(screen.getByRole('button', { name: 'Batch reject' }));
+    const dialog = await screen.findByRole('region', { name: 'Reject 3 selected reviews' });
+    const rows = within(dialog).getAllByRole('listitem');
+    expect(rows).toHaveLength(3);
+    expect(rows[0]).toHaveTextContent('1.Data AYou already submitted an approve opinion.');
+    expect(rows[1]).toHaveTextContent('2.Data BYou already submitted a reject opinion.');
+    expect(rows[2]).toHaveTextContent(
+      '3.Data COpinion submitted; its outcome is temporarily unavailable.',
+    );
+    expect(commentMock).toHaveBeenCalledTimes(3);
   });
 
   it('disables actions for explicit disablement and empty selections', () => {

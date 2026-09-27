@@ -11,6 +11,7 @@ import { ListPagination } from '@/services/general/data';
 import { getLang } from '@/services/general/util';
 import { genProcessName } from '@/services/processes/util';
 import {
+  getReviewBatchEligibility,
   getReviewsTableDataOfReviewAdmin,
   getReviewsTableDataOfReviewMember,
   getRootReviewReferenceProgress,
@@ -20,6 +21,7 @@ import {
   type RootReviewReferenceProgress,
 } from '@/services/reviews/api';
 import { ReviewsTable } from '@/services/reviews/data';
+import { areAllCurrentReviewerOpinionsRejected } from '@/services/reviews/util';
 import { ExperimentOutlined } from '@ant-design/icons';
 import { ProColumns, ProTable } from '@ant-design/pro-components';
 import { FormattedMessage, useIntl } from '@umijs/max';
@@ -193,6 +195,7 @@ const AssignmentReview = ({
   const [subTableLoading, setSubTableLoading] = useState<Record<string, boolean>>({});
   const selectedRootReviewIdsRef = useRef<Set<string>>(new Set());
   const mainReviewRowsRef = useRef<Record<string, ReviewsTable>>({});
+  const reviewNamesRef = useRef<Record<string, string>>({});
   const subTableDataRef = useRef<Record<string, RootReviewReferenceProgress[]>>({});
   const subTableRequestRef = useRef<
     Record<string, Promise<RootReviewReferenceProgress[]> | undefined>
@@ -341,6 +344,7 @@ const AssignmentReview = ({
   const resetReviewViewState = () => {
     viewEpochRef.current += 1;
     mainReviewRowsRef.current = {};
+    reviewNamesRef.current = {};
     clearUnifiedSelection();
     setExpandedRowKeys([]);
     setSubTableData({});
@@ -508,8 +512,37 @@ const AssignmentReview = ({
         const result = await getRootReviewReferenceProgress(rootReviewId);
         if (viewEpoch !== viewEpochRef.current) return [];
         if (result.error) throw result.error;
-        const currentTabData = result.data.filter(isReferenceMatchingCurrentTab);
+        let currentTabData = result.data.filter(isReferenceMatchingCurrentTab);
+        if (tableType === 'in-progress' || tableType === 'assigned') {
+          const completedReferences = currentTabData.filter(
+            (item) =>
+              item.reviewer_count > 0 && item.completed_reviewer_count >= item.reviewer_count,
+          );
+          if (completedReferences.length > 0) {
+            try {
+              const eligibility = await getReviewBatchEligibility(
+                completedReferences.map((item) => item.reference_review_id),
+                'admin-approve',
+              );
+              if (eligibility.error) throw eligibility.error;
+              const rejectedCountById = new Map(
+                eligibility.data.map((item) => [item.review_id, item.reject_opinion_count]),
+              );
+              currentTabData = currentTabData.map((item) => ({
+                ...item,
+                reject_opinion_count: rejectedCountById.get(item.reference_review_id),
+              }));
+            } catch (error) {
+              console.error('Failed to verify reference reviewer opinions:', error);
+            }
+          }
+        }
+        if (viewEpoch !== viewEpochRef.current) return [];
         subTableLoadErrorIdsRef.current.delete(rootReviewId);
+        currentTabData.forEach((item) => {
+          const name = genProcessName(item.data_name ?? {}, lang);
+          if (name && name !== '-') reviewNamesRef.current[item.reference_review_id] = name;
+        });
         subTableDataRef.current = {
           ...subTableDataRef.current,
           [rowKey]: currentTabData,
@@ -675,6 +708,47 @@ const AssignmentReview = ({
     }
   };
 
+  const getApproveDisabledReason = (
+    reviewerCount: number,
+    completedReviewerCount: number,
+    rejectOpinionCount?: number,
+  ) => {
+    if (reviewerCount === 0) {
+      return intl.formatMessage({
+        id: 'pages.review.approve.disabled.noReviewers',
+        defaultMessage: 'Assign at least one reviewer before final approval.',
+      });
+    }
+    if (completedReviewerCount < reviewerCount) {
+      return intl.formatMessage(
+        {
+          id: 'pages.review.approve.disabled.pendingOpinions',
+          defaultMessage: '{count} reviewer opinions are still pending.',
+        },
+        { count: reviewerCount - completedReviewerCount },
+      );
+    }
+    if (rejectOpinionCount === undefined) {
+      return intl.formatMessage({
+        id: 'pages.review.approve.disabled.opinionsUnavailable',
+        defaultMessage: 'Unable to verify reviewer opinions. Refresh and try again.',
+      });
+    }
+    if (
+      areAllCurrentReviewerOpinionsRejected(
+        reviewerCount,
+        completedReviewerCount,
+        rejectOpinionCount,
+      )
+    ) {
+      return intl.formatMessage({
+        id: 'pages.review.approve.disabled.allRejected',
+        defaultMessage: 'All reviewers rejected this task; approval is unavailable.',
+      });
+    }
+    return undefined;
+  };
+
   const subColumns: any[] = [
     {
       title: (
@@ -796,24 +870,11 @@ const AssignmentReview = ({
                 targetTable={record.target_table}
                 role='admin'
                 actionRef={childActionRef}
-                approveDisabledReason={
-                  record.reviewer_count === 0
-                    ? intl.formatMessage({
-                        id: 'pages.review.approve.disabled.noReviewers',
-                        defaultMessage: 'Assign at least one reviewer before final approval.',
-                      })
-                    : record.completed_reviewer_count < record.reviewer_count
-                      ? intl.formatMessage(
-                          {
-                            id: 'pages.review.approve.disabled.pendingOpinions',
-                            defaultMessage: '{count} reviewer opinions are still pending.',
-                          },
-                          {
-                            count: record.reviewer_count - record.completed_reviewer_count,
-                          },
-                        )
-                      : undefined
-                }
+                approveDisabledReason={getApproveDisabledReason(
+                  record.reviewer_count,
+                  record.completed_reviewer_count,
+                  record.reject_opinion_count,
+                )}
                 dataVersion={record.data_version}
               />
             </Space>,
@@ -842,27 +903,6 @@ const AssignmentReview = ({
     (record.reviewKind === 'root' &&
       Boolean(record.targetTable) &&
       !['processes', 'lifecyclemodels'].includes(record.targetTable as string));
-
-  const getApproveDisabledReason = (record: ReviewsTable) => {
-    const reviewerCount = record.reviewerCount ?? 0;
-    const completedReviewerCount = record.completedReviewerCount ?? 0;
-    if (reviewerCount === 0) {
-      return intl.formatMessage({
-        id: 'pages.review.approve.disabled.noReviewers',
-        defaultMessage: 'Assign at least one reviewer before final approval.',
-      });
-    }
-    if (completedReviewerCount < reviewerCount) {
-      return intl.formatMessage(
-        {
-          id: 'pages.review.approve.disabled.pendingOpinions',
-          defaultMessage: '{count} reviewer opinions are still pending.',
-        },
-        { count: reviewerCount - completedReviewerCount },
-      );
-    }
-    return undefined;
-  };
 
   const columns: ProColumns<ReviewsTable>[] = [
     {
@@ -991,7 +1031,7 @@ const AssignmentReview = ({
           </Tag>
         ) : (
           <Tag color='processing'>
-            <FormattedMessage id='pages.review.tabs.inProgress' defaultMessage='In Progress' />
+            <FormattedMessage id='pages.review.result.inProgress' defaultMessage='In progress' />
           </Tag>
         );
       },
@@ -1035,43 +1075,50 @@ const AssignmentReview = ({
           dataIndex: 'progress',
           sorter: false,
           search: false,
-          width: 120,
+          width: 150,
           render: (_: any, record: ReviewsTable) => {
             const reviewerCount = record.reviewerCount ?? 0;
             const completedReviewerCount = record.completedReviewerCount ?? 0;
             const progress = `${completedReviewerCount}/${reviewerCount}`;
-            if (tableType !== 'in-progress' || userData?.role !== 'review-admin') {
-              return progress;
+            let progressLabel: React.ReactNode = progress;
+            if (tableType === 'in-progress' && userData?.role === 'review-admin') {
+              const opinionSummary =
+                reviewerCount === 0
+                  ? intl.formatMessage({
+                      id: 'pages.review.progress.noReviewers',
+                      defaultMessage: 'No reviewers assigned yet.',
+                    })
+                  : intl.formatMessage(
+                      {
+                        id: 'pages.review.detail.opinionSummary',
+                        defaultMessage: 'Approve: {approve}; reject: {reject}; pending: {pending}.',
+                      },
+                      {
+                        approve: record.approveOpinionCount ?? 0,
+                        reject: record.rejectOpinionCount ?? 0,
+                        pending: Math.max(0, reviewerCount - completedReviewerCount),
+                      },
+                    );
+              const tooltipText = `${intl.formatMessage({
+                id: 'pages.review.detail.opinions',
+                defaultMessage: 'Reviewer opinions',
+              })}: ${opinionSummary}`;
+              progressLabel = (
+                <Tooltip title={tooltipText}>
+                  <span tabIndex={0} aria-label={`${progress}; ${tooltipText}`}>
+                    {progress}
+                  </span>
+                </Tooltip>
+              );
             }
 
-            const opinionSummary =
-              reviewerCount === 0
-                ? intl.formatMessage({
-                    id: 'pages.review.progress.noReviewers',
-                    defaultMessage: 'No reviewers assigned yet.',
-                  })
-                : intl.formatMessage(
-                    {
-                      id: 'pages.review.detail.opinionSummary',
-                      defaultMessage: 'Approve: {approve}; reject: {reject}; pending: {pending}.',
-                    },
-                    {
-                      approve: record.approveOpinionCount ?? 0,
-                      reject: record.rejectOpinionCount ?? 0,
-                      pending: Math.max(0, reviewerCount - completedReviewerCount),
-                    },
-                  );
-            const tooltipText = `${intl.formatMessage({
-              id: 'pages.review.detail.opinions',
-              defaultMessage: 'Reviewer opinions',
-            })}: ${opinionSummary}`;
-
             return (
-              <Tooltip title={tooltipText}>
-                <span tabIndex={0} aria-label={`${progress}; ${tooltipText}`}>
-                  {progress}
-                </span>
-              </Tooltip>
+              <Space size={4} align='center'>
+                {progressLabel}
+                {record.rootMatchesStatus !== false && !isSimpleReview(record) && (
+                  <ReviewProgress reviewId={record.id} />
+                )}
+              </Space>
             );
           },
         },
@@ -1093,21 +1140,37 @@ const AssignmentReview = ({
                   targetTable={record.targetTable as ReviewSubmitDatasetTable}
                   role='admin'
                   actionRef={actionRef}
-                  approveDisabledReason={getApproveDisabledReason(record)}
+                  approveDisabledReason={getApproveDisabledReason(
+                    record.reviewerCount ?? 0,
+                    record.completedReviewerCount ?? 0,
+                    record.rejectOpinionCount,
+                  )}
                   dataVersion={record.json?.data?.version}
                   approveOpinionCount={record.approveOpinionCount}
                   rejectOpinionCount={record.rejectOpinionCount}
                 />
-                {!isSimpleReview(record) && (
-                  <ReviewProgress
-                    actionRef={actionRef}
-                    tabType='assigned'
-                    reviewId={record.id}
-                    dataId={record.json?.data?.id}
-                    dataVersion={record.json?.data?.version}
-                    actionType={record.isFromLifeCycle ? 'model' : 'process'}
-                  />
-                )}
+                {!isSimpleReview(record) &&
+                  (record.isFromLifeCycle ? (
+                    <ReviewLifeCycleModelsDetail
+                      tabType='assigned'
+                      type='view'
+                      actionRef={actionRef}
+                      id={record.json?.data?.id}
+                      version={record.json?.data?.version}
+                      lang={lang}
+                      reviewId={record.id}
+                    />
+                  ) : (
+                    <ReviewProcessDetail
+                      tabType='assigned'
+                      type='view'
+                      actionRef={actionRef}
+                      id={record.json?.data?.id}
+                      version={record.json?.data?.version}
+                      lang={lang}
+                      reviewId={record.id}
+                    />
+                  ))}
               </Space>,
             ];
           },
@@ -1241,12 +1304,19 @@ const AssignmentReview = ({
       case 'submitted':
         return <FormattedMessage id='pages.review.tabs.reviewed' defaultMessage='Reviewed' />;
       case 'pending':
-        return <FormattedMessage id='pages.review.tabs.pending' defaultMessage='Pending Review' />;
+        return (
+          <FormattedMessage id='pages.review.tabs.pending' defaultMessage='Pending Review Tasks' />
+        );
       case 'reviewer-rejected':
         return <FormattedMessage id='pages.review.tabs.rejected' defaultMessage='Rejected' />;
       case 'admin-rejected':
       case 'completed':
-        return <FormattedMessage id='pages.review.tabs.completed' defaultMessage='Completed' />;
+        return (
+          <FormattedMessage
+            id='pages.review.tabs.completed'
+            defaultMessage='Completed Review Tasks'
+          />
+        );
       default:
     }
   };
@@ -1459,6 +1529,19 @@ const AssignmentReview = ({
                 <BatchReviewActions
                   role={tableType === 'pending' ? 'reviewer' : 'admin'}
                   reviewIds={selectedReviewIds}
+                  getReviewName={(reviewId) => {
+                    const mainName = mainReviewRowsRef.current[reviewId]?.name;
+                    if (mainName && mainName !== '-') return mainName;
+                    const cachedName = reviewNamesRef.current[reviewId];
+                    if (cachedName) return cachedName;
+                    const reference = Object.values(subTableData)
+                      .flat()
+                      .find((item) => item.reference_review_id === reviewId);
+                    const referenceName = reference
+                      ? genProcessName(reference.data_name ?? {}, lang)
+                      : undefined;
+                    return referenceName && referenceName !== '-' ? referenceName : undefined;
+                  }}
                   allowApprove={
                     tableType === 'in-progress' ||
                     tableType === 'assigned' ||
@@ -1519,6 +1602,11 @@ const AssignmentReview = ({
             mainReviewRowsRef.current = Object.fromEntries(
               (result.data ?? []).map((record) => [record.id, record]),
             );
+            (result.data ?? []).forEach((record) => {
+              if (record.name && record.name !== '-') {
+                reviewNamesRef.current[record.id] = record.name;
+              }
+            });
             return result;
           } catch (_error) {
             if (isCurrentRequest()) {

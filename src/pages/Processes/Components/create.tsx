@@ -1,5 +1,5 @@
+import { verifyAllocationProducts } from '@/services/processes/allocationTargets';
 // import { checkRequiredFields } from '@/pages/Utils';
-import { toBigNumberOrZero } from '@/services/general/bignumber';
 import {
   formatDateTime,
   getImportedId,
@@ -21,7 +21,6 @@ import ToolBarButton from '@/components/ToolBarButton';
 import { LCIAResultTable } from '@/services/lciaMethods/data';
 import {
   FormProcess,
-  getFirstProcessExchangeAllocation,
   ProcessDataSetObjectKeys,
   ProcessDetailResponse,
   ProcessExchangeData,
@@ -332,46 +331,19 @@ const ProcessCreate: FC<CreateProps> = ({
             onFinish={async () => {
               setSpinning(true);
               const paramsId = actionType === 'createVersion' ? (id ?? '') : (importedId ?? v4());
-              const output = exchangeDataSource.filter(
-                (e) => e.exchangeDirection?.toUpperCase() === 'OUTPUT',
-              );
-              let allocatedFractionTotal = toBigNumberOrZero(0);
-              output.forEach((e) => {
-                const allocation = getFirstProcessExchangeAllocation(e?.allocations?.allocation);
-                if (allocation?.['@allocatedFraction']) {
-                  const fraction = allocation['@allocatedFraction']?.toString()?.replace('%', '');
-                  allocatedFractionTotal = allocatedFractionTotal.plus(toBigNumberOrZero(fraction));
-                }
-              });
-              if (allocatedFractionTotal.isEqualTo(0)) {
-                const referenceIndex = output.findIndex(
-                  (e) =>
-                    e.quantitativeReference === true &&
-                    e.exchangeDirection?.toUpperCase() === 'OUTPUT',
-                );
-                if (referenceIndex > -1) {
-                  output[referenceIndex].allocations = {
-                    allocation: {
-                      '@allocatedFraction': '100%',
-                    },
-                  };
-                }
-              }
-
-              if (allocatedFractionTotal.isGreaterThan(100)) {
+              const allocationIssue = await verifyAllocationProducts(exchangeDataSource);
+              if (allocationIssue) {
                 message.error(
-                  intl.formatMessage(
-                    {
-                      id: 'pages.process.validator.allocatedFraction',
-                      defaultMessage:
-                        'The total allocated fraction for outputs cannot exceed 100%. Current total: {total}%.',
-                    },
-                    { total: allocatedFractionTotal.toString() },
-                  ),
+                  intl.formatMessage({
+                    id: 'pages.process.allocation.invalid',
+                    defaultMessage:
+                      'Check allocation targets and shares: each explicit allocation must total 100%, and legacy shares cannot be mixed with targeted allocations.',
+                  }),
                 );
                 setSpinning(false);
                 return;
               }
+
               const processPayload = {
                 ...fromData,
               };

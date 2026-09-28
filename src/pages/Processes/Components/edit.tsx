@@ -37,17 +37,16 @@ import { formatDatasetTabLabel } from '@/pages/Utils/validation/tabMessages';
 import { getFlowDetail } from '@/services/flows/api';
 import { genFlowFromData, genFlowNameJson } from '@/services/flows/util';
 import { hasLangNormalizationDraftChanges } from '@/services/general/api';
-import { toBigNumberOrZero } from '@/services/general/bignumber';
 import { jsonToList } from '@/services/general/util';
 import { LCIAResultTable } from '@/services/lciaMethods/data';
 import { getProcessDetail, updateProcess } from '@/services/processes/api';
+import { verifyAllocationProducts } from '@/services/processes/allocationTargets';
 import {
   FormProcess,
   ProcessDataSetObjectKeys,
   ProcessDetailData,
   ProcessDetailResponse,
   ProcessExchangeData,
-  getFirstProcessExchangeAllocation,
 } from '@/services/processes/data';
 import { genProcessFromData, genProcessJsonOrdered } from '@/services/processes/util';
 import { getUserTeamId } from '@/services/roles/api';
@@ -508,43 +507,18 @@ const ProcessEdit: FC<Props> = ({
       return;
     }
     const processData = await updateReferenceDescription(currentData);
-    const output = (processData.exchanges.exchange as ProcessExchangeData[]).filter(
-      (e) => e.exchangeDirection?.toUpperCase() === 'OUTPUT',
+    const allocationIssue = await verifyAllocationProducts(
+      processData.exchanges.exchange as ProcessExchangeData[],
     );
-    let allocatedFractionTotal = toBigNumberOrZero(0);
-    output.forEach((e) => {
-      const allocation = getFirstProcessExchangeAllocation(e?.allocations?.allocation);
-      if (allocation?.['@allocatedFraction']) {
-        const fractionText = allocation['@allocatedFraction']?.toString?.();
-        const fraction = typeof fractionText === 'string' ? fractionText.replace('%', '') : '';
-        allocatedFractionTotal = allocatedFractionTotal.plus(toBigNumberOrZero(fraction));
-      }
-    });
-    if (allocatedFractionTotal.isEqualTo(0)) {
-      const referenceIndex = output.findIndex(
-        (e) => e.quantitativeReference === true && e.exchangeDirection?.toUpperCase() === 'OUTPUT',
-      );
-      if (referenceIndex > -1) {
-        output[referenceIndex].allocations = {
-          allocation: {
-            '@allocatedFraction': '100%',
-          },
-        };
-      }
-    }
-    if (allocatedFractionTotal.isGreaterThan(100)) {
-      if (!silent) {
+    if (allocationIssue) {
+      if (!silent)
         message.error(
-          intl.formatMessage(
-            {
-              id: 'pages.process.validator.allocatedFraction',
-              defaultMessage:
-                'The total allocated fraction for outputs cannot exceed 100%. Current total: {total}%.',
-            },
-            { total: allocatedFractionTotal.toString() },
-          ),
+          intl.formatMessage({
+            id: 'pages.process.allocation.invalid',
+            defaultMessage:
+              'Check allocation targets and shares: each explicit allocation must total 100%, and legacy shares cannot be mixed with targeted allocations.',
+          }),
         );
-      }
       setSpinning(false);
       return;
     }

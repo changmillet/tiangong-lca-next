@@ -251,7 +251,9 @@ export const resolveFraction = (
   view: CompiledView,
   exchange: CompiledExchange,
 ): number => {
-  if (instance.allocationShape === 'single') return 1;
+  if (instance.allocationShape === 'single') {
+    return view.pivotExchangeId === instance.refExchangeId ? 1 : 0;
+  }
   if (instance.allocationShape === 'legacy') {
     const pivotExchange = instance.exchangeById.get(view.pivotExchangeId);
     if (pivotExchange?.allocation.kind === 'legacyShare') return pivotExchange.allocation.fraction!;
@@ -573,6 +575,17 @@ export const compileModel = (payload: {
         isDeadEnd: false,
       });
       supplierViewIdByEdgeId.set(connection.edgeId, createdView.id);
+    }
+    // Undeclared exchanges belong to the reference product, including when only
+    // another output is connected. Keep that boundary result so its load is not
+    // lost. Dead ends are added below with their pass-through semantics intact.
+    if (
+      instance.allocationShape !== 'legacy' &&
+      instance.outgoing.length > 0 &&
+      instance.refExchangeId &&
+      instance.exchangeById.get(instance.refExchangeId)?.payload.direction === 'OUTPUT'
+    ) {
+      addView(instance, instance.refExchangeId, { isReference: false, isDeadEnd: false });
     }
     // 未连接但已声明为分配目标的输出是边界联产品：保留独立视图与副产品结果，
     // 不要求人造下游节点（发现 3）。

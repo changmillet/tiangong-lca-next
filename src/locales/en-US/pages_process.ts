@@ -1,4 +1,17 @@
 export default {
+  'pages.process.allocation.default': 'Without an allocation, this exchange belongs entirely to the reference product.',
+  'pages.process.allocation.legacy': 'Legacy product shares are preserved. Convert all affected exchanges together before using target allocations.',
+  'pages.process.allocation.loadFailed': 'Product targets could not be verified. Reopen to retry.',
+  'pages.process.allocation.unresolved': 'Unverified target #{id}',
+  'pages.process.allocation.target': 'Target product',
+  'pages.process.allocation.add': 'Add product allocation',
+  'pages.process.allocation.invalid': 'Check allocation targets and shares: each explicit allocation must total 100%, and legacy shares cannot be mixed with targeted allocations.',
+  'pages.process.allocation.batch': 'Batch allocation',
+  'pages.process.allocation.exchanges': 'Inputs / outputs',
+  'pages.process.allocation.fill': 'Fill unconfigured exchanges only',
+  'pages.process.allocation.replace': 'Replace selected allocations',
+  'pages.process.allocation.summary': '{selected} selected · {changed} to update · {skipped} skipped',
+
   'pages.process.list.loadError': 'Failed to load process list.',
   'pages.process.published.title': 'Published processes',
   'pages.process.published.table.processName': 'Process name',

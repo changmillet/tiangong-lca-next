@@ -1,4 +1,17 @@
 export default {
+  'pages.process.allocation.default': 'Ohne Allokation wird dieser Austausch vollständig dem Referenzprodukt zugeordnet.',
+  'pages.process.allocation.legacy': 'Bestehende Produktanteile bleiben erhalten. Stellen Sie vor der Zielallokation alle betroffenen Austausche gemeinsam um.',
+  'pages.process.allocation.loadFailed': 'Zielprodukte konnten nicht geprüft werden. Öffnen Sie den Dialog erneut.',
+  'pages.process.allocation.unresolved': 'Ungeprüftes Ziel #{id}',
+  'pages.process.allocation.target': 'Zielprodukt',
+  'pages.process.allocation.add': 'Produktallokation hinzufügen',
+  'pages.process.allocation.invalid': 'Prüfen Sie Ziele und Anteile: Jede explizite Allokation muss insgesamt 100% ergeben. Alte Produktanteile und Zielallokationen dürfen nicht kombiniert werden.',
+  'pages.process.allocation.batch': 'Allokation für mehrere Austausche',
+  'pages.process.allocation.exchanges': 'Inputs / Outputs',
+  'pages.process.allocation.fill': 'Nur Austausche ohne Allokation ausfüllen',
+  'pages.process.allocation.replace': 'Ausgewählte Allokationen ersetzen',
+  'pages.process.allocation.summary': '{selected} ausgewählt · {changed} zu ändern · {skipped} übersprungen',
+
   'pages.process.list.loadError': 'Die Prozessliste konnte nicht geladen werden.',
   'pages.process.published.title': 'Veröffentlichte Prozesse',
   'pages.process.published.table.processName': 'Prozessname',

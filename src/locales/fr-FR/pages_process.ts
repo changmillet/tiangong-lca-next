@@ -1,4 +1,17 @@
 export default {
+  'pages.process.allocation.default': 'Sans allocation, cet échange est entièrement attribué au produit de référence.',
+  'pages.process.allocation.legacy': 'Les parts historiques sont conservées. Convertissez tous les échanges concernés avant de définir des allocations par produit.',
+  'pages.process.allocation.loadFailed': 'Impossible de vérifier les produits cibles. Rouvrez la fenêtre pour réessayer.',
+  'pages.process.allocation.unresolved': 'Cible non vérifiée #{id}',
+  'pages.process.allocation.target': 'Produit cible',
+  'pages.process.allocation.add': 'Ajouter une allocation par produit',
+  'pages.process.allocation.invalid': 'Vérifiez les cibles et les parts : chaque allocation explicite doit totaliser 100%. Les parts historiques ne peuvent pas être combinées aux allocations par produit.',
+  'pages.process.allocation.batch': 'Allocation par lot',
+  'pages.process.allocation.exchanges': 'Entrées / sorties',
+  'pages.process.allocation.fill': 'Remplir uniquement les échanges non configurés',
+  'pages.process.allocation.replace': 'Remplacer les allocations sélectionnées',
+  'pages.process.allocation.summary': '{selected} sélectionnés · {changed} à modifier · {skipped} ignorés',
+
   'pages.process.list.loadError': 'Échec du chargement de la liste des processus.',
   'pages.process.published.title': 'Procédés publiés',
   'pages.process.published.table.processName': 'Nom du procédé',

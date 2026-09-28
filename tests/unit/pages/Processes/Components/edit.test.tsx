@@ -766,11 +766,11 @@ describe('ProcessEdit component', () => {
 
     expect(mockUpdateProcess).not.toHaveBeenCalled();
     expect(mockAntdMessage.error).toHaveBeenCalledWith(
-      'The total allocated fraction for outputs cannot exceed 100%. Current total: 150%.',
+      'Check allocation targets and shares: each explicit allocation must total 100%, and legacy shares cannot be mixed with targeted allocations.',
     );
   });
 
-  it('falls back to zero when an allocated fraction string cannot be derived', async () => {
+  it('rejects malformed allocation shares without replacing them with a default', async () => {
     render(<ProcessEdit {...baseProps} />);
 
     fireEvent.click(screen.getByRole('button'));
@@ -799,7 +799,7 @@ describe('ProcessEdit component', () => {
       await proFormApi?.submit();
     });
 
-    expect(mockUpdateProcess).toHaveBeenCalled();
+    expect(mockUpdateProcess).not.toHaveBeenCalled();
   });
 
   it('opens automatically when autoOpen is enabled', async () => {
@@ -821,7 +821,7 @@ describe('ProcessEdit component', () => {
     );
   });
 
-  it('auto-fills a 100% allocation for the quantitative reference output when none is provided', async () => {
+  it('preserves implicit reference attribution without injecting legacy allocation', async () => {
     render(<ProcessEdit {...baseProps} />);
 
     fireEvent.click(screen.getByRole('button'));
@@ -851,16 +851,13 @@ describe('ProcessEdit component', () => {
         exchanges: {
           exchange: [
             expect.objectContaining({
-              allocations: {
-                allocation: {
-                  '@allocatedFraction': '100%',
-                },
-              },
+              quantitativeReference: true,
             }),
           ],
         },
       }),
     );
+    expect(mockUpdateProcess.mock.calls[0][2].exchanges.exchange[0].allocations).toBeUndefined();
   });
 
   it('applies the latest AI suggestion payload when the suggestion panel closes', async () => {

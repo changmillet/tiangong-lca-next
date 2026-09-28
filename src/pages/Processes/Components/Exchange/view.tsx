@@ -1,8 +1,10 @@
+import { allocationEntries } from '@/services/processes/allocation';
+import { exchangeLabel } from './allocationEditor';
 import LangTextItemDescription from '@/components/LangTextItem/description';
 import QuantitativeReferenceIcon from '@/components/QuantitativeReferenceIcon';
 import FlowsSelectDescription from '@/pages/Flows/Components/select/description';
 import SourceSelectDescription from '@/pages/Sources/Components/select/description';
-import { getFirstProcessExchangeAllocation, ProcessExchangeData } from '@/services/processes/data';
+import { ProcessExchangeData } from '@/services/processes/data';
 import { CaretRightOutlined, CloseOutlined, ProfileOutlined } from '@ant-design/icons';
 import { Button, Card, Collapse, Descriptions, Divider, Drawer, Tooltip } from 'antd';
 import type { FC } from 'react';
@@ -46,7 +48,7 @@ const ProcessExchangeView: FC<Props> = ({ id, data, lang, buttonType }) => {
   const [drawerVisible, setDrawerVisible] = useState(false);
   // const [footerButtons, setFooterButtons] = useState<JSX.Element>();
   const [viewData, setViewData] = useState<ProcessExchangeData>({});
-  const allocation = getFirstProcessExchangeAllocation(viewData?.allocations?.allocation);
+  const allocations = allocationEntries(viewData?.allocations?.allocation);
   // const [spinning, setSpinning] = useState(false);
 
   const onView = () => {
@@ -378,51 +380,52 @@ const ProcessExchangeView: FC<Props> = ({ id, data, lang, buttonType }) => {
             />
           }
         >
-          <Descriptions
-            bordered
-            size={'small'}
-            column={1}
-            items={[
-              {
-                key: 0,
-                label: (
-                  <FormattedMessage
-                    id='pages.process.view.exchange.internalReferenceToCoProduct'
-                    defaultMessage='Internal reference to co-product'
-                  />
-                ),
-                styles: {
-                  label: {
-                    width: '180px',
-                  },
-                },
-                children: allocation?.['@internalReferenceToCoProduct'] ?? '-',
-              },
-            ]}
-          />
-          <br />
-          <Descriptions
-            bordered
-            size={'small'}
-            column={1}
-            items={[
-              {
-                key: 0,
-                label: (
-                  <FormattedMessage
-                    id='pages.process.view.exchange.allocatedFraction'
-                    defaultMessage='Allocated fraction'
-                  />
-                ),
-                styles: {
-                  label: {
-                    width: '180px',
-                  },
-                },
-                children: allocation?.['@allocatedFraction'] ?? '-',
-              },
-            ]}
-          />
+          {allocations.length === 0 ? (
+            <FormattedMessage
+              id='pages.process.allocation.default'
+              defaultMessage='Without an allocation, this exchange belongs entirely to the reference product.'
+            />
+          ) : (
+            allocations.map((allocation, index) => {
+              const target = data.find(
+                (exchange) =>
+                  String(exchange['@dataSetInternalID']) ===
+                  String(allocation['@internalReferenceToCoProduct']),
+              );
+              return (
+                <Descriptions
+                  key={index}
+                  bordered
+                  size='small'
+                  column={1}
+                  items={[
+                    {
+                      key: 'target',
+                      label: (
+                        <FormattedMessage
+                          id='pages.process.allocation.target'
+                          defaultMessage='Target product'
+                        />
+                      ),
+                      children: target
+                        ? exchangeLabel(target, lang)
+                        : (allocation['@internalReferenceToCoProduct'] ?? '-'),
+                    },
+                    {
+                      key: 'fraction',
+                      label: (
+                        <FormattedMessage
+                          id='pages.process.view.exchange.allocatedFraction'
+                          defaultMessage='Allocated fraction'
+                        />
+                      ),
+                      children: allocation['@allocatedFraction'] ?? '-',
+                    },
+                  ]}
+                />
+              );
+            })
+          )}
         </Card>
         <br />
         <Descriptions

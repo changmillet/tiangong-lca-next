@@ -445,6 +445,12 @@ describe('genLifeCycleModelProcesses (matrix calculation)', () => {
     );
     expect(Number(secondaryRaw?.meanAmount)).toBeCloseTo(-(28 / 3) * 0.4, 9);
 
+    for (const generated of lifeCycleModelProcesses) {
+      const entries = generated.data.processDataSet.exchanges.exchange;
+      const exchanges = Array.isArray(entries) ? entries : [entries];
+      exchanges.forEach((entry: any) => expect(entry.allocations).toBeUndefined());
+    }
+
     expect(mockLCIAResultCalculation).toHaveBeenCalledTimes(2);
 
     // 倍率回写：A 2、B 4/3、C 16/3

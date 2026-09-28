@@ -350,7 +350,7 @@ describe('ProcessCreate component', () => {
 
     expect(mockCreateProcess).not.toHaveBeenCalled();
     expect(mockAntdMessage.error).toHaveBeenCalledWith(
-      'The total allocated fraction for outputs cannot exceed 100%. Current total: 120%.',
+      'Check allocation targets and shares: each explicit allocation must total 100%, and legacy shares cannot be mixed with targeted allocations.',
     );
   });
 
@@ -633,7 +633,7 @@ describe('ProcessCreate component', () => {
           quantitativeReference: true,
           allocations: {
             allocation: {
-              '@allocatedFraction': '10%',
+              '@allocatedFraction': '100%',
             },
           },
         },

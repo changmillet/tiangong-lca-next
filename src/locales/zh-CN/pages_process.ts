@@ -1,4 +1,17 @@
 export default {
+  'pages.process.allocation.default': '未设置分配时，此交换项全部归属于参考产品。',
+  'pages.process.allocation.legacy': '保留旧式产品份额。使用目标分配前，请一并转换所有相关交换项。',
+  'pages.process.allocation.loadFailed': '无法核实目标产品，请重新打开后重试。',
+  'pages.process.allocation.unresolved': '未核实的目标 #{id}',
+  'pages.process.allocation.target': '目标产品',
+  'pages.process.allocation.add': '添加产品分配',
+  'pages.process.allocation.invalid': '请检查分配目标与份额：每项显式分配须合计 100%，旧式份额不能与目标分配混用。',
+  'pages.process.allocation.batch': '批量分配',
+  'pages.process.allocation.exchanges': '输入／输出',
+  'pages.process.allocation.fill': '仅填充未配置项',
+  'pages.process.allocation.replace': '覆盖选中项的分配',
+  'pages.process.allocation.summary': '已选 {selected} 项 · 将修改 {changed} 项 · 跳过 {skipped} 项',
+
   'pages.process.list.loadError': '加载过程列表失败。',
   'pages.process.published.title': '已发布过程',
   'pages.process.published.table.processName': '过程名称',

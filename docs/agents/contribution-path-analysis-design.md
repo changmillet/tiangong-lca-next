@@ -20,8 +20,8 @@ checkPaths:
   - docs/agents/util_calculate.md
   - src/pages/Processes/Analysis/**
   - src/components/LcaTaskCenter/**
-lastReviewedAt: 2026-09-23
-lastReviewedCommit: 25bfea81d9507deccf4aa968c213600eea13b927
+lastReviewedAt: 2026-09-28
+lastReviewedCommit: 428e1a7f2140cd6b3c8c6222b207cca40ee6dcdd
 lastReviewedNote: 'Reviewed Platform #1120 after integrating current dev: Open Data catalog filtering and Process publication do not alter contribution-path analysis scope or behavior.'
 ---
 

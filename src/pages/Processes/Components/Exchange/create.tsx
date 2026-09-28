@@ -1,3 +1,4 @@
+import AllocationField from './allocationField';
 import LangTextItemForm from '@/components/LangTextItem/form';
 import LocationCodeSelect from '@/components/LocationTextItem/codeSelect';
 import ToolBarButton from '@/components/ToolBarButton';
@@ -11,19 +12,7 @@ import { normalizeExchangeLocationCode } from '@/services/processes/exchangeLoca
 import styles from '@/style/custom.less';
 import { CaretRightOutlined, CloseOutlined, PlusOutlined } from '@ant-design/icons';
 import { ProForm, ProFormInstance } from '@ant-design/pro-components';
-import {
-  Button,
-  Card,
-  Collapse,
-  Divider,
-  Drawer,
-  Form,
-  Input,
-  InputNumber,
-  Select,
-  Space,
-  Switch,
-} from 'antd';
+import { Button, Card, Collapse, Divider, Drawer, Form, Input, Select, Space, Switch } from 'antd';
 import type { FC } from 'react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { FormattedMessage } from 'umi';
@@ -35,6 +24,7 @@ import {
 } from '../optiondata';
 
 type Props = {
+  data?: ProcessExchangeData[];
   direction: string;
   lang: string;
   onData: (data: ProcessExchangeData) => void;
@@ -51,6 +41,7 @@ const normalizeExchangeFormData = (exchangeData: ProcessExchangeData): ProcessEx
 
 const ProcessExchangeCreate: FC<Props> = ({
   direction,
+  data = [],
   lang,
   onData,
   showRules = false,
@@ -437,35 +428,7 @@ const ProcessExchangeCreate: FC<Props> = ({
                 />
               }
             >
-              <Form.Item
-                label={
-                  <FormattedMessage
-                    id='pages.process.view.exchange.internalReferenceToCoProduct'
-                    defaultMessage='Internal reference to co-product'
-                  />
-                }
-                name={['allocations', 'allocation', '@internalReferenceToCoProduct']}
-              >
-                <Input />
-              </Form.Item>
-              <Form.Item
-                label={
-                  <FormattedMessage
-                    id='pages.process.view.exchange.allocatedFraction'
-                    defaultMessage='Allocated fraction'
-                  />
-                }
-                name={['allocations', 'allocation', '@allocatedFraction']}
-              >
-                <InputNumber
-                  min={0}
-                  max={100}
-                  precision={3}
-                  stringMode
-                  suffix='%'
-                  style={{ width: '100%' }}
-                />
-              </Form.Item>
+              <AllocationField exchanges={data} lang={lang} allowLegacy={false} />
             </Card>
             <br />
             <Form.Item

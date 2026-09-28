@@ -47,6 +47,11 @@ import {
 } from '../general/util';
 import { getCachedLocationData } from '../locations/cache';
 import {
+  addOpenDataHybridFilters,
+  queryMappedOpenDataCatalog,
+  type OpenDataCatalogFilters,
+} from '../openDataCatalog/api';
+import {
   toProcessModelVersionField,
   type ProcessDetailByVersionResponse,
   type ProcessTable,
@@ -122,6 +127,7 @@ type ProcessListRpcRow = {
   model_id?: string;
   model_version?: string | null;
   total_count?: number | string | null;
+  is_published?: boolean;
 };
 
 function normalizeProcessTotalCount(row?: ProcessListRpcRow): number {
@@ -202,6 +208,7 @@ function mapProcessSearchResultRows(
         modifiedAt: new Date(i.modified_at),
         teamId: i.team_id,
         modelId: i.model_id,
+        isPublished: i.is_published,
         ...toProcessModelVersionField(i.model_version),
       };
     } catch (error) {
@@ -534,8 +541,26 @@ export async function getProcessTableAll(
   tid: string | [],
   stateCode?: string | number,
   typeOfDataSet?: string,
+  openDataFilters?: OpenDataCatalogFilters,
 ) {
   const { field: sortBy, order: orderBy } = resolveTableSort(sort, 'modified_at');
+
+  if (dataSource === 'tg' && openDataFilters) {
+    return queryMappedOpenDataCatalog(
+      {
+        datasetKind: 'process',
+        filterCondition: { typeOfDataSet: typeOfDataSet ?? 'all' },
+        filters: openDataFilters,
+        mode: 'list',
+        pageCurrent: params.current,
+        pageSize: params.pageSize,
+        sortBy: normalizeProcessSortBy(sortBy),
+        sortDirection: normalizeProcessSortDirection(orderBy),
+      },
+      // eslint-disable-next-line no-use-before-define
+      (rows) => mapProcessListRows(rows, lang),
+    );
+  }
 
   const session = await supabase.auth.getSession();
   if (dataSource === 'my' && !session.data.session) {
@@ -839,7 +864,24 @@ export async function getProcessTablePgroongaSearch(
   _orderBy?: ProcessSearchOrderBy,
   tid: string | [] = [],
   ownerDraftOnly = false,
+  openDataFilters?: OpenDataCatalogFilters,
 ) {
+  if (dataSource === 'tg' && openDataFilters) {
+    return queryMappedOpenDataCatalog(
+      {
+        datasetKind: 'process',
+        filterCondition: { ...filterCondition, typeOfDataSet: typeOfDataSet ?? 'all' },
+        filters: openDataFilters,
+        mode: 'lexical',
+        pageCurrent: params.current,
+        pageSize: params.pageSize,
+        queryTerms: [queryText],
+        queryText,
+      },
+      // eslint-disable-next-line no-use-before-define
+      (rows) => mapProcessListRows(rows, lang),
+    );
+  }
   // const time_start = new Date();
   const session = await supabase.auth.getSession();
   if (!session.data.session) {
@@ -995,6 +1037,7 @@ async function mapProcessListRows(
         modifiedAt: new Date(i.modified_at ?? 0),
         teamId: i.team_id ?? '',
         modelId: i.model_id ?? '',
+        isPublished: i.is_published,
         ...toProcessModelVersionField(i.model_version),
       };
     } catch (e) {
@@ -1014,7 +1057,22 @@ export async function getProcessTableUuidMentionSearch(
   stateCode?: string | number,
   typeOfDataSet?: string,
   tid?: string | [],
+  openDataFilters?: OpenDataCatalogFilters,
 ): Promise<ProcessTableResponse & { capped?: boolean }> {
+  if (dataSource === 'tg' && openDataFilters) {
+    return queryMappedOpenDataCatalog(
+      {
+        datasetKind: 'process',
+        filterCondition: { typeOfDataSet: typeOfDataSet ?? 'all' },
+        filters: openDataFilters,
+        mode: 'uuid',
+        pageCurrent: params.current,
+        pageSize: params.pageSize,
+        queryText: uuid,
+      },
+      (rows) => mapProcessListRows(rows, lang),
+    );
+  }
   const result = await searchDatasetJsonUuidMentionPage({
     dataSource,
     pageCurrent: params.current,
@@ -1266,6 +1324,7 @@ export async function process_hybrid_search(
   stateCode?: string | number,
   typeOfDataSet?: string,
   tid: string | [] = [],
+  openDataFilters?: OpenDataCatalogFilters,
 ) {
   const teamId = await getProcessTeamFilter(dataSource, tid);
   if (dataSource === 'te' && !teamId) {
@@ -1277,15 +1336,18 @@ export async function process_hybrid_search(
     };
   }
   let result: any = {};
-  const bodyParams: { [key: string]: any } = {
-    query: queryText,
-    version_scope: 'matched',
-    match_count: 200,
-    filter_condition: filterCondition,
-    data_source: dataSource,
-    page_size: params.pageSize ?? 10,
-    page_current: params.current ?? 1,
-  };
+  const bodyParams: { [key: string]: any } = addOpenDataHybridFilters(
+    {
+      query: queryText,
+      version_scope: 'matched',
+      match_count: 200,
+      filter_condition: filterCondition,
+      data_source: dataSource,
+      page_size: params.pageSize ?? 10,
+      page_current: params.current ?? 1,
+    },
+    openDataFilters,
+  );
   if (typeof stateCode === 'number') {
     bodyParams['state_code'] = stateCode;
   }

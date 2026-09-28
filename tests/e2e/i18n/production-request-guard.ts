@@ -20,6 +20,7 @@ const AUTHENTICATED_STORAGE_READ_PATH =
   /^\/storage\/v1\/(?:object|render\/image)\/authenticated\/[^/]+\/.+/u;
 const ENCODED_PATH_SEPARATOR = /%(?:2f|5c)/iu;
 export const AUDITED_READ_ONLY_RPC_NAMES = [
+  'qry_review_get_my_contact_status',
   'get_latest_contact_versions',
   'get_latest_flow_versions',
   'get_latest_flowproperty_versions',
@@ -37,12 +38,13 @@ export const AUDITED_READ_ONLY_RPC_NAMES = [
   'qry_notification_get_my_team_count',
   'qry_notification_get_my_team_items',
   'qry_review_find_member_candidate_by_email',
-  'qry_review_get_admin_queue_items_v4',
+  'qry_review_batch_eligibility_v1',
+  'qry_review_get_admin_queue_items_v5',
   'qry_review_get_comment_items',
   'qry_review_get_items',
   'qry_review_get_member_list',
   'qry_review_get_member_queue_items',
-  'qry_review_get_member_queue_items_v4',
+  'qry_review_get_member_queue_items_v5',
   'qry_review_get_member_workload',
   'qry_root_review_reference_progress_v2',
   'qry_system_find_member_candidate_by_email',
@@ -57,6 +59,7 @@ export const AUDITED_READ_ONLY_RPC_NAMES = [
   'search_flowproperties',
   'search_flows',
   'search_lifecyclemodels',
+  'search_open_data_catalog',
   'search_processes',
   'search_sources',
   'search_unitgroups',

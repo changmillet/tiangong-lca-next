@@ -27,6 +27,7 @@ import {
   type NormalizeLangPayloadForSaveOptions,
 } from '../general/api';
 import { invokeFoundationHybridSearch } from '../general/hybridSearch';
+import { queryMappedOpenDataCatalog, type OpenDataCatalogFilters } from '../openDataCatalog/api';
 import { resolveTableSort } from '../general/tableSort';
 import { genSourceJsonOrdered } from './util';
 
@@ -277,8 +278,23 @@ export async function getSourceTableAll(
   dataSource: string,
   tid: string | [],
   stateCode?: string | number,
+  openDataFilters?: OpenDataCatalogFilters,
 ) {
   const { field: sortBy, order: orderBy } = resolveTableSort(sort, 'modified_at');
+  if (dataSource === 'tg' && openDataFilters) {
+    return queryMappedOpenDataCatalog(
+      {
+        datasetKind: 'source',
+        filters: openDataFilters,
+        mode: 'list',
+        pageCurrent: params.current,
+        pageSize: params.pageSize,
+        sortBy: normalizeSourceSortBy(sortBy),
+        sortDirection: normalizeSourceSortDirection(orderBy),
+      },
+      (rows) => mapSourceListRows(rows, lang),
+    );
+  }
 
   const session = await supabase.auth.getSession();
   if (dataSource === 'my' && !session.data.session) {
@@ -346,7 +362,23 @@ export async function getSourceTablePgroongaSearch(
   filterCondition: any,
   stateCode?: string | number,
   tid: string | [] = [],
+  openDataFilters?: OpenDataCatalogFilters,
 ) {
+  if (dataSource === 'tg' && openDataFilters) {
+    return queryMappedOpenDataCatalog(
+      {
+        datasetKind: 'source',
+        filterCondition,
+        filters: openDataFilters,
+        mode: 'lexical',
+        pageCurrent: params.current,
+        pageSize: params.pageSize,
+        queryText,
+        queryTerms: [queryText],
+      },
+      (rows) => mapSourceListRows(rows, lang),
+    );
+  }
   let result: any = {};
   const session = await supabase.auth.getSession();
   if (session.data.session) {
@@ -415,6 +447,7 @@ export async function source_hybrid_search(
   filterCondition: unknown,
   stateCode?: string | number,
   tid: string | [] = [],
+  openDataFilters?: OpenDataCatalogFilters,
 ) {
   return invokeFoundationHybridSearch({
     dataSource,
@@ -426,6 +459,7 @@ export async function source_hybrid_search(
     queryText,
     stateCode,
     teamId: await getSourceTeamFilter(dataSource, tid),
+    openDataFilters,
   });
 }
 
@@ -439,7 +473,21 @@ export async function getSourceTableUuidMentionSearch(
   uuid: string,
   stateCode?: string | number,
   tid?: string | [],
+  openDataFilters?: OpenDataCatalogFilters,
 ) {
+  if (dataSource === 'tg' && openDataFilters) {
+    return queryMappedOpenDataCatalog(
+      {
+        datasetKind: 'source',
+        filters: openDataFilters,
+        mode: 'uuid',
+        pageCurrent: params.current,
+        pageSize: params.pageSize,
+        queryText: uuid,
+      },
+      (rows) => mapSourceListRows(rows, lang),
+    );
+  }
   const result = await searchDatasetJsonUuidMentionPage({
     dataSource,
     pageCurrent: params.current,

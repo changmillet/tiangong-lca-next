@@ -49,8 +49,42 @@ function assertStableErrorEnvelope(result, factoryName) {
 
 test('loads the exact released SDK from the installed package graph', () => {
   assert.equal(installedManifest.name, '@tiangong-lca/tidas-sdk');
-  assert.equal(installedManifest.version, '0.3.1');
+  assert.equal(installedManifest.version, '0.4.0');
   assert.match(resolvedCoreEntry, /node_modules/u);
+});
+
+test('the installed SDK requires the Process general comment after defaults materialize', () => {
+  const commentPath =
+    'processDataSet.processInformation.dataSetInformation.common:generalComment';
+  const commentIssues = (comment) => {
+    const dataSetInformation = {};
+    if (comment !== undefined) {
+      dataSetInformation['common:generalComment'] = comment;
+    }
+    return installedCore
+      .createProcess(
+        {
+          processDataSet: {
+            processInformation: { dataSetInformation },
+          },
+        },
+        { mode: 'strict' },
+      )
+      .validateEnhanced()
+      .validationIssues.filter((issue) => issue.path.join('.') === commentPath);
+  };
+
+  for (const missingComment of [undefined, []]) {
+    assert.deepEqual(
+      commentIssues(missingComment).map(({ code, message, severity }) => ({
+        code,
+        message,
+        severity,
+      })),
+      [{ code: 'custom', message: 'Required', severity: 'error' }],
+    );
+  }
+  assert.deepEqual(commentIssues([{ '@xml:lang': 'en', '#text': 'General comment' }]), []);
 });
 
 test('the installed SDK accepts singleton and ordered Process reviews', () => {

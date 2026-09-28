@@ -9,6 +9,15 @@ jest.mock('@/contexts/AntdAppContext', () => ({
     action(jest.requireMock('antd').App.useApp()),
 }));
 
+jest.mock('@/components/ToolBarButton', () => ({
+  __esModule: true,
+  default: ({ onClick, placement = 'option', tooltip }: any) => (
+    <button data-placement={placement} type='button' onClick={onClick}>
+      {tooltip}
+    </button>
+  ),
+}));
+
 const toText = (node: any): string => {
   if (node === null || node === undefined) return '';
   if (typeof node === 'string' || typeof node === 'number') return String(node);

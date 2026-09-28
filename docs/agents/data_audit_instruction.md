@@ -18,9 +18,9 @@ checkPaths:
   - docs/agents/data_audit_instruction.md
   - src/pages/Review/**
   - src/pages/ManageSystem/**
-lastReviewedAt: 2026-09-20
-lastReviewedCommit: 4c008bb04f8717af6c8ce2e62f61aaca19fc5062
-lastReviewedNote: 'Reviewed review input/output display parity against shared Process and LifeCycleModel data views. Audit transitions, ownership, validation requirements, and testing policy are unchanged.'
+lastReviewedAt: 2026-09-26
+lastReviewedCommit: 735da3b6957955f81e71f44d31389aa3cc6caa3f
+lastReviewedNote: 'Aligned the Review workspace with pending/submitted/completed member stages, unassigned/in-progress/completed admin stages, V5 queue facts, and batch preflight behavior.'
 ---
 
 # Audit Status Reference
@@ -85,16 +85,19 @@ New reviews use `review_kind = root | reference`. Migrated legacy source rows re
 | remove an assigned auditor | remove the reviewer from `reviews`; matching `comments.state_code -> -2` |
 | Review Member approves | `comments.state_code -> 1`; simple Root/Reference approval has no opinion field |
 | Review Member rejects | a non-empty reason is required; `comments.state_code -> -3` |
+| Review Member edits a submitted Process/Lifecycle Model Root opinion before finalization | saving a draft updates the comment JSON and returns `comments.state_code: 1/-3 -> 0`; the opinion must be submitted again |
 | Review Admin finally approves | after all current Review Members have completed, `comments.state_code -> 2`, `reviews.state_code -> 2`, and only the exact review target moves `20 -> 100` |
 
-Review Member outcomes are advisory. Review Admin may finally approve even when every Review Member used `-3`, and may reject before every Review Member has completed. A Root Review may be approved while its Reference Reviews are still pending; this does not approve or release those references. Conversely, a Reference Review continues independently when its only Root Review is rejected.
+Review Member outcomes are advisory. The Platform disables Review Admin final approval when every current assigned Review Member used `-3`; it also excludes those tasks from batch approval. This is a frontend control, not a backend authorization change. Review Admin may reject before every Review Member has completed. A Root Review may be approved while its Reference Reviews are still pending; this does not approve or release those references. Conversely, a Reference Review continues independently when its only Root Review is rejected.
 
 ## Batch Decision Boundary
 
 - Review Admin `unassigned` selections expose batch reject only; this is a final admin rejection.
-- Review Admin `assigned` selections expose batch approve and reject; both are final admin decisions.
+- Review Admin `in-progress` selections expose batch approve and reject; both are final admin decisions.
 - Review Member `pending` selections expose batch approve and reject; these submit only that member's advisory Comment outcome and never finalize the Review.
 - Every selected Review is processed independently. A stale or unauthorized row is reported as an item failure without rolling back successful rows.
+- Before confirmation, V5 batch eligibility reports the effective selection (including automatically selected References), executable count, and per-item reason codes. Execution still revalidates every item; failed and inapplicable rows stay selected for retry.
+- The confirmation lists each inapplicable Review by its loaded dataset name or Review ID and a localized reason. For an already-submitted Review Member opinion, the UI reads that member's Comment to distinguish approval (`1`) from rejection (`-3`); if the read fails, it shows an unknown outcome rather than inferring one from aggregate opinion counts. These are advisory opinions, not the Review Admin's final decision.
 - Batch actions reuse the same state transitions, authorization, rejection-reason rules, and Process/Lifecycle Model metadata requirements as the corresponding single-item command.
 
 Process and Lifecycle Model Root Reviews retain their existing metadata form and metadata writeback. Contact, Source, Unit Group, Flow Property, Flow, and every Reference Review use only approve/reject actions: approve requires no opinion; reject requires a reason.
@@ -104,6 +107,8 @@ Process and Lifecycle Model Root Reviews retain their existing metadata form and
 Only Review Admin can manually start or read the joint pending-review quality diagnostic. The report combines completeness and numerical-stability information for the server-selected pending-review scope. It is evidence for operational judgment, not a workflow transition: `findings`, `not_evaluable`, request failure, and runtime failure do not block assignment, approval, rejection, or resubmission. Review Member does not see this control.
 
 ## Process Summary
+
+Before Review Members can access their task tabs, they must publish and bind a valid Contact through `My reviewer profile`. This readiness gate does not create or transition a Review.
 
 1. each of the seven edit pages shows one `Submit Review` action
 2. Process blocks only on editable current-record validation; no dataset type requires completeness or numerical-stability evidence to submit
@@ -117,7 +122,11 @@ Only Review Admin can manually start or read the joint pending-review quality di
 10. every top-level row keeps its own selectable action when the actor has permission; Review Members see only their assigned/readable reviews
 11. the child table does not show a reference-path column, and no persisted or visible reference-overview field is required
 12. every readable Root or Reference row exposes a view icon that opens the existing read-only Contact, Source, Unit Group, Flow Property, Flow, Process, or Lifecycle Model drawer; viewing does not alter review state or access
+13. Review Member tabs are `pending` (Pending Review Tasks), `submitted`, and `completed` (Completed Review Tasks), defaulting to `pending`; Review Admin tabs are `unassigned`, `in-progress` (Review Tasks in Progress), and `completed` (Completed Review Tasks), followed by Review Member Management as the final tab. The in-progress status tag retains its shorter status wording.
+14. task names are non-interactive; the adjacent view icon opens readable data, while review actions remain in the action column and completed tasks remain read-only
+15. the Review Admin in-progress main-table progress cell shows submitted/assigned reviewer counts; hover or keyboard focus reveals approve/reject/pending reviewer-opinion totals, or an unassigned message when no reviewer is assigned
+16. the action column stays fixed on the right and centers its heading and controls during horizontal scrolling in both the top-level review table and actionable expanded Reference tables
 
 ## Review Queue Search
 
-All six task tabs use the v4 Admin/Member queue RPCs with `p_query`, reusing the seven dataset families' existing `search_text` projections. Matching binds the review's exact table/id/version and retains queue authorization and filters before task totals and pagination. Search reads that version's current stored projection, not submission-time historical content or submitter/team/opinion metadata. Root and Reference tasks match independently; expanded children keep the current tab's readable reference context. Search and clear reset paging, selection and expansion; repeated submissions refresh. Request/view epochs reject stale main and child responses. Query failures show the shared localized request error and are not reported as successful empty lists. Database v4 availability is a deployment prerequisite; v3 remains for older clients.
+All six task tabs use the V5 Admin/Member queue RPCs with `p_query`, reusing the seven dataset families' existing `search_text` projections. V5 preserves V4 matching, authorization, ordering, and pagination while exposing reviewer totals, completed-opinion totals, approve/reject counts, and the actor's editable Comment. Matching binds the review's exact table/id/version and retains queue authorization and filters before task totals and pagination. Search reads that version's current stored projection, not submission-time historical content or submitter/team/opinion metadata. Root and Reference tasks match independently; expanded children keep the current tab's readable reference context. Search and clear reset paging, selection and expansion; repeated submissions refresh. Request/view epochs reject stale main and child responses. Query failures show the shared localized request error and are not reported as successful empty lists. Database V5 availability is a deployment prerequisite; V4 remains for older clients.

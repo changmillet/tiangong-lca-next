@@ -26,6 +26,7 @@ import {
   type NormalizeLangPayloadForSaveOptions,
 } from '../general/api';
 import { invokeFoundationHybridSearch } from '../general/hybridSearch';
+import { queryMappedOpenDataCatalog, type OpenDataCatalogFilters } from '../openDataCatalog/api';
 import { resolveTableSort } from '../general/tableSort';
 import { genContactJsonOrdered } from './util';
 
@@ -277,8 +278,23 @@ export async function getContactTableAll(
   dataSource: string,
   tid: string | [],
   stateCode?: string | number,
+  openDataFilters?: OpenDataCatalogFilters,
 ) {
   const { field: sortBy, order: orderBy } = resolveTableSort(sort, 'modified_at');
+  if (dataSource === 'tg' && openDataFilters) {
+    return queryMappedOpenDataCatalog(
+      {
+        datasetKind: 'contact',
+        filters: openDataFilters,
+        mode: 'list',
+        pageCurrent: params.current,
+        pageSize: params.pageSize,
+        sortBy: normalizeContactSortBy(sortBy),
+        sortDirection: normalizeContactSortDirection(orderBy),
+      },
+      (rows) => mapContactListRows(rows, lang),
+    );
+  }
 
   const session = await supabase.auth.getSession();
   if (dataSource === 'my' && !session.data.session) {
@@ -346,7 +362,23 @@ export async function getContactTablePgroongaSearch(
   filterCondition: any,
   stateCode?: string | number,
   tid: string | [] = [],
+  openDataFilters?: OpenDataCatalogFilters,
 ) {
+  if (dataSource === 'tg' && openDataFilters) {
+    return queryMappedOpenDataCatalog(
+      {
+        datasetKind: 'contact',
+        filterCondition,
+        filters: openDataFilters,
+        mode: 'lexical',
+        pageCurrent: params.current,
+        pageSize: params.pageSize,
+        queryText,
+        queryTerms: [queryText],
+      },
+      (rows) => mapContactListRows(rows, lang),
+    );
+  }
   let result: any = {};
   const session = await supabase.auth.getSession();
   if (session.data.session) {
@@ -400,6 +432,7 @@ export async function contact_hybrid_search(
   filterCondition: unknown,
   stateCode?: string | number,
   tid: string | [] = [],
+  openDataFilters?: OpenDataCatalogFilters,
 ) {
   return invokeFoundationHybridSearch({
     dataSource,
@@ -411,6 +444,7 @@ export async function contact_hybrid_search(
     queryText,
     stateCode,
     teamId: await getContactTeamFilter(dataSource, tid),
+    openDataFilters,
   });
 }
 
@@ -424,7 +458,21 @@ export async function getContactTableUuidMentionSearch(
   uuid: string,
   stateCode?: string | number,
   tid?: string | [],
+  openDataFilters?: OpenDataCatalogFilters,
 ) {
+  if (dataSource === 'tg' && openDataFilters) {
+    return queryMappedOpenDataCatalog(
+      {
+        datasetKind: 'contact',
+        filters: openDataFilters,
+        mode: 'uuid',
+        pageCurrent: params.current,
+        pageSize: params.pageSize,
+        queryText: uuid,
+      },
+      (rows) => mapContactListRows(rows, lang),
+    );
+  }
   const result = await searchDatasetJsonUuidMentionPage({
     dataSource,
     pageCurrent: params.current,

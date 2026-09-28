@@ -45,8 +45,8 @@ checkPaths:
   - .nvmrc
   - .husky/pre-push
   - .github/workflows/**
-lastReviewedAt: 2026-09-21
-lastReviewedCommit: 6f8be14cd161d54b8cc2f0965ced23f3fd4234a7
+lastReviewedAt: 2026-09-28
+lastReviewedCommit: 2b8c99ab521ae0bcb6877ed0ec7ecf3fe099d57f
 lastReviewedNote: 'Reviewed for Platform #1111: the released TIDAS SDK 0.3.1 replaces 0.2.0 and adds mapper-independent Process review-array qualification; repository ownership, bootstrap, branch, and delivery rules are unchanged.'
 related:
   - .docpact/config.yaml
@@ -138,7 +138,7 @@ Do not start from additional governed source docs, proposal docs, or README-leve
 - the unified-German historical review record lives in `docs/plans/i18n-de-DE/README.md`; Pilot/catalog/delta confirmations validate only their frozen snapshots, while current `de-DE` copy is governed by the tracked baseline and automated correction overlay in `docs/plans/i18n/corrections.json` plus the shared context/quality/activation gate
 - repo-local documentation maintenance is enforced locally by the pre-push docpact gate; `.github/workflows/ai-doc-lint.yml` is manual-dispatch fallback
 - dataset-validation adapters live in `src/pages/*/sdkValidation.ts`; shared localized validation helpers live in `src/pages/Utils/validation/**`
-- `tests/package-contracts/installedTidasSdk.contract.test.mjs` resolves the real installed `@tiangong-lca/tidas-sdk` `0.3.1` package outside Jest's SDK mapper and protects all seven dataset factories, the normalized `validateEnhanced` error envelope, and singleton/ordered Process review acceptance
+- `tests/package-contracts/installedTidasSdk.contract.test.mjs` resolves the real installed `@tiangong-lca/tidas-sdk` `0.4.0` package outside Jest's SDK mapper and protects all seven dataset factories, the normalized `validateEnhanced` error envelope, singleton/ordered Process review acceptance, and required Process general-comment validation
 - data workflow result fixture relationships live in `tests/data-workflows/fixtures/result/README.md`; proof selection stays in `docs/agents/repo-validation.md`
 - run Umi-generating focused tests, coverage, and `pnpm prepush:gate` serially; for ordinary delivery, use focused proof during iteration and let the push hook own the one full gate after the final controlled tracked change. Run manual hermetic browser qualification on the open business PR before merge or release-to-dev when the change risk warrants it, so a failure can be fixed on that same PR. Deterministic release/promotion pushes use only their repo-owned restricted profiles because the exact dev Release PR owns the non-browser release gate. The hook skips no-update and raw deletion-only pushes, accepts `HEAD` only as the current exact branch source, and rejects other ineligible checked ref shapes before any expensive gate.
 - new dependencies require human approval

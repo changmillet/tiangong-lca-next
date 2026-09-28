@@ -1,5 +1,8 @@
 export default {
   'pages.process.list.loadError': '加载过程列表失败。',
+  'pages.process.published.title': '已发布过程',
+  'pages.process.published.table.processName': '过程名称',
+  'pages.process.published.table.calculationResult': '计算结果',
   'pages.process.referenceYear': '参考年份',
   'pages.process.location': '地理位置',
   'pages.process.lca.toolbar.tooltip': '运行 LCA',

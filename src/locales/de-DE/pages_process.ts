@@ -1,5 +1,8 @@
 export default {
   'pages.process.list.loadError': 'Die Prozessliste konnte nicht geladen werden.',
+  'pages.process.published.title': 'Veröffentlichte Prozesse',
+  'pages.process.published.table.processName': 'Prozessname',
+  'pages.process.published.table.calculationResult': 'Berechnungsergebnis',
   'pages.process.referenceYear': 'Referenzjahr',
   'pages.process.location': 'Standort',
   'pages.process.lca.toolbar.tooltip': 'LCA durchführen',

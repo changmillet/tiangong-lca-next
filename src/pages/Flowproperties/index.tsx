@@ -32,6 +32,7 @@ import { useEffect, useRef, useState } from 'react';
 import { FormattedMessage, useIntl, useLocation } from 'umi';
 
 import AllVersionsList from '@/components/AllVersions';
+import OpenDataCatalogFilters from '@/components/OpenDataCatalogFilters';
 import { getTeamById } from '@/services/teams/api';
 import { SearchProps } from 'antd/es/input/Search';
 // import ReferenceUnit from '../Unitgroups/Components/Unit/reference';
@@ -53,6 +54,11 @@ import {
   useResponsiveDataListMobile,
 } from '@/components/ResponsiveDataList';
 import TableFilter from '@/components/TableFilter';
+import {
+  DEFAULT_OPEN_DATA_FILTERS,
+  getOpenDataCatalogFilterArgs,
+  type OpenDataCatalogFilters as OpenDataCatalogFilterValue,
+} from '@/services/openDataCatalog/types';
 import { getAllVersionsColumns, getDataTitle } from '../Utils';
 import {
   getReferenceLookupEmptyResult,
@@ -83,6 +89,9 @@ const TableList: FC = () => {
   const isMobileDataList = useResponsiveDataListMobile();
   const location = useLocation();
   const dataSource = getDataSource(location.pathname);
+  const [openDataFilters, setOpenDataFilters] = useState<OpenDataCatalogFilterValue>({
+    ...DEFAULT_OPEN_DATA_FILTERS,
+  });
   const { token } = theme.useToken();
 
   const searchParams = new URLSearchParams(location.search);
@@ -426,7 +435,12 @@ const TableList: FC = () => {
           </Space>
         }
         actionRef={actionRef}
-        params={{ locale: appLocale }}
+        params={{
+          locale: appLocale,
+          ...(dataSource === 'tg'
+            ? { openDataFilterRevision: JSON.stringify(openDataFilters) }
+            : {}),
+        }}
         search={false}
         options={isMobileDataList ? false : { fullScreen: true }}
         pagination={{
@@ -457,13 +471,26 @@ const TableList: FC = () => {
               <ImportData disabled={!isSystemAdmin} onJsonData={handleImportData} key={1} />,
             ];
           }
-          return [];
+          return dataSource === 'tg'
+            ? [
+                <OpenDataCatalogFilters
+                  key='open-data-filters'
+                  value={openDataFilters}
+                  onChange={setOpenDataFilters}
+                />,
+              ]
+            : [];
         }}
         request={async (
           params: LocaleAwareTableParams & { pageSize?: number; current?: number },
           sort,
         ) => {
-          const { locale: requestedLocale, ...requestParams } = params;
+          const {
+            locale: requestedLocale,
+            openDataFilterRevision: _openDataFilterRevision,
+            ...requestParams
+          } = params;
+          void _openDataFilterRevision;
           return guardLocaleMaterializedTableRequest(
             requestedLocale,
             () => currentAppLocaleRef.current,
@@ -485,6 +512,7 @@ const TableList: FC = () => {
                   referenceLookupUuid,
                   currentStateCode,
                   referenceLookupTeamId,
+                  ...getOpenDataCatalogFilterArgs(dataSource, openDataFilters),
                 );
                 const noticeKey = [
                   dataSource,
@@ -514,6 +542,7 @@ const TableList: FC = () => {
                       {},
                       currentStateCode,
                       tid ?? '',
+                      ...getOpenDataCatalogFilterArgs(dataSource, openDataFilters),
                     ),
                   );
                 }
@@ -526,6 +555,7 @@ const TableList: FC = () => {
                     {},
                     currentStateCode,
                     tid ?? '',
+                    ...getOpenDataCatalogFilterArgs(dataSource, openDataFilters),
                   ),
                 );
               }
@@ -537,6 +567,7 @@ const TableList: FC = () => {
                   dataSource,
                   tid ?? '',
                   currentStateCode,
+                  ...getOpenDataCatalogFilterArgs(dataSource, openDataFilters),
                 ),
               );
             },

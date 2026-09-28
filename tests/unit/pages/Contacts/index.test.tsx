@@ -9,6 +9,15 @@ jest.mock('@/contexts/AntdAppContext', () => ({
     action(jest.requireMock('antd').App.useApp()),
 }));
 
+jest.mock('@/components/ToolBarButton', () => ({
+  __esModule: true,
+  default: ({ onClick, placement = 'option', tooltip }: any) => (
+    <button data-placement={placement} type='button' onClick={onClick}>
+      {tooltip}
+    </button>
+  ),
+}));
+
 const toText = (node: any): string => {
   if (node === null || node === undefined) return '';
   if (typeof node === 'string' || typeof node === 'number') return String(node);
@@ -641,29 +650,32 @@ describe('ContactsPage', () => {
     expect(screen.getAllByTestId('contact-create')[0]).toHaveTextContent('"importCount":0');
   });
 
-  it('renders the non-my toolbar variant without edit, delete, or contribute actions', async () => {
-    mockLocation = {
-      pathname: '/tgdata/contacts',
-      search: '',
-    };
-    mockGetDataSource.mockReturnValue('tg');
-    mockGetTeamById.mockResolvedValue({ data: [] });
+  it.each(['tg', 'ex'])(
+    'renders the %s toolbar variant without edit, delete, or contribute actions',
+    async (scope) => {
+      mockLocation = {
+        pathname: '/tgdata/contacts',
+        search: '',
+      };
+      mockGetDataSource.mockReturnValue(scope);
+      mockGetTeamById.mockResolvedValue({ data: [] });
 
-    renderWithProviders(<ContactsPage />);
+      renderWithProviders(<ContactsPage />);
 
-    await waitFor(() => expect(mockGetContactTableAll).toHaveBeenCalled());
-    expect(await screen.findByTestId('contact-view')).toHaveTextContent('view:contact-1');
-    expect(screen.queryByTestId('contact-edit')).not.toBeInTheDocument();
-    expect(screen.queryByTestId('contact-delete')).not.toBeInTheDocument();
-    expect(
-      screen
-        .getAllByTestId('contact-create')
-        .find((node) => node.textContent?.includes('"actionType":"copy"')),
-    ).toBeTruthy();
-    expect(screen.queryByRole('button', { name: /table-filter/i })).not.toBeInTheDocument();
-    expect(screen.queryByRole('button', { name: /import-data/i })).not.toBeInTheDocument();
-    expect(screen.queryByRole('button', { name: /contribute-action/i })).not.toBeInTheDocument();
-  });
+      await waitFor(() => expect(mockGetContactTableAll).toHaveBeenCalled());
+      expect(await screen.findByTestId('contact-view')).toHaveTextContent('view:contact-1');
+      expect(screen.queryByTestId('contact-edit')).not.toBeInTheDocument();
+      expect(screen.queryByTestId('contact-delete')).not.toBeInTheDocument();
+      expect(
+        screen
+          .getAllByTestId('contact-create')
+          .find((node) => node.textContent?.includes('"actionType":"copy"')),
+      ).toBeTruthy();
+      expect(screen.queryByRole('button', { name: /table-filter/i })).not.toBeInTheDocument();
+      expect(screen.queryByRole('button', { name: /import-data/i })).not.toBeInTheDocument();
+      expect(screen.queryByRole('button', { name: /contribute-action/i })).not.toBeInTheDocument();
+    },
+  );
 
   it('logs contribute failures without showing success for my data rows', async () => {
     const consoleLogSpy = jest.spyOn(console, 'log').mockImplementation(() => {});

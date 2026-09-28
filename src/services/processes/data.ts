@@ -12,6 +12,7 @@ export type ProcessTable = VersionedDataRow & {
   modelId: string;
   modelVersion?: string | null;
   typeOfDataSet: string;
+  isPublished?: boolean;
 };
 
 export const toProcessModelVersionField = (

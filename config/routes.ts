@@ -55,6 +55,12 @@ export default [
         component: './Processes',
       },
       {
+        name: 'publishedProcesses',
+        path: '/tgdata/published-processes',
+        component: './PublishedProcesses',
+        hideInMenu: true,
+      },
+      {
         name: 'flows',
         icon: 'NodeExpandOutlined',
         path: '/tgdata/flows',

@@ -19,8 +19,8 @@ checkPaths:
   - src/pages/Teams/**
   - src/pages/Review/**
   - src/pages/ManageSystem/**
-lastReviewedAt: 2026-09-20
-lastReviewedCommit: 4c008bb04f8717af6c8ce2e62f61aaca19fc5062
+lastReviewedAt: 2026-09-26
+lastReviewedCommit: 735da3b6957955f81e71f44d31389aa3cc6caa3f
 lastReviewedNote: 'Reviewed review input/output display parity against shared Process and LifeCycleModel data views. Audit transitions, ownership, validation requirements, and testing policy are unchanged.'
 ---
 
@@ -65,3 +65,12 @@ Team `owner` and `admin` roles do not assign, review, approve, reject, repair, o
 Only Review Admin sees and manually runs the pending-review completeness and numerical-stability diagnostic. Review Member and every team role cannot start or read it through the product UI. Its report is informational and never changes the authority or availability of assign, approve, or reject actions.
 
 Existing team membership and dataset visibility may determine whether a submitter can already read and reference another owner's draft. Review submission must not grant new team or cross-team access. Result notifications go only to the affected dataset owner.
+
+## Review Member Profile Onboarding
+
+- Review Admin adds a registered Review Member directly by email and does not choose or bind a Contact.
+- Review Member owns profile completion under `Review Management -> My reviewer profile`; Account settings and avatar menus do not expose a second entry point.
+- Review task tabs remain unavailable until the account is bound to an owner-authored, rule-verified, open Contact revision.
+- Initial profile creation forces the Contact data-set owner reference to that same Contact, validates the complete TIDAS payload and exact references, publishes it as state `100`, and binds it atomically.
+- A bound profile is immutable through this surface. Updating it always creates and validates a new Contact version, publishes that version as state `100`, and explicitly asks whether to replace the account binding.
+- The ordinary Contacts list, its edit behavior, and its navigation remain unchanged by reviewer onboarding.

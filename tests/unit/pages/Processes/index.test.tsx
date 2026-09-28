@@ -25,6 +25,7 @@ let mockLocation = {
 };
 let mockIntlLocale = 'en-US';
 let mockBreakpointScreens: Record<string, boolean | undefined> = {};
+let mockCurrentUserAccess: string | undefined;
 
 const mockGetProcessTableAll = jest.fn();
 const mockGetProcessTablePgroongaSearch = jest.fn();
@@ -37,7 +38,9 @@ const mockGetLang = jest.fn(() => 'en');
 const mockGetLangText = jest.fn((value: any) => value?.[0]?.['#text'] ?? 'Team title');
 const mockGetTeamById = jest.fn();
 const mockDatasetUuidMentionSearch = jest.fn();
+const mockPublishOpenDataProcesses = jest.fn();
 let latestRequest: any = null;
+let latestPublishHandler: (() => Promise<void>) | undefined;
 
 jest.mock('umi', () => ({
   __esModule: true,
@@ -50,6 +53,12 @@ jest.mock('umi', () => ({
     formatMessage: ({ defaultMessage, id }: any) => defaultMessage ?? id,
   }),
   useLocation: () => mockLocation,
+  useModel: () => ({ initialState: { currentUser: { access: mockCurrentUserAccess } } }),
+}));
+
+jest.mock('@/services/openDataCatalog/api', () => ({
+  __esModule: true,
+  publishOpenDataProcesses: (...args: any[]) => mockPublishOpenDataProcesses(...args),
 }));
 
 jest.mock('@/services/processes/api', () => ({
@@ -252,12 +261,15 @@ jest.mock('antd', () => {
 
   const ConfigProvider = ({ children }: any) => <div>{children}</div>;
   const Card = ({ children }: any) => <section>{children}</section>;
-  const Button = ({ children, icon, onClick }: any) => (
-    <button type='button' onClick={onClick}>
-      {icon}
-      {children}
-    </button>
-  );
+  const Button = ({ children, disabled, icon, loading, onClick }: any) => {
+    if (toText(children).includes('Publish selected')) latestPublishHandler = onClick;
+    return (
+      <button type='button' disabled={disabled || loading} onClick={onClick}>
+        {icon}
+        {children}
+      </button>
+    );
+  };
   const Checkbox = ({ children, onChange }: any) => {
     const [checked, setChecked] = React.useState(false);
     return (
@@ -297,9 +309,13 @@ jest.mock('antd', () => {
     </div>
   );
   const Input = { Search };
-  const Select = ({ onChange }: any) => (
-    <button type='button' onClick={() => onChange?.('gate to gate')}>
-      dataset-filter
+  const Select = ({ 'aria-label': ariaLabel, onChange }: any) => (
+    <button
+      type='button'
+      aria-label={ariaLabel ?? 'dataset-filter'}
+      onClick={() => onChange?.(ariaLabel ? 'published' : 'gate to gate')}
+    >
+      {ariaLabel ?? 'dataset-filter'}
     </button>
   );
   const message = {
@@ -371,6 +387,7 @@ jest.mock('@ant-design/pro-components', () => {
     headerTitle,
     optionsRender,
     rowKey,
+    rowSelection,
     params,
   }: any) => {
     const [rows, setRows] = React.useState<any[]>([]);
@@ -433,6 +450,15 @@ jest.mock('@ant-design/pro-components', () => {
         <div>{toolBarRender?.()}</div>
         {rows.map((row: any, rowIndex: number) => (
           <div key={rowKey ? rowKey(row) : `${row.id}-${rowIndex}`}>
+            {rowSelection && (
+              <button
+                type='button'
+                aria-label={`select-${row.id}`}
+                onClick={() => rowSelection.onChange?.([rowKey(row)], [row])}
+              >
+                select row
+              </button>
+            )}
             {columns.map((column: any, columnIndex: number) => (
               <div key={`${row.id ?? 'row'}-${columnIndex}`}>
                 {column.render ? column.render(undefined, row) : row[column.dataIndex]}
@@ -458,12 +484,14 @@ describe('ProcessesPage', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     latestRequest = null;
+    latestPublishHandler = undefined;
     mockLocation = {
       pathname: '/mydata/processes',
       search: '?tid=team-1',
     };
     mockIntlLocale = 'en-US';
     mockBreakpointScreens = {};
+    mockCurrentUserAccess = undefined;
     mockGetDataSource.mockReturnValue('my');
     mockContributeProcess.mockResolvedValue({ error: null });
     mockContributeLifeCycleModel.mockResolvedValue({ error: null });
@@ -491,6 +519,10 @@ describe('ProcessesPage', () => {
     mockGetProcessTablePgroongaSearch.mockResolvedValue({ data: [], success: true });
     mockGetProcessTableUuidMentionSearch.mockResolvedValue({ data: [], success: true, total: 0 });
     mockProcessHybridSearch.mockResolvedValue({ data: [], success: true });
+    mockPublishOpenDataProcesses.mockResolvedValue({
+      data: { publishedCount: 1 },
+      error: null,
+    });
     message.success.mockReset();
     message.error.mockReset();
   });
@@ -1057,9 +1089,9 @@ describe('ProcessesPage', () => {
     },
   );
 
-  it('uses compact mobile controls for non-my process data', async () => {
+  it.each(['tg', 'ex'])('uses compact mobile controls for %s process data', async (scope) => {
     mockBreakpointScreens = { md: false };
-    mockGetDataSource.mockReturnValue('tg');
+    mockGetDataSource.mockReturnValue(scope);
 
     renderWithProviders(<ProcessesPage />);
 
@@ -1067,6 +1099,116 @@ describe('ProcessesPage', () => {
     expect(screen.getByRole('button', { name: /dataset-filter/i })).toBeInTheDocument();
     expect(screen.queryByRole('button', { name: /table-filter/i })).not.toBeInTheDocument();
     expect(screen.queryByRole('button', { name: /import-data/i })).not.toBeInTheDocument();
+  });
+
+  it('allows the data product manager to select and publish open process versions', async () => {
+    mockGetDataSource.mockReturnValue('tg');
+    mockCurrentUserAccess = 'data_product_manager';
+    mockGetProcessTableAll.mockResolvedValue({
+      data: [
+        {
+          id: 'proc-open',
+          version: '1.0.0',
+          name: 'Published process',
+          generalComment: '',
+          classification: 'Energy',
+          typeOfDataSet: 'gate to gate',
+          referenceYear: '2024',
+          location: 'CN',
+          modifiedAt: '2024-01-01T00:00:00Z',
+          isPublished: true,
+          modelId: '',
+          teamId: '',
+        },
+      ],
+      success: true,
+    });
+
+    renderWithProviders(<ProcessesPage />);
+
+    await screen.findByRole('button', { name: 'select-proc-open' });
+    expect(screen.getAllByText('Published').length).toBeGreaterThan(0);
+    expect(mockGetProcessTableAll).toHaveBeenCalledWith(
+      { pageSize: 10, current: 1 },
+      {},
+      'en',
+      'tg',
+      'team-1',
+      'all',
+      'all',
+      { publicationFilter: 'all', sourceFilter: 'all' },
+    );
+
+    const publishButtons = screen.getAllByRole('button', { name: 'Publish selected ({count})' });
+    expect(publishButtons[0]).toBeDisabled();
+    await act(async () => latestPublishHandler?.());
+    expect(mockPublishOpenDataProcesses).not.toHaveBeenCalled();
+    await userEvent.click(screen.getByRole('button', { name: 'select-proc-open' }));
+    await userEvent.click(screen.getAllByRole('button', { name: 'Publish selected ({count})' })[0]);
+
+    await waitFor(() =>
+      expect(mockPublishOpenDataProcesses).toHaveBeenCalledWith([
+        { id: 'proc-open', version: '1.0.0' },
+      ]),
+    );
+    expect(message.success).toHaveBeenCalledWith('Published {count} process versions.');
+    await waitFor(() =>
+      expect(
+        screen.getAllByRole('button', { name: 'Publish selected ({count})' })[0],
+      ).toBeDisabled(),
+    );
+
+    await userEvent.click(screen.getByRole('button', { name: /search/i }));
+    await waitFor(() =>
+      expect(mockGetProcessTablePgroongaSearch).toHaveBeenCalledWith(
+        { pageSize: 10, current: 1 },
+        'en',
+        'tg',
+        'cement',
+        {},
+        'all',
+        'all',
+        undefined,
+        'team-1',
+        false,
+        { publicationFilter: 'all', sourceFilter: 'all' },
+      ),
+    );
+  });
+
+  it('reports process publication command failures and keeps non-managers read-only', async () => {
+    const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    mockGetDataSource.mockReturnValue('tg');
+    mockCurrentUserAccess = 'data_product_manager';
+    mockPublishOpenDataProcesses.mockResolvedValue({
+      data: null,
+      error: new Error('publish failed'),
+    });
+
+    const { unmount } = renderWithProviders(<ProcessesPage />);
+    await screen.findByRole('button', { name: 'select-proc-1' });
+    await userEvent.click(screen.getByRole('button', { name: 'select-proc-1' }));
+    await userEvent.click(screen.getAllByRole('button', { name: 'Publish selected ({count})' })[0]);
+
+    await waitFor(() =>
+      expect(message.error).toHaveBeenCalledWith('Failed to publish selected processes.'),
+    );
+    expect(consoleErrorSpy).toHaveBeenCalledWith(expect.any(Error));
+
+    mockPublishOpenDataProcesses.mockResolvedValue({ data: null, error: null });
+    await userEvent.click(screen.getAllByRole('button', { name: 'Publish selected ({count})' })[0]);
+    await waitFor(() => expect(mockPublishOpenDataProcesses).toHaveBeenCalledTimes(2));
+    expect(message.error).toHaveBeenCalledTimes(2);
+    unmount();
+
+    jest.clearAllMocks();
+    mockCurrentUserAccess = 'member';
+    mockGetProcessTableAll.mockResolvedValue({ data: [], success: true });
+    renderWithProviders(<ProcessesPage />);
+    await waitFor(() => expect(mockGetProcessTableAll).toHaveBeenCalled());
+    expect(screen.queryByRole('button', { name: /Publish selected/ })).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: /select-/ })).not.toBeInTheDocument();
+    consoleErrorSpy.mockRestore();
   });
 
   it('falls back to empty tid and null team when the route has no team query or team data payload', async () => {

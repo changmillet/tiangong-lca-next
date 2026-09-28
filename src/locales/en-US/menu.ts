@@ -82,6 +82,7 @@ export default {
   'menu.tgdata.models': 'Models',
   'menu.tgdata.products': 'Product Models',
   'menu.tgdata.processes': 'Processes',
+  'menu.tgdata.publishedProcesses': 'Published processes',
   'menu.tgdata.flows': 'Flows',
   'menu.tgdata.flowproperties': 'Flow Properties',
   'menu.tgdata.unitgroups': 'Unit Groups',

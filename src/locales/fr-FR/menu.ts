@@ -82,6 +82,7 @@ export default {
   'menu.tgdata.models': 'Modèles',
   'menu.tgdata.products': 'Modèles de produits',
   'menu.tgdata.processes': 'Processus',
+  'menu.tgdata.publishedProcesses': 'Procédés publiés',
   'menu.tgdata.flows': 'Flux',
   'menu.tgdata.flowproperties': 'Propriétés de flux',
   'menu.tgdata.unitgroups': 'Groupes d’unités',

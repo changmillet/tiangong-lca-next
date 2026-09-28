@@ -5,6 +5,7 @@
  */
 
 import Review from '@/pages/Review';
+import { getReviewerContactStatus } from '@/services/reviewerContacts/api';
 import { getReviewUserRoleApi } from '@/services/roles/api';
 import { fireEvent, renderWithProviders, screen, waitFor } from '../../helpers/testUtils';
 
@@ -116,17 +117,44 @@ jest.mock('@/pages/Review/Components/ReviewQualityDiagnostic', () => ({
   default: () => <div data-testid='review-quality-diagnostic'>Quality diagnostic</div>,
 }));
 
+jest.mock('@/pages/Review/Components/ReviewerProfile', () => ({
+  __esModule: true,
+  default: ({ status }: any) => (
+    <div data-testid='reviewer-profile'>{status?.status ?? 'loading'}</div>
+  ),
+}));
+
+jest.mock('@/services/reviewerContacts/api', () => ({
+  getReviewerContactStatus: jest.fn(),
+}));
+
 jest.mock('@/services/roles/api', () => ({
   getReviewUserRoleApi: jest.fn(),
 }));
 
 const mockGetReviewUserRoleApi = jest.mocked(getReviewUserRoleApi);
+const mockGetReviewerContactStatus = jest.mocked(getReviewerContactStatus);
 
 describe('Review page authentication workflow', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     Object.keys(assignmentReloads).forEach((key) => {
       delete assignmentReloads[key];
+    });
+    mockGetReviewerContactStatus.mockResolvedValue({
+      data: {
+        status: 'ready',
+        ready: true,
+        contact: { '@refObjectId': 'contact-1', '@version': '01.00.000' },
+        dataset: {
+          id: 'contact-1',
+          version: '01.00.000',
+          state_code: 100,
+          rule_verification: true,
+          json_ordered: {},
+        },
+      },
+      error: null,
     });
   });
 
@@ -141,23 +169,23 @@ describe('Review page authentication workflow', () => {
     expect(screen.getByTestId('assignment-role-unassigned')).toHaveTextContent('review-admin');
     expect(screen.getByTestId('review-quality-diagnostic')).toBeInTheDocument();
 
-    fireEvent.click(screen.getByTestId('tab-assigned'));
+    fireEvent.click(screen.getByTestId('tab-in-progress'));
 
-    await waitFor(() => expect(screen.getByTestId('assignment-assigned')).toBeInTheDocument());
-    expect(assignmentReloads.assigned).toBeDefined();
+    await waitFor(() => expect(screen.getByTestId('assignment-in-progress')).toBeInTheDocument());
+    expect(assignmentReloads['in-progress']).toBeDefined();
   });
 
-  it('defaults review members to the reviewed tab with drawer-ready action refs', async () => {
+  it('defaults review members to the pending tab with drawer-ready action refs', async () => {
     mockGetReviewUserRoleApi.mockResolvedValue({ user_id: 'member-1', role: 'review-member' });
 
     renderWithProviders(<Review />);
 
     await waitFor(() => expect(mockGetReviewUserRoleApi).toHaveBeenCalledTimes(1));
 
-    await waitFor(() => expect(screen.getByTestId('tab-panel-reviewed')).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByTestId('tab-panel-pending')).toBeInTheDocument());
     expect(screen.queryByTestId('tab-unassigned')).not.toBeInTheDocument();
     expect(screen.queryByTestId('review-quality-diagnostic')).not.toBeInTheDocument();
-    expect(assignmentReloads.reviewed).toBeDefined();
+    expect(assignmentReloads.pending).toBeDefined();
   });
 
   it('stops spinning and surfaces console errors when the role lookup fails', async () => {

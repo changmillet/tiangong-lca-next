@@ -21,9 +21,9 @@ checkPaths:
   - src/services/lciaMethods/**
   - src/components/LcaTaskCenter/**
   - src/pages/Processes/Analysis/**
-lastReviewedAt: 2026-09-20
+lastReviewedAt: 2026-09-23
 lastReviewedCommit: 25bfea81d9507deccf4aa968c213600eea13b927
-lastReviewedNote: 'Reviewed Platform #1107: TIDAS import report presentation, localization and Jest discovery were checked against this contract; its governed scope and rules remain unchanged.'
+lastReviewedNote: 'Reviewed Platform #1120 after integrating current dev: Open Data catalog filtering and publication do not change lifecycle-model calculation behavior or ownership.'
 ---
 
 # Lifecycle Model Calculation Reference

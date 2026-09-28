@@ -9,6 +9,15 @@ jest.mock('@/contexts/AntdAppContext', () => ({
     action(jest.requireMock('antd').App.useApp()),
 }));
 
+jest.mock('@/components/ToolBarButton', () => ({
+  __esModule: true,
+  default: ({ onClick, placement = 'option', tooltip }: any) => (
+    <button data-placement={placement} type='button' onClick={onClick}>
+      {tooltip}
+    </button>
+  ),
+}));
+
 const toText = (node: any): string => {
   if (node === null || node === undefined || typeof node === 'boolean') return '';
   if (typeof node === 'string' || typeof node === 'number') return String(node);
@@ -714,43 +723,47 @@ describe('LifeCycleModelsPage', () => {
     logSpy.mockRestore();
   });
 
-  it('renders public actions without my-data toolbar and omits the heading when team lookup is empty', async () => {
-    mockLocation = {
-      pathname: '/tgdata/lifecyclemodels',
-      search: '',
-    };
-    mockGetDataSource.mockReturnValue('tg');
-    mockGetTeamById.mockResolvedValueOnce({ data: [] });
+  it.each(['tg', 'ex'])(
+    'renders %s actions without my-data toolbar and omits the heading when team lookup is empty',
+    async (scope) => {
+      mockLocation = {
+        pathname: '/tgdata/lifecyclemodels',
+        search: '',
+      };
+      mockGetDataSource.mockReturnValue(scope);
+      mockGetTeamById.mockResolvedValueOnce({ data: [] });
 
-    renderWithProviders(<LifeCycleModelsPage />);
+      renderWithProviders(<LifeCycleModelsPage />);
 
-    await waitFor(() => expect(mockGetLifeCycleModelTableAll).toHaveBeenCalled());
-    await waitFor(() =>
+      await waitFor(() => expect(mockGetLifeCycleModelTableAll).toHaveBeenCalled());
+      await waitFor(() =>
+        expect(
+          screen.getByRole('button', { name: /export-lifecyclemodels-model-1-1.0.0/i }),
+        ).toBeInTheDocument(),
+      );
+
+      expect(mockGetLifeCycleModelTableAll).toHaveBeenCalledWith(
+        { pageSize: 10, current: 1 },
+        {},
+        'en',
+        scope,
+        '',
+        'all',
+        ...(scope === 'tg' ? [{ publicationFilter: 'all', sourceFilter: 'all' }] : []),
+      );
+      expect(screen.queryByRole('heading')).not.toBeInTheDocument();
+      expect(screen.queryByRole('button', { name: /table-filter/i })).not.toBeInTheDocument();
+      expect(screen.queryByRole('button', { name: /import-data/i })).not.toBeInTheDocument();
+      expect(screen.queryByRole('button', { name: /contribute-action/i })).not.toBeInTheDocument();
+      expect(screen.getAllByRole('button', { name: /lifecycle-view-/i })).toHaveLength(2);
+      expect(screen.queryByRole('button', { name: /lifecycle-edit-/i })).not.toBeInTheDocument();
+      expect(screen.queryByRole('button', { name: /lifecycle-delete-/i })).not.toBeInTheDocument();
+      expect(screen.getAllByTestId('lifecycle-create-copy')).toHaveLength(2);
       expect(
         screen.getByRole('button', { name: /export-lifecyclemodels-model-1-1.0.0/i }),
-      ).toBeInTheDocument(),
-    );
-
-    expect(mockGetLifeCycleModelTableAll).toHaveBeenCalledWith(
-      { pageSize: 10, current: 1 },
-      {},
-      'en',
-      'tg',
-      '',
-      'all',
-    );
-    expect(screen.queryByRole('heading')).not.toBeInTheDocument();
-    expect(screen.queryByRole('button', { name: /table-filter/i })).not.toBeInTheDocument();
-    expect(screen.queryByRole('button', { name: /import-data/i })).not.toBeInTheDocument();
-    expect(screen.queryByRole('button', { name: /contribute-action/i })).not.toBeInTheDocument();
-    expect(screen.getAllByRole('button', { name: /lifecycle-view-/i })).toHaveLength(2);
-    expect(screen.queryByRole('button', { name: /lifecycle-edit-/i })).not.toBeInTheDocument();
-    expect(screen.queryByRole('button', { name: /lifecycle-delete-/i })).not.toBeInTheDocument();
-    expect(screen.getAllByTestId('lifecycle-create-copy')).toHaveLength(2);
-    expect(
-      screen.getByRole('button', { name: /export-lifecyclemodels-model-1-1.0.0/i }),
-    ).toBeInTheDocument();
-  });
+      ).toBeInTheDocument();
+    },
+  );
 
   it('opens and closes the route-driven edit drawer for my-data links', async () => {
     mockLocation = {

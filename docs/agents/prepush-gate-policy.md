@@ -42,8 +42,8 @@ checkPaths:
   - scripts/typescript-native-parser.*
   - scripts/reference-data/**
   - .github/workflows/**
-lastReviewedAt: 2026-09-21
-lastReviewedCommit: 6f8be14cd161d54b8cc2f0965ced23f3fd4234a7
+lastReviewedAt: 2026-09-28
+lastReviewedCommit: 2b8c99ab521ae0bcb6877ed0ec7ecf3fe099d57f
 lastReviewedNote: 'Reviewed for Platform #1111: the exact SDK dependency and installed-package Process review contract advance to 0.3.1; pre-push ownership and trigger policy are unchanged.'
 ---
 

@@ -33,6 +33,11 @@ import {
   jsonToList,
 } from '../general/util';
 import { getProcessDetailByIdsAndVersion } from '../processes/api';
+import {
+  addOpenDataHybridFilters,
+  queryMappedOpenDataCatalog,
+  type OpenDataCatalogFilters,
+} from '../openDataCatalog/api';
 import { genProcessName } from '../processes/util';
 import type {
   LifeCycleModelGraphData,
@@ -796,8 +801,24 @@ export async function getLifeCycleModelTableAll(
   dataSource: string,
   tid: string,
   stateCode?: string | number,
+  openDataFilters?: OpenDataCatalogFilters,
 ) {
   const { field: sortBy, order: orderBy } = resolveTableSort(sort, 'modified_at');
+  if (dataSource === 'tg' && openDataFilters) {
+    return queryMappedOpenDataCatalog(
+      {
+        datasetKind: 'lifecyclemodel',
+        filters: openDataFilters,
+        mode: 'list',
+        pageCurrent: params.current,
+        pageSize: params.pageSize,
+        sortBy: normalizeLifeCycleModelSortBy(sortBy),
+        sortDirection: normalizeLifeCycleModelSortDirection(orderBy),
+      },
+      // eslint-disable-next-line no-use-before-define
+      (rows) => mapLifeCycleModelMentionRows(rows, lang),
+    );
+  }
 
   const session = await supabase.auth.getSession();
   if (dataSource === 'my' && !session.data.session) {
@@ -915,7 +936,24 @@ export async function getLifeCycleModelTablePgroongaSearch(
   stateCode?: string | number,
   _orderBy?: LifeCycleModelSearchOrderBy,
   tid?: string | [],
+  openDataFilters?: OpenDataCatalogFilters,
 ) {
+  if (dataSource === 'tg' && openDataFilters) {
+    return queryMappedOpenDataCatalog(
+      {
+        datasetKind: 'lifecyclemodel',
+        filterCondition,
+        filters: openDataFilters,
+        mode: 'lexical',
+        pageCurrent: params.current,
+        pageSize: params.pageSize,
+        queryText,
+        queryTerms: [queryText],
+      },
+      // eslint-disable-next-line no-use-before-define
+      (rows) => mapLifeCycleModelMentionRows(rows, lang),
+    );
+  }
   let result: any = {};
   const session = await supabase.auth.getSession();
   if (session.data.session) {
@@ -1030,7 +1068,21 @@ export async function getLifeCycleModelTableUuidMentionSearch(
   uuid: string,
   stateCode?: string | number,
   tid?: string | [],
+  openDataFilters?: OpenDataCatalogFilters,
 ) {
+  if (dataSource === 'tg' && openDataFilters) {
+    return queryMappedOpenDataCatalog(
+      {
+        datasetKind: 'lifecyclemodel',
+        filters: openDataFilters,
+        mode: 'uuid',
+        pageCurrent: params.current,
+        pageSize: params.pageSize,
+        queryText: uuid,
+      },
+      (rows) => mapLifeCycleModelMentionRows(rows, lang),
+    );
+  }
   const result = await searchDatasetJsonUuidMentionPage({
     dataSource,
     pageCurrent: params.current,
@@ -1063,15 +1115,19 @@ export async function lifeCycleModel_hybrid_search(
   queryText: string,
   filterCondition: any,
   stateCode?: string | number,
+  openDataFilters?: OpenDataCatalogFilters,
 ) {
   let result: any = {};
-  const bodyParams: Record<string, any> = {
-    query: queryText,
-    filter_condition: filterCondition,
-    data_source: dataSource,
-    page_size: params.pageSize ?? 10,
-    page_current: params.current ?? 1,
-  };
+  const bodyParams: Record<string, any> = addOpenDataHybridFilters(
+    {
+      query: queryText,
+      filter_condition: filterCondition,
+      data_source: dataSource,
+      page_size: params.pageSize ?? 10,
+      page_current: params.current ?? 1,
+    },
+    openDataFilters,
+  );
   if (typeof stateCode === 'number') {
     bodyParams.state_code = stateCode;
   }

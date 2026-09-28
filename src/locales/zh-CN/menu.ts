@@ -82,6 +82,7 @@ export default {
   'menu.tgdata.models': '模型',
   'menu.tgdata.products': '产品模型',
   'menu.tgdata.processes': '过程',
+  'menu.tgdata.publishedProcesses': '已发布过程',
   'menu.tgdata.flows': '流',
   'menu.tgdata.flowproperties': '流属性',
   'menu.tgdata.unitgroups': '单位组',

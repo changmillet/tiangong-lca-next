@@ -9,6 +9,15 @@ jest.mock('@/contexts/AntdAppContext', () => ({
     action(jest.requireMock('antd').App.useApp()),
 }));
 
+jest.mock('@/components/ToolBarButton', () => ({
+  __esModule: true,
+  default: ({ onClick, placement = 'option', tooltip }: any) => (
+    <button data-placement={placement} type='button' onClick={onClick}>
+      {tooltip}
+    </button>
+  ),
+}));
+
 const toText = (node: any): string => {
   if (node === null || node === undefined) return '';
   if (typeof node === 'string' || typeof node === 'number') return String(node);
@@ -879,75 +888,80 @@ describe('UnitgroupsPage', () => {
     );
   });
 
-  it('renders the non-my toolbar branch, fallback classification text, and empty tid requests', async () => {
-    mockLocation = {
-      pathname: '/tgdata/unitgroups',
-      search: '',
-    };
-    mockGetDataSource.mockReturnValue('tg');
-    mockGetUnitGroupTableAll.mockResolvedValue({
-      data: [
-        {
-          id: 'ug-2',
-          version: '2.0.0',
-          name: 'Fallback units',
-          refUnitName: 'm3',
-          refUnitGeneralComment: 'Volume unit',
-          classification: 'undefined',
-          modifiedAt: '2024-01-02',
-          teamId: '',
-        },
-      ],
-      success: true,
-    });
+  it.each(['tg', 'ex'])(
+    'renders the %s toolbar branch, fallback classification text, and empty tid requests',
+    async (scope) => {
+      mockLocation = {
+        pathname: '/tgdata/unitgroups',
+        search: '',
+      };
+      mockGetDataSource.mockReturnValue(scope);
+      mockGetUnitGroupTableAll.mockResolvedValue({
+        data: [
+          {
+            id: 'ug-2',
+            version: '2.0.0',
+            name: 'Fallback units',
+            refUnitName: 'm3',
+            refUnitGeneralComment: 'Volume unit',
+            classification: 'undefined',
+            modifiedAt: '2024-01-02',
+            teamId: '',
+          },
+        ],
+        success: true,
+      });
 
-    renderWithProviders(<UnitgroupsPage />);
+      renderWithProviders(<UnitgroupsPage />);
 
-    await waitFor(() =>
-      expect(mockGetUnitGroupTableAll).toHaveBeenCalledWith(
-        { pageSize: 10, current: 1 },
-        {},
-        'en',
-        'tg',
-        '',
-        'all',
-      ),
-    );
+      await waitFor(() =>
+        expect(mockGetUnitGroupTableAll).toHaveBeenCalledWith(
+          { pageSize: 10, current: 1 },
+          {},
+          'en',
+          scope,
+          '',
+          'all',
+          ...(scope === 'tg' ? [{ publicationFilter: 'all', sourceFilter: 'all' }] : []),
+        ),
+      );
 
-    expect(screen.queryByRole('button', { name: /table-filter/i })).not.toBeInTheDocument();
-    expect(screen.queryByRole('button', { name: /import-data/i })).not.toBeInTheDocument();
-    expect(screen.queryByTestId('unitgroup-edit')).not.toBeInTheDocument();
-    expect(screen.queryByTestId('unitgroup-delete')).not.toBeInTheDocument();
-    expect(await screen.findByTestId('unitgroup-view')).toHaveTextContent('view:ug-2');
-    expect(screen.getByText('-')).toBeInTheDocument();
-    expect(screen.getByText(/export:ug-2:2.0.0/i)).toBeInTheDocument();
-    expect(
-      screen
-        .getAllByTestId('unitgroup-create')
-        .find((node) => node.textContent?.includes('"actionType":"copy"')),
-    ).toHaveTextContent('"actionType":"copy"');
-    expect(screen.getByText('versions-disabled:undefined')).toBeInTheDocument();
-    expect(screen.getByTestId('pro-table')).toHaveTextContent('My Data / Unit Groups');
-    expect(screen.getByText('super(m3)')).toBeInTheDocument();
-    expect(screen.getByText('2.0.0')).toBeInTheDocument();
-    expect(screen.getByText('2024-01-02')).toBeInTheDocument();
-    expect(mockAllVersionsOperationWidths).toContain(184);
-    expect(screen.getByText('Fallback units').closest('[data-row-key]')).toHaveAttribute(
-      'data-row-key',
-      'ug-2-2.0.0',
-    );
+      expect(screen.queryByRole('button', { name: /table-filter/i })).not.toBeInTheDocument();
+      expect(screen.queryByRole('button', { name: /import-data/i })).not.toBeInTheDocument();
+      expect(screen.queryByTestId('unitgroup-edit')).not.toBeInTheDocument();
+      expect(screen.queryByTestId('unitgroup-delete')).not.toBeInTheDocument();
+      expect(await screen.findByTestId('unitgroup-view')).toHaveTextContent('view:ug-2');
+      expect(screen.getByText('-')).toBeInTheDocument();
+      expect(screen.getByText(/export:ug-2:2.0.0/i)).toBeInTheDocument();
+      expect(
+        screen
+          .getAllByTestId('unitgroup-create')
+          .find((node) => node.textContent?.includes('"actionType":"copy"')),
+      ).toHaveTextContent('"actionType":"copy"');
+      expect(screen.getByText('versions-disabled:undefined')).toBeInTheDocument();
+      expect(screen.getByTestId('pro-table')).toHaveTextContent('My Data / Unit Groups');
+      expect(screen.getByText('super(m3)')).toBeInTheDocument();
+      expect(screen.getByText('2.0.0')).toBeInTheDocument();
+      expect(screen.getByText('2024-01-02')).toBeInTheDocument();
+      expect(mockAllVersionsOperationWidths).toContain(184);
+      expect(screen.getByText('Fallback units').closest('[data-row-key]')).toHaveAttribute(
+        'data-row-key',
+        'ug-2-2.0.0',
+      );
 
-    await userEvent.click(screen.getByRole('button', { name: /search/i }));
-    await waitFor(() =>
-      expect(mockGetUnitGroupTablePgroongaSearch).toHaveBeenCalledWith(
-        { pageSize: 10, current: 1 },
-        'en',
-        'tg',
-        'density',
-        {},
-        'all',
-        '',
-      ),
-    );
-  });
+      await userEvent.click(screen.getByRole('button', { name: /search/i }));
+      await waitFor(() =>
+        expect(mockGetUnitGroupTablePgroongaSearch).toHaveBeenCalledWith(
+          { pageSize: 10, current: 1 },
+          'en',
+          scope,
+          'density',
+          {},
+          'all',
+          '',
+          ...(scope === 'tg' ? [{ publicationFilter: 'all', sourceFilter: 'all' }] : []),
+        ),
+      );
+    },
+  );
 });

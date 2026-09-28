@@ -87,7 +87,7 @@ jest.mock('@ant-design/icons', () => ({
   CloseCircleOutlined: () => <span>close-icon</span>,
   DownloadOutlined: () => <span>download-icon</span>,
   EyeOutlined: () => <span>eye-icon</span>,
-  InfoCircleOutlined: () => <span>info-icon</span>,
+  InfoCircleOutlined: (props: any) => <span {...props}>info-icon</span>,
   ReloadOutlined: () => <span>reload-icon</span>,
 }));
 
@@ -278,6 +278,17 @@ describe('LcaTaskCenter', () => {
         state,
         phase: state,
         importOutcome: outcome,
+        importSummary:
+          outcome === 'partial'
+            ? {
+                total_entries: 12,
+                imported_count: 1,
+                existing_count: 9,
+                not_imported_count: 2,
+                successful_root_count: 1,
+                blocked_root_count: 1,
+              }
+            : undefined,
         jobId: 'job',
         rootCount: 0,
         createdAt: '2026-09-18T00:00:00Z',
@@ -301,6 +312,52 @@ describe('LcaTaskCenter', () => {
     expect(screen.getByText('Data scope')).toBeInTheDocument();
     expect(screen.getByText('Root records')).toBeInTheDocument();
     expect(screen.getAllByText('Execution stages').length).toBeGreaterThan(0);
+  });
+
+  it('shows partial import counts and tooltip guidance while preserving package details', () => {
+    mockPackageTasks = [
+      {
+        id: 'partial-details',
+        kind: 'tidas_package_import',
+        state: 'completed',
+        phase: 'completed',
+        importOutcome: 'partial',
+        importSummary: {
+          total_entries: 12,
+          imported_count: 1,
+          existing_count: 9,
+          not_imported_count: 2,
+          successful_root_count: 1,
+          blocked_root_count: 1,
+        },
+        filename: 'upload.zip',
+        jobId: 'job',
+        rootCount: 2,
+        createdAt: '2026-09-18T00:00:00Z',
+        updatedAt: '2026-09-18T00:01:00Z',
+      },
+    ];
+    render(<LcaTaskCenter />);
+    fireEvent.click(screen.getByRole('button', { name: 'Task Center' }));
+    fireEvent.click(screen.getByRole('button', { name: 'View' }));
+
+    expect(screen.getByText('upload.zip')).toBeInTheDocument();
+    expect(screen.getByText('Data scope')).toBeInTheDocument();
+    expect(screen.getByText('Root records')).toBeInTheDocument();
+    expect(screen.getAllByText('Execution stages').length).toBeGreaterThan(0);
+    expect(screen.getByText('Import result')).toBeInTheDocument();
+    expect(screen.getByText('Total records')).toBeInTheDocument();
+    expect(screen.getByText('Newly imported')).toBeInTheDocument();
+    expect(screen.getByText('Already present and skipped')).toBeInTheDocument();
+    expect(screen.getByText('Not imported')).toBeInTheDocument();
+    expect(screen.getByText('Successful root groups')).toBeInTheDocument();
+    expect(screen.getByText('Blocked root groups')).toBeInTheDocument();
+    expect(
+      screen.getByLabelText(
+        'Some data was not imported. Download the report to view blocked root groups and validation issues.',
+      ),
+    ).toBeInTheDocument();
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument();
   });
 
   it('does not offer report actions for an import without a job id', () => {

@@ -36,6 +36,11 @@ import {
 import { resolveTableSort } from '../general/tableSort';
 import { getILCDLocationByValues } from '../locations/api';
 import { getCachedLocationData } from '../locations/cache';
+import {
+  addOpenDataHybridFilters,
+  queryMappedOpenDataCatalog,
+  type OpenDataCatalogFilters,
+} from '../openDataCatalog/api';
 import type { FlowTable } from './data';
 import { genFlowJsonOrdered, genFlowName } from './util';
 
@@ -359,8 +364,25 @@ export async function getFlowTableAll(
   tid: string | [],
   filters?: FlowSearchFilters,
   stateCode?: string | number,
+  openDataFilters?: OpenDataCatalogFilters,
 ) {
   const { field: sortBy, order: orderBy } = resolveTableSort(sort, 'modified_at');
+  if (dataSource === 'tg' && openDataFilters) {
+    return queryMappedOpenDataCatalog(
+      {
+        datasetKind: 'flow',
+        filterCondition: filters,
+        filters: openDataFilters,
+        mode: 'list',
+        pageCurrent: params.current,
+        pageSize: params.pageSize,
+        sortBy: normalizeFlowSortBy(sortBy),
+        sortDirection: normalizeFlowSortDirection(orderBy),
+      },
+      // eslint-disable-next-line no-use-before-define
+      (rows) => mapFlowMentionRows(rows, lang),
+    );
+  }
 
   const session = await supabase.auth.getSession();
   if (dataSource === 'my' && !session.data.session) {
@@ -496,7 +518,24 @@ export async function getFlowTablePgroongaSearch(
   stateCode?: string | number,
   _orderBy?: FlowSearchOrderBy,
   tid: string | [] = [],
+  openDataFilters?: OpenDataCatalogFilters,
 ) {
+  if (dataSource === 'tg' && openDataFilters) {
+    return queryMappedOpenDataCatalog(
+      {
+        datasetKind: 'flow',
+        filterCondition: filter,
+        filters: openDataFilters,
+        mode: 'lexical',
+        pageCurrent: params.current,
+        pageSize: params.pageSize,
+        queryText,
+        queryTerms: [queryText],
+      },
+      // eslint-disable-next-line no-use-before-define
+      (rows) => mapFlowMentionRows(rows, lang),
+    );
+  }
   let result: any = {};
   const session = await supabase.auth.getSession();
 
@@ -670,7 +709,21 @@ export async function getFlowTableUuidMentionSearch(
   uuid: string,
   stateCode?: string | number,
   tid?: string | [],
+  openDataFilters?: OpenDataCatalogFilters,
 ) {
+  if (dataSource === 'tg' && openDataFilters) {
+    return queryMappedOpenDataCatalog(
+      {
+        datasetKind: 'flow',
+        filters: openDataFilters,
+        mode: 'uuid',
+        pageCurrent: params.current,
+        pageSize: params.pageSize,
+        queryText: uuid,
+      },
+      (rows) => mapFlowMentionRows(rows, lang),
+    );
+  }
   const result = await searchDatasetJsonUuidMentionPage({
     dataSource,
     pageCurrent: params.current,
@@ -702,6 +755,7 @@ export async function flow_hybrid_search(
   filter: FlowSearchFilters,
   stateCode?: string | number,
   tid: string | [] = [],
+  openDataFilters?: OpenDataCatalogFilters,
 ): Promise<{ data: FlowTable[]; success: boolean; total?: number; page?: number }> {
   const teamId = await getFlowTeamFilter(dataSource, tid);
   if (dataSource === 'te' && !teamId) {
@@ -720,15 +774,18 @@ export async function flow_hybrid_search(
     delete filterCondition.classification;
   }
   let result: any = {};
-  const bodyParams: Record<string, any> = {
-    query,
-    version_scope: 'matched',
-    match_count: 200,
-    filter_condition: filterCondition,
-    data_source: dataSource,
-    page_size: params.pageSize ?? 10,
-    page_current: params.current ?? 1,
-  };
+  const bodyParams: Record<string, any> = addOpenDataHybridFilters(
+    {
+      query,
+      version_scope: 'matched',
+      match_count: 200,
+      filter_condition: filterCondition,
+      data_source: dataSource,
+      page_size: params.pageSize ?? 10,
+      page_current: params.current ?? 1,
+    },
+    openDataFilters,
+  );
   if (typeof stateCode === 'number') {
     bodyParams.state_code = stateCode;
   }

@@ -228,6 +228,12 @@ describe('ContactForm component', () => {
     expect(onData).toHaveBeenCalledTimes(2);
   });
 
+  it('hides the ownership selector when reviewer profile ownership is locked', () => {
+    renderForm({ activeTabKey: 'administrativeInformation', lockOwnership: true });
+
+    expect(screen.queryByText('Owner of data set')).not.toBeInTheDocument();
+  });
+
   it('passes default source name when formType is create', () => {
     renderForm({ formType: 'create' });
 

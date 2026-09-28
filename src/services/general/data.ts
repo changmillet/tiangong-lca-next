@@ -19,6 +19,7 @@ export type ListPagination = {
  */
 export type LocaleAwareTableParams = {
   locale: SupportedAppLocale;
+  openDataFilterRevision?: string;
 };
 
 /**

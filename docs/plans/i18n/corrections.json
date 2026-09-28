@@ -1532,7 +1532,49 @@
         "pnpm test:ci tests/unit/i18n/localeDeliveryContracts.test.ts tests/unit/locales.test.ts --runInBand --no-coverage"
       ],
       "correctionDigest": "e1eb269af64b5cbd1d7dfa51aec65fd2e8b66e11c03abe8d6551bc4f819ba6a7"
+    },
+    {
+      "locale": "zh-CN",
+      "messageId": "pages.review.tabs.pending",
+      "before": "待审核",
+      "after": "待审核任务",
+      "evidence": [
+        "The requested Review Member tab label explicitly includes 任务 to identify the task list, while row-level review statuses retain their shorter wording.",
+        "src/pages/Review/index.tsx renders the pending tab, and src/pages/Review/Components/AssignmentReview.tsx renders the task list heading."
+      ],
+      "affectedClosure": [
+        "Review Member pending-task tab and list heading",
+        "zh-CN active locale catalog",
+        "Review Admin and Review Member task-tab naming"
+      ],
+      "tests": [
+        "pnpm i18n:corrections:check",
+        "pnpm i18n:audit",
+        "pnpm test:ci --runInBand --watchman=false tests/unit/pages/Review/index.test.tsx tests/unit/pages/Review/Components/AssignmentReview.test.tsx"
+      ],
+      "correctionDigest": "0e1ed27c99cb3eef254b40c63b55eceaa52c025f5d57846eff90337ef19ebceb"
+    },
+    {
+      "locale": "de-DE",
+      "messageId": "pages.review.tabs.pending",
+      "before": "Ausstehende Prüfungen",
+      "after": "Ausstehende Prüfaufgaben",
+      "evidence": [
+        "The requested Review Member tab label is task-oriented; Prüfaufgaben distinguishes the task list from an individual review status in German.",
+        "src/pages/Review/index.tsx renders the pending tab, and src/pages/Review/Components/AssignmentReview.tsx renders the task list heading."
+      ],
+      "affectedClosure": [
+        "Review Member pending-task tab and list heading",
+        "de-DE active locale catalog",
+        "Review Admin and Review Member task-tab naming"
+      ],
+      "tests": [
+        "pnpm i18n:corrections:check",
+        "pnpm i18n:audit",
+        "pnpm test:ci --runInBand --watchman=false tests/unit/pages/Review/index.test.tsx tests/unit/pages/Review/Components/AssignmentReview.test.tsx"
+      ],
+      "correctionDigest": "65952a350ecb22c75419f1fc8506db2b66e00fc377b3292889aa94be52256dc7"
     }
   ],
-  "correctionLedgerDigest": "fcda3136886694c111258daee7f51b6bf0f29e3333ed7e582d7fcc349f0b4c74"
+  "correctionLedgerDigest": "0116c494387613a132f6cea85d8841edca9d5aba28d66ae61a40743370b040ba"
 }

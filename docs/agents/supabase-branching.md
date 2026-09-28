@@ -22,8 +22,8 @@ checkPaths:
   - scripts/e2e/**
   - playwright.config.ts
   - tests/e2e/i18n/**
-lastReviewedAt: 2026-09-19
-lastReviewedCommit: ec64e2142f67874171bbd5ddb32f8aed581d9824
+lastReviewedAt: 2026-09-26
+lastReviewedCommit: 79f0f66d83067983120072e8acd62616ad89eff2
 lastReviewedNote: 'Reviewed Platform #1046 refinement: imports reconcile from the shared list only; terminal outcomes use green/orange/red, orphan records prevent full success, and reports resolve signed links only on click. Owner isolation, reload recovery and once-only data refresh are tested. Export/LCA behavior, ownership and gate policy remain unchanged; validation evidence is recorded in the task.'
 ---
 
@@ -76,7 +76,7 @@ Rules:
 - ordered-dataset shaping in `src/services/**` stays an app-side boundary even when it mirrors backend schema names
 - canonical Process/Flow TIDAS scalar shaping also stays in that boundary: serializers convert valid year and percentage form values to their required JSON scalar types, while create/update/create-version reject affected non-empty values that cannot be represented canonically before calling dataset commands
 - AI校验 calls authenticated `ai_suggest` only through `src/services/general/aiSuggestion.ts`: Next enqueues current Process/Flow TIDAS JSON, polls the returned requester-scoped job with a bounded schedule, and consumes only the exact versioned advisory result. Edge owns request validation and public projection, `database-engine` owns durable queue/RPC truth, and the generic Rust `ai-worker` owns rule/model execution. Next never queries worker tables or receives service credentials and internal diagnostics.
-- TIDAS package task reconciliation in `src/services/tidasPackage/taskCenter.ts` may coalesce local aliases by backend `workerJobId` or package `jobId` and adopt backend timestamps, but `database-engine` remains authoritative for mutable-scope cache lifecycle, fresh Worker job creation, package contents, and authorization
+- TIDAS package task reconciliation in `src/services/tidasPackage/taskCenter.ts` may coalesce local aliases by backend `workerJobId` or package `jobId`, adopt backend timestamps, and make one authenticated package-detail read for a terminal historical row whose bounded Worker-list outcome is absent. It does not poll imports individually or read private storage locators; `database-engine` remains authoritative for mutable-scope cache lifecycle, fresh Worker job creation, package contents, artifact authorization, and signed links
 - persisted Calculation Bundle and release readback go through `src/services/lcaReleases/**`: private bundle reads forward the current user session, public current-release and Process projections may be anonymous, and neither path accepts a service-role credential or exposes private object locators
 - ResultSet create/list/get, closure checks, closure artifacts, result-package commands, publication reads, and the unified data-product task feed go through `src/services/dataProducts/**` and authenticated `app_data_product_commands`. Database owns ResultSet identity and ResultSet-to-closure/task joins; Next keeps `resultSetId` as URL/workbench context and derives lifecycle presentation from safe projections without adding a frontend status store. Closure requests preserve exact LCIA method `{ id, version }` identities from the reviewed static catalog, and Next consumes actor-bound curated closure, artifact-lifecycle, signed-download, and `task-summary.v2` projections rather than worker rows or private artifact locators. Signed artifact responses are navigation targets only: Next must not proxy, fetch, or buffer the artifact bytes.
 - Node-loaded smoke workflows may call shared service helpers; runtime fallbacks such as locale detection still belong in `src/services/**` and do not create database schema or Edge runtime ownership

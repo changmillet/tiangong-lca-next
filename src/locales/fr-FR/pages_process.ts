@@ -1,5 +1,8 @@
 export default {
   'pages.process.list.loadError': 'Échec du chargement de la liste des processus.',
+  'pages.process.published.title': 'Procédés publiés',
+  'pages.process.published.table.processName': 'Nom du procédé',
+  'pages.process.published.table.calculationResult': 'Résultat du calcul',
   'pages.process.referenceYear': 'Année de référence',
   'pages.process.location': 'Localisation',
   'pages.process.lca.toolbar.tooltip': 'Exécuter le calcul d’ACV',

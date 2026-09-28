@@ -1,0 +1,123 @@
+import { FunctionRegion } from '@supabase/supabase-js';
+
+const mockRpc = jest.fn();
+const mockGetSession = jest.fn();
+const mockInvoke = jest.fn();
+
+jest.mock('@/services/supabase', () => ({
+  supabase: {
+    rpc: (...args: unknown[]) => mockRpc(...args),
+    auth: { getSession: (...args: unknown[]) => mockGetSession(...args) },
+    functions: { invoke: (...args: unknown[]) => mockInvoke(...args) },
+  },
+}));
+
+import {
+  addOpenDataHybridFilters,
+  publishOpenDataProcesses,
+  queryMappedOpenDataCatalog,
+  queryOpenDataCatalog,
+} from '@/services/openDataCatalog/api';
+
+const filters = { sourceFilter: 'literature' as const, publicationFilter: 'published' as const };
+
+describe('Open Data catalog service', () => {
+  beforeEach(() => jest.clearAllMocks());
+
+  it('maps the catalog query contract to the public RPC', async () => {
+    mockRpc.mockResolvedValue({ data: [], error: null });
+    await queryOpenDataCatalog({
+      datasetKind: 'process',
+      filters,
+      mode: 'lexical',
+      queryText: 'steel',
+    });
+    expect(mockRpc).toHaveBeenCalledWith('search_open_data_catalog', {
+      p_dataset_kind: 'process',
+      p_search_mode: 'lexical',
+      p_query_text: 'steel',
+      p_query_terms: null,
+      p_filter_condition: {},
+      p_source_filter: 'literature',
+      p_publication_filter: 'published',
+      p_page_size: 10,
+      p_page_current: 1,
+      p_sort_by: 'modified_at',
+      p_sort_direction: 'desc',
+    });
+
+    await queryOpenDataCatalog({
+      datasetKind: 'source',
+      filters: { sourceFilter: 'enterprise' },
+      mode: 'list',
+    });
+    expect(mockRpc).toHaveBeenLastCalledWith(
+      'search_open_data_catalog',
+      expect.objectContaining({ p_publication_filter: 'all' }),
+    );
+  });
+
+  it('maps rows, totals, empty results, and RPC errors', async () => {
+    const mapRows = jest.fn(async (rows) => rows.map((row: any) => row.id));
+    mockRpc
+      .mockResolvedValueOnce({ data: [{ id: 'one', total_count: '3' }], error: null })
+      .mockResolvedValueOnce({ data: [], error: null })
+      .mockResolvedValueOnce({ data: null, error: null })
+      .mockResolvedValueOnce({ data: null, error: new Error('failed') });
+    await expect(
+      queryMappedOpenDataCatalog({ datasetKind: 'contact', filters, mode: 'list' }, mapRows),
+    ).resolves.toMatchObject({ data: ['one'], success: true, total: 3, capped: false });
+    await expect(
+      queryMappedOpenDataCatalog({ datasetKind: 'contact', filters, mode: 'list' }, mapRows),
+    ).resolves.toMatchObject({ data: [], success: true, total: 0 });
+    await expect(
+      queryMappedOpenDataCatalog({ datasetKind: 'contact', filters, mode: 'list' }, mapRows),
+    ).resolves.toMatchObject({ data: [], success: true, total: 0 });
+    await expect(
+      queryMappedOpenDataCatalog({ datasetKind: 'contact', filters, mode: 'list' }, mapRows),
+    ).resolves.toMatchObject({ data: [], success: false, total: 0 });
+    expect(mapRows).toHaveBeenCalledTimes(1);
+  });
+
+  it('adds Open Data filters only when requested', () => {
+    expect(addOpenDataHybridFilters({ query: 'steel' })).toEqual({ query: 'steel' });
+    expect(addOpenDataHybridFilters({ query: 'steel' }, { sourceFilter: 'enterprise' })).toEqual({
+      query: 'steel',
+      source_filter: 'enterprise',
+      publication_filter: 'all',
+    });
+  });
+
+  it('publishes through the authenticated command and unwraps its result', async () => {
+    mockGetSession.mockResolvedValue({ data: { session: { access_token: 'token' } }, error: null });
+    mockInvoke.mockResolvedValue({ data: { data: { publishedCount: 1 } }, error: null });
+    const items = [{ id: 'id', version: '01.00.000' }];
+    await expect(publishOpenDataProcesses(items)).resolves.toMatchObject({
+      data: { publishedCount: 1 },
+      error: null,
+    });
+    expect(mockInvoke).toHaveBeenCalledWith('app_open_data_process_publish_batch', {
+      headers: { Authorization: 'Bearer token' },
+      body: { items },
+      region: FunctionRegion.UsEast1,
+    });
+
+    mockInvoke.mockResolvedValue({ data: { publishedCount: 2 }, error: null });
+    await expect(publishOpenDataProcesses(items)).resolves.toMatchObject({
+      data: { publishedCount: 2 },
+    });
+  });
+
+  it('fails locally when no authenticated session exists', async () => {
+    const authError = new Error('signed out');
+    mockGetSession.mockResolvedValue({ data: { session: null }, error: authError });
+    await expect(publishOpenDataProcesses([])).resolves.toEqual({ data: null, error: authError });
+    expect(mockInvoke).not.toHaveBeenCalled();
+
+    mockGetSession.mockResolvedValue({ data: { session: null }, error: null });
+    await expect(publishOpenDataProcesses([])).resolves.toMatchObject({
+      data: null,
+      error: expect.any(Error),
+    });
+  });
+});

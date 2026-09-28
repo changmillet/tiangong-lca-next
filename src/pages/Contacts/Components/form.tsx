@@ -26,6 +26,7 @@ type Props = {
   sdkValidationDetails?: ValidationIssueSdkDetail[];
   sdkValidationFocus?: ValidationIssueSdkDetail | null;
   validationIssueTabNames?: string[];
+  lockOwnership?: boolean;
 };
 
 export const ContactForm: FC<Props> = ({
@@ -39,6 +40,7 @@ export const ContactForm: FC<Props> = ({
   sdkValidationDetails = [],
   sdkValidationFocus = null,
   validationIssueTabNames = [],
+  lockOwnership = false,
 }) => {
   const { token } = theme.useToken();
   const intl = useIntl();
@@ -464,32 +466,34 @@ export const ContactForm: FC<Props> = ({
             >
               <Input disabled={formType === 'edit'} />
             </DatasetCreateVersionFormItem>
-            <ContactSelectForm
-              label={
-                <FormattedMessage
-                  id='pages.contact.referenceToOwnershipOfDataSet'
-                  defaultMessage='Owner of data set'
-                />
-              }
-              showRequiredLabel={true}
-              rules={
-                showRules
-                  ? getRules(
-                      schema['contactDataSet']['administrativeInformation'][
-                        'publicationAndOwnership'
-                      ]['common:referenceToOwnershipOfDataSet']['@refObjectId']['rules'] ?? [],
-                    )
-                  : []
-              }
-              name={[
-                'administrativeInformation',
-                'publicationAndOwnership',
-                'common:referenceToOwnershipOfDataSet',
-              ]}
-              lang={lang}
-              formRef={formRef}
-              onData={onData}
-            />
+            {!lockOwnership && (
+              <ContactSelectForm
+                label={
+                  <FormattedMessage
+                    id='pages.contact.referenceToOwnershipOfDataSet'
+                    defaultMessage='Owner of data set'
+                  />
+                }
+                showRequiredLabel={true}
+                rules={
+                  showRules
+                    ? getRules(
+                        schema['contactDataSet']['administrativeInformation'][
+                          'publicationAndOwnership'
+                        ]['common:referenceToOwnershipOfDataSet']['@refObjectId']['rules'] ?? [],
+                      )
+                    : []
+                }
+                name={[
+                  'administrativeInformation',
+                  'publicationAndOwnership',
+                  'common:referenceToOwnershipOfDataSet',
+                ]}
+                lang={lang}
+                formRef={formRef}
+                onData={onData}
+              />
+            )}
             <br />
             {/* <ContactSelectForm
               label={

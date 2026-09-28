@@ -1,25 +1,8 @@
-import ContactSelectDrawer from '@/pages/Contacts/Components/select/drawer';
-import { getContactDetail } from '@/services/contacts/api';
-import { genContactFromData } from '@/services/contacts/util';
-import { getLang, getLangText, jsonToList } from '@/services/general/util';
 import { addReviewMemberApi } from '@/services/roles/api';
-import { getUserInfoByEmail, updateUserContact } from '@/services/users/api';
-import { SearchOutlined } from '@ant-design/icons';
+import { getUserInfoByEmail } from '@/services/users/api';
 import { FormattedMessage, useIntl } from '@umijs/max';
-import {
-  App,
-  Button,
-  Card,
-  Descriptions,
-  Empty,
-  Form,
-  FormInstance,
-  Input,
-  Modal,
-  Spin,
-  theme,
-} from 'antd';
-import { useEffect, useRef, useState } from 'react';
+import { App, Form, Input, Modal } from 'antd';
+import { useEffect, useState } from 'react';
 
 interface AddMemberModalProps {
   open: boolean;
@@ -27,156 +10,46 @@ interface AddMemberModalProps {
   onSuccess: () => void;
 }
 
-interface UserInfo {
-  id: string;
-  raw_user_meta_data: {
-    sub: string;
-    email: string;
-    email_verified: boolean;
-    phone_verified: boolean;
-    display_name?: string;
-  };
-}
-
-interface ContactInfo {
-  '@refObjectId': string;
-  '@type': string;
-  '@uri': string;
-  '@version': string;
-  'common:shortDescription': Array<{
-    '#text': string;
-    '@xml:lang': string;
-  }>;
-}
-
 const AddMemberModal: React.FC<AddMemberModalProps> = ({ open, onCancel, onSuccess }) => {
   const { message } = App.useApp();
-  const formRef = useRef<FormInstance>(null);
-  const [loading, setLoading] = useState(false);
-  const [queryLoading, setQueryLoading] = useState(false);
-  const [contactLoading, setContactLoading] = useState(false);
-  const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
-  const [contactInfo, setContactInfo] = useState<ContactInfo | null>(null);
-  const { token } = theme.useToken();
   const intl = useIntl();
-  const lang = getLang(intl.locale);
+  const [form] = Form.useForm<{ email: string }>();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (!open) {
-      formRef?.current?.resetFields();
-      setUserInfo(null);
-      setContactInfo(null);
-    }
-  }, [open]);
-
-  const handleQuery = async () => {
-    try {
-      const email = formRef?.current?.getFieldValue('email');
-      if (!email) {
-        message.error(
-          intl.formatMessage({
-            id: 'pages.review.members.email.required',
-            defaultMessage: 'Please enter an email address',
-          }),
-        );
-        return;
-      }
-
-      setQueryLoading(true);
-      const result = await getUserInfoByEmail(email);
-
-      if (result.success) {
-        setUserInfo(result.user);
-        setContactInfo(result.contact);
-        message.success(
-          intl.formatMessage({
-            id: 'pages.review.members.querySuccess',
-            defaultMessage: 'User found.',
-          }),
-        );
-      } else {
-        setUserInfo(null);
-        setContactInfo(null);
-        message.error(
-          intl.formatMessage({
-            id: 'pages.review.members.userNotFound',
-            defaultMessage: 'User Not Found',
-          }),
-        );
-      }
-    } catch (error) {
-      console.error(error);
-      message.error(
-        intl.formatMessage({
-          id: 'pages.review.members.queryError',
-          defaultMessage: 'Query Failed',
-        }),
-      );
-    } finally {
-      setQueryLoading(false);
-    }
-  };
+    if (!open) form.resetFields();
+  }, [form, open]);
 
   const handleOk = async () => {
+    const { email } = await form.validateFields();
+    setLoading(true);
     try {
-      setLoading(true);
-      const result = await addReviewMemberApi(userInfo?.id ?? '');
-      if (result?.error && result.error.code === '23505') {
-        message.error(
-          intl.formatMessage({
-            id: 'pages.review.members.addError.duplicate',
-            defaultMessage: 'User is already a reviewer, please do not add again',
-          }),
-        );
-        setLoading(false);
+      const lookup = await getUserInfoByEmail(email);
+      if (!lookup.success || !lookup.user?.id) {
+        message.error(intl.formatMessage({ id: 'pages.review.members.userNotFound' }));
         return;
       }
-      const associatedContactResult = await updateUserContact(userInfo?.id ?? '', contactInfo);
 
-      if (!result?.success || associatedContactResult.error) {
-        message.error(
-          intl.formatMessage({
-            id: 'pages.review.members.addError',
-            defaultMessage: 'Failed to add member',
-          }),
-        );
-      } else {
-        message.success(
-          intl.formatMessage({
-            id: 'pages.review.members.addSuccess',
-            defaultMessage: 'Member added successfully',
-          }),
-        );
-        formRef?.current?.resetFields();
-        setUserInfo(null);
-        setContactInfo(null);
-        onSuccess();
-        onCancel();
+      const result = await addReviewMemberApi(lookup.user.id);
+      if (result?.error?.code === '23505') {
+        message.error(intl.formatMessage({ id: 'pages.review.members.addError.duplicate' }));
+        return;
       }
+      if (!result?.success) {
+        message.error(intl.formatMessage({ id: 'pages.review.members.addError' }));
+        return;
+      }
+
+      message.success(intl.formatMessage({ id: 'pages.review.members.addSuccess' }));
+      form.resetFields();
+      onSuccess();
+      onCancel();
     } catch (error) {
       console.error(error);
+      message.error(intl.formatMessage({ id: 'pages.review.members.addError' }));
     } finally {
       setLoading(false);
     }
-  };
-
-  const handletContactData = (rowId: string, rowVersion: string) => {
-    setContactLoading(true);
-    getContactDetail(rowId, rowVersion).then(async (result: any) => {
-      const selectedData = genContactFromData(result.data?.json?.contactDataSet ?? {});
-
-      const contactInfo = {
-        '@refObjectId': rowId,
-        '@type': 'contact data set',
-        '@uri': `../contacts/${rowId}.xml`,
-        '@version': result.data?.version,
-        'common:shortDescription':
-          jsonToList(selectedData?.contactInformation?.dataSetInformation?.['common:shortName']) ??
-          [],
-      };
-      setContactInfo(contactInfo);
-      setContactLoading(false);
-    });
   };
 
   return (
@@ -186,194 +59,30 @@ const AddMemberModal: React.FC<AddMemberModalProps> = ({ open, onCancel, onSucce
       onCancel={onCancel}
       onOk={handleOk}
       confirmLoading={loading}
-      okButtonProps={{ disabled: !userInfo || !contactInfo }}
-      width={600}
+      destroyOnHidden
     >
-      <Form ref={formRef} layout='vertical'>
+      <Form form={form} layout='vertical'>
         <Form.Item
           name='email'
           label={<FormattedMessage id='pages.review.members.email' defaultMessage='Email' />}
           rules={[
             {
               required: true,
-              message: (
-                <FormattedMessage
-                  id='pages.review.members.email.required'
-                  defaultMessage='Please enter an email address'
-                />
-              ),
+              message: intl.formatMessage({ id: 'pages.review.members.email.required' }),
             },
             {
               type: 'email',
-              message: (
-                <FormattedMessage
-                  id='pages.review.members.email.invalid'
-                  defaultMessage='Please enter a valid email address'
-                />
-              ),
+              message: intl.formatMessage({ id: 'pages.review.members.email.invalid' }),
             },
           ]}
         >
           <Input
-            placeholder={intl.formatMessage({
-              id: 'pages.review.members.email.placeholder',
-              defaultMessage: 'Please enter email and click query',
-            })}
-            suffix={
-              <Button
-                type='text'
-                icon={<SearchOutlined />}
-                loading={queryLoading}
-                onClick={handleQuery}
-                style={{ border: 'none', padding: '4px 8px' }}
-              />
-            }
+            autoComplete='off'
+            placeholder={intl.formatMessage({ id: 'pages.review.members.email.placeholder' })}
+            onPressEnter={handleOk}
           />
         </Form.Item>
       </Form>
-
-      {userInfo && (
-        <Card
-          size='small'
-          title={
-            <FormattedMessage
-              id='pages.review.members.userInfo'
-              defaultMessage='User Information'
-            />
-          }
-          style={{ marginTop: 16 }}
-        >
-          <Descriptions
-            column={1}
-            size='small'
-            items={[
-              {
-                label: (
-                  <FormattedMessage id='pages.review.members.userId' defaultMessage='User ID' />
-                ),
-                children: userInfo.id,
-              },
-              {
-                label: <FormattedMessage id='pages.review.members.email' defaultMessage='Email' />,
-                children: userInfo.raw_user_meta_data.email,
-              },
-              {
-                label: (
-                  <FormattedMessage
-                    id='pages.review.members.displayName'
-                    defaultMessage='Display Name'
-                  />
-                ),
-                children: userInfo.raw_user_meta_data.display_name || '-',
-              },
-            ]}
-          />
-        </Card>
-      )}
-
-      {contactInfo && (
-        <Card
-          size='small'
-          title={
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <FormattedMessage
-                id='pages.review.members.contactInfo'
-                defaultMessage='Contact Information'
-              />
-              <ContactSelectDrawer
-                filterTabs={['tg']}
-                buttonType='icon'
-                lang={lang}
-                onData={handletContactData}
-              />
-            </div>
-          }
-          style={{ marginTop: 16 }}
-        >
-          <Spin spinning={contactLoading}>
-            <Descriptions
-              column={1}
-              size='small'
-              items={[
-                {
-                  label: (
-                    <FormattedMessage
-                      id='pages.review.members.contactId'
-                      defaultMessage='Contact ID'
-                    />
-                  ),
-                  children: contactInfo['@refObjectId'],
-                },
-                {
-                  label: (
-                    <FormattedMessage
-                      id='pages.review.members.contactVersion'
-                      defaultMessage='Contact Version'
-                    />
-                  ),
-                  children: contactInfo['@version'],
-                },
-                {
-                  label: (
-                    <FormattedMessage
-                      id='pages.review.members.contactName'
-                      defaultMessage='Contact Name'
-                    />
-                  ),
-                  children: getLangText(contactInfo['common:shortDescription'], lang),
-                },
-              ]}
-            />
-          </Spin>
-        </Card>
-      )}
-
-      {userInfo && !contactInfo && (
-        <Card
-          size='small'
-          title={
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <FormattedMessage
-                id='pages.review.members.contactInfo'
-                defaultMessage='Contact Information'
-              />
-              <ContactSelectDrawer
-                filterTabs={['tg']}
-                buttonType='icon'
-                lang={lang}
-                onData={handletContactData}
-              />
-            </div>
-          }
-          style={{ marginTop: 16 }}
-        >
-          <Empty
-            description={
-              <FormattedMessage
-                id='pages.review.members.noContact'
-                defaultMessage='No Contact Information'
-              />
-            }
-            image={Empty.PRESENTED_IMAGE_SIMPLE}
-          />
-        </Card>
-      )}
-
-      {userInfo && !contactInfo && (
-        <div
-          style={{
-            marginTop: 8,
-            textAlign: 'center',
-            color: token.colorTextTertiary,
-            fontSize: '12px',
-          }}
-        >
-          <FormattedMessage
-            id='pages.review.members.saveDisabled'
-            defaultMessage='Both user information and contact information are required to save'
-          />
-        </div>
-      )}
     </Modal>
   );
 };

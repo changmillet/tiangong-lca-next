@@ -1145,7 +1145,7 @@ const DetailGrid: React.FC<{ rows: DetailRow[] }> = ({ rows }) => {
   );
 };
 
-const DetailSection: React.FC<{ title: string; children: React.ReactNode }> = ({
+const DetailSection: React.FC<{ title: React.ReactNode; children: React.ReactNode }> = ({
   title,
   children,
 }) => (
@@ -1221,6 +1221,11 @@ function packageBusinessDetail(
           defaultMessage: 'Uploaded ZIP package',
         })
       : 'tidas-package.zip');
+  const partialImportHint = intl.formatMessage({
+    id: 'component.tidasPackage.taskCenter.detail.partialHint',
+    defaultMessage:
+      'Some data was not imported. Download the report to view blocked root groups and validation issues.',
+  });
 
   return (
     <Space orientation='vertical' size={14} style={{ width: '100%' }}>
@@ -1249,6 +1254,70 @@ function packageBusinessDetail(
           },
         ]}
       />
+      {isImport && task.importSummary && (
+        <DetailSection
+          title={
+            <Space size={6}>
+              {intl.formatMessage({
+                id: 'component.tidasPackage.taskCenter.detail.importResult',
+                defaultMessage: 'Import result',
+              })}
+              {task.importOutcome === 'partial' && (
+                <Tooltip title={partialImportHint}>
+                  <InfoCircleOutlined aria-label={partialImportHint} style={{ cursor: 'help' }} />
+                </Tooltip>
+              )}
+            </Space>
+          }
+        >
+          <DetailGrid
+            rows={[
+              {
+                label: intl.formatMessage({
+                  id: 'component.tidasPackage.taskCenter.detail.totalEntries',
+                  defaultMessage: 'Total records',
+                }),
+                value: task.importSummary.total_entries,
+              },
+              {
+                label: intl.formatMessage({
+                  id: 'component.tidasPackage.taskCenter.detail.importedCount',
+                  defaultMessage: 'Newly imported',
+                }),
+                value: task.importSummary.imported_count,
+              },
+              {
+                label: intl.formatMessage({
+                  id: 'component.tidasPackage.taskCenter.detail.existingCount',
+                  defaultMessage: 'Already present and skipped',
+                }),
+                value: task.importSummary.existing_count,
+              },
+              {
+                label: intl.formatMessage({
+                  id: 'component.tidasPackage.taskCenter.detail.notImportedCount',
+                  defaultMessage: 'Not imported',
+                }),
+                value: task.importSummary.not_imported_count,
+              },
+              {
+                label: intl.formatMessage({
+                  id: 'component.tidasPackage.taskCenter.detail.successfulRootCount',
+                  defaultMessage: 'Successful root groups',
+                }),
+                value: task.importSummary.successful_root_count,
+              },
+              {
+                label: intl.formatMessage({
+                  id: 'component.tidasPackage.taskCenter.detail.blockedRootCount',
+                  defaultMessage: 'Blocked root groups',
+                }),
+                value: task.importSummary.blocked_root_count,
+              },
+            ]}
+          />
+        </DetailSection>
+      )}
       {singleRoot && (
         <DetailSection
           title={intl.formatMessage({

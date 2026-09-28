@@ -84,9 +84,12 @@ describe('example data routes', () => {
   it('reuses all seven open-data pages under a separate scope', () => {
     const open = routes.find((route) => route.path === '/tgdata')!;
     const example = routes.find((route) => route.path === '/exampledata')!;
+    const reusableOpenRoutes = open.routes?.filter(
+      (route) => !('hideInMenu' in route && route.hideInMenu),
+    );
     expect(example.name).toBe('exampledata');
     expect(example.routes).toEqual(
-      open.routes?.map((route) => ({
+      reusableOpenRoutes?.map((route) => ({
         ...route,
         path: route.path.replace('/tgdata', '/exampledata'),
         ...('redirect' in route
@@ -96,5 +99,17 @@ describe('example data routes', () => {
     );
     expect(example.routes?.filter((route) => route.component)).toHaveLength(7);
     expect(routes.indexOf(example)).toBe(routes.indexOf(open) + 1);
+  });
+
+  it('exposes the published-process page by URL without adding a menu entry', () => {
+    const open = routes.find((route) => route.path === '/tgdata')!;
+
+    expect(open.routes).toContainEqual(
+      expect.objectContaining({
+        component: './PublishedProcesses',
+        hideInMenu: true,
+        path: '/tgdata/published-processes',
+      }),
+    );
   });
 });

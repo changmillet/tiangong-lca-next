@@ -846,6 +846,7 @@ export const ProcessForm: FC<Props> = ({
               disabled={actionFrom === 'modelResult'}
             />
             <ProcessExchangeDelete
+              lang={lang}
               disabled={actionFrom === 'modelResult'}
               id={row.dataSetInternalID}
               data={exchangeDataSource}

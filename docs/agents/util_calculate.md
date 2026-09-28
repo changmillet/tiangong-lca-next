@@ -22,7 +22,7 @@ checkPaths:
   - src/components/LcaTaskCenter/**
   - src/pages/Processes/Analysis/**
 lastReviewedAt: 2026-09-28
-lastReviewedCommit: 428e1a7f2140cd6b3c8c6222b207cca40ee6dcdd
+lastReviewedCommit: 924b053cf3fbaf4dc64fe51f405075591a1c7a25
 lastReviewedNote: 'Reviewed Platform #1120 after integrating current dev: Open Data catalog filtering and publication do not change lifecycle-model calculation behavior or ownership.'
 ---
 
@@ -111,6 +111,8 @@ Failures throw `CalculationError` (typed `code` plus locatable `issues`) or `Cal
 - Process exchange editors accept multiple explicit product targets using existing `allocations.allocation` arrays. Target options require exact Flow-version evidence of `Product flow`; elementary, waste and unverified revisions are not new product targets. Existing unresolved entries stay visible for repair.
 - Batch allocation fills only unconfigured selected exchanges by default; explicit replacement uses the same target/share rules and commits the complete update atomically. Existing legacy shares cannot silently mix with targeted vectors.
 - `src/services/processes/allocation.ts` owns lossless object/array percentage normalization and authoring validation. Explicit vectors total 100% within 0.0010000001 percentage points, matching matrix closure tolerance. Process create/edit never inject legacy 100% output shares into an undeclared exchange.
+- Exchange internal IDs remain stable after deletion; new IDs must avoid both existing rows and dangling allocation targets. Deleting a product referenced by other exchanges is blocked with the dependent exchange names/IDs.
+- Allocation diagnostics identify each affected exchange, its targets and the reason. An unchanged inherited allocation graph may be saved as an unverified repair draft while unrelated fields are edited; new or changed invalid allocations and unavailable product verification block save. Validation, review and Model calculation always require valid allocations, including exact product-version verification. Copy, import and version creation preserve repairable inherited data without marking it rule-verified.
 - Process serialization, rehydration and views preserve every allocation, including zero shares. Source exchange amounts are unchanged by editing allocation.
 - Generated primary/secondary Process exchanges already contain allocated quantities. `util_calculate.ts` clears inherited `allocations`; saving/reopening the generated Process must preserve that absence. Equivalent-scale reuse must reproduce the existing inventory, not multiply its original shares again.
 - Input-reference treatment models retain their existing pivot behavior. Product allocation authoring requires verified product outputs; this feature does not reinterpret an input reference as an output product.

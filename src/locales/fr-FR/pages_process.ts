@@ -1,4 +1,14 @@
 export default {
+  'pages.process.allocation.reason.target': 'La cible est absente ou ne constitue pas une sortie de produit vérifiée.',
+  'pages.process.allocation.reason.duplicate': 'Une cible est répétée.',
+  'pages.process.allocation.reason.fraction': 'Chaque part doit être un nombre compris entre 0 et 100.',
+  'pages.process.allocation.reason.total': 'La somme des parts doit être égale à 100 %.',
+  'pages.process.allocation.reason.mixed': 'Les anciennes parts et les allocations ciblées ne peuvent pas être mélangées.',
+  'pages.process.allocation.reason.legacyInput': 'Les anciennes parts ne sont valables que pour les sorties.',
+  'pages.process.allocation.reason.unverified': 'Les produits cibles n’ont pas pu être vérifiés. Rouvrez pour réessayer.',
+  'pages.process.allocation.deleteReferenced': 'Ce produit est utilisé dans des allocations. Modifiez les échanges suivants avant de le supprimer :',
+  'pages.process.allocation.draftRetained': 'Enregistré comme brouillon avec les problèmes d’allocation existants. Corrigez-les avant validation, révision ou calcul.',
+
   'pages.process.allocation.default': 'Sans allocation, cet échange est entièrement attribué au produit de référence.',
   'pages.process.allocation.legacy': 'Les parts historiques sont conservées. Convertissez tous les échanges concernés avant de définir des allocations par produit.',
   'pages.process.allocation.loadFailed': 'Impossible de vérifier les produits cibles. Rouvrez la fenêtre pour réessayer.',

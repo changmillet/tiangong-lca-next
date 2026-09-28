@@ -1,4 +1,14 @@
 export default {
+  'pages.process.allocation.reason.target': 'The target is missing or is not a verified product output.',
+  'pages.process.allocation.reason.duplicate': 'A target is repeated.',
+  'pages.process.allocation.reason.fraction': 'Each share must be a number from 0 to 100.',
+  'pages.process.allocation.reason.total': 'Shares must total 100%.',
+  'pages.process.allocation.reason.mixed': 'Legacy shares and target allocations cannot be mixed.',
+  'pages.process.allocation.reason.legacyInput': 'Legacy shares are only valid on outputs.',
+  'pages.process.allocation.reason.unverified': 'Product targets could not be verified. Reopen to retry.',
+  'pages.process.allocation.deleteReferenced': 'This product is used by allocations. Update the following exchanges before deleting it:',
+  'pages.process.allocation.draftRetained': 'Saved as a draft with existing allocation issues. Repair these before validation, review or calculation.',
+
   'pages.process.allocation.default': 'Without an allocation, this exchange belongs entirely to the reference product.',
   'pages.process.allocation.legacy': 'Legacy product shares are preserved. Convert all affected exchanges together before using target allocations.',
   'pages.process.allocation.loadFailed': 'Product targets could not be verified. Reopen to retry.',

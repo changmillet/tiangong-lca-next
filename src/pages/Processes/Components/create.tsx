@@ -1,4 +1,11 @@
-import { verifyAllocationProducts } from '@/services/processes/allocationTargets';
+import {
+  canRetainAllocationDraft,
+  nextExchangeId,
+  type AllocationProblem,
+} from '@/services/processes/allocation';
+import AllocationIssues from './Exchange/allocationIssues';
+import { allocationProblemText } from './Exchange/allocationFeedback';
+import { verifyAllocationProductProblems } from '@/services/processes/allocationTargets';
 // import { checkRequiredFields } from '@/pages/Utils';
 import {
   formatDateTime,
@@ -73,6 +80,16 @@ const ProcessCreate: FC<CreateProps> = ({
   const [fromData, setFromData] = useState<FormProcessWithId>();
   const [initData, setInitData] = useState<FormProcessWithId>();
   const [exchangeDataSource, setExchangeDataSource] = useState<ProcessExchangeData[]>([]);
+  const [allocationProblems, setAllocationProblems] = useState<AllocationProblem[]>([]);
+  useEffect(() => {
+    let active = true;
+    void verifyAllocationProductProblems(exchangeDataSource).then((problems) => {
+      if (active) setAllocationProblems(problems);
+    });
+    return () => {
+      active = false;
+    };
+  }, [exchangeDataSource]);
   const [spinning, setSpinning] = useState<boolean>(false);
   const intl = useIntl();
   const importedId = getImportedId(importData?.[0]);
@@ -114,7 +131,7 @@ const ProcessCreate: FC<CreateProps> = ({
     // if (fromData?.id)
     setExchangeDataSource([
       ...exchangeDataSource,
-      { ...data, '@dataSetInternalID': exchangeDataSource.length.toString() },
+      { ...data, '@dataSetInternalID': nextExchangeId(exchangeDataSource) },
     ]);
   };
 
@@ -331,15 +348,17 @@ const ProcessCreate: FC<CreateProps> = ({
             onFinish={async () => {
               setSpinning(true);
               const paramsId = actionType === 'createVersion' ? (id ?? '') : (importedId ?? v4());
-              const allocationIssue = await verifyAllocationProducts(exchangeDataSource);
-              if (allocationIssue) {
-                message.error(
-                  intl.formatMessage({
-                    id: 'pages.process.allocation.invalid',
-                    defaultMessage:
-                      'Check allocation targets and shares: each explicit allocation must total 100%, and legacy shares cannot be mixed with targeted allocations.',
-                  }),
+              const problems = await verifyAllocationProductProblems(exchangeDataSource);
+              setAllocationProblems(problems);
+              const retainDraft =
+                problems.length > 0 &&
+                !problems.some((problem) => problem.code === 'unverified') &&
+                canRetainAllocationDraft(
+                  initData?.exchanges?.exchange as ProcessExchangeData[] | undefined,
+                  exchangeDataSource,
                 );
+              if (problems.length && !retainDraft) {
+                message.error(allocationProblemText(problems, exchangeDataSource, lang, intl));
                 setSpinning(false);
                 return;
               }
@@ -349,9 +368,29 @@ const ProcessCreate: FC<CreateProps> = ({
               };
               const result =
                 actionType === 'createVersion'
-                  ? await createProcessVersion(id ?? '', version ?? '', processPayload)
-                  : await createProcess(paramsId, processPayload);
+                  ? retainDraft
+                    ? await createProcessVersion(
+                        id ?? '',
+                        version ?? '',
+                        processPayload,
+                        undefined,
+                        { allocationDraft: true },
+                      )
+                    : await createProcessVersion(id ?? '', version ?? '', processPayload)
+                  : retainDraft
+                    ? await createProcess(paramsId, processPayload, undefined, {
+                        allocationDraft: true,
+                      })
+                    : await createProcess(paramsId, processPayload);
               if (result.data) {
+                if (retainDraft)
+                  message.warning(
+                    intl.formatMessage({
+                      id: 'pages.process.allocation.draftRetained',
+                      defaultMessage:
+                        'Saved as a draft with existing allocation issues. Repair these before validation, review or calculation.',
+                    }),
+                  );
                 message.success(
                   intl.formatMessage({
                     id: 'pages.button.create.success',
@@ -375,6 +414,11 @@ const ProcessCreate: FC<CreateProps> = ({
               return true;
             }}
           >
+            <AllocationIssues
+              problems={allocationProblems}
+              exchanges={exchangeDataSource}
+              lang={lang}
+            />
             <ProcessForm
               formType={actionType}
               lang={lang}

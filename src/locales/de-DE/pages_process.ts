@@ -1,4 +1,14 @@
 export default {
+  'pages.process.allocation.reason.target': 'Das Ziel fehlt oder ist kein verifizierter Produktausgang.',
+  'pages.process.allocation.reason.duplicate': 'Ein Ziel ist mehrfach angegeben.',
+  'pages.process.allocation.reason.fraction': 'Jeder Anteil muss eine Zahl zwischen 0 und 100 sein.',
+  'pages.process.allocation.reason.total': 'Die Summe der Anteile muss 100 % betragen.',
+  'pages.process.allocation.reason.mixed': 'Alte Anteile und Zielzuordnungen dürfen nicht gemischt werden.',
+  'pages.process.allocation.reason.legacyInput': 'Alte Anteile sind nur für Ausgänge gültig.',
+  'pages.process.allocation.reason.unverified': 'Produktziele konnten nicht verifiziert werden. Zum erneuten Versuch erneut öffnen.',
+  'pages.process.allocation.deleteReferenced': 'Dieses Produkt wird in Zuordnungen verwendet. Ändern Sie vor dem Löschen die folgenden Austauschvorgänge:',
+  'pages.process.allocation.draftRetained': 'Als Entwurf mit bestehenden Zuordnungsproblemen gespeichert. Beheben Sie diese vor Validierung, Prüfung oder Berechnung.',
+
   'pages.process.allocation.default': 'Ohne Allokation wird dieser Austausch vollständig dem Referenzprodukt zugeordnet.',
   'pages.process.allocation.legacy': 'Bestehende Produktanteile bleiben erhalten. Stellen Sie vor der Zielallokation alle betroffenen Austausche gemeinsam um.',
   'pages.process.allocation.loadFailed': 'Zielprodukte konnten nicht geprüft werden. Öffnen Sie den Dialog erneut.',

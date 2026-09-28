@@ -1128,3 +1128,22 @@ describe('genLifeCycleModelProcesses operation cancellation', () => {
     ).rejects.toMatchObject({ name: 'CalculationCancelledError' });
   });
 });
+
+it('rejects invalid inherited allocations before solving and identifies the source exchange', async () => {
+  const rows = createSupabaseProcesses();
+  (rows[1].exchange[1] as any).allocations.allocation['@allocatedFraction'] = '20%';
+  mockOr.mockResolvedValue({ data: rows });
+  await expect(
+    genLifeCycleModelProcesses(
+      'invalid-draft',
+      createIndexedModelNodes() as any,
+      createLifeCycleModelData(),
+      [],
+    ),
+  ).rejects.toMatchObject({
+    code: 'INVALID_ALLOCATION',
+    issues: expect.arrayContaining([
+      expect.objectContaining({ instanceIndex: 'nodeB', exchangeInternalId: 'exB_out_toA' }),
+    ]),
+  });
+});

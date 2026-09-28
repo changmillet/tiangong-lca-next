@@ -1,4 +1,14 @@
 export default {
+  'pages.process.allocation.reason.target': '目标不存在，或不是已验证的产品输出。',
+  'pages.process.allocation.reason.duplicate': '分配目标重复。',
+  'pages.process.allocation.reason.fraction': '每个分配比例必须是 0 到 100 的数值。',
+  'pages.process.allocation.reason.total': '分配比例合计必须为 100%。',
+  'pages.process.allocation.reason.mixed': '不能混用旧式份额与目标分配。',
+  'pages.process.allocation.reason.legacyInput': '旧式份额仅适用于输出项。',
+  'pages.process.allocation.reason.unverified': '无法验证产品目标，请重新打开后重试。',
+  'pages.process.allocation.deleteReferenced': '此产品仍被分配引用，请先修改以下交换项再删除：',
+  'pages.process.allocation.draftRetained': '已保留原有分配问题并保存为草稿，请修复后再校验、送审或计算。',
+
   'pages.process.allocation.default': '未设置分配时，此交换项全部归属于参考产品。',
   'pages.process.allocation.legacy': '保留旧式产品份额。使用目标分配前，请一并转换所有相关交换项。',
   'pages.process.allocation.loadFailed': '无法核实目标产品，请重新打开后重试。',

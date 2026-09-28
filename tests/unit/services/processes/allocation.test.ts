@@ -1,5 +1,9 @@
 import {
   allocationEntries,
+  allocationDependents,
+  nextExchangeId,
+  canRetainAllocationDraft,
+  collectAllocationProblems,
   applyBatchAllocation,
   hasAllocation,
   isLegacyAllocation,
@@ -146,4 +150,49 @@ describe('Process allocation authoring contract', () => {
       'mixed',
     );
   });
+});
+
+it('reserves existing identities and dangling targets when adding exchanges', () => {
+  const rows = [
+    {
+      '@dataSetInternalID': '0',
+      allocations: {
+        allocation: [{ '@internalReferenceToCoProduct': '1', '@allocatedFraction': '100' }],
+      },
+    },
+  ];
+  expect(nextExchangeId(rows)).toBe('2');
+  expect(nextExchangeId([])).toBe('0');
+  expect(allocationDependents(rows, '1')).toEqual(rows);
+  expect(allocationDependents(rows, '0')).toEqual([]);
+  expect(collectAllocationProblems(rows)).toEqual([
+    { code: 'target', exchangeId: '0', targetIds: ['1'] },
+  ]);
+});
+
+it('allows only unchanged inherited allocation structure to be retained as a repairable draft', () => {
+  const original = [
+    {
+      '@dataSetInternalID': '0',
+      exchangeDirection: 'Output',
+      quantitativeReference: true,
+      referenceToFlowDataSet: [{ '@refObjectId': 'a', '@version': '1' }],
+      allocations: { allocation: { '@allocatedFraction': '70%' } },
+    },
+  ];
+  expect(canRetainAllocationDraft(original, [{ ...original[0], meanAmount: '12' }])).toBe(true);
+  expect(canRetainAllocationDraft(undefined, original)).toBe(false);
+  expect(canRetainAllocationDraft([], original)).toBe(false);
+  expect(canRetainAllocationDraft(original, [{ ...original[0], allocations: undefined }])).toBe(
+    false,
+  );
+  expect(
+    canRetainAllocationDraft(original, [
+      { ...original[0], referenceToFlowDataSet: { '@refObjectId': 'b', '@version': '1' } },
+    ]),
+  ).toBe(false);
+  expect(
+    canRetainAllocationDraft(original, [{ ...original[0], referenceToFlowDataSet: undefined }]),
+  ).toBe(false);
+  expect(canRetainAllocationDraft(original, [])).toBe(false);
 });

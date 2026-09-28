@@ -1,3 +1,5 @@
+import { allocationDependents } from '@/services/processes/allocation';
+import { exchangeLabel } from './allocationEditor';
 import { ProcessExchangeData } from '@/services/processes/data';
 import { DeleteOutlined } from '@ant-design/icons';
 import { Button, Modal, Tooltip, App } from 'antd';
@@ -13,6 +15,7 @@ type Props = {
   setViewDrawerVisible: React.Dispatch<React.SetStateAction<boolean>>;
   onData: (data: ProcessExchangeData[]) => void;
   disabled?: boolean;
+  lang?: string;
 };
 
 const ProcessExchangeDelete: FC<Props> = ({
@@ -23,6 +26,7 @@ const ProcessExchangeDelete: FC<Props> = ({
   setViewDrawerVisible,
   onData,
   disabled = false,
+  lang = 'en',
 }) => {
   const { message } = App.useApp();
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -33,15 +37,18 @@ const ProcessExchangeDelete: FC<Props> = ({
   }, []);
 
   const handleOk = useCallback(() => {
-    const filteredData = data.filter((item) => item['@dataSetInternalID'] !== id);
-    onData(
-      filteredData.map((item, index: number) => {
-        return {
-          ...item,
-          '@dataSetInternalID': index.toString(),
-        };
-      }),
-    );
+    const affected = allocationDependents(data, id);
+    if (affected.length) {
+      message.error(
+        `${intl.formatMessage({
+          id: 'pages.process.allocation.deleteReferenced',
+          defaultMessage:
+            'This product is used by allocations. Update the following exchanges before deleting it:',
+        })} ${affected.map((exchange) => exchangeLabel(exchange, lang)).join(', ')}`,
+      );
+      return;
+    }
+    onData(data.filter((item) => item['@dataSetInternalID'] !== id));
     message.success(
       intl.formatMessage({
         id: 'pages.button.delete.success',
@@ -51,7 +58,7 @@ const ProcessExchangeDelete: FC<Props> = ({
     setViewDrawerVisible(false);
     setIsModalVisible(false);
     // actionRef.current?.reload();
-  }, [id, setViewDrawerVisible]);
+  }, [data, id, intl, lang, message, onData, setViewDrawerVisible]);
 
   const handleCancel = useCallback(() => {
     setIsModalVisible(false);

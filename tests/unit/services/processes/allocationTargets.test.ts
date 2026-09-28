@@ -1,4 +1,7 @@
-import { verifyAllocationProducts } from '@/services/processes/allocationTargets';
+import {
+  verifyAllocationProducts,
+  verifyAllocationProductProblems,
+} from '@/services/processes/allocationTargets';
 type ProcessExchangeData = import('@/services/processes/data').ProcessExchangeData;
 
 const mockGetFlowProperties = jest.fn();
@@ -60,4 +63,18 @@ it('supports array references and refuses missing reference identity', async () 
   expect(await verifyAllocationProducts(rows)).toBeUndefined();
   rows[0].referenceToFlowDataSet = undefined;
   expect(await verifyAllocationProducts(rows)).toBe('target');
+});
+
+it('reports every dependent exchange when the exact target is invalid or unverifiable', async () => {
+  const rows = [...fixture(), { ...fixture()[1], '@dataSetInternalID': '3' }];
+  mockGetFlowProperties.mockResolvedValue({ data: [] });
+  expect(await verifyAllocationProductProblems(rows)).toEqual([
+    { code: 'target', exchangeId: '2', targetIds: ['1'] },
+    { code: 'target', exchangeId: '3', targetIds: ['1'] },
+  ]);
+  mockGetFlowProperties.mockResolvedValue(undefined);
+  expect((await verifyAllocationProductProblems(rows)).map((issue) => issue.code)).toEqual([
+    'unverified',
+    'unverified',
+  ]);
 });

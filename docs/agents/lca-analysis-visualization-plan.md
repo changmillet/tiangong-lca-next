@@ -21,7 +21,7 @@ checkPaths:
   - src/pages/Processes/Analysis/**
   - src/components/LcaTaskCenter/**
 lastReviewedAt: 2026-09-28
-lastReviewedCommit: 428e1a7f2140cd6b3c8c6222b207cca40ee6dcdd
+lastReviewedCommit: 924b053cf3fbaf4dc64fe51f405075591a1c7a25
 lastReviewedNote: 'Reviewed Platform #1120 after integrating current dev: Open Data catalog filtering and Process publication do not change the proposed LCA analysis or visualization contract.'
 ---
 

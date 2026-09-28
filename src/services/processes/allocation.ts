@@ -65,7 +65,12 @@ export const validateAllocation = (
     if (!targetIds.has(target)) return 'target';
     if (seen.has(target)) return 'duplicate';
     seen.add(target);
-    const raw = String(entry['@allocatedFraction'] ?? '')
+    const raw = String(
+      typeof entry['@allocatedFraction'] === 'number' ||
+        typeof entry['@allocatedFraction'] === 'string'
+        ? entry['@allocatedFraction']
+        : '',
+    )
       .replace('%', '')
       .trim();
     const share = Number(raw);
@@ -75,45 +80,118 @@ export const validateAllocation = (
   return Math.abs(sum - 100) > ALLOCATION_PERCENT_TOLERANCE ? 'total' : undefined;
 };
 
-export const validateProcessAllocations = (
+export type AllocationProblem = {
+  code: AllocationIssue | 'unverified';
+  exchangeId: string;
+  targetIds: string[];
+};
+
+export const allocationTargetIds = (exchange: ProcessExchangeData) =>
+  allocationEntries(exchange.allocations?.allocation)
+    .map((entry) => String(entry['@internalReferenceToCoProduct'] ?? '').trim())
+    .filter(Boolean);
+
+export const allocationDependents = (exchanges: ProcessExchangeData[], targetId: string) =>
+  exchanges.filter(
+    (exchange) =>
+      String(exchange['@dataSetInternalID']) !== targetId &&
+      allocationTargetIds(exchange).includes(targetId),
+  );
+
+// Do not recycle a dangling target ID when adding a row to a repairable draft.
+export const nextExchangeId = (exchanges: ProcessExchangeData[]) => {
+  const reserved = new Set(
+    exchanges.flatMap((exchange) => [
+      String(exchange['@dataSetInternalID']),
+      ...allocationTargetIds(exchange),
+    ]),
+  );
+  let id = 0;
+  while (reserved.has(String(id))) id += 1;
+  return String(id);
+};
+
+export const collectAllocationProblems = (
   exchanges: ProcessExchangeData[],
-): AllocationIssue | undefined => {
+): AllocationProblem[] => {
   const declared = exchanges.filter((exchange) => hasAllocation(exchange.allocations?.allocation));
   const legacy = declared.filter((exchange) =>
     isLegacyAllocation(exchange.allocations?.allocation),
   );
-  if (legacy.length && legacy.length !== declared.length) return 'mixed';
+  const problem = (exchange: ProcessExchangeData, code: AllocationIssue): AllocationProblem => ({
+    code,
+    exchangeId: String(exchange['@dataSetInternalID']),
+    targetIds: allocationTargetIds(exchange),
+  });
+  if (legacy.length && legacy.length !== declared.length)
+    return declared.map((exchange) => problem(exchange, 'mixed'));
   if (legacy.length) {
-    if (legacy.some((exchange) => exchange.exchangeDirection?.toUpperCase() !== 'OUTPUT'))
-      return 'legacyInput';
-    const shares = legacy
-      .flatMap((exchange) => allocationEntries(exchange.allocations?.allocation))
-      .map((entry) =>
-        Number(
-          typeof entry['@allocatedFraction'] === 'number'
+    const inputs = legacy.filter(
+      (exchange) => exchange.exchangeDirection?.toUpperCase() !== 'OUTPUT',
+    );
+    if (inputs.length) return inputs.map((exchange) => problem(exchange, 'legacyInput'));
+    let sum = 0;
+    const invalid = legacy.filter((exchange) => {
+      let bad = false;
+      for (const entry of allocationEntries(exchange.allocations?.allocation)) {
+        const raw = String(
+          typeof entry['@allocatedFraction'] === 'number' ||
+            typeof entry['@allocatedFraction'] === 'string'
             ? entry['@allocatedFraction']
-            : typeof entry['@allocatedFraction'] === 'string'
-              ? entry['@allocatedFraction'].replace('%', '')
-              : NaN,
-        ),
-      );
-    if (shares.some((share) => !Number.isFinite(share) || share < 0 || share > 100))
-      return 'fraction';
-    return Math.abs(shares.reduce((sum, share) => sum + share, 0) - 100) >
-      ALLOCATION_PERCENT_TOLERANCE
-      ? 'total'
-      : undefined;
+            : '',
+        )
+          .replace('%', '')
+          .trim();
+        const share = Number(raw);
+        if (!raw || !Number.isFinite(share) || share < 0 || share > 100) bad = true;
+        sum += share;
+      }
+      return bad;
+    });
+    if (invalid.length) return invalid.map((exchange) => problem(exchange, 'fraction'));
+    return Math.abs(sum - 100) > ALLOCATION_PERCENT_TOLERANCE
+      ? legacy.map((exchange) => problem(exchange, 'total'))
+      : [];
   }
   const targets = new Set(
     exchanges
       .filter((exchange) => exchange.exchangeDirection?.toUpperCase() === 'OUTPUT')
       .map((exchange) => String(exchange['@dataSetInternalID'])),
   );
-  for (const exchange of declared) {
+  return declared.flatMap((exchange) => {
     const issue = validateAllocation(exchange.allocations?.allocation, targets);
-    if (issue) return issue;
-  }
-  return undefined;
+    return issue ? [problem(exchange, issue)] : [];
+  });
+};
+
+export const validateProcessAllocations = (exchanges: ProcessExchangeData[]) =>
+  collectAllocationProblems(exchanges)[0]?.code;
+
+// A plain save may retain existing allocation problems while unrelated fields
+// are repaired. Changes to allocation identities, targets or shares are never
+// authorized by this exception; validation/review always use the strict path.
+export const canRetainAllocationDraft = (
+  original: ProcessExchangeData[] | undefined,
+  current: ProcessExchangeData[],
+) => {
+  if (!original?.length) return false;
+  const signature = (rows: ProcessExchangeData[]) =>
+    JSON.stringify(
+      rows.map((exchange) => {
+        const reference = Array.isArray(exchange.referenceToFlowDataSet)
+          ? exchange.referenceToFlowDataSet[0]
+          : exchange.referenceToFlowDataSet;
+        return {
+          id: exchange['@dataSetInternalID'],
+          direction: exchange.exchangeDirection,
+          reference: exchange.quantitativeReference,
+          flowId: reference?.['@refObjectId'],
+          flowVersion: reference?.['@version'],
+          allocation: normalizeAllocation(exchange.allocations?.allocation),
+        };
+      }),
+    );
+  return signature(original) === signature(current);
 };
 
 export const applyBatchAllocation = (

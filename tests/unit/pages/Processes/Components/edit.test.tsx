@@ -740,6 +740,67 @@ describe('ProcessEdit component', () => {
     );
   });
 
+  it('retains an unchanged inherited allocation problem as an unverified draft but blocks review', async () => {
+    const draft = {
+      ...processDataset,
+      exchanges: {
+        exchange: [
+          {
+            ...processDataset.exchanges.exchange[0],
+            allocations: { allocation: { '@allocatedFraction': '70' } },
+          },
+        ],
+      },
+    };
+    mockGenProcessFromData.mockReturnValue(draft);
+    render(<ProcessEdit {...baseProps} />);
+    fireEvent.click(screen.getByRole('button'));
+    await waitFor(() =>
+      expect(latestProcessFormProps.exchangeDataSource[0]?.allocations).toBeDefined(),
+    );
+    await act(async () => {
+      await proFormApi?.submit();
+    });
+    expect(mockUpdateProcess).toHaveBeenCalledWith(
+      'process-1',
+      '1.0.0',
+      expect.anything(),
+      undefined,
+      { allocationDraft: true },
+    );
+    expect(mockAntdMessage.warning).toHaveBeenCalledWith(
+      expect.stringContaining('Saved as a draft'),
+    );
+  });
+
+  it('never submits an inherited invalid allocation through validation fallback', async () => {
+    const draft = {
+      ...processDataset,
+      exchanges: {
+        exchange: [
+          {
+            ...processDataset.exchanges.exchange[0],
+            allocations: { allocation: { '@allocatedFraction': '70' } },
+          },
+        ],
+      },
+    };
+    mockGenProcessFromData.mockReturnValue(draft);
+    render(<ProcessEdit {...baseProps} autoOpen autoCheckRequired />);
+    await screen.findByRole('dialog', { name: 'Edit process' });
+    await waitFor(() =>
+      expect(latestProcessFormProps.exchangeDataSource[0]?.allocations).toBeDefined(),
+    );
+    await act(async () => {
+      await new Promise((resolve) => {
+        setTimeout(resolve, 0);
+      });
+    });
+    expect(mockUpdateProcess).not.toHaveBeenCalled();
+    expect(mockSubmitDatasetReview).not.toHaveBeenCalled();
+    expect(mockValidateDatasetWithSdk).not.toHaveBeenCalled();
+  });
+
   it('blocks submission when allocated fractions exceed 100%', async () => {
     render(<ProcessEdit {...baseProps} />);
 
@@ -766,7 +827,7 @@ describe('ProcessEdit component', () => {
 
     expect(mockUpdateProcess).not.toHaveBeenCalled();
     expect(mockAntdMessage.error).toHaveBeenCalledWith(
-      'Check allocation targets and shares: each explicit allocation must total 100%, and legacy shares cannot be mixed with targeted allocations.',
+      expect.stringContaining('Each share must be a number from 0 to 100.'),
     );
   });
 

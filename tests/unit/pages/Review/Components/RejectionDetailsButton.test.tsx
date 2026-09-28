@@ -32,11 +32,11 @@ jest.mock('antd', () => {
         {children}
       </section>
     ) : null;
-  const Descriptions = ({ items }: any) => (
+  const Descriptions = ({ items, styles }: any) => (
     <dl>
       {items.map((item: any) => (
         <div key={item.key}>
-          <dt>{item.label}</dt>
+          <dt style={styles?.label}>{item.label}</dt>
           <dd>{item.children}</dd>
         </div>
       ))}
@@ -115,6 +115,11 @@ describe('RejectionDetailsButton', () => {
     expect(screen.getByText('Reviewer B')).toBeInTheDocument();
     expect(screen.getByText('Assignment revoked')).toBeInTheDocument();
     expect(screen.queryByText('2')).not.toBeInTheDocument();
+    for (const label of ['Source', 'Reason', 'Submitted at']) {
+      for (const element of screen.getAllByText(label)) {
+        expect(element).toHaveStyle({ width: '96px', whiteSpace: 'nowrap' });
+      }
+    }
     expect(screen.getByText('Admin final reason')).toHaveStyle({
       lineHeight: '1.5715',
       maxHeight: '15.715em',

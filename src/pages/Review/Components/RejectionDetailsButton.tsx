@@ -15,6 +15,7 @@ type DisplayRejectionDetail = ReviewRejectionDetail & {
 
 const REJECTION_REASON_MAX_LINES = 10;
 const REJECTION_REASON_LINE_HEIGHT = 1.5715;
+const REJECTION_DETAIL_LABEL_WIDTH = 96;
 
 export default function RejectionDetailsButton({ reviewId }: RejectionDetailsButtonProps) {
   const intl = useIntl();
@@ -122,6 +123,12 @@ export default function RejectionDetailsButton({ reviewId }: RejectionDetailsBut
                   bordered
                   size='small'
                   column={1}
+                  styles={{
+                    label: {
+                      width: REJECTION_DETAIL_LABEL_WIDTH,
+                      whiteSpace: 'nowrap',
+                    },
+                  }}
                   items={[
                     {
                       key: 'source',

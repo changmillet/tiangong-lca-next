@@ -13,6 +13,9 @@ type DisplayRejectionDetail = ReviewRejectionDetail & {
   actorName: string;
 };
 
+const REJECTION_REASON_MAX_LINES = 10;
+const REJECTION_REASON_LINE_HEIGHT = 1.5715;
+
 export default function RejectionDetailsButton({ reviewId }: RejectionDetailsButtonProps) {
   const intl = useIntl();
   const [open, setOpen] = useState(false);
@@ -160,6 +163,9 @@ export default function RejectionDetailsButton({ reviewId }: RejectionDetailsBut
                         <Typography.Paragraph
                           style={{
                             marginBottom: 0,
+                            lineHeight: REJECTION_REASON_LINE_HEIGHT,
+                            maxHeight: `${REJECTION_REASON_MAX_LINES * REJECTION_REASON_LINE_HEIGHT}em`,
+                            overflowY: 'auto',
                             whiteSpace: 'pre-wrap',
                             overflowWrap: 'anywhere',
                           }}

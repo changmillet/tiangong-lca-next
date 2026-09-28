@@ -44,7 +44,9 @@ jest.mock('antd', () => {
   );
   const Empty = ({ description }: any) => <div>{description}</div>;
   Empty.PRESENTED_IMAGE_SIMPLE = 'simple';
-  const Typography = { Paragraph: ({ children }: any) => <p>{children}</p> };
+  const Typography = {
+    Paragraph: ({ children, ...props }: any) => <p {...props}>{children}</p>,
+  };
   return {
     __esModule: true,
     Button,
@@ -113,6 +115,11 @@ describe('RejectionDetailsButton', () => {
     expect(screen.getByText('Reviewer B')).toBeInTheDocument();
     expect(screen.getByText('Assignment revoked')).toBeInTheDocument();
     expect(screen.queryByText('2')).not.toBeInTheDocument();
+    expect(screen.getByText('Admin final reason')).toHaveStyle({
+      lineHeight: '1.5715',
+      maxHeight: '15.715em',
+      overflowY: 'auto',
+    });
 
     fireEvent.click(screen.getByRole('button', { name: 'Close rejection reasons' }));
     expect(screen.queryByTestId('drawer')).not.toBeInTheDocument();

@@ -943,7 +943,9 @@ describe('ProcessEdit component', () => {
     fireEvent.click(screen.getByRole('button'));
     await screen.findByRole('dialog', { name: 'Edit process' });
 
-    fireEvent.click(screen.getByRole('button', { name: 'close-suggestion' }));
+    await act(async () => {
+      fireEvent.click(screen.getByRole('button', { name: 'close-suggestion' }));
+    });
 
     expect(proFormApi?.getFieldsValue()).toEqual(
       expect.objectContaining({
@@ -968,7 +970,9 @@ describe('ProcessEdit component', () => {
 
     fireEvent.click(screen.getByRole('button'));
     await screen.findByRole('dialog', { name: 'Edit process' });
-    fireEvent.click(screen.getByRole('button', { name: 'close-suggestion' }));
+    await act(async () => {
+      fireEvent.click(screen.getByRole('button', { name: 'close-suggestion' }));
+    });
 
     expect(proFormApi?.getFieldsValue()).toEqual(
       expect.objectContaining({
@@ -990,7 +994,9 @@ describe('ProcessEdit component', () => {
 
     fireEvent.click(screen.getByRole('button'));
     await screen.findByRole('dialog', { name: 'Edit process' });
-    fireEvent.click(screen.getByRole('button', { name: 'close-suggestion' }));
+    await act(async () => {
+      fireEvent.click(screen.getByRole('button', { name: 'close-suggestion' }));
+    });
 
     expect(proFormApi?.getFieldsValue()).toEqual(
       expect.objectContaining({
@@ -2488,15 +2494,19 @@ describe('ProcessEdit component', () => {
     await waitFor(() => expect(mockUpdateProcess).toHaveBeenCalled());
   });
 
-  it('renders the result toolbar button as disabled when no process id is available', () => {
-    render(<ProcessEdit {...baseProps} id='' buttonType='toolResultIcon' />);
+  it('renders the result toolbar button as disabled when no process id is available', async () => {
+    await act(async () => {
+      render(<ProcessEdit {...baseProps} id='' buttonType='toolResultIcon' />);
+    });
 
     expect(screen.getByRole('button')).toBeDisabled();
     expect(screen.queryByRole('dialog', { name: 'Edit process' })).not.toBeInTheDocument();
   });
 
-  it('renders the tool-icon trigger as disabled when requested', () => {
-    render(<ProcessEdit {...baseProps} buttonType='toolIcon' disabled />);
+  it('renders the tool-icon trigger as disabled when requested', async () => {
+    await act(async () => {
+      render(<ProcessEdit {...baseProps} buttonType='toolIcon' disabled />);
+    });
 
     expect(screen.getByRole('button')).toBeDisabled();
   });

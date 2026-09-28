@@ -1,5 +1,12 @@
+import {
+  canRetainAllocationDraft,
+  nextExchangeId,
+  type AllocationProblem,
+} from '@/services/processes/allocation';
+import AllocationIssues from './Exchange/allocationIssues';
+import { allocationProblemText } from './Exchange/allocationFeedback';
+import { verifyAllocationProductProblems } from '@/services/processes/allocationTargets';
 // import { checkRequiredFields } from '@/pages/Utils';
-import { toBigNumberOrZero } from '@/services/general/bignumber';
 import {
   formatDateTime,
   getImportedId,
@@ -21,7 +28,6 @@ import ToolBarButton from '@/components/ToolBarButton';
 import { LCIAResultTable } from '@/services/lciaMethods/data';
 import {
   FormProcess,
-  getFirstProcessExchangeAllocation,
   ProcessDataSetObjectKeys,
   ProcessDetailResponse,
   ProcessExchangeData,
@@ -74,6 +80,16 @@ const ProcessCreate: FC<CreateProps> = ({
   const [fromData, setFromData] = useState<FormProcessWithId>();
   const [initData, setInitData] = useState<FormProcessWithId>();
   const [exchangeDataSource, setExchangeDataSource] = useState<ProcessExchangeData[]>([]);
+  const [allocationProblems, setAllocationProblems] = useState<AllocationProblem[]>([]);
+  useEffect(() => {
+    let active = true;
+    void verifyAllocationProductProblems(exchangeDataSource).then((problems) => {
+      if (active) setAllocationProblems(problems);
+    });
+    return () => {
+      active = false;
+    };
+  }, [exchangeDataSource]);
   const [spinning, setSpinning] = useState<boolean>(false);
   const intl = useIntl();
   const importedId = getImportedId(importData?.[0]);
@@ -115,7 +131,7 @@ const ProcessCreate: FC<CreateProps> = ({
     // if (fromData?.id)
     setExchangeDataSource([
       ...exchangeDataSource,
-      { ...data, '@dataSetInternalID': exchangeDataSource.length.toString() },
+      { ...data, '@dataSetInternalID': nextExchangeId(exchangeDataSource) },
     ]);
   };
 
@@ -332,54 +348,49 @@ const ProcessCreate: FC<CreateProps> = ({
             onFinish={async () => {
               setSpinning(true);
               const paramsId = actionType === 'createVersion' ? (id ?? '') : (importedId ?? v4());
-              const output = exchangeDataSource.filter(
-                (e) => e.exchangeDirection?.toUpperCase() === 'OUTPUT',
-              );
-              let allocatedFractionTotal = toBigNumberOrZero(0);
-              output.forEach((e) => {
-                const allocation = getFirstProcessExchangeAllocation(e?.allocations?.allocation);
-                if (allocation?.['@allocatedFraction']) {
-                  const fraction = allocation['@allocatedFraction']?.toString()?.replace('%', '');
-                  allocatedFractionTotal = allocatedFractionTotal.plus(toBigNumberOrZero(fraction));
-                }
-              });
-              if (allocatedFractionTotal.isEqualTo(0)) {
-                const referenceIndex = output.findIndex(
-                  (e) =>
-                    e.quantitativeReference === true &&
-                    e.exchangeDirection?.toUpperCase() === 'OUTPUT',
+              const problems = await verifyAllocationProductProblems(exchangeDataSource);
+              setAllocationProblems(problems);
+              const retainDraft =
+                problems.length > 0 &&
+                !problems.some((problem) => problem.code === 'unverified') &&
+                canRetainAllocationDraft(
+                  initData?.exchanges?.exchange as ProcessExchangeData[] | undefined,
+                  exchangeDataSource,
                 );
-                if (referenceIndex > -1) {
-                  output[referenceIndex].allocations = {
-                    allocation: {
-                      '@allocatedFraction': '100%',
-                    },
-                  };
-                }
-              }
-
-              if (allocatedFractionTotal.isGreaterThan(100)) {
-                message.error(
-                  intl.formatMessage(
-                    {
-                      id: 'pages.process.validator.allocatedFraction',
-                      defaultMessage:
-                        'The total allocated fraction for outputs cannot exceed 100%. Current total: {total}%.',
-                    },
-                    { total: allocatedFractionTotal.toString() },
-                  ),
-                );
+              if (problems.length && !retainDraft) {
+                message.error(allocationProblemText(problems, exchangeDataSource, lang, intl));
                 setSpinning(false);
                 return;
               }
+
               const processPayload = {
                 ...fromData,
               };
               const result =
                 actionType === 'createVersion'
-                  ? await createProcessVersion(id ?? '', version ?? '', processPayload)
-                  : await createProcess(paramsId, processPayload);
+                  ? retainDraft
+                    ? await createProcessVersion(
+                        id ?? '',
+                        version ?? '',
+                        processPayload,
+                        undefined,
+                        { allocationDraft: true },
+                      )
+                    : await createProcessVersion(id ?? '', version ?? '', processPayload)
+                  : retainDraft
+                    ? await createProcess(paramsId, processPayload, undefined, {
+                        allocationDraft: true,
+                      })
+                    : await createProcess(paramsId, processPayload);
               if (result.data) {
+                if (retainDraft)
+                  message.warning(
+                    intl.formatMessage({
+                      id: 'pages.process.allocation.draftRetained',
+                      defaultMessage:
+                        'Saved as a draft with existing allocation issues. Repair these before validation, review or calculation.',
+                    }),
+                  );
                 message.success(
                   intl.formatMessage({
                     id: 'pages.button.create.success',
@@ -403,6 +414,11 @@ const ProcessCreate: FC<CreateProps> = ({
               return true;
             }}
           >
+            <AllocationIssues
+              problems={allocationProblems}
+              exchanges={exchangeDataSource}
+              lang={lang}
+            />
             <ProcessForm
               formType={actionType}
               lang={lang}

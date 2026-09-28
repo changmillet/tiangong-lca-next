@@ -135,6 +135,42 @@ jest.mock('antd', () => {
 });
 
 describe('ProcessExchangeView', () => {
+  it('shows every target name and zero share, and preserves unresolved legacy entries', async () => {
+    render(
+      <ProcessExchangeView
+        id='input'
+        lang='en'
+        buttonType='text'
+        data={[
+          {
+            '@dataSetInternalID': 'input',
+            exchangeDirection: 'Input',
+            allocations: {
+              allocation: [
+                { '@internalReferenceToCoProduct': 'A', '@allocatedFraction': '0' },
+                { '@internalReferenceToCoProduct': 'B', '@allocatedFraction': '100' },
+                {},
+              ],
+            },
+          },
+          ...['A', 'B'].map((id) => ({
+            '@dataSetInternalID': id,
+            exchangeDirection: 'Output',
+            referenceToFlowDataSet: {
+              'common:shortDescription': [{ '@xml:lang': 'en', '#text': `Product ${id}` }],
+            },
+          })),
+        ]}
+      />,
+    );
+    await userEvent.click(screen.getByRole('button', { name: /view/i }));
+    expect(screen.getByText('Product A (#A)')).toBeInTheDocument();
+    expect(screen.getByText('Product B (#B)')).toBeInTheDocument();
+    expect(screen.getByText('0')).toBeInTheDocument();
+    expect(screen.getByText('100')).toBeInTheDocument();
+    expect(screen.getAllByText('-').length).toBeGreaterThan(0);
+  });
+
   const baseExchange = {
     '@dataSetInternalID': 'ex-1',
     exchangeDirection: 'Input',

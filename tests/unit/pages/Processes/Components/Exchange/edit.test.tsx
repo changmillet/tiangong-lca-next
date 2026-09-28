@@ -1249,3 +1249,9 @@ describe('ProcessExchangeEdit', () => {
     });
   });
 });
+
+// Allocation's real Form/Select behavior is covered in allocation.test.tsx.
+jest.mock('@/pages/Processes/Components/Exchange/allocationField', () => ({
+  __esModule: true,
+  default: () => <div data-testid='allocation-field' />,
+}));

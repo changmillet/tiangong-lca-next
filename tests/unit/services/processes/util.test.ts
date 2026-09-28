@@ -1703,6 +1703,55 @@ describe('Process Utility Functions', () => {
   });
 
   describe('Data Consistency', () => {
+    it('round-trips every targeted allocation and zero shares on reference and ordinary exchanges', () => {
+      const allocation = [
+        { '@internalReferenceToCoProduct': '1', '@allocatedFraction': '0' },
+        { '@internalReferenceToCoProduct': '2', '@allocatedFraction': '100' },
+      ];
+      const data = {
+        exchanges: {
+          exchange: [
+            {
+              '@dataSetInternalID': '1',
+              exchangeDirection: 'Output',
+              quantitativeReference: true,
+              meanAmount: '2',
+              resultingAmount: '2',
+              allocations: { allocation },
+            },
+            {
+              '@dataSetInternalID': '2',
+              exchangeDirection: 'Output',
+              meanAmount: '1',
+              resultingAmount: '1',
+              allocations: { allocation },
+            },
+            {
+              '@dataSetInternalID': '3',
+              exchangeDirection: 'Input',
+              meanAmount: '100',
+              resultingAmount: '100',
+              allocations: {
+                allocation: [
+                  { '@internalReferenceToCoProduct': '1', '@allocatedFraction': '70' },
+                  { '@internalReferenceToCoProduct': '2', '@allocatedFraction': '30' },
+                ],
+              },
+            },
+          ],
+        },
+      };
+      const before = JSON.stringify(data);
+      const saved = genProcessJsonOrdered('allocated', data);
+      const reopened = genProcessFromData(saved.processDataSet);
+      const resaved = genProcessJsonOrdered('allocated-copy', reopened);
+      const actual = resaved.processDataSet.exchanges.exchange as any[];
+      expect(actual.map((exchange) => exchange.allocations.allocation)).toEqual(
+        data.exchanges.exchange.map((exchange) => exchange.allocations.allocation),
+      );
+      expect(JSON.stringify(data)).toBe(before);
+    });
+
     it('should maintain data consistency through genProcessJsonOrdered and genProcessFromData', () => {
       const originalData = {
         processInformation: {

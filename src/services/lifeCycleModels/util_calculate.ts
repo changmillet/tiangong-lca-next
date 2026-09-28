@@ -1,3 +1,4 @@
+import { verifyAllocationProductProblems } from '../processes/allocationTargets';
 import { v4 } from 'uuid';
 import { CONTENT_LANGUAGE_REGISTRY } from '../general/contentLanguageRegistry';
 import { jsonToList, listToJson, mergeLangArrays, removeEmptyObjects } from '../general/util';
@@ -207,6 +208,25 @@ export async function genLifeCycleModelProcesses(
   for (const p of dbProcesses as any[]) {
     const exchanges = jsonToList(p?.exchange);
     const refExchangeId = p?.quantitativeReference?.referenceToReferenceFlow;
+    const allocationProblems = await verifyAllocationProductProblems(
+      exchanges.filter((exchange: any) => toMatrixExchangePayload(exchange).flowId),
+    );
+    if (allocationProblems.length) {
+      throw new CalculationError(
+        'INVALID_ALLOCATION',
+        allocationProblems.flatMap((problem) =>
+          matrixInstances
+            .filter(
+              (instance) => instance.processId === p.id && instance.processVersion === p.version,
+            )
+            .map((instance) => ({
+              code: 'INVALID_ALLOCATION' as const,
+              instanceIndex: instance.instanceIndex,
+              exchangeInternalId: problem.exchangeId,
+            })),
+        ),
+      );
+    }
     dbProcessMap.set(`${p?.id}@${p?.version}`, {
       exchanges,
       refExchangeInternalId: refExchangeId ? String(refExchangeId) : '',

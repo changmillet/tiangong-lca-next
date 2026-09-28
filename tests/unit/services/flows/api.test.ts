@@ -3027,6 +3027,15 @@ describe('getFlowDetail', () => {
 });
 
 describe('getFlowProperties', () => {
+  it('preserves lookup failure so allocation verification cannot treat it as a missing product', async () => {
+    const error = { message: 'lookup unavailable' };
+    mockFrom.mockReturnValue(createQuery({ data: null, error }) as any);
+    const result = await getFlowProperties([
+      { id: '11111111-1111-1111-1111-111111111111', version: '01.00.000' },
+    ]);
+    expect(result).toEqual({ data: [], success: false, error });
+  });
+
   it('returns reference property meta data for each requested flow', async () => {
     const supabaseResult = {
       data: [

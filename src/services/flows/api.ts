@@ -907,10 +907,12 @@ export async function getFlowProperties(params: { id: string; version: string }[
   let ids = _ids.filter((id) => id && id.length === 36);
 
   if (ids.length > 0) {
-    const { data } = await publicEntity('flows')
+    const { data, error } = await publicEntity('flows')
       .select(selectStr)
       .in('id', ids)
       .order('version', { ascending: false });
+
+    if (error) return Promise.resolve({ data: [], success: false, error });
 
     if (data && data.length > 0) {
       result = params.map((item: any) => {

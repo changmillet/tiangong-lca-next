@@ -43,7 +43,8 @@ export const verifyAllocationProductProblems = async (
   if (refs.some((ref) => !ref.id || !ref.version)) return affected(targetIds, 'target');
   try {
     const response = await getFlowProperties(refs);
-    if (!response?.data) return affected(targetIds, 'unverified');
+    if (!response?.data || ('error' in response && response.error))
+      return affected(targetIds, 'unverified');
     const invalidIds = new Set(
       exchanges
         .filter((exchange) => {

@@ -78,3 +78,14 @@ it('reports every dependent exchange when the exact target is invalid or unverif
     'unverified',
   ]);
 });
+
+it('distinguishes a failed lookup from a confirmed missing target', async () => {
+  mockGetFlowProperties.mockResolvedValue({
+    data: [],
+    success: false,
+    error: { message: 'offline' },
+  });
+  expect((await verifyAllocationProductProblems(fixture()))[0].code).toBe('unverified');
+  mockGetFlowProperties.mockResolvedValue({ data: [], error: null });
+  expect((await verifyAllocationProductProblems(fixture()))[0].code).toBe('target');
+});

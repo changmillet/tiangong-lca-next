@@ -3,7 +3,7 @@
   "source": {
     "baseRef": "c26f306e82ac66f50a56aafe8f89ea96c0b0c67d",
     "baseCommit": "c26f306e82ac66f50a56aafe8f89ea96c0b0c67d",
-    "auditedInputDigest": "b2f006d6892397bf8d2f61024899b64936390025c0a9211ce418d853942a900d",
+    "auditedInputDigest": "2ea7685f7f7ca5eeee663583e949bb051abebc7a9af1a11ad3246b4e8edbdfdc",
     "auditedInputDigestAlgorithm": "sha256(path\\0content\\0)",
     "repository": "tiangong-lca/platform"
   },
@@ -236241,7 +236241,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Review/Components/RejectionDetailsButton.tsx",
-          "line": 36,
+          "line": 39,
           "column": 13,
           "symbol": "loadDetails",
           "defaultMessage": null,
@@ -236250,7 +236250,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Review/Components/RejectionDetailsButton.tsx",
-          "line": 132,
+          "line": 135,
           "column": 30,
           "symbol": "RejectionDetailsButton",
           "defaultMessage": null,
@@ -236319,7 +236319,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Review/Components/RejectionDetailsButton.tsx",
-          "line": 95,
+          "line": 98,
           "column": 25,
           "symbol": "RejectionDetailsButton",
           "defaultMessage": "Close rejection reasons",
@@ -236334,7 +236334,7 @@
           "locations": [
             {
               "path": "src/pages/Review/Components/RejectionDetailsButton.tsx",
-              "line": 95,
+              "line": 98,
               "column": 25,
               "kind": "formatMessage"
             }
@@ -236402,7 +236402,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Review/Components/RejectionDetailsButton.tsx",
-          "line": 82,
+          "line": 85,
           "column": 11,
           "symbol": "RejectionDetailsButton",
           "defaultMessage": "Rejection reasons",
@@ -236417,7 +236417,7 @@
           "locations": [
             {
               "path": "src/pages/Review/Components/RejectionDetailsButton.tsx",
-              "line": 82,
+              "line": 85,
               "column": 11,
               "kind": "FormattedMessage"
             }
@@ -236485,7 +236485,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Review/Components/RejectionDetailsButton.tsx",
-          "line": 108,
+          "line": 111,
           "column": 17,
           "symbol": "RejectionDetailsButton",
           "defaultMessage": "No visible rejection reason",
@@ -236500,7 +236500,7 @@
           "locations": [
             {
               "path": "src/pages/Review/Components/RejectionDetailsButton.tsx",
-              "line": 108,
+              "line": 111,
               "column": 17,
               "kind": "FormattedMessage"
             }
@@ -236568,7 +236568,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Review/Components/RejectionDetailsButton.tsx",
-          "line": 155,
+          "line": 158,
           "column": 30,
           "symbol": "RejectionDetailsButton",
           "defaultMessage": "Reason",
@@ -236583,7 +236583,7 @@
           "locations": [
             {
               "path": "src/pages/Review/Components/RejectionDetailsButton.tsx",
-              "line": 155,
+              "line": 158,
               "column": 30,
               "kind": "formatMessage"
             }
@@ -236651,7 +236651,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Review/Components/RejectionDetailsButton.tsx",
-          "line": 36,
+          "line": 39,
           "column": 13,
           "symbol": "loadDetails",
           "defaultMessage": null,
@@ -236660,7 +236660,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Review/Components/RejectionDetailsButton.tsx",
-          "line": 132,
+          "line": 135,
           "column": 30,
           "symbol": "RejectionDetailsButton",
           "defaultMessage": null,
@@ -236729,7 +236729,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Review/Components/RejectionDetailsButton.tsx",
-          "line": 144,
+          "line": 147,
           "column": 31,
           "symbol": "RejectionDetailsButton",
           "defaultMessage": "Assignment revoked",
@@ -236744,7 +236744,7 @@
           "locations": [
             {
               "path": "src/pages/Review/Components/RejectionDetailsButton.tsx",
-              "line": 144,
+              "line": 147,
               "column": 31,
               "kind": "FormattedMessage"
             }
@@ -236812,7 +236812,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Review/Components/RejectionDetailsButton.tsx",
-          "line": 125,
+          "line": 128,
           "column": 30,
           "symbol": "RejectionDetailsButton",
           "defaultMessage": "Source",
@@ -236827,7 +236827,7 @@
           "locations": [
             {
               "path": "src/pages/Review/Components/RejectionDetailsButton.tsx",
-              "line": 125,
+              "line": 128,
               "column": 30,
               "kind": "formatMessage"
             }
@@ -236895,7 +236895,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Review/Components/RejectionDetailsButton.tsx",
-          "line": 175,
+          "line": 181,
           "column": 36,
           "symbol": "RejectionDetailsButton",
           "defaultMessage": "Submitted at",
@@ -236910,7 +236910,7 @@
           "locations": [
             {
               "path": "src/pages/Review/Components/RejectionDetailsButton.tsx",
-              "line": 175,
+              "line": 181,
               "column": 36,
               "kind": "formatMessage"
             }
@@ -236978,7 +236978,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Review/Components/RejectionDetailsButton.tsx",
-          "line": 61,
+          "line": 64,
           "column": 16,
           "symbol": "RejectionDetailsButton",
           "defaultMessage": "View rejection reasons",
@@ -236987,7 +236987,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Review/Components/RejectionDetailsButton.tsx",
-          "line": 72,
+          "line": 75,
           "column": 23,
           "symbol": "RejectionDetailsButton",
           "defaultMessage": "View rejection reasons",
@@ -237002,13 +237002,13 @@
           "locations": [
             {
               "path": "src/pages/Review/Components/RejectionDetailsButton.tsx",
-              "line": 61,
+              "line": 64,
               "column": 16,
               "kind": "formatMessage"
             },
             {
               "path": "src/pages/Review/Components/RejectionDetailsButton.tsx",
-              "line": 72,
+              "line": 75,
               "column": 23,
               "kind": "formatMessage"
             }

@@ -9,7 +9,7 @@ type AllocationEntry = {
 };
 type AllocationValue = AllocationEntry | AllocationEntry[] | undefined;
 
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { Form } from 'antd';
 import { useState } from 'react';
 
@@ -56,8 +56,13 @@ beforeEach(() => {
 });
 
 const chooseTarget = async (index: number, name: string) => {
-  fireEvent.mouseDown(screen.getAllByRole('combobox', { name: 'Target product' })[index]);
-  fireEvent.click((await screen.findAllByText(name)).pop()!);
+  await act(async () => {
+    fireEvent.mouseDown(screen.getAllByRole('combobox', { name: 'Target product' })[index]);
+  });
+  const option = (await screen.findAllByText(name)).pop()!;
+  await act(async () => {
+    fireEvent.click(option);
+  });
 };
 
 describe('allocation forms with real Ant Design controls', () => {
@@ -109,7 +114,9 @@ describe('allocation forms with real Ant Design controls', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Save allocation' }));
     await screen.findByText(/Check allocation targets and shares/);
     expect(finish).not.toHaveBeenCalled();
-    fireEvent.change(screen.getAllByRole('spinbutton')[1], { target: { value: '' } });
+    await act(async () => {
+      fireEvent.change(screen.getAllByRole('spinbutton')[1], { target: { value: '' } });
+    });
     expect(screen.getAllByRole('spinbutton')[1]).toHaveValue('');
   });
 

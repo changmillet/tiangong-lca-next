@@ -48,6 +48,7 @@ import RejectReview from './RejectReview';
 import ReviewLifeCycleModelsDetail from './reviewLifeCycleModels';
 import ReviewProcessDetail from './reviewProcess';
 import ReviewProgress from './ReviewProgress';
+import RejectionDetailsButton from './RejectionDetailsButton';
 import ReviewTaskDetail from './ReviewTaskDetail';
 import SelectReviewer from './SelectReviewer';
 import SimpleReviewActions from './SimpleReviewActions';
@@ -994,14 +995,23 @@ const AssignmentReview = ({
       width: 140,
       render: (_: unknown, record: ReviewsTable) => {
         if (tableType === 'completed') {
-          return record.stateCode === 2 ? (
-            <Tag color='success'>
-              <FormattedMessage id='pages.review.result.approved' defaultMessage='Approved' />
-            </Tag>
-          ) : (
-            <Tag color='error'>
-              <FormattedMessage id='pages.review.result.returned' defaultMessage='Returned' />
-            </Tag>
+          const showRejectionDetails =
+            userData?.role === 'review-admin'
+              ? record.hasRejectionInfo
+              : record.actorHasRejectionInfo;
+          return (
+            <Space size={4} align='center'>
+              {record.stateCode === 2 ? (
+                <Tag color='success'>
+                  <FormattedMessage id='pages.review.result.approved' defaultMessage='Approved' />
+                </Tag>
+              ) : (
+                <Tag color='error'>
+                  <FormattedMessage id='pages.review.result.returned' defaultMessage='Returned' />
+                </Tag>
+              )}
+              {showRejectionDetails && <RejectionDetailsButton reviewId={record.id} />}
+            </Space>
           );
         }
         if (userData?.role === 'review-member') {
@@ -1014,9 +1024,12 @@ const AssignmentReview = ({
           }
           if (record.actorCommentStateCode === -3) {
             return (
-              <Tag color='error'>
-                <FormattedMessage id='pages.review.opinion.reject' defaultMessage='Reject' />
-              </Tag>
+              <Space size={4} align='center'>
+                <Tag color='error'>
+                  <FormattedMessage id='pages.review.opinion.reject' defaultMessage='Reject' />
+                </Tag>
+                {record.actorHasRejectionInfo && <RejectionDetailsButton reviewId={record.id} />}
+              </Space>
             );
           }
           return (
@@ -1115,9 +1128,7 @@ const AssignmentReview = ({
             return (
               <Space size={4} align='center'>
                 {progressLabel}
-                {record.rootMatchesStatus !== false && !isSimpleReview(record) && (
-                  <ReviewProgress reviewId={record.id} />
-                )}
+                {record.rootMatchesStatus !== false && <ReviewProgress reviewId={record.id} />}
               </Space>
             );
           },

@@ -116,6 +116,11 @@ jest.mock('@/pages/Review/Components/ReviewProgress', () => ({
   default: ({ reviewId }: any) => <span data-testid='review-progress'>{reviewId}</span>,
 }));
 
+jest.mock('@/pages/Review/Components/RejectionDetailsButton', () => ({
+  __esModule: true,
+  default: ({ reviewId }: any) => <span data-testid='rejection-details'>{reviewId}</span>,
+}));
+
 jest.mock('@/pages/Review/Components/SelectReviewer', () => ({
   __esModule: true,
   default: ({ reviewIds, tabType, disabled }: any) => (
@@ -2094,10 +2099,74 @@ describe('AssignmentReview', () => {
     expect(screen.queryByRole('link', { name: 'View' })).not.toBeInTheDocument();
 
     expect(screen.queryByRole('button', { name: 'expand-review-contact' })).not.toBeInTheDocument();
-    expect(screen.queryByTestId('review-progress')).not.toBeInTheDocument();
+    expect(screen.getByTestId('review-progress')).toHaveTextContent('review-contact');
     expect(screen.queryByTestId('review-process-detail')).not.toBeInTheDocument();
     expect(screen.queryByTestId('review-lifecycle-detail')).not.toBeInTheDocument();
     expect(mockGetRootReviewReferenceProgress).not.toHaveBeenCalled();
+  });
+
+  it('shows rejection-detail buttons in the status column without a count badge', async () => {
+    mockGetReviewsTableDataOfReviewAdmin.mockResolvedValueOnce({
+      success: true,
+      data: [
+        {
+          id: 'admin-returned',
+          name: 'Returned review',
+          stateCode: -1,
+          hasRejectionInfo: true,
+          reviewKind: 'root',
+          targetTable: 'contacts',
+          json: { data: { id: 'contact-1', version: '1.0.0' }, user: {} },
+        },
+      ],
+      total: 1,
+    });
+
+    const { unmount } = render(
+      <AssignmentReview
+        userData={{ user_id: 'admin-1', role: 'review-admin' }}
+        tableType='completed'
+        actionRef={{ current: { reload: jest.fn() } }}
+      />,
+    );
+
+    expect(await screen.findByText('Returned')).toBeInTheDocument();
+    expect(screen.getByTestId('column-admin-returned-stateCode')).toContainElement(
+      screen.getByTestId('rejection-details'),
+    );
+    expect(screen.getByTestId('rejection-details')).toHaveTextContent('admin-returned');
+    unmount();
+
+    mockGetReviewsTableDataOfReviewMember.mockResolvedValueOnce({
+      success: true,
+      data: [
+        {
+          id: 'member-rejected',
+          name: 'Submitted opinion',
+          stateCode: 1,
+          actorCommentStateCode: -3,
+          actorHasRejectionInfo: true,
+          reviewKind: 'reference',
+          targetTable: 'contacts',
+          json: { data: { id: 'contact-2', version: '1.0.0' }, user: {} },
+        },
+      ],
+      total: 1,
+    });
+
+    render(
+      <AssignmentReview
+        userData={{ user_id: 'member-1', role: 'review-member' }}
+        tableType='submitted'
+        actionRef={{ current: { reload: jest.fn() } }}
+      />,
+    );
+
+    expect(await screen.findByText('Reject')).toBeInTheDocument();
+    expect(screen.getByTestId('column-member-rejected-stateCode')).toContainElement(
+      screen.getByTestId('rejection-details'),
+    );
+    expect(screen.queryByText(/^\d+$/)).not.toBeInTheDocument();
   });
 
   it('renders unit-group and flow-property views for flat reference rows', async () => {

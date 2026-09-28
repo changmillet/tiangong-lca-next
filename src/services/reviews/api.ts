@@ -161,6 +161,8 @@ type ReviewItemRpcRow = {
   completed_reviewer_count?: number | null;
   approve_opinion_count?: number | null;
   reject_opinion_count?: number | null;
+  has_rejection_info?: boolean;
+  actor_has_rejection_info?: boolean;
 };
 
 export type RootReviewReferenceProgress = {
@@ -205,7 +207,16 @@ type ReviewMemberQueueRpcRow = {
   completed_reviewer_count?: number | null;
   approve_opinion_count?: number | null;
   reject_opinion_count?: number | null;
+  actor_has_rejection_info?: boolean;
   total_count?: number | string | null;
+};
+
+export type ReviewRejectionDetail = {
+  source: 'review-admin' | 'reviewer';
+  actor_id: string | null;
+  reason: string;
+  submitted_at: string | null;
+  reviewer_status: 'active' | 'revoked' | null;
 };
 
 type VisibleReviewUser = {
@@ -364,6 +375,10 @@ function mapReviewRowToTableData(
     completedReviewerCount: Number(row.completed_reviewer_count ?? 0),
     approveOpinionCount: Number(row.approve_opinion_count ?? 0),
     rejectOpinionCount: Number(row.reject_opinion_count ?? 0),
+    ...(row.has_rejection_info !== undefined ? { hasRejectionInfo: row.has_rejection_info } : {}),
+    ...(row.actor_has_rejection_info !== undefined
+      ? { actorHasRejectionInfo: row.actor_has_rejection_info }
+      : {}),
     ...(row.comment_state_code !== undefined
       ? { actorCommentStateCode: row.comment_state_code }
       : {}),
@@ -654,7 +669,7 @@ export async function getReviewsTableDataOfReviewMember(
 
   const status =
     type === 'reviewed' ? 'submitted' : type === 'reviewer-rejected' ? 'completed' : type;
-  const { data, error } = await supabase.rpc('qry_review_get_member_queue_items_v5', {
+  const { data, error } = await supabase.rpc('qry_review_get_member_queue_items_v6', {
     p_status: status,
     p_query: filters.query ?? null,
     p_page: params.current ?? 1,
@@ -715,7 +730,7 @@ export async function getReviewsTableDataOfReviewAdmin(
 
   const status =
     type === 'assigned' ? 'in-progress' : type === 'admin-rejected' ? 'completed' : type;
-  const { data, error } = await supabase.rpc('qry_review_get_admin_queue_items_v5', {
+  const { data, error } = await supabase.rpc('qry_review_get_admin_queue_items_v6', {
     p_status: status,
     p_query: filters.query ?? null,
     p_page: params.current ?? 1,
@@ -766,6 +781,19 @@ export async function getReviewsTableDataOfReviewAdmin(
     success: true,
     total: normalizeTotalCount(rows[0]?.total_count),
   });
+}
+
+export async function getReviewRejectionDetails(
+  reviewId: string,
+): Promise<{ data: ReviewRejectionDetail[]; error: unknown }> {
+  const { data, error } = await supabase.rpc('qry_review_get_rejection_details_v1', {
+    p_review_id: reviewId,
+  });
+
+  return {
+    data: (Array.isArray(data) ? data : []) as ReviewRejectionDetail[],
+    error,
+  };
 }
 
 export async function getReviewsByProcess(processId: string, processVersion: string) {

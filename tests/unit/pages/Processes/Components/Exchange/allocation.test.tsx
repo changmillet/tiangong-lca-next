@@ -61,6 +61,34 @@ const chooseTarget = async (index: number, name: string) => {
 };
 
 describe('allocation forms with real Ant Design controls', () => {
+  it('identifies the reference product in verified target options', async () => {
+    function Targets() {
+      const state = useAllocationTargets([{ ...product('1'), quantitativeReference: true }], 'en');
+      return <span>{state.targets.map((target) => target.label).join(',')}</span>;
+    }
+    render(<Targets />);
+    expect(await screen.findByText('Product 1 (#1) · Quantitative reference')).toBeInTheDocument();
+  });
+
+  it('rejects a newly added untargeted share instead of interpreting it as legacy', async () => {
+    const finish = jest.fn();
+    render(
+      <Form
+        onFinish={finish}
+        initialValues={{ allocations: { allocation: [{ '@allocatedFraction': '100' }] } }}
+      >
+        <AllocationField exchanges={products} lang='en' allowLegacy={false} />
+        <button type='submit'>Save allocation</button>
+      </Form>,
+    );
+    await waitFor(() =>
+      expect(screen.getByRole('button', { name: 'Add product allocation' })).toBeEnabled(),
+    );
+    fireEvent.click(screen.getByRole('button', { name: 'Save allocation' }));
+    await screen.findByText(/Check allocation targets and shares/);
+    expect(finish).not.toHaveBeenCalled();
+  });
+
   it('submits two target rows without collapsing the Form value and rejects partial totals', async () => {
     const finish = jest.fn();
     render(

@@ -1,4 +1,5 @@
 import AllocationField from './allocationField';
+import { isLegacyAllocation } from '@/services/processes/allocation';
 import LangTextItemForm from '@/components/LangTextItem/form';
 import LocationCodeSelect from '@/components/LocationTextItem/codeSelect';
 import UnitConvert from '@/components/UnitConvert';
@@ -812,7 +813,11 @@ const ProcessExchangeEdit: FC<Props> = ({
                 />
               }
             >
-              <AllocationField exchanges={data} lang={lang} allowLegacy={true} />
+              <AllocationField
+                exchanges={data}
+                lang={lang}
+                allowLegacy={isLegacyAllocation(initData.allocations?.allocation)}
+              />
             </Card>
             <br />
             {renderSdkHighlightedField(

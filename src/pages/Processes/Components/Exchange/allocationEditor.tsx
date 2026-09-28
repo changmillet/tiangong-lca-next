@@ -18,6 +18,7 @@ export const exchangeLabel = (exchange: ProcessExchangeData, lang: string): stri
 };
 
 export const useAllocationTargets = (exchanges: ProcessExchangeData[], lang: string) => {
+  const intl = useIntl();
   const [targets, setTargets] = useState<Array<{ value: string; label: string }>>([]);
   const [loading, setLoading] = useState(true);
   const [failed, setFailed] = useState(false);
@@ -32,7 +33,12 @@ export const useAllocationTargets = (exchanges: ProcessExchangeData[], lang: str
           : exchange.referenceToFlowDataSet;
         return {
           value: String(exchange['@dataSetInternalID']),
-          label: exchangeLabel(exchange, lang),
+          label: exchange.quantitativeReference
+            ? `${exchangeLabel(exchange, lang)} · ${intl.formatMessage({
+                id: 'pages.process.exchange.quantitativeReference',
+                defaultMessage: 'Quantitative reference',
+              })}`
+            : exchangeLabel(exchange, lang),
           id: ref?.['@refObjectId'],
           version: ref?.['@version'],
         };

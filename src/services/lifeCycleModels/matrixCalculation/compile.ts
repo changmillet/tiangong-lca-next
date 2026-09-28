@@ -24,6 +24,7 @@
  *    residual checks.
  */
 
+import { ALLOCATION_PERCENT_TOLERANCE } from '@/services/processes/allocation';
 import type {
   CalculationIssue,
   ExchangeDirection,
@@ -449,7 +450,7 @@ export const compileModel = (payload: {
         shareSum += exchange.allocation.fraction!;
       }
     }
-    if (Math.abs(shareSum - 1) > 0.000_010_000_001) {
+    if (Math.abs(shareSum - 1) > ALLOCATION_PERCENT_TOLERANCE / PERC_DENOMINATOR) {
       issues.push({
         code: 'INVALID_ALLOCATION',
         instanceIndex: instance.instanceIndex,
@@ -477,7 +478,7 @@ export const compileModel = (payload: {
     for (const exchange of instance.exchanges) {
       if (exchange.allocation.kind !== 'targeted') continue;
       const sum = fractionSum(exchange.allocation.fractions!.values());
-      if (Math.abs(sum - 1) > 0.000_010_000_001) {
+      if (Math.abs(sum - 1) > ALLOCATION_PERCENT_TOLERANCE / PERC_DENOMINATOR) {
         issues.push({
           code: 'INVALID_ALLOCATION',
           instanceIndex: instance.instanceIndex,

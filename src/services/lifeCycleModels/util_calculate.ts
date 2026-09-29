@@ -357,8 +357,11 @@ export async function genLifeCycleModelProcesses(
 
       const newExchanges = group.exchanges.map((entry, index) => ({
         ...(entry.template.raw as any),
-        meanAmount: entry.amount,
-        resultingAmount: entry.amount,
+        // Group inventories use signed balances (consumption is negative).
+        // TIDAS encodes direction separately; do not apply the Input sign twice.
+        exchangeDirection: entry.direction === 'INPUT' ? 'Input' : 'Output',
+        meanAmount: entry.direction === 'INPUT' ? -entry.amount : entry.amount,
+        resultingAmount: entry.direction === 'INPUT' ? -entry.amount : entry.amount,
         quantitativeReference: entry.quantitativeReference,
         allocatedFraction: undefined,
         allocations: undefined,

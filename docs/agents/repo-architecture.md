@@ -26,7 +26,7 @@ checkPaths:
   - config/docs-capture/**
   - tests/e2e/i18n/**
 lastReviewedAt: 2026-09-29
-lastReviewedCommit: 2f9c9cde1bc874f52d5aaf09ab4d65c56c1278f6
+lastReviewedCommit: 017006ab000457f64255dbaae31e43fa0395fd29
 lastReviewedNote: 'Reviewed Platform #1137 after integrating current dev: rejection-details components and scoped service access stay within existing page/service boundaries; current Process allocation architecture is preserved.'
 related:
   - ../AGENTS.md

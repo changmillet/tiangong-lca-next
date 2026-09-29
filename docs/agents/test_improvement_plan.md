@@ -44,8 +44,8 @@ checkPaths:
   - pnpm-workspace.yaml
   - Dockerfile.app
 lastReviewedAt: 2026-09-29
-lastReviewedCommit: fa2b180a2e438959b00263b876c16af56ee8d4d7
-lastReviewedNote: 'Reviewed Platform #1137 after integrating current dev: rejection-details component and service coverage fit the existing long-term testing strategy.'
+lastReviewedCommit: d8e6adac7bee507a3cac2393dc500e23eb4cd731
+lastReviewedNote: 'Reviewed for Platform #1146 on current dev: report-download decoding, invocation, rendering, and interaction proof follow the existing unit/component strategy and do not change the long-term testing model.'
 ---
 
 # Testing Strategy

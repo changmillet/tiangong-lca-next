@@ -541,6 +541,9 @@ export default {
   'pages.process.view.exchange.selectadirection': 'Select a direction',
   'processExchange.dataDerivationTypeStatus': 'Data derivation type / status',
   'pages.process.view.modellingAndValidation.referenceToCompleteReviewReport': 'Complete review report',
+  'pages.process.reviewReport.download': 'Download report',
+  'pages.process.reviewReport.downloadFailed': 'Failed to download the review report.',
+  'pages.process.reviewReport.noAttachments': 'The review report has no current attachments.',
   'pages.process.view.modellingAndValidation.validation.otherReviewDetails': 'Other review details',
 
   'pages.process.modellingAndValidation.validation.review.scope': 'Scope',

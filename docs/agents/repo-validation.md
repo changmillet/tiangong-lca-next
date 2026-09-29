@@ -44,8 +44,8 @@ checkPaths:
   - scripts/i18n/locale-delivery.mjs
   - .github/workflows/**
 lastReviewedAt: 2026-09-29
-lastReviewedCommit: fa2b180a2e438959b00263b876c16af56ee8d4d7
-lastReviewedNote: 'Reviewed Platform #1137 after integrating current dev: focused rejection-details proof, locale regeneration, and the managed full gate use the existing validation command matrix.'
+lastReviewedCommit: d8e6adac7bee507a3cac2393dc500e23eb4cd731
+lastReviewedNote: 'Reviewed for Platform #1146 on current dev: report-download service and component branches have focused Jest proof, locale artifacts are regenerated and audited, and the existing lint, coverage, and pre-push gate policy remains authoritative.'
 related:
   - ../AGENTS.md
   - ../.docpact/config.yaml

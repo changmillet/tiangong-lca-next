@@ -43,7 +43,7 @@ checkPaths:
   - .github/workflows/build.yml
   - .nvmrc
 lastReviewedAt: 2026-09-29
-lastReviewedCommit: 017006ab000457f64255dbaae31e43fa0395fd29
+lastReviewedCommit: fa2b180a2e438959b00263b876c16af56ee8d4d7
 lastReviewedNote: 'Reviewed Platform #1137 after integrating current dev: the rejection-details UI and its generated locale evidence do not change local bootstrap or the default work loop.'
 ---
 

@@ -1,7 +1,7 @@
 version: 1
 layout: repo
-lastReviewedAt: '2026-09-29'
-lastReviewedCommit: '017006ab000457f64255dbaae31e43fa0395fd29'
+lastReviewedAt: "2026-09-29"
+lastReviewedCommit: "fa2b180a2e438959b00263b876c16af56ee8d4d7"
 lastReviewedNote: 'Reviewed Platform #1137 after integrating current dev: scoped rejection details and Drawer presentation do not change routing, ownership, coverage, or rule semantics.'
 
 # Keep path-level ownership, routing intents, and governed-doc rules here.

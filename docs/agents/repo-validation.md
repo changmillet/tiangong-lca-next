@@ -43,9 +43,9 @@ checkPaths:
   - scripts/typescript-native-parser.*
   - scripts/i18n/locale-delivery.mjs
   - .github/workflows/**
-lastReviewedAt: 2026-09-28
-lastReviewedCommit: 428e1a7f2140cd6b3c8c6222b207cca40ee6dcdd
-lastReviewedNote: 'Reviewed for Platform #1111: dependency qualification advances the exact installed TIDAS SDK to 0.3.1 and covers ordered Process reviews; the validation command matrix and gate policy are unchanged.'
+lastReviewedAt: 2026-09-29
+lastReviewedCommit: 2f9c9cde1bc874f52d5aaf09ab4d65c56c1278f6
+lastReviewedNote: 'Reviewed Platform #1137 after integrating current dev: focused rejection-details proof, locale regeneration, and the managed full gate use the existing validation command matrix.'
 related:
   - ../AGENTS.md
   - ../.docpact/config.yaml
@@ -206,3 +206,7 @@ Every PR note for this repo must state:
 Task Center time/order regressions must prove that repeated terminal import refreshes hours later preserve execution timestamps, duration and deterministic creation/ID order, including reversed feed order, local storage recovery, overlapping refreshes and account changes. Run the TIDAS task service and LcaTaskCenter component suites together.
 
 All new package import helpers must enqueue `root_closure_v2` and reject unavailable SHA-256 before uploading. Focused API, import dialog, result and Task Center suites cover partial/none/interrupted results, committed-receipt recovery, complete downloads and historical v1 report reads.
+
+### Process allocation qualification
+
+For Platform #1136, prove multi-target object/array round trips and zero shares in the Process utility suite, exact Flow-revision product checks in `allocationTargets.test.ts`, and real Ant Design Form/Select/Table interactions in `Exchange/allocation.test.tsx`. Matrix fixtures must verify independent electricity/raw/emission splits, preservation of an unconnected reference product's burden, equivalent-scale reuse, and existing cycles/treatment/legacy behavior. Process create/edit tests must reject new or changed invalid vectors without injecting untargeted default shares into generated results, preserve unchanged inherited problems only as unverified repair drafts, and block validation/review fallback. Protect stable exchange IDs, referenced-product deletion, located diagnostics and strict Model source validation. The hermetic `process-allocation.spec.ts` exercises the actual Process drawer against in-memory reserved-origin records; it is frontend workflow evidence, not deployed Worker import/export or production persistence evidence. Existing full gate and browser-proof boundaries are unchanged.

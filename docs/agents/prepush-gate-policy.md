@@ -42,9 +42,9 @@ checkPaths:
   - scripts/typescript-native-parser.*
   - scripts/reference-data/**
   - .github/workflows/**
-lastReviewedAt: 2026-09-28
-lastReviewedCommit: 428e1a7f2140cd6b3c8c6222b207cca40ee6dcdd
-lastReviewedNote: 'Reviewed for Platform #1111: the exact SDK dependency and installed-package Process review contract advance to 0.3.1; pre-push ownership and trigger policy are unchanged.'
+lastReviewedAt: 2026-09-29
+lastReviewedCommit: 2f9c9cde1bc874f52d5aaf09ab4d65c56c1278f6
+lastReviewedNote: 'Reviewed Platform #1137 after integrating current dev: resolving generated locale and review UI conflicts does not change pre-push ownership or trigger policy.'
 ---
 
 # Pre-Push Gate Policy

@@ -1380,3 +1380,127 @@ describe('matrix calculation golden fixtures', () => {
     }
   });
 });
+
+describe('per-exchange product allocation requirements', () => {
+  it('keeps undeclared burden on an unconnected reference product when another output drives production', () => {
+    const result = okResult({
+      refInstanceIndex: 'consumer',
+      targetAmount: 1,
+      instances: [
+        {
+          instanceIndex: 'supplier',
+          processId: 'supplier',
+          processVersion: '1',
+          process: {
+            id: 'supplier',
+            version: '1',
+            refExchangeInternalId: 'a',
+            exchanges: [
+              exchange('a', 'OUTPUT', 'A', 2),
+              exchange('b', 'OUTPUT', 'B', 1),
+              exchange('raw', 'INPUT', 'raw', 100),
+            ],
+          },
+          connections: [
+            {
+              upstreamIndex: 'supplier',
+              downstreamIndex: 'consumer',
+              outputFlowId: 'B',
+              inputFlowId: 'B',
+              edgeId: 'B',
+            },
+          ],
+        },
+        {
+          instanceIndex: 'consumer',
+          processId: 'consumer',
+          processVersion: '1',
+          process: {
+            id: 'consumer',
+            version: '1',
+            refExchangeInternalId: 'c',
+            exchanges: [exchange('b-in', 'INPUT', 'B', 1), exchange('c', 'OUTPUT', 'C', 1)],
+          },
+          connections: [],
+        },
+      ],
+    });
+    const primary = result.groups.find((group) => group.type === 'primary')!;
+    expect(primary.exchanges.some((entry) => entry.flowId === 'raw')).toBe(false);
+    const referenceResult = result.groups.find((group) => group.pivotFlowId === 'A')!;
+    expect(referenceResult.exchanges.find((entry) => entry.flowId === 'raw')?.amount).toBeCloseTo(
+      -100,
+    );
+    expect(referenceResult.exchanges.find((entry) => entry.flowId === 'A')?.amount).toBeCloseTo(2);
+    expect(result.instanceMultipliers.supplier).toBeCloseTo(1);
+  });
+
+  it('attributes electricity, raw material and emissions independently, then reuses allocated inventories', () => {
+    const allocate = (a: string, b: string) => ({
+      allocation: [
+        { '@internalReferenceToCoProduct': '1', '@allocatedFraction': a },
+        { '@internalReferenceToCoProduct': '2', '@allocatedFraction': b },
+      ],
+    });
+    const instance = {
+      instanceIndex: 'p',
+      processId: 'p',
+      processVersion: '1',
+      connections: [],
+      process: {
+        id: 'p',
+        version: '1',
+        refExchangeInternalId: '1',
+        exchanges: [
+          exchange('1', 'OUTPUT', 'A', 2),
+          exchange('2', 'OUTPUT', 'B', 1),
+          exchange('3', 'INPUT', 'electricity', 100, { allocations: allocate('70', '30') }),
+          exchange('4', 'INPUT', 'raw', 50, { allocations: allocate('40', '60') }),
+          exchange('5', 'OUTPUT', 'emission', 10, { allocations: allocate('80', '20') }),
+        ],
+      },
+    };
+    const before = JSON.stringify(instance);
+    const result = okResult({ refInstanceIndex: 'p', targetAmount: 2, instances: [instance] });
+    const primary = result.groups.find((group) => group.type === 'primary')!;
+    const secondary = result.groups.find((group) => group.type === 'secondary')!;
+    const amount = (group: typeof primary, flow: string) =>
+      group.exchanges.find((entry) => entry.flowId === flow)?.amount;
+    expect(amount(primary, 'electricity')).toBeCloseTo(-70);
+    expect(amount(primary, 'raw')).toBeCloseTo(-20);
+    expect(amount(primary, 'emission')).toBeCloseTo(8);
+    expect(amount(secondary, 'electricity')).toBeCloseTo(-30);
+    expect(amount(secondary, 'raw')).toBeCloseTo(-30);
+    expect(amount(secondary, 'emission')).toBeCloseTo(2);
+    for (const group of [primary, secondary]) {
+      const reference = group.exchanges.find((entry) => entry.quantitativeReference)!;
+      const exchanges = group.exchanges.map((entry, index) =>
+        exchange(String(index + 1), entry.direction, entry.flowId, entry.amount),
+      );
+      const referenceIndex = group.exchanges.indexOf(reference);
+      const reused = okResult({
+        refInstanceIndex: 'result',
+        targetAmount: reference.amount,
+        instances: [
+          {
+            instanceIndex: 'result',
+            processId: 'result',
+            processVersion: '1',
+            connections: [],
+            process: {
+              id: 'result',
+              version: '1',
+              refExchangeInternalId: String(referenceIndex + 1),
+              exchanges,
+            },
+          },
+        ],
+      });
+      const reusedPrimary = reused.groups.find((entry) => entry.type === 'primary')!;
+      for (const flow of ['electricity', 'raw', 'emission']) {
+        expect(Math.abs(amount(reusedPrimary, flow)!)).toBeCloseTo(Math.abs(amount(group, flow)!));
+      }
+    }
+    expect(JSON.stringify(instance)).toBe(before);
+  });
+});

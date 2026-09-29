@@ -25,9 +25,9 @@ checkPaths:
   - playwright.config.ts
   - config/docs-capture/**
   - tests/e2e/i18n/**
-lastReviewedAt: 2026-09-28
-lastReviewedCommit: 428e1a7f2140cd6b3c8c6222b207cca40ee6dcdd
-lastReviewedNote: 'Reviewed Platform #1109 after merging current dev: review action and input/output display parity use shared data-page views; the #1107 import-report behavior, repository contracts, validation, and testing policies remain unchanged.'
+lastReviewedAt: 2026-09-29
+lastReviewedCommit: 2f9c9cde1bc874f52d5aaf09ab4d65c56c1278f6
+lastReviewedNote: 'Reviewed Platform #1137 after integrating current dev: rejection-details components and scoped service access stay within existing page/service boundaries; current Process allocation architecture is preserved.'
 related:
   - ../AGENTS.md
   - ../.docpact/config.yaml
@@ -78,6 +78,7 @@ Rules:
 
 - route and page components orchestrate
 - process exchange creation initializes direction from its input/output entrypoint through ProForm `initialValues`, including reopening after a manual direction change. Exchange create/edit read the current complete form store when synchronizing reference selection and saving, so multilingual names are retained while dynamic `Form.List` fields register.
+- Process allocation authoring uses `src/services/processes/allocation.ts` for object/array round trips and vector checks, `allocationTargets.ts` for exact-revision product verification, and shared exchange editor/batch controls. Generated Model Process results keep their already allocated inventories without adding legacy default shares. Calculation semantics remain in `util_calculate.md`.
 - service modules own app-side data access
 - `src/utils/browserNavigation.ts` owns the thin `Location.assign`/`reload`/`replace` side-effect boundary. Runtime callers always pass the real `window.location`; tests pass an explicit mock `Location` or mock this module and must not redefine jsdom's global `window` or `location`
 - Account Basic Information reads current profile metadata through `supabase.auth.getUser()` and writes `display_name` plus the optional, trimmed, 200-character `organization` string through `supabase.auth.updateUser()`. The page may refresh the session after a successful write, but organization remains descriptive profile data and must never control frontend access or backend authorization

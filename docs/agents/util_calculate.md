@@ -21,8 +21,8 @@ checkPaths:
   - src/services/lciaMethods/**
   - src/components/LcaTaskCenter/**
   - src/pages/Processes/Analysis/**
-lastReviewedAt: 2026-09-23
-lastReviewedCommit: 25bfea81d9507deccf4aa968c213600eea13b927
+lastReviewedAt: 2026-09-28
+lastReviewedCommit: 924b053cf3fbaf4dc64fe51f405075591a1c7a25
 lastReviewedNote: 'Reviewed Platform #1120 after integrating current dev: Open Data catalog filtering and publication do not change lifecycle-model calculation behavior or ownership.'
 ---
 
@@ -85,7 +85,7 @@ Failures throw `CalculationError` (typed `code` plus locatable `issues`) or `Cal
 - The system is demand-driven: the ★ reference target is the final demand `y` of the reference view; every other view is driven by connected consumers. Cycles enter the equations fully; nothing breaks edges.
 - A **view** (matrix variable) exists for: the reference process's quantitative-reference exchange, every connected output exchange of every instance, every output exchange that carries an allocation declaration (connected or not, so allocated coproducts keep independent results), and the reference exchange of dead-end instances (connected inputs, no connected outputs, not the reference).
 - Each view's pivot is normalized to +1 per unit activity. Every other exchange is attributed with its allocation fraction divided by the pivot amount. Attribution shapes:
-  - **single** (one output, or several outputs without allocation declarations): all exchanges fully attributed (fraction 1). Ordinary outputs without declarations — elementary emissions, wastes, unallocated coproducts — are not allocation targets; they ride along at full scale.
+  - **single** (one output, or several outputs without allocation declarations): undeclared exchanges belong entirely to the instance reference view; non-reference product views receive no share of those exchanges. Ordinary emissions and wastes remain part of the reference inventory. If another output drives production while the reference output is unconnected, keep the reference view as a boundary result so its attributed inventory is not lost.
   - **legacy uniform share**: only _declared_ outputs (`@allocatedFraction`, a trailing `%` is tolerated) are allocation targets; each declares its own share; a view attributes all exchanges at its pivot's share; the declared shares must close to 100%. Undeclared outputs keep an implicit share (1 − declared sum) and are attributed at that implicit share.
   - **standard exchange-target allocation**: per exchange, the allocation item targeting the view product is selected; undeclared exchanges fully attribute to the instance's own reference view; each declared vector must close to 100%.
 - Missing/invalid/ambiguous allocation data raises `INVALID_ALLOCATION`; the calculation never normalizes or splits shares on its own.
@@ -105,6 +105,17 @@ Failures throw `CalculationError` (typed `code` plus locatable `issues`) or `Cal
 - Connected internal flows cancel inside a submodel group and never re-enter the external inventory; unconnected flows stay as boundary exchanges.
 - Boundary aggregation merges exchanges only at the exact Flow revision (direction + flow UUID + `@version` from the raw template): same-UUID exchanges at different revisions stay separate boundary exchanges until a documented conversion exists; the first template is never reused across revisions.
 - Inventory assembly drops only exact-zero amounts — no magnitude threshold deletes nonzero computed quantities (small activity can still mean material load, and the functional-unit exchange must survive). The primary group must carry its quantitative-reference exchange; a missing or below-target reference exchange fails with `NUMERIC_RESULT_INVALID` instead of returning an incomplete success. Input-pivot (treatment) references may net to zero internally and are exempt from that check.
+
+## Process Allocation Authoring And Result Reuse
+
+- Process exchange editors accept multiple explicit product targets using existing `allocations.allocation` arrays. Target options require exact Flow-version evidence of `Product flow`; elementary, waste and unverified revisions are not new product targets. Existing unresolved entries stay visible for repair.
+- Batch allocation fills only unconfigured selected exchanges by default; explicit replacement uses the same target/share rules and commits the complete update atomically. Existing legacy shares cannot silently mix with targeted vectors.
+- `src/services/processes/allocation.ts` owns lossless object/array percentage normalization and authoring validation. Explicit vectors total 100% within 0.0010000001 percentage points, matching matrix closure tolerance. Process create/edit never inject legacy 100% output shares into an undeclared exchange.
+- Exchange internal IDs remain stable after deletion; new IDs must avoid both existing rows and dangling allocation targets. Deleting a product referenced by other exchanges is blocked with the dependent exchange names/IDs.
+- Allocation diagnostics identify each affected exchange, its targets and the reason. An unchanged inherited allocation graph may be saved as an unverified repair draft while unrelated fields are edited; new or changed invalid allocations and unavailable product verification block save. Validation, review and Model calculation always require valid allocations, including exact product-version verification. Copy, import and version creation preserve repairable inherited data without marking it rule-verified.
+- Process serialization, rehydration and views preserve every allocation, including zero shares. Source exchange amounts are unchanged by editing allocation.
+- Generated primary/secondary Process exchanges already contain allocated quantities. `util_calculate.ts` clears inherited `allocations`; saving/reopening the generated Process must preserve that absence. Equivalent-scale reuse must reproduce the existing inventory, not multiply its original shares again.
+- Input-reference treatment models retain their existing pivot behavior. Product allocation authoring requires verified product outputs; this feature does not reinterpret an input reference as an output product.
 
 ## Web Worker Contract
 

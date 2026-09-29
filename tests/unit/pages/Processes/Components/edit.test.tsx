@@ -740,6 +740,67 @@ describe('ProcessEdit component', () => {
     );
   });
 
+  it('retains an unchanged inherited allocation problem as an unverified draft but blocks review', async () => {
+    const draft = {
+      ...processDataset,
+      exchanges: {
+        exchange: [
+          {
+            ...processDataset.exchanges.exchange[0],
+            allocations: { allocation: { '@allocatedFraction': '70' } },
+          },
+        ],
+      },
+    };
+    mockGenProcessFromData.mockReturnValue(draft);
+    render(<ProcessEdit {...baseProps} />);
+    fireEvent.click(screen.getByRole('button'));
+    await waitFor(() =>
+      expect(latestProcessFormProps.exchangeDataSource[0]?.allocations).toBeDefined(),
+    );
+    await act(async () => {
+      await proFormApi?.submit();
+    });
+    expect(mockUpdateProcess).toHaveBeenCalledWith(
+      'process-1',
+      '1.0.0',
+      expect.anything(),
+      undefined,
+      { allocationDraft: true },
+    );
+    expect(mockAntdMessage.warning).toHaveBeenCalledWith(
+      expect.stringContaining('Saved as a draft'),
+    );
+  });
+
+  it('never submits an inherited invalid allocation through validation fallback', async () => {
+    const draft = {
+      ...processDataset,
+      exchanges: {
+        exchange: [
+          {
+            ...processDataset.exchanges.exchange[0],
+            allocations: { allocation: { '@allocatedFraction': '70' } },
+          },
+        ],
+      },
+    };
+    mockGenProcessFromData.mockReturnValue(draft);
+    render(<ProcessEdit {...baseProps} autoOpen autoCheckRequired />);
+    await screen.findByRole('dialog', { name: 'Edit process' });
+    await waitFor(() =>
+      expect(latestProcessFormProps.exchangeDataSource[0]?.allocations).toBeDefined(),
+    );
+    await act(async () => {
+      await new Promise((resolve) => {
+        setTimeout(resolve, 0);
+      });
+    });
+    expect(mockUpdateProcess).not.toHaveBeenCalled();
+    expect(mockSubmitDatasetReview).not.toHaveBeenCalled();
+    expect(mockValidateDatasetWithSdk).not.toHaveBeenCalled();
+  });
+
   it('blocks submission when allocated fractions exceed 100%', async () => {
     render(<ProcessEdit {...baseProps} />);
 
@@ -766,11 +827,11 @@ describe('ProcessEdit component', () => {
 
     expect(mockUpdateProcess).not.toHaveBeenCalled();
     expect(mockAntdMessage.error).toHaveBeenCalledWith(
-      'The total allocated fraction for outputs cannot exceed 100%. Current total: 150%.',
+      expect.stringContaining('Each share must be a number from 0 to 100.'),
     );
   });
 
-  it('falls back to zero when an allocated fraction string cannot be derived', async () => {
+  it('rejects malformed allocation shares without replacing them with a default', async () => {
     render(<ProcessEdit {...baseProps} />);
 
     fireEvent.click(screen.getByRole('button'));
@@ -799,7 +860,7 @@ describe('ProcessEdit component', () => {
       await proFormApi?.submit();
     });
 
-    expect(mockUpdateProcess).toHaveBeenCalled();
+    expect(mockUpdateProcess).not.toHaveBeenCalled();
   });
 
   it('opens automatically when autoOpen is enabled', async () => {
@@ -821,7 +882,7 @@ describe('ProcessEdit component', () => {
     );
   });
 
-  it('auto-fills a 100% allocation for the quantitative reference output when none is provided', async () => {
+  it('preserves implicit reference attribution without injecting legacy allocation', async () => {
     render(<ProcessEdit {...baseProps} />);
 
     fireEvent.click(screen.getByRole('button'));
@@ -851,16 +912,13 @@ describe('ProcessEdit component', () => {
         exchanges: {
           exchange: [
             expect.objectContaining({
-              allocations: {
-                allocation: {
-                  '@allocatedFraction': '100%',
-                },
-              },
+              quantitativeReference: true,
             }),
           ],
         },
       }),
     );
+    expect(mockUpdateProcess.mock.calls[0][2].exchanges.exchange[0].allocations).toBeUndefined();
   });
 
   it('applies the latest AI suggestion payload when the suggestion panel closes', async () => {
@@ -885,7 +943,9 @@ describe('ProcessEdit component', () => {
     fireEvent.click(screen.getByRole('button'));
     await screen.findByRole('dialog', { name: 'Edit process' });
 
-    fireEvent.click(screen.getByRole('button', { name: 'close-suggestion' }));
+    await act(async () => {
+      fireEvent.click(screen.getByRole('button', { name: 'close-suggestion' }));
+    });
 
     expect(proFormApi?.getFieldsValue()).toEqual(
       expect.objectContaining({
@@ -910,7 +970,9 @@ describe('ProcessEdit component', () => {
 
     fireEvent.click(screen.getByRole('button'));
     await screen.findByRole('dialog', { name: 'Edit process' });
-    fireEvent.click(screen.getByRole('button', { name: 'close-suggestion' }));
+    await act(async () => {
+      fireEvent.click(screen.getByRole('button', { name: 'close-suggestion' }));
+    });
 
     expect(proFormApi?.getFieldsValue()).toEqual(
       expect.objectContaining({
@@ -932,7 +994,9 @@ describe('ProcessEdit component', () => {
 
     fireEvent.click(screen.getByRole('button'));
     await screen.findByRole('dialog', { name: 'Edit process' });
-    fireEvent.click(screen.getByRole('button', { name: 'close-suggestion' }));
+    await act(async () => {
+      fireEvent.click(screen.getByRole('button', { name: 'close-suggestion' }));
+    });
 
     expect(proFormApi?.getFieldsValue()).toEqual(
       expect.objectContaining({
@@ -2430,15 +2494,19 @@ describe('ProcessEdit component', () => {
     await waitFor(() => expect(mockUpdateProcess).toHaveBeenCalled());
   });
 
-  it('renders the result toolbar button as disabled when no process id is available', () => {
-    render(<ProcessEdit {...baseProps} id='' buttonType='toolResultIcon' />);
+  it('renders the result toolbar button as disabled when no process id is available', async () => {
+    await act(async () => {
+      render(<ProcessEdit {...baseProps} id='' buttonType='toolResultIcon' />);
+    });
 
     expect(screen.getByRole('button')).toBeDisabled();
     expect(screen.queryByRole('dialog', { name: 'Edit process' })).not.toBeInTheDocument();
   });
 
-  it('renders the tool-icon trigger as disabled when requested', () => {
-    render(<ProcessEdit {...baseProps} buttonType='toolIcon' disabled />);
+  it('renders the tool-icon trigger as disabled when requested', async () => {
+    await act(async () => {
+      render(<ProcessEdit {...baseProps} buttonType='toolIcon' disabled />);
+    });
 
     expect(screen.getByRole('button')).toBeDisabled();
   });

@@ -354,7 +354,7 @@ export async function createProcess(
   id: string,
   data: any,
   modelId?: string,
-  options?: NormalizeLangPayloadForSaveOptions,
+  options?: NormalizeLangPayloadForSaveOptions & { allocationDraft?: boolean },
 ) {
   const rawData = genProcessJsonOrdered(id, data);
   const normalizedResult = await normalizeLangPayloadForSave(rawData, options);
@@ -397,10 +397,10 @@ export async function createProcess(
       table: 'processes',
       jsonOrdered: newData,
       modelId: modelId ?? null,
-      ruleVerification: rule_verification,
+      ruleVerification: options?.allocationDraft ? false : rule_verification,
     },
     {
-      ruleVerification: rule_verification,
+      ruleVerification: options?.allocationDraft ? false : rule_verification,
     },
   );
   return attachLangNormalizationMetadata(result, langMetadata, options);
@@ -411,7 +411,7 @@ export async function createProcessVersion(
   sourceVersion: string,
   data: any,
   modelId?: string,
-  options?: NormalizeLangPayloadForSaveOptions,
+  options?: NormalizeLangPayloadForSaveOptions & { allocationDraft?: boolean },
 ) {
   const rawData = genProcessJsonOrdered(id, data);
   const normalizedResult = await normalizeLangPayloadForSave(rawData, options);
@@ -454,10 +454,10 @@ export async function createProcessVersion(
       sourceVersion,
       jsonOrdered: newData,
       modelId: modelId ?? null,
-      ruleVerification: rule_verification,
+      ruleVerification: options?.allocationDraft ? false : rule_verification,
     },
     {
-      ruleVerification: rule_verification,
+      ruleVerification: options?.allocationDraft ? false : rule_verification,
     },
   );
   return attachLangNormalizationMetadata(result, langMetadata, options);
@@ -468,7 +468,7 @@ export async function updateProcess(
   version: string,
   data: any,
   modelId?: string,
-  options?: NormalizeLangPayloadForSaveOptions,
+  options?: NormalizeLangPayloadForSaveOptions & { allocationDraft?: boolean },
 ): Promise<UpdateProcessResult | undefined> {
   const rawData = genProcessJsonOrdered(id, data);
   const normalizedResult = await normalizeLangPayloadForSave(rawData, options);
@@ -512,10 +512,10 @@ export async function updateProcess(
       table: 'processes',
       jsonOrdered: newData,
       modelId,
-      ruleVerification: rule_verification,
+      ruleVerification: options?.allocationDraft ? false : rule_verification,
     },
     {
-      ruleVerification: rule_verification,
+      ruleVerification: options?.allocationDraft ? false : rule_verification,
     },
   );
   return attachLangNormalizationMetadata(result, langMetadata, options);

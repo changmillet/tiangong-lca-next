@@ -1,3 +1,5 @@
+import AllocationField from './allocationField';
+import { isLegacyAllocation } from '@/services/processes/allocation';
 import LangTextItemForm from '@/components/LangTextItem/form';
 import LocationCodeSelect from '@/components/LocationTextItem/codeSelect';
 import UnitConvert from '@/components/UnitConvert';
@@ -19,7 +21,6 @@ import {
   Drawer,
   Form,
   Input,
-  InputNumber,
   Select,
   Space,
   Switch,
@@ -812,35 +813,11 @@ const ProcessExchangeEdit: FC<Props> = ({
                 />
               }
             >
-              <Form.Item
-                label={
-                  <FormattedMessage
-                    id='pages.process.view.exchange.internalReferenceToCoProduct'
-                    defaultMessage='Internal reference to co-product'
-                  />
-                }
-                name={['allocations', 'allocation', '@internalReferenceToCoProduct']}
-              >
-                <Input />
-              </Form.Item>
-              <Form.Item
-                label={
-                  <FormattedMessage
-                    id='pages.process.view.exchange.allocatedFraction'
-                    defaultMessage='Allocated fraction'
-                  />
-                }
-                name={['allocations', 'allocation', '@allocatedFraction']}
-              >
-                <InputNumber
-                  min={0}
-                  max={100}
-                  precision={3}
-                  stringMode
-                  suffix='%'
-                  style={{ width: '100%' }}
-                />
-              </Form.Item>
+              <AllocationField
+                exchanges={data}
+                lang={lang}
+                allowLegacy={isLegacyAllocation(initData.allocations?.allocation)}
+              />
             </Card>
             <br />
             {renderSdkHighlightedField(

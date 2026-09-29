@@ -5227,3 +5227,25 @@ describe('contributeProcess', () => {
     expect(result.needContribute![0].type).toBe('process data set');
   });
 });
+
+it.each(['create', 'version', 'update'])(
+  'keeps an inherited allocation draft unverified through %s',
+  async (operation) => {
+    const options = { allocationDraft: true };
+    if (operation === 'create') await processesApi.createProcess(sampleId, {}, undefined, options);
+    if (operation === 'version')
+      await processesApi.createProcessVersion(sampleId, sampleVersion, {}, undefined, options);
+    if (operation === 'update')
+      await processesApi.updateProcess(sampleId, sampleVersion, {}, undefined, options);
+    const expected = expect.objectContaining({ ruleVerification: false });
+    const call =
+      operation === 'version'
+        ? mockInvokeDatasetCreateVersion.mock.calls[
+            mockInvokeDatasetCreateVersion.mock.calls.length - 1
+          ]
+        : mockInvokeDatasetCommand.mock.calls[
+            mockInvokeDatasetCommand.mock.calls.length - 1
+          ]?.slice(1);
+    expect(call).toEqual([expected, expected]);
+  },
+);

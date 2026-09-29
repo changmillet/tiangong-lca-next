@@ -125,10 +125,54 @@ describe('ProcessExchangeDelete', () => {
 
     expect(onData).toHaveBeenCalledWith([
       { '@dataSetInternalID': '0', name: 'first' },
-      { '@dataSetInternalID': '1', name: 'third' },
+      { '@dataSetInternalID': '2', name: 'third' },
     ]);
     expect(mockAntdMessage.success).toHaveBeenCalledWith('Selected record has been deleted.');
     expect(setViewDrawerVisible).toHaveBeenCalledWith(false);
+  });
+
+  it('blocks deletion of a referenced product and identifies affected exchanges', () => {
+    const onData = jest.fn();
+    render(
+      <ProcessExchangeDelete
+        {...baseProps}
+        onData={onData}
+        data={[
+          ...baseProps.data,
+          {
+            '@dataSetInternalID': '7',
+            allocations: {
+              allocation: { '@internalReferenceToCoProduct': '1', '@allocatedFraction': '100' },
+            },
+          },
+        ]}
+      />,
+    );
+    fireEvent.click(screen.getByRole('button'));
+    fireEvent.click(screen.getByRole('button', { name: 'Confirm' }));
+    expect(onData).not.toHaveBeenCalled();
+    expect(mockAntdMessage.error).toHaveBeenCalledWith(expect.stringContaining('#7'));
+    expect(screen.getByRole('dialog')).toBeInTheDocument();
+  });
+
+  it('deletes a preceding row without moving an existing allocation to another product', () => {
+    const onData = jest.fn();
+    const rows = [
+      ...baseProps.data,
+      {
+        '@dataSetInternalID': '3',
+        allocations: {
+          allocation: { '@internalReferenceToCoProduct': '1', '@allocatedFraction': '100' },
+        },
+      },
+    ];
+    render(<ProcessExchangeDelete {...baseProps} id='0' data={rows} onData={onData} />);
+    fireEvent.click(screen.getByRole('button'));
+    fireEvent.click(screen.getByRole('button', { name: 'Confirm' }));
+    expect(onData).toHaveBeenCalledWith(rows.slice(1));
+    expect(onData.mock.calls[0][0].find((row: any) => row['@dataSetInternalID'] === '1').name).toBe(
+      'second',
+    );
   });
 
   it('closes dialog without deleting when cancel is clicked', () => {
@@ -157,7 +201,7 @@ describe('ProcessExchangeDelete', () => {
 
     expect(onData).toHaveBeenCalledWith([
       { '@dataSetInternalID': '0', name: 'first' },
-      { '@dataSetInternalID': '1', name: 'third' },
+      { '@dataSetInternalID': '2', name: 'third' },
     ]);
   });
 });

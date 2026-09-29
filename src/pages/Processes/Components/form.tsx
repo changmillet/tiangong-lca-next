@@ -1,3 +1,4 @@
+import AllocationBatch from './Exchange/allocationBatch';
 import DatasetCreateVersionFormItem from '@/components/DatasetCreateVersionFormItem';
 import LangTextItemForm from '@/components/LangTextItem/form';
 import LevelTextItemForm from '@/components/LevelTextItem/form';
@@ -845,6 +846,7 @@ export const ProcessForm: FC<Props> = ({
               disabled={actionFrom === 'modelResult'}
             />
             <ProcessExchangeDelete
+              lang={lang}
               disabled={actionFrom === 'modelResult'}
               id={row.dataSetInternalID}
               data={exchangeDataSource}
@@ -2594,6 +2596,12 @@ export const ProcessForm: FC<Props> = ({
     ),
     exchanges: (
       <>
+        <AllocationBatch
+          exchanges={exchangeDataSource}
+          lang={lang}
+          onData={onExchangeData}
+          disabled={actionFrom === 'modelResult'}
+        />
         {renderSdkSectionMessages('exchanges.requiredSummary')}
         {renderSdkSectionMessages('exchanges.quantitativeReferenceSummary')}
         <Collapse
@@ -2651,6 +2659,7 @@ export const ProcessForm: FC<Props> = ({
                   toolBarRender={() => {
                     return [
                       <ProcessExchangeCreate
+                        data={exchangeDataSource}
                         disabled={actionFrom === 'modelResult'}
                         showRules={showRules}
                         key={0}
@@ -2781,6 +2790,7 @@ export const ProcessForm: FC<Props> = ({
                   toolBarRender={() => {
                     return [
                       <ProcessExchangeCreate
+                        data={exchangeDataSource}
                         disabled={actionFrom === 'modelResult'}
                         showRules={showRules}
                         key={0}

@@ -37,17 +37,23 @@ import { formatDatasetTabLabel } from '@/pages/Utils/validation/tabMessages';
 import { getFlowDetail } from '@/services/flows/api';
 import { genFlowFromData, genFlowNameJson } from '@/services/flows/util';
 import { hasLangNormalizationDraftChanges } from '@/services/general/api';
-import { toBigNumberOrZero } from '@/services/general/bignumber';
 import { jsonToList } from '@/services/general/util';
 import { LCIAResultTable } from '@/services/lciaMethods/data';
 import { getProcessDetail, updateProcess } from '@/services/processes/api';
+import {
+  canRetainAllocationDraft,
+  nextExchangeId,
+  type AllocationProblem,
+} from '@/services/processes/allocation';
+import AllocationIssues from './Exchange/allocationIssues';
+import { allocationProblemText } from './Exchange/allocationFeedback';
+import { verifyAllocationProductProblems } from '@/services/processes/allocationTargets';
 import {
   FormProcess,
   ProcessDataSetObjectKeys,
   ProcessDetailData,
   ProcessDetailResponse,
   ProcessExchangeData,
-  getFirstProcessExchangeAllocation,
 } from '@/services/processes/data';
 import { genProcessFromData, genProcessJsonOrdered } from '@/services/processes/util';
 import { getUserTeamId } from '@/services/roles/api';
@@ -185,6 +191,16 @@ const ProcessEdit: FC<Props> = ({
   const [originJson, setOriginJson] = useState<ProcessDetailData['json']>({});
   const aiSuggestionDataRef = useRef<ProcessDetailData['json'] | undefined>(undefined);
   const [exchangeDataSource, setExchangeDataSource] = useState<ProcessExchangeData[]>([]);
+  const [allocationProblems, setAllocationProblems] = useState<AllocationProblem[]>([]);
+  useEffect(() => {
+    let active = true;
+    void verifyAllocationProductProblems(exchangeDataSource).then((problems) => {
+      if (active) setAllocationProblems(problems);
+    });
+    return () => {
+      active = false;
+    };
+  }, [exchangeDataSource]);
   const [sdkValidationDetails, setSdkValidationDetails] = useState<ValidationIssueSdkDetail[]>([]);
   const [sdkValidationFocus, setSdkValidationFocus] = useState<ValidationIssueSdkDetail | null>(
     null,
@@ -353,7 +369,7 @@ const ProcessEdit: FC<Props> = ({
     if (fromData?.id) {
       const createdExchange = {
         ...data,
-        '@dataSetInternalID': exchangeDataSource.length.toString(),
+        '@dataSetInternalID': nextExchangeId(exchangeDataSource),
       };
       const nextExchangeDataSource = [...exchangeDataSource, createdExchange];
       const normalizedExchangeDataSource = normalizeQuantitativeReferenceSelection(
@@ -389,6 +405,7 @@ const ProcessEdit: FC<Props> = ({
         const reference = toReferenceValue(item?.referenceToFlowDataSet);
         const refObjectId = reference?.['@refObjectId'] ?? '';
         const version = reference?.['@version'] ?? '';
+        if (!refObjectId || !version) return item;
 
         const result = await getFlowDetail(refObjectId, version);
 
@@ -508,43 +525,28 @@ const ProcessEdit: FC<Props> = ({
       return;
     }
     const processData = await updateReferenceDescription(currentData);
-    const output = (processData.exchanges.exchange as ProcessExchangeData[]).filter(
-      (e) => e.exchangeDirection?.toUpperCase() === 'OUTPUT',
+    const problems = await verifyAllocationProductProblems(
+      processData.exchanges.exchange as ProcessExchangeData[],
     );
-    let allocatedFractionTotal = toBigNumberOrZero(0);
-    output.forEach((e) => {
-      const allocation = getFirstProcessExchangeAllocation(e?.allocations?.allocation);
-      if (allocation?.['@allocatedFraction']) {
-        const fractionText = allocation['@allocatedFraction']?.toString?.();
-        const fraction = typeof fractionText === 'string' ? fractionText.replace('%', '') : '';
-        allocatedFractionTotal = allocatedFractionTotal.plus(toBigNumberOrZero(fraction));
-      }
-    });
-    if (allocatedFractionTotal.isEqualTo(0)) {
-      const referenceIndex = output.findIndex(
-        (e) => e.quantitativeReference === true && e.exchangeDirection?.toUpperCase() === 'OUTPUT',
+    setAllocationProblems(problems);
+    const retainDraft =
+      problems.length > 0 &&
+      options?.langIntent !== 'validation' &&
+      !problems.some((problem) => problem.code === 'unverified') &&
+      canRetainAllocationDraft(
+        initData?.exchanges?.exchange as ProcessExchangeData[] | undefined,
+        processData.exchanges.exchange as ProcessExchangeData[],
       );
-      if (referenceIndex > -1) {
-        output[referenceIndex].allocations = {
-          allocation: {
-            '@allocatedFraction': '100%',
-          },
-        };
-      }
-    }
-    if (allocatedFractionTotal.isGreaterThan(100)) {
-      if (!silent) {
+    if (problems.length && !retainDraft) {
+      if (!silent)
         message.error(
-          intl.formatMessage(
-            {
-              id: 'pages.process.validator.allocatedFraction',
-              defaultMessage:
-                'The total allocated fraction for outputs cannot exceed 100%. Current total: {total}%.',
-            },
-            { total: allocatedFractionTotal.toString() },
+          allocationProblemText(
+            problems,
+            processData.exchanges.exchange as ProcessExchangeData[],
+            lang,
+            intl,
           ),
         );
-      }
       setSpinning(false);
       return;
     }
@@ -552,11 +554,23 @@ const ProcessEdit: FC<Props> = ({
     const nextProcessData = {
       ...processData,
     };
-    const langOptions = options?.langIntent ? { intent: options.langIntent } : undefined;
+    const langOptions = retainDraft
+      ? { allocationDraft: true }
+      : options?.langIntent
+        ? { intent: options.langIntent }
+        : undefined;
     const updateResult = langOptions
       ? await updateProcess(id, version, nextProcessData, undefined, langOptions)
       : await updateProcess(id, version, nextProcessData);
     if (updateResult?.data) {
+      if (retainDraft && !silent)
+        message.warning(
+          intl.formatMessage({
+            id: 'pages.process.allocation.draftRetained',
+            defaultMessage:
+              'Saved as a draft with existing allocation issues. Repair these before validation, review or calculation.',
+          }),
+        );
       if (!closeDrawer) {
         const dataSet = genProcessFromData(updateResult.data[0]?.json?.processDataSet ?? {});
         const nextData = {
@@ -748,6 +762,23 @@ const ProcessEdit: FC<Props> = ({
       }
       setSpinning(false);
       return { checkResult: false, unReview: [] };
+    }
+    const allocationProblems = await verifyAllocationProductProblems(
+      (processDetail.exchanges?.exchange ?? []) as ProcessExchangeData[],
+    );
+    setAllocationProblems(allocationProblems);
+    if (allocationProblems.length) {
+      if (!silent)
+        message.error(
+          allocationProblemText(
+            allocationProblems,
+            (processDetail.exchanges?.exchange ?? []) as ProcessExchangeData[],
+            lang,
+            intl,
+          ),
+        );
+      setSpinning(false);
+      return { checkResult: false, unReview: [] as refDataType[] };
     }
     const rootRef = {
       '@refObjectId': processDetail.id,
@@ -1293,6 +1324,11 @@ const ProcessEdit: FC<Props> = ({
                 return true;
               }}
             >
+              <AllocationIssues
+                problems={allocationProblems}
+                exchanges={exchangeDataSource}
+                lang={lang}
+              />
               <ProcessForm
                 formType='edit'
                 lang={lang}

@@ -22,8 +22,8 @@ checkPaths:
   - scripts/e2e/**
   - playwright.config.ts
   - tests/e2e/i18n/**
-lastReviewedAt: 2026-09-26
-lastReviewedCommit: 79f0f66d83067983120072e8acd62616ad89eff2
+lastReviewedAt: 2026-09-28
+lastReviewedCommit: 924b053cf3fbaf4dc64fe51f405075591a1c7a25
 lastReviewedNote: 'Reviewed Platform #1046 refinement: imports reconcile from the shared list only; terminal outcomes use green/orange/red, orphan records prevent full success, and reports resolve signed links only on click. Owner isolation, reload recovery and once-only data refresh are tested. Export/LCA behavior, ownership and gate policy remain unchanged; validation evidence is recorded in the task.'
 ---
 

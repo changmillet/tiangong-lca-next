@@ -445,6 +445,12 @@ describe('genLifeCycleModelProcesses (matrix calculation)', () => {
     );
     expect(Number(secondaryRaw?.meanAmount)).toBeCloseTo(-(28 / 3) * 0.4, 9);
 
+    for (const generated of lifeCycleModelProcesses) {
+      const entries = generated.data.processDataSet.exchanges.exchange;
+      const exchanges = Array.isArray(entries) ? entries : [entries];
+      exchanges.forEach((entry: any) => expect(entry.allocations).toBeUndefined());
+    }
+
     expect(mockLCIAResultCalculation).toHaveBeenCalledTimes(2);
 
     // 倍率回写：A 2、B 4/3、C 16/3
@@ -1120,5 +1126,24 @@ describe('genLifeCycleModelProcesses operation cancellation', () => {
         { operation: operation as any },
       ),
     ).rejects.toMatchObject({ name: 'CalculationCancelledError' });
+  });
+});
+
+it('rejects invalid inherited allocations before solving and identifies the source exchange', async () => {
+  const rows = createSupabaseProcesses();
+  (rows[1].exchange[1] as any).allocations.allocation['@allocatedFraction'] = '20%';
+  mockOr.mockResolvedValue({ data: rows });
+  await expect(
+    genLifeCycleModelProcesses(
+      'invalid-draft',
+      createIndexedModelNodes() as any,
+      createLifeCycleModelData(),
+      [],
+    ),
+  ).rejects.toMatchObject({
+    code: 'INVALID_ALLOCATION',
+    issues: expect.arrayContaining([
+      expect.objectContaining({ instanceIndex: 'nodeB', exchangeInternalId: 'exB_out_toA' }),
+    ]),
   });
 });

@@ -43,7 +43,7 @@ checkPaths:
   - .github/workflows/release-gate.yml
   - .github/workflows/release-readiness.yml
 lastReviewedAt: 2026-09-28
-lastReviewedCommit: 2b8c99ab521ae0bcb6877ed0ec7ecf3fe099d57f
+lastReviewedCommit: 38f1c1a1d1140f702a7a9c738501dfb09893b7cb
 lastReviewedNote: 'Reviewed for Platform #1111: the real installed-package contract adds ordered Process review coverage for SDK 0.3.1 without changing reusable test-selection or helper patterns.'
 ---
 

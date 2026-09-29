@@ -1,3 +1,4 @@
+import { normalizeAllocation } from './allocation';
 import { FormProcess } from '@/services/processes/data';
 import { createProcess as createTidasProcess } from '@tiangong-lca/tidas-sdk/core';
 import {
@@ -53,9 +54,6 @@ const getExchangeLocationField = (value: unknown) => {
   const location = normalizeExchangeLocationCode(value);
   return location ? { location } : {};
 };
-
-const normalizeAllocationPercentageValue = (value: unknown) =>
-  normalizeOptionalTidasPercentage(typeof value === 'string' ? value.replace('%', '') : value);
 
 const hasReviewReportReference = (value: unknown): boolean => {
   if (value === undefined) return false;
@@ -121,15 +119,7 @@ export function genProcessJsonOrdered(id: string, data: any) {
       minimumAmount: item.minimumAmount,
       maximumAmount: item.maximumAmount,
       uncertaintyDistributionType: item.uncertaintyDistributionType,
-      allocations: {
-        allocation: {
-          '@internalReferenceToCoProduct':
-            item?.allocations?.allocation?.['@internalReferenceToCoProduct'],
-          '@allocatedFraction': normalizeAllocationPercentageValue(
-            item?.allocations?.allocation?.['@allocatedFraction'],
-          ),
-        },
-      },
+      allocations: { allocation: normalizeAllocation(item?.allocations?.allocation) },
       relativeStandardDeviation95In: normalizeOptionalTidasPercentage(
         item.relativeStandardDeviation95In,
       ),
@@ -1582,15 +1572,7 @@ export function genProcessFromData(data: any): FormProcess {
               minimumAmount: item.minimumAmount,
               maximumAmount: item.maximumAmount,
               uncertaintyDistributionType: item.uncertaintyDistributionType,
-              allocations: {
-                allocation: {
-                  '@internalReferenceToCoProduct':
-                    item?.allocations?.allocation?.['@internalReferenceToCoProduct'],
-                  '@allocatedFraction': item?.allocations?.allocation?.['@allocatedFraction']
-                    ? item?.allocations?.allocation?.['@allocatedFraction']?.replace('%', '')
-                    : undefined,
-                },
-              },
+              allocations: { allocation: normalizeAllocation(item?.allocations?.allocation) },
               relativeStandardDeviation95In: item.relativeStandardDeviation95In,
               dataSourceType: item.dataSourceType,
               dataDerivationTypeStatus: item.dataDerivationTypeStatus,
@@ -1632,13 +1614,7 @@ export function genProcessFromData(data: any): FormProcess {
               minimumAmount: item.minimumAmount,
               maximumAmount: item.maximumAmount,
               uncertaintyDistributionType: item.uncertaintyDistributionType,
-              allocations: {
-                allocation: {
-                  '@internalReferenceToCoProduct':
-                    item?.allocations?.allocation?.['@internalReferenceToCoProduct'],
-                  '@allocatedFraction': item?.allocations?.allocation?.['@allocatedFraction'],
-                },
-              },
+              allocations: { allocation: normalizeAllocation(item?.allocations?.allocation) },
               relativeStandardDeviation95In: item.relativeStandardDeviation95In,
               dataSourceType: item.dataSourceType,
               dataDerivationTypeStatus: item.dataDerivationTypeStatus,

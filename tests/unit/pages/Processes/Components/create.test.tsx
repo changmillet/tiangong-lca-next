@@ -85,6 +85,7 @@ jest.mock('antd', () => {
   return (() => {
     const antdModuleMock = {
       __esModule: true,
+      Alert: ({ title }: any) => <div role='alert'>{title}</div>,
       Button,
       Tooltip,
       Drawer,
@@ -319,6 +320,83 @@ describe('ProcessCreate component', () => {
     expect(submissionSettled).toBe(true);
   });
 
+  it.each(['create', 'createVersion'])(
+    'imports unchanged allocation problems as an unverified %s draft',
+    async (actionType) => {
+      const draft = {
+        exchanges: {
+          exchange: [
+            {
+              '@dataSetInternalID': '0',
+              exchangeDirection: 'OUTPUT',
+              quantitativeReference: true,
+              allocations: { allocation: { '@allocatedFraction': '70' } },
+            },
+          ],
+        },
+      };
+      mockGenProcessFromData.mockReturnValue(draft);
+      mockCreateProcess.mockResolvedValue({ data: [{}] });
+      render(
+        <ProcessCreate
+          {...baseProps}
+          actionType={actionType}
+          importData={[{ processDataSet: draft }]}
+        />,
+      );
+      await screen.findByRole('dialog');
+      await act(async () => {
+        await proFormApi?.submit();
+      });
+      const save = actionType === 'createVersion' ? mockCreateProcessVersion : mockCreateProcess;
+      expect(save.mock.calls.at(-1).at(-1)).toEqual({ allocationDraft: true });
+      expect(mockAntdMessage.warning).toHaveBeenCalledWith(
+        expect.stringContaining('Saved as a draft'),
+      );
+    },
+  );
+
+  it.each(['copy', 'createVersion'])(
+    'retains inherited allocation issues when saving %s',
+    async (actionType) => {
+      const draft = {
+        id: 'source-process',
+        exchanges: {
+          exchange: [
+            {
+              '@dataSetInternalID': '7',
+              exchangeDirection: 'OUTPUT',
+              allocations: { allocation: { '@allocatedFraction': '70' } },
+            },
+          ],
+        },
+      };
+      mockGenProcessFromData.mockReturnValue(draft);
+      mockGetProcessDetail.mockResolvedValue({ data: { json: { processDataSet: draft } } });
+      render(
+        <ProcessCreate
+          {...baseProps}
+          actionType={actionType}
+          id='source-process'
+          version='01.00.000'
+        />,
+      );
+      fireEvent.click(
+        screen.getByRole('button', { name: actionType === 'copy' ? 'copy-icon' : 'create' }),
+      );
+      await waitFor(() => expect(latestProcessFormProps.exchangeDataSource).toHaveLength(1));
+      await act(async () => {
+        await proFormApi.submit();
+      });
+      const save = actionType === 'copy' ? mockCreateProcess : mockCreateProcessVersion;
+      expect(save).toHaveBeenCalled();
+      expect(save.mock.calls.at(-1).at(-1)).toEqual({ allocationDraft: true });
+      expect(mockAntdMessage.warning).toHaveBeenCalledWith(
+        expect.stringContaining('Saved as a draft'),
+      );
+    },
+  );
+
   it('prevents submission when allocated fraction exceeds 100%', async () => {
     render(<ProcessCreate {...baseProps} />);
 
@@ -350,7 +428,7 @@ describe('ProcessCreate component', () => {
 
     expect(mockCreateProcess).not.toHaveBeenCalled();
     expect(mockAntdMessage.error).toHaveBeenCalledWith(
-      'The total allocated fraction for outputs cannot exceed 100%. Current total: 120%.',
+      expect.stringContaining('Each share must be a number from 0 to 100.'),
     );
   });
 
@@ -633,7 +711,7 @@ describe('ProcessCreate component', () => {
           quantitativeReference: true,
           allocations: {
             allocation: {
-              '@allocatedFraction': '10%',
+              '@allocatedFraction': '100%',
             },
           },
         },

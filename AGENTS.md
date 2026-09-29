@@ -46,7 +46,7 @@ checkPaths:
   - .husky/pre-push
   - .github/workflows/**
 lastReviewedAt: 2026-09-29
-lastReviewedCommit: 017006ab000457f64255dbaae31e43fa0395fd29
+lastReviewedCommit: fa2b180a2e438959b00263b876c16af56ee8d4d7
 lastReviewedNote: 'Reviewed Platform #1137 after integrating current dev: rejection visibility and Drawer presentation remain within existing repository ownership, bootstrap, branch, and delivery rules.'
 related:
   - .docpact/config.yaml

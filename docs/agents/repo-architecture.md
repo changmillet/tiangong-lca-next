@@ -26,7 +26,7 @@ checkPaths:
   - config/docs-capture/**
   - tests/e2e/i18n/**
 lastReviewedAt: 2026-09-29
-lastReviewedCommit: 632471dd242d7caac2bffc05def0b661ef8694e9
+lastReviewedCommit: be1310dbc5467630f96ad70af5102c885dcdb170
 lastReviewedNote: 'Reviewed Platform #1146 on current dev: rejected Process report downloads stay within the existing Process view, review service, and Edge command boundaries; Source detail behavior and stable ownership boundaries are unchanged.'
 related:
   - ../AGENTS.md

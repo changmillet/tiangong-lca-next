@@ -2,7 +2,6 @@ import {
   createReviewReportDownloads,
   triggerReviewReportDownloads,
 } from '@/services/reviews/reportDownload';
-import { DownloadOutlined } from '@ant-design/icons';
 import { App, Button } from 'antd';
 import { useState } from 'react';
 import { useIntl } from 'umi';
@@ -62,7 +61,7 @@ const ReviewReportDownloadButton = ({
   };
 
   return (
-    <Button icon={<DownloadOutlined />} loading={loading} onClick={handleDownload}>
+    <Button loading={loading} onClick={handleDownload}>
       {intl.formatMessage({
         id: 'pages.process.reviewReport.download',
         defaultMessage: 'Download report',

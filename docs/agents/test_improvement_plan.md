@@ -44,7 +44,7 @@ checkPaths:
   - pnpm-workspace.yaml
   - Dockerfile.app
 lastReviewedAt: 2026-09-29
-lastReviewedCommit: 632471dd242d7caac2bffc05def0b661ef8694e9
+lastReviewedCommit: be1310dbc5467630f96ad70af5102c885dcdb170
 lastReviewedNote: 'Reviewed for Platform #1146 on current dev: report-download decoding, invocation, rendering, and interaction proof follow the existing unit/component strategy and do not change the long-term testing model.'
 ---
 

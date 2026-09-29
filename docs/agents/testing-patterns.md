@@ -43,7 +43,7 @@ checkPaths:
   - .github/workflows/release-gate.yml
   - .github/workflows/release-readiness.yml
 lastReviewedAt: 2026-09-29
-lastReviewedCommit: 632471dd242d7caac2bffc05def0b661ef8694e9
+lastReviewedCommit: be1310dbc5467630f96ad70af5102c885dcdb170
 lastReviewedNote: 'Reviewed for Platform #1146 on current dev: report-download tests use existing mocked-service and semantic button interaction patterns; reusable guidance is unchanged.'
 ---
 

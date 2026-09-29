@@ -63,6 +63,7 @@ describe('ReviewReportDownloadButton', () => {
     mockCreateDownloads.mockResolvedValue({ data: downloads, error: null });
 
     render(<ReviewReportDownloadButton {...props} />);
+    expect(screen.queryByText('download-icon')).not.toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: /Download report/ }));
 
     await waitFor(() => expect(mockCreateDownloads).toHaveBeenCalledWith(props));

@@ -43,7 +43,7 @@ checkPaths:
   - .github/workflows/build.yml
   - .nvmrc
 lastReviewedAt: 2026-09-29
-lastReviewedCommit: 632471dd242d7caac2bffc05def0b661ef8694e9
+lastReviewedCommit: be1310dbc5467630f96ad70af5102c885dcdb170
 lastReviewedNote: 'Reviewed for Platform #1146 on current dev: rejected-review report download implementation uses the existing local bootstrap, locale artifact generation, focused Jest, and managed pre-push workflow; commands and prerequisites are unchanged.'
 ---
 

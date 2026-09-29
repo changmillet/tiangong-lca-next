@@ -41,8 +41,8 @@ checkPaths:
   - .github/workflows/release-gate.yml
   - .github/workflows/release-readiness.yml
 lastReviewedAt: 2026-09-29
-lastReviewedCommit: fa2b180a2e438959b00263b876c16af56ee8d4d7
-lastReviewedNote: 'Reviewed Platform #1137 after integrating current dev: rejection-details behavior is covered without reopening the testing backlog.'
+lastReviewedCommit: 632471dd242d7caac2bffc05def0b661ef8694e9
+lastReviewedNote: 'Reviewed for Platform #1146 on current dev: focused report-download service/component assertions were added without changing the checked-in reference baseline or reopening the coverage queue.'
 ---
 
 # Testing Execution State

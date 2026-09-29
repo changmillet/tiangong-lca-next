@@ -23,8 +23,8 @@ checkPaths:
   - playwright.config.ts
   - tests/e2e/i18n/**
 lastReviewedAt: 2026-09-29
-lastReviewedCommit: 017006ab000457f64255dbaae31e43fa0395fd29
-lastReviewedNote: 'Reviewed Platform #1137 after integrating current dev: the permission-scoped rejection-details RPC consumption does not change Supabase branch ownership, migration, or environment policy.'
+lastReviewedCommit: 632471dd242d7caac2bffc05def0b661ef8694e9
+lastReviewedNote: 'Reviewed Platform #1146 on current dev: the frontend invokes one actor-bound Edge report-download command and receives short-lived signed links; database/Edge ownership, branch bindings, and environment selection are unchanged.'
 ---
 
 # Supabase Environment And Database Workflow

@@ -48,6 +48,7 @@ import {
   completenessProductModelOptions,
   uncertaintyDistributionTypeOptions,
 } from './optiondata';
+import { collectReviewReportReferenceKeys } from './Review/reportReferences';
 import ReviewItemView from './Review/view';
 
 import { getExchangeColumns, PROCESS_EXCHANGE_TABLE_SCROLL } from './Exchange/column';
@@ -171,6 +172,7 @@ const ProcessView: FC<Props> = ({
   currentExchangeContentLanguageRef.current = exchangeTableParams.contentLanguage;
   const [spinning, setSpinning] = useState(false);
   const [initData, setInitData] = useState<Partial<ProcessFormWithId>>({});
+  const [downloadableReviewReportKeys, setDownloadableReviewReportKeys] = useState<string[]>([]);
   const processClassification =
     initData.processInformation?.dataSetInformation?.classificationInformation?.[
       'common:classification'
@@ -1872,7 +1874,12 @@ const ProcessView: FC<Props> = ({
       />
     ),
     validation: (
-      <ReviewItemView data={initData?.modellingAndValidation?.validation?.review ?? []} />
+      <ReviewItemView
+        data={initData?.modellingAndValidation?.validation?.review ?? []}
+        processId={id}
+        processVersion={version}
+        downloadableReportKeys={downloadableReviewReportKeys}
+      />
     ),
     complianceDeclarations: (
       <ComplianceItemView
@@ -1891,10 +1898,18 @@ const ProcessView: FC<Props> = ({
     setActiveTabKey('processInformation');
     setSpinning(true);
     setLciaResultDataSource([]);
+    setDownloadableReviewReportKeys([]);
     getProcessDetail(id, version).then(async (result: ProcessDetailResponse) => {
       const formData = genProcessFromData(result.data?.json?.processDataSet ?? {});
       if ((result?.data?.stateCode ?? 100) < 100) {
         const rejectedCommentsRes = await getRejectedComments(id, version);
+        setDownloadableReviewReportKeys([
+          ...new Set(
+            rejectedCommentsRes.flatMap((comment: any) =>
+              collectReviewReportReferenceKeys(comment?.modellingAndValidation?.validation?.review),
+            ),
+          ),
+        ]);
         mergeCommentsToData(rejectedCommentsRes, formData);
       }
       setInitData({ ...formData, id: id });

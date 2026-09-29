@@ -541,6 +541,9 @@ export default {
   'pages.process.view.exchange.selectadirection': 'Sélectionner un sens',
   'processExchange.dataDerivationTypeStatus': 'Type/statut d’obtention des données',
   'pages.process.view.modellingAndValidation.referenceToCompleteReviewReport': 'Rapport complet de revue critique',
+  'pages.process.reviewReport.download': 'Télécharger le rapport',
+  'pages.process.reviewReport.downloadFailed': 'Échec du téléchargement du rapport de revue.',
+  'pages.process.reviewReport.noAttachments': 'Le rapport de revue ne contient actuellement aucune pièce jointe.',
   'pages.process.view.modellingAndValidation.validation.otherReviewDetails': 'Autres détails de la revue critique',
 
   'pages.process.modellingAndValidation.validation.review.scope': 'Portée',

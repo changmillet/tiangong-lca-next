@@ -40,8 +40,8 @@ checkPaths:
   - .github/workflows/release-gate.yml
   - .github/workflows/release-readiness.yml
 lastReviewedAt: 2026-09-29
-lastReviewedCommit: fa2b180a2e438959b00263b876c16af56ee8d4d7
-lastReviewedNote: 'Reviewed Platform #1137 after integrating current dev: locale artifact regeneration resolves the only generated-file drift; troubleshooting workflow is unchanged.'
+lastReviewedCommit: 632471dd242d7caac2bffc05def0b661ef8694e9
+lastReviewedNote: 'Reviewed for Platform #1146 on current dev: focused report-download Jest tests use the existing no-watchman recovery path; supported troubleshooting commands are unchanged.'
 ---
 
 # Testing Troubleshooting

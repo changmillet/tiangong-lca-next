@@ -43,8 +43,8 @@ checkPaths:
   - .github/workflows/release-gate.yml
   - .github/workflows/release-readiness.yml
 lastReviewedAt: 2026-09-29
-lastReviewedCommit: fa2b180a2e438959b00263b876c16af56ee8d4d7
-lastReviewedNote: 'Reviewed Platform #1137 after integrating current dev: rejection-details style and role-scoping assertions use existing reusable component/service testing patterns.'
+lastReviewedCommit: 632471dd242d7caac2bffc05def0b661ef8694e9
+lastReviewedNote: 'Reviewed for Platform #1146 on current dev: report-download tests use existing mocked-service and semantic button interaction patterns; reusable guidance is unchanged.'
 ---
 
 # Testing Patterns Reference

@@ -43,8 +43,8 @@ checkPaths:
   - scripts/reference-data/**
   - .github/workflows/**
 lastReviewedAt: 2026-09-29
-lastReviewedCommit: fa2b180a2e438959b00263b876c16af56ee8d4d7
-lastReviewedNote: 'Reviewed Platform #1137 after integrating current dev: resolving generated locale and review UI conflicts does not change pre-push ownership or trigger policy.'
+lastReviewedCommit: 632471dd242d7caac2bffc05def0b661ef8694e9
+lastReviewedNote: 'Reviewed for Platform #1146 on current dev: report-download service and component tests use the existing Jest and coverage paths; pre-push ownership and trigger policy are unchanged.'
 ---
 
 # Pre-Push Gate Policy

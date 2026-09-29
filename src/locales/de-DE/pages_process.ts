@@ -541,6 +541,9 @@ export default {
   'pages.process.view.exchange.selectadirection': 'Eine Richtung auswählen',
   'processExchange.dataDerivationTypeStatus': 'Art / Status der Datenherleitung',
   'pages.process.view.modellingAndValidation.referenceToCompleteReviewReport': 'Vollständiger Prüfbericht',
+  'pages.process.reviewReport.download': 'Prüfbericht herunterladen',
+  'pages.process.reviewReport.downloadFailed': 'Der Prüfbericht konnte nicht heruntergeladen werden.',
+  'pages.process.reviewReport.noAttachments': 'Der Prüfbericht enthält derzeit keine Anhänge.',
   'pages.process.view.modellingAndValidation.validation.otherReviewDetails': 'Weitere Prüfungsdetails',
 
   'pages.process.modellingAndValidation.validation.review.scope': 'Prüfumfang',

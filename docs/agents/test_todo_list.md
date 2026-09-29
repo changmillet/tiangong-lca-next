@@ -41,7 +41,7 @@ checkPaths:
   - .github/workflows/release-gate.yml
   - .github/workflows/release-readiness.yml
 lastReviewedAt: 2026-09-29
-lastReviewedCommit: 4492ffccc86f08b519b928a70d840af3922c501b
+lastReviewedCommit: d8e6adac7bee507a3cac2393dc500e23eb4cd731
 lastReviewedNote: 'Reviewed for Platform #1146 on current dev: focused report-download service/component assertions were added without changing the checked-in reference baseline or reopening the coverage queue.'
 ---
 

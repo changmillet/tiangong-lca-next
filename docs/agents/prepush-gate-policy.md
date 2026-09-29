@@ -43,7 +43,7 @@ checkPaths:
   - scripts/reference-data/**
   - .github/workflows/**
 lastReviewedAt: 2026-09-29
-lastReviewedCommit: 4492ffccc86f08b519b928a70d840af3922c501b
+lastReviewedCommit: d8e6adac7bee507a3cac2393dc500e23eb4cd731
 lastReviewedNote: 'Reviewed for Platform #1146 on current dev: report-download service and component tests use the existing Jest and coverage paths; pre-push ownership and trigger policy are unchanged.'
 ---
 

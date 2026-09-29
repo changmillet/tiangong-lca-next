@@ -195,6 +195,9 @@ describe('ReviewProgress read-only drawer', () => {
         commentRender(null, { state_code: -3, json: { comment: { message: 'Object note' } } }),
       ),
     ).toContain('Object note');
+    expect(
+      toText(commentRender(null, { state_code: -3, json: { reason: 'Simple review note' } })),
+    ).toContain('Simple review note');
     expect(commentRender(null, { state_code: -3, json: { comment: '{}' } })).toBeNull();
     expect(commentRender(null, { state_code: -3, json: { comment: {} } })).toBeNull();
     expect(commentRender(null, { state_code: -3, json: { comment: 'invalid json' } })).toBeNull();

@@ -22,9 +22,9 @@ checkPaths:
   - scripts/e2e/**
   - playwright.config.ts
   - tests/e2e/i18n/**
-lastReviewedAt: 2026-09-28
-lastReviewedCommit: 924b053cf3fbaf4dc64fe51f405075591a1c7a25
-lastReviewedNote: 'Reviewed Platform #1046 refinement: imports reconcile from the shared list only; terminal outcomes use green/orange/red, orphan records prevent full success, and reports resolve signed links only on click. Owner isolation, reload recovery and once-only data refresh are tested. Export/LCA behavior, ownership and gate policy remain unchanged; validation evidence is recorded in the task.'
+lastReviewedAt: 2026-09-29
+lastReviewedCommit: 2f9c9cde1bc874f52d5aaf09ab4d65c56c1278f6
+lastReviewedNote: 'Reviewed Platform #1137 after integrating current dev: the permission-scoped rejection-details RPC consumption does not change Supabase branch ownership, migration, or environment policy.'
 ---
 
 # Supabase Environment And Database Workflow

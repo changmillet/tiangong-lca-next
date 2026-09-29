@@ -46,7 +46,7 @@ checkPaths:
   - .husky/pre-push
   - .github/workflows/**
 lastReviewedAt: 2026-09-29
-lastReviewedCommit: be1310dbc5467630f96ad70af5102c885dcdb170
+lastReviewedCommit: 4492ffccc86f08b519b928a70d840af3922c501b
 lastReviewedNote: 'Reviewed for Platform #1146 on current dev: rejected Process views add a relationship-scoped report download action beside the existing Source view without broadening Source-detail access; repository ownership and delivery rules are unchanged.'
 related:
   - .docpact/config.yaml

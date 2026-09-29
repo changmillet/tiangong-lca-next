@@ -44,7 +44,7 @@ checkPaths:
   - scripts/i18n/locale-delivery.mjs
   - .github/workflows/**
 lastReviewedAt: 2026-09-29
-lastReviewedCommit: be1310dbc5467630f96ad70af5102c885dcdb170
+lastReviewedCommit: 4492ffccc86f08b519b928a70d840af3922c501b
 lastReviewedNote: 'Reviewed for Platform #1146 on current dev: report-download service and component branches have focused Jest proof, locale artifacts are regenerated and audited, and the existing lint, coverage, and pre-push gate policy remains authoritative.'
 related:
   - ../AGENTS.md

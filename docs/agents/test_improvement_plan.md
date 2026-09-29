@@ -43,9 +43,9 @@ checkPaths:
   - pnpm-lock.yaml
   - pnpm-workspace.yaml
   - Dockerfile.app
-lastReviewedAt: 2026-09-28
-lastReviewedCommit: 38f1c1a1d1140f702a7a9c738501dfb09893b7cb
-lastReviewedNote: 'Reviewed for Platform #1111: SDK 0.3.1 review-array qualification extends the existing mapper-independent package contract and does not change the long-term testing strategy.'
+lastReviewedAt: 2026-09-29
+lastReviewedCommit: fa2b180a2e438959b00263b876c16af56ee8d4d7
+lastReviewedNote: 'Reviewed Platform #1137 after integrating current dev: rejection-details component and service coverage fit the existing long-term testing strategy.'
 ---
 
 # Testing Strategy

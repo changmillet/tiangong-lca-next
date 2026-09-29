@@ -43,9 +43,9 @@ checkPaths:
   - scripts/typescript-native-parser.*
   - scripts/i18n/locale-delivery.mjs
   - .github/workflows/**
-lastReviewedAt: 2026-09-28
-lastReviewedCommit: 38f1c1a1d1140f702a7a9c738501dfb09893b7cb
-lastReviewedNote: 'Reviewed for Platform #1111: dependency qualification advances the exact installed TIDAS SDK to 0.3.1 and covers ordered Process reviews; the validation command matrix and gate policy are unchanged.'
+lastReviewedAt: 2026-09-29
+lastReviewedCommit: fa2b180a2e438959b00263b876c16af56ee8d4d7
+lastReviewedNote: 'Reviewed Platform #1137 after integrating current dev: focused rejection-details proof, locale regeneration, and the managed full gate use the existing validation command matrix.'
 related:
   - ../AGENTS.md
   - ../.docpact/config.yaml

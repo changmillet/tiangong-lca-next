@@ -3,12 +3,12 @@
   "locale": "de-DE",
   "source": {
     "baselineSha": "c26f306e82ac66f50a56aafe8f89ea96c0b0c67d",
-    "sourceManifestDigest": "39fb093d8981130e01ec9a82f3645da8a3b1c204c666e70cb3fbb3f9533a2a56",
-    "contextDigest": "76d4e8e89696f9c07977e4801e31b37a9d6ddf9bf3f0b9bffed5765d4193cbc2"
+    "sourceManifestDigest": "15a26d917cf6d1fcfb7ce6acdd8435a21095963f69a93225ac9a069155cbafc0",
+    "contextDigest": "32f8bb2801e626727d6a2a2a74ad88998178de1be04b8358bdbea606b1b0e7a9"
   },
   "catalog": {
-    "messageCount": 3504,
-    "catalogDigest": "46e8e6f26977ec38df93c24ebd0d3f98c10e36d7e29602b05a5c6394fc271ad8",
+    "messageCount": 3514,
+    "catalogDigest": "379127ee2bda0bc98056e9aeb4b463ad8e4de067a287a4947d1878ec6f235d43",
     "emptyTranslationCount": 0,
     "acceptedSourceEmptyCount": 1,
     "acceptedSourceEmptyDigest": "182ce2fe247d78a1af1027643331be2239d4e4815d2a32f5795a8f6954367560",
@@ -21,7 +21,7 @@
     "acceptedDeclaredSourceEqualityDigest": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
     "forbiddenGlossaryMatchCount": 0,
     "forbiddenGlossaryMatchDigest": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
-    "suspiciousSourceEqualityRatio": 0.010844748858447488,
+    "suspiciousSourceEqualityRatio": 0.010813887307911212,
     "maxSuspiciousSourceEqualityRatio": 0.02
   },
   "automatedChecks": {
@@ -42,16 +42,16 @@
   },
   "structuralValidation": {
     "path": "docs/plans/i18n-de-DE/structural-validation.json",
-    "digest": "571225e6943644b16a7c89ed8ba03dd6ebfbf4354e8c5d782882f58e9661486a",
-    "validationDigest": "de56c200e362c6198167204882197344d3d99ad9086750791fa78ecf4978a8bd",
+    "digest": "d71c5a3ee108dbdc2f109a3defae2fdc3b75d43d32e7c497f189e32c0f08ea68",
+    "validationDigest": "df975933167b5972f356fdfb22a3e7ac5f50493e4287633c1e11ea8bcd2042f2",
     "laneCount": 1,
-    "validatedMessageCount": 3504,
+    "validatedMessageCount": 3514,
     "validatedModuleCount": 32,
-    "highRiskMessageCount": 1636,
-    "highRiskMessageDigest": "4dd039aed8bf254a0f4343b96fd7f659564193d8c5e6b9a4f33ecb1f33e847c8",
+    "highRiskMessageCount": 1646,
+    "highRiskMessageDigest": "952ffe262419e926702ffad48878044c2a76d441e26cc07486df09e9da3323ff",
     "scope": "deterministic structure only; semantic translation and rendered route review are separate production blockers owned by #635",
     "blockedItems": 0,
     "semanticReviewPerformed": false
   },
-  "qualityDigest": "2b9c33616090620b72da49833f646f4c0ade6884a6e1d2ef8c1b2b0605b4848c"
+  "qualityDigest": "afc9ff832a490060caaf29d6ac131b86cb5f0acf666ed46c3becac9ad602b658"
 }

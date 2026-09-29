@@ -1,8 +1,8 @@
 version: 1
 layout: repo
 lastReviewedAt: "2026-09-29"
-lastReviewedCommit: "fa2b180a2e438959b00263b876c16af56ee8d4d7"
-lastReviewedNote: 'Reviewed Platform #1137 after integrating current dev: scoped rejection details and Drawer presentation do not change routing, ownership, coverage, or rule semantics.'
+lastReviewedCommit: "4492ffccc86f08b519b928a70d840af3922c501b"
+lastReviewedNote: 'Reviewed for Platform #1146 on current dev: the rejected-review report service, Process UI, tests, locales, and regenerated locale artifacts remain covered by the existing ownership and routing rules; rule semantics are unchanged.'
 
 # Keep path-level ownership, routing intents, and governed-doc rules here.
 # AGENTS.md keeps the entry-level repo contract and minimal execution summary.

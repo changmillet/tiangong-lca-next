@@ -26,8 +26,8 @@ checkPaths:
   - config/docs-capture/**
   - tests/e2e/i18n/**
 lastReviewedAt: 2026-09-29
-lastReviewedCommit: 017006ab000457f64255dbaae31e43fa0395fd29
-lastReviewedNote: 'Reviewed Platform #1137 after integrating current dev: rejection-details components and scoped service access stay within existing page/service boundaries; current Process allocation architecture is preserved.'
+lastReviewedCommit: be1310dbc5467630f96ad70af5102c885dcdb170
+lastReviewedNote: 'Reviewed Platform #1146 on current dev: rejected Process report downloads stay within the existing Process view, review service, and Edge command boundaries; Source detail behavior and stable ownership boundaries are unchanged.'
 related:
   - ../AGENTS.md
   - ../.docpact/config.yaml

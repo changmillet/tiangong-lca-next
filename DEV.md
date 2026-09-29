@@ -43,8 +43,8 @@ checkPaths:
   - .github/workflows/build.yml
   - .nvmrc
 lastReviewedAt: 2026-09-29
-lastReviewedCommit: fa2b180a2e438959b00263b876c16af56ee8d4d7
-lastReviewedNote: 'Reviewed Platform #1137 after integrating current dev: the rejection-details UI and its generated locale evidence do not change local bootstrap or the default work loop.'
+lastReviewedCommit: 4492ffccc86f08b519b928a70d840af3922c501b
+lastReviewedNote: 'Reviewed for Platform #1146 on current dev: rejected-review report download implementation uses the existing local bootstrap, locale artifact generation, focused Jest, and managed pre-push workflow; commands and prerequisites are unchanged.'
 ---
 
 # Development Bootstrap

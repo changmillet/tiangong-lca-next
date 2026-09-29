@@ -538,6 +538,9 @@ export default {
   'pages.process.view.exchange.selectadirection': '请选择方向',
   'processExchange.dataDerivationTypeStatus': '数据推导类型/状态',
   'pages.process.view.modellingAndValidation.referenceToCompleteReviewReport': '完整审查报告',
+  'pages.process.reviewReport.download': '下载报告',
+  'pages.process.reviewReport.downloadFailed': '审查报告下载失败。',
+  'pages.process.reviewReport.noAttachments': '审查报告当前没有附件。',
   'pages.process.view.modellingAndValidation.validation.otherReviewDetails': '其他审查详情',
 
   'pages.process.modellingAndValidation.validation.review.scope': '审查范围',

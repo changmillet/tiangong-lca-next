@@ -201,7 +201,7 @@ const SourceEdit: FC<Props> = ({
     if (fromData)
       setFromData({
         ...fromData,
-        [activeTabKey]: formRefEdit.current?.getFieldsValue()?.[activeTabKey] ?? {},
+        [activeTabKey]: formRefEdit.current?.getFieldsValue(true)?.[activeTabKey] ?? {},
       });
   };
 
@@ -294,7 +294,7 @@ const SourceEdit: FC<Props> = ({
         }
       });
     }
-    const fieldsValue = formRefEdit.current?.getFieldsValue();
+    const fieldsValue = formRefEdit.current?.getFieldsValue(true);
     const nextSourceData = {
       ...fieldsValue,
       sourceInformation: {
@@ -655,7 +655,8 @@ const SourceEdit: FC<Props> = ({
             <ProForm
               formRef={formRefEdit}
               initialValues={initData}
-              onValuesChange={(_, allValues) => {
+              onValuesChange={(_, changedFormValues) => {
+                const allValues = formRefEdit.current?.getFieldsValue(true) ?? changedFormValues;
                 setFromData({
                   ...fromData,
                   [activeTabKey]: allValues[activeTabKey] ?? {},

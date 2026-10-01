@@ -5,6 +5,18 @@ import userEvent from '@testing-library/user-event';
 
 let proFormApi: any = null;
 
+jest.mock('@/components/TidasRepeatedField', () => ({
+  __esModule: true,
+  default: ({ name, children, onChange }: any) => (
+    <div>
+      {children(name)}
+      <button type='button' onClick={onChange}>
+        Repeated change
+      </button>
+    </div>
+  ),
+}));
+
 jest.mock('umi', () => ({
   __esModule: true,
   FormattedMessage: ({ defaultMessage, id }: any) => <span>{defaultMessage ?? id}</span>,

@@ -49,13 +49,12 @@ function assertStableErrorEnvelope(result, factoryName) {
 
 test('loads the exact released SDK from the installed package graph', () => {
   assert.equal(installedManifest.name, '@tiangong-lca/tidas-sdk');
-  assert.equal(installedManifest.version, '0.4.0');
+  assert.equal(installedManifest.version, '0.4.1');
   assert.match(resolvedCoreEntry, /node_modules/u);
 });
 
 test('the installed SDK requires the Process general comment after defaults materialize', () => {
-  const commentPath =
-    'processDataSet.processInformation.dataSetInformation.common:generalComment';
+  const commentPath = 'processDataSet.processInformation.dataSetInformation.common:generalComment';
   const commentIssues = (comment) => {
     const dataSetInformation = {};
     if (comment !== undefined) {
@@ -170,7 +169,10 @@ test('Platform form projections defer covered public rules to the installed SDK'
   const processExchange = processFormSchema.processDataSet.exchanges.exchange[0];
 
   assert.deepEqual(flowTypeRules, []);
-  assert.equal(processVersionRules.some((rule) => rule.pattern === 'dataSetVersion'), false);
+  assert.equal(
+    processVersionRules.some((rule) => rule.pattern === 'dataSetVersion'),
+    false,
+  );
   assert.deepEqual(processExchange.meanAmount.rules, []);
   assert.deepEqual(processExchange.resultingAmount.rules, []);
 

@@ -146,7 +146,7 @@
     "@antv/x6-react-shape": "^3.0.1",
     "@dagrejs/dagre": "^3.1.1",
     "@supabase/supabase-js": "^2.112.4",
-    "@tiangong-lca/tidas-sdk": "0.4.0",
+    "@tiangong-lca/tidas-sdk": "0.4.1",
     "antd": "6.6.2",
     "bignumber.js": "^11.1.5",
     "d3-geo": "^3.1.1",

@@ -3,7 +3,7 @@
   "source": {
     "baseRef": "c26f306e82ac66f50a56aafe8f89ea96c0b0c67d",
     "baseCommit": "c26f306e82ac66f50a56aafe8f89ea96c0b0c67d",
-    "auditedInputDigest": "a4f996b8c8e5c83815fca7f665ad37486db9e82b8ce1491ae9bc72261fd244e9",
+    "auditedInputDigest": "8df06bf7db37d43842fd10e51edec5b8d6827a590da60e8a401e64cde1c4839b",
     "auditedInputDigestAlgorithm": "sha256(path\\0content\\0)",
     "repository": "tiangong-lca/platform"
   },
@@ -69,13 +69,13 @@
   "summary": {
     "localeCount": 4,
     "localeLeafModuleCounts": { "en-US": 31, "zh-CN": 31, "de-DE": 31, "fr-FR": 31 },
-    "localeUniqueKeyCounts": { "en-US": 3517, "zh-CN": 3517, "de-DE": 3517, "fr-FR": 3517 },
-    "canonicalCandidateKeyCount": 3517,
-    "activeStaticKeyCount": 2338,
+    "localeUniqueKeyCounts": { "en-US": 3523, "zh-CN": 3523, "de-DE": 3523, "fr-FR": 3523 },
+    "canonicalCandidateKeyCount": 3523,
+    "activeStaticKeyCount": 2344,
     "activeDynamicKeyCount": 321,
     "reservedKeyCount": 858,
-    "productionSourceFileCount": 484,
-    "literalReferenceCount": 4282,
+    "productionSourceFileCount": 486,
+    "literalReferenceCount": 4288,
     "dynamicCallsiteCount": 33,
     "dynamicCallsiteSummaryCount": 33,
     "registeredDynamicCallsiteCount": 33,
@@ -34779,7 +34779,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Sources/Components/edit.tsx",
-          "line": 334,
+          "line": 337,
           "column": 9,
           "symbol": "handleSubmit",
           "defaultMessage": "Data saved successfully.",
@@ -34794,7 +34794,7 @@
           "locations": [
             {
               "path": "src/pages/Sources/Components/edit.tsx",
-              "line": 334,
+              "line": 337,
               "column": 9,
               "kind": "formatMessage"
             }
@@ -47258,7 +47258,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/components/AllVersions/index.tsx",
-          "line": 170,
+          "line": 177,
           "column": 16,
           "symbol": "AllVersionsList",
           "defaultMessage": "All Versions",
@@ -47267,7 +47267,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/components/AllVersions/index.tsx",
-          "line": 185,
+          "line": 192,
           "column": 16,
           "symbol": "AllVersionsList",
           "defaultMessage": "All Versions",
@@ -47282,13 +47282,13 @@
           "locations": [
             {
               "path": "src/components/AllVersions/index.tsx",
-              "line": 170,
+              "line": 177,
               "column": 16,
               "kind": "FormattedMessage"
             },
             {
               "path": "src/components/AllVersions/index.tsx",
-              "line": 185,
+              "line": 192,
               "column": 16,
               "kind": "FormattedMessage"
             }
@@ -47365,7 +47365,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/components/AllVersions/index.tsx",
-          "line": 193,
+          "line": 200,
           "column": 17,
           "symbol": "AllVersionsList",
           "defaultMessage": "Cancel",
@@ -47608,7 +47608,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Sources/Components/create.tsx",
-          "line": 348,
+          "line": 351,
           "column": 15,
           "symbol": "SourceCreate",
           "defaultMessage": "Cancel",
@@ -47617,7 +47617,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Sources/Components/edit.tsx",
-          "line": 635,
+          "line": 638,
           "column": 17,
           "symbol": "SourceEdit",
           "defaultMessage": "Cancel",
@@ -47692,7 +47692,7 @@
             },
             {
               "path": "src/components/AllVersions/index.tsx",
-              "line": 193,
+              "line": 200,
               "column": 17,
               "kind": "FormattedMessage"
             },
@@ -47848,13 +47848,13 @@
             },
             {
               "path": "src/pages/Sources/Components/create.tsx",
-              "line": 348,
+              "line": 351,
               "column": 15,
               "kind": "FormattedMessage"
             },
             {
               "path": "src/pages/Sources/Components/edit.tsx",
-              "line": 635,
+              "line": 638,
               "column": 17,
               "kind": "FormattedMessage"
             },
@@ -48003,7 +48003,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Sources/Components/edit.tsx",
-          "line": 609,
+          "line": 612,
           "column": 17,
           "symbol": "SourceEdit",
           "defaultMessage": "Data Check",
@@ -48057,7 +48057,7 @@
             },
             {
               "path": "src/pages/Sources/Components/edit.tsx",
-              "line": 609,
+              "line": 612,
               "column": 17,
               "kind": "FormattedMessage"
             },
@@ -48176,7 +48176,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Sources/Components/edit.tsx",
-          "line": 532,
+          "line": 535,
           "column": 13,
           "symbol": "validationHint",
           "defaultMessage": "Data check failed, please check the data!",
@@ -48230,7 +48230,7 @@
             },
             {
               "path": "src/pages/Sources/Components/edit.tsx",
-              "line": 532,
+              "line": 535,
               "column": 13,
               "kind": "formatMessage"
             },
@@ -48432,7 +48432,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Sources/Components/edit.tsx",
-          "line": 519,
+          "line": 522,
           "column": 11,
           "symbol": "handleCheckData",
           "defaultMessage": "Data validation passed.",
@@ -48486,7 +48486,7 @@
             },
             {
               "path": "src/pages/Sources/Components/edit.tsx",
-              "line": 519,
+              "line": 522,
               "column": 11,
               "kind": "formatMessage"
             },
@@ -48890,7 +48890,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Sources/Components/create.tsx",
-          "line": 283,
+          "line": 286,
           "column": 25,
           "symbol": "SourceCreate",
           "defaultMessage": "Copy",
@@ -48944,7 +48944,7 @@
             },
             {
               "path": "src/pages/Sources/Components/create.tsx",
-              "line": 283,
+              "line": 286,
               "column": 25,
               "kind": "FormattedMessage"
             },
@@ -49108,7 +49108,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Sources/Components/create.tsx",
-          "line": 300,
+          "line": 303,
           "column": 15,
           "symbol": "SourceCreate",
           "defaultMessage": "Create",
@@ -49201,7 +49201,7 @@
             },
             {
               "path": "src/pages/Sources/Components/create.tsx",
-              "line": 300,
+              "line": 303,
               "column": 15,
               "kind": "FormattedMessage"
             },
@@ -49326,7 +49326,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Sources/Components/create.tsx",
-          "line": 172,
+          "line": 175,
           "column": 15,
           "symbol": "onSubmit",
           "defaultMessage": "Data with the same ID and version already exists.",
@@ -49380,7 +49380,7 @@
             },
             {
               "path": "src/pages/Sources/Components/create.tsx",
-              "line": 172,
+              "line": 175,
               "column": 15,
               "kind": "formatMessage"
             },
@@ -49490,7 +49490,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Sources/Components/create.tsx",
-          "line": 159,
+          "line": 162,
           "column": 11,
           "symbol": "onSubmit",
           "defaultMessage": "Created successfully!",
@@ -49538,7 +49538,7 @@
             },
             {
               "path": "src/pages/Sources/Components/create.tsx",
-              "line": 159,
+              "line": 162,
               "column": 11,
               "kind": "formatMessage"
             },
@@ -49657,7 +49657,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Sources/Components/create.tsx",
-          "line": 298,
+          "line": 301,
           "column": 15,
           "symbol": "SourceCreate",
           "defaultMessage": "Create Version",
@@ -49711,7 +49711,7 @@
             },
             {
               "path": "src/pages/Sources/Components/create.tsx",
-              "line": 298,
+              "line": 301,
               "column": 15,
               "kind": "FormattedMessage"
             },
@@ -50096,7 +50096,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Sources/Components/delete.tsx",
-          "line": 87,
+          "line": 90,
           "column": 27,
           "symbol": "SourceDelete",
           "defaultMessage": "Delete",
@@ -50105,7 +50105,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Sources/Components/delete.tsx",
-          "line": 97,
+          "line": 100,
           "column": 20,
           "symbol": "SourceDelete",
           "defaultMessage": "Delete",
@@ -50114,7 +50114,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Sources/Components/delete.tsx",
-          "line": 111,
+          "line": 114,
           "column": 13,
           "symbol": "SourceDelete",
           "defaultMessage": "Delete",
@@ -50123,7 +50123,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Sources/Components/delete.tsx",
-          "line": 114,
+          "line": 117,
           "column": 20,
           "symbol": "SourceDelete",
           "defaultMessage": "Delete",
@@ -50378,25 +50378,25 @@
             },
             {
               "path": "src/pages/Sources/Components/delete.tsx",
-              "line": 87,
+              "line": 90,
               "column": 27,
               "kind": "FormattedMessage"
             },
             {
               "path": "src/pages/Sources/Components/delete.tsx",
-              "line": 97,
+              "line": 100,
               "column": 20,
               "kind": "FormattedMessage"
             },
             {
               "path": "src/pages/Sources/Components/delete.tsx",
-              "line": 111,
+              "line": 114,
               "column": 13,
               "kind": "FormattedMessage"
             },
             {
               "path": "src/pages/Sources/Components/delete.tsx",
-              "line": 114,
+              "line": 117,
               "column": 20,
               "kind": "FormattedMessage"
             },
@@ -50638,7 +50638,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Sources/Components/delete.tsx",
-          "line": 102,
+          "line": 105,
           "column": 13,
           "symbol": "SourceDelete",
           "defaultMessage": "Are you sure you want to delete this data?",
@@ -50647,7 +50647,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Sources/Components/delete.tsx",
-          "line": 119,
+          "line": 122,
           "column": 13,
           "symbol": "SourceDelete",
           "defaultMessage": "Are you sure you want to delete this data?",
@@ -50782,13 +50782,13 @@
             },
             {
               "path": "src/pages/Sources/Components/delete.tsx",
-              "line": 102,
+              "line": 105,
               "column": 13,
               "kind": "FormattedMessage"
             },
             {
               "path": "src/pages/Sources/Components/delete.tsx",
-              "line": 119,
+              "line": 122,
               "column": 13,
               "kind": "FormattedMessage"
             },
@@ -50943,7 +50943,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Sources/Components/delete.tsx",
-          "line": 43,
+          "line": 44,
           "column": 11,
           "symbol": "deleteData",
           "defaultMessage": "Selected record has been deleted.",
@@ -51018,7 +51018,7 @@
             },
             {
               "path": "src/pages/Sources/Components/delete.tsx",
-              "line": 43,
+              "line": 44,
               "column": 11,
               "kind": "formatMessage"
             },
@@ -51098,9 +51098,9 @@
         {
           "kind": "formatMessage",
           "path": "src/components/FileViewer/gallery.tsx",
-          "line": 91,
-          "column": 26,
-          "symbol": "FileGallery",
+          "line": 90,
+          "column": 25,
+          "symbol": "title",
           "defaultMessage": "Download file",
           "defaultMessageExpression": null
         }
@@ -51113,8 +51113,8 @@
           "locations": [
             {
               "path": "src/components/FileViewer/gallery.tsx",
-              "line": 91,
-              "column": 26,
+              "line": 90,
+              "column": 25,
               "kind": "formatMessage"
             }
           ]
@@ -51343,7 +51343,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Sources/Components/edit.tsx",
-          "line": 571,
+          "line": 574,
           "column": 27,
           "symbol": "SourceEdit",
           "defaultMessage": "Edit",
@@ -51352,7 +51352,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Sources/Components/edit.tsx",
-          "line": 582,
+          "line": 585,
           "column": 13,
           "symbol": "SourceEdit",
           "defaultMessage": "Edit",
@@ -51511,13 +51511,13 @@
             },
             {
               "path": "src/pages/Sources/Components/edit.tsx",
-              "line": 571,
+              "line": 574,
               "column": 27,
               "kind": "FormattedMessage"
             },
             {
               "path": "src/pages/Sources/Components/edit.tsx",
-              "line": 582,
+              "line": 585,
               "column": 13,
               "kind": "FormattedMessage"
             },
@@ -55327,7 +55327,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Sources/Components/create.tsx",
-          "line": 351,
+          "line": 354,
           "column": 15,
           "symbol": "SourceCreate",
           "defaultMessage": "Save",
@@ -55336,7 +55336,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Sources/Components/edit.tsx",
-          "line": 647,
+          "line": 650,
           "column": 17,
           "symbol": "SourceEdit",
           "defaultMessage": "Save",
@@ -55489,13 +55489,13 @@
             },
             {
               "path": "src/pages/Sources/Components/create.tsx",
-              "line": 351,
+              "line": 354,
               "column": 15,
               "kind": "FormattedMessage"
             },
             {
               "path": "src/pages/Sources/Components/edit.tsx",
-              "line": 647,
+              "line": 650,
               "column": 17,
               "kind": "FormattedMessage"
             },
@@ -55948,7 +55948,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/components/AllVersions/index.tsx",
-          "line": 196,
+          "line": 203,
           "column": 17,
           "symbol": "AllVersionsList",
           "defaultMessage": "Submit",
@@ -56062,7 +56062,7 @@
           "locations": [
             {
               "path": "src/components/AllVersions/index.tsx",
-              "line": 196,
+              "line": 203,
               "column": 17,
               "kind": "FormattedMessage"
             },
@@ -56452,7 +56452,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Sources/Components/edit.tsx",
-          "line": 629,
+          "line": 632,
           "column": 17,
           "symbol": "SourceEdit",
           "defaultMessage": "Update Reference",
@@ -56548,7 +56548,7 @@
             },
             {
               "path": "src/pages/Sources/Components/edit.tsx",
-              "line": 629,
+              "line": 632,
               "column": 17,
               "kind": "FormattedMessage"
             },
@@ -57579,7 +57579,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Sources/Components/edit.tsx",
-          "line": 415,
+          "line": 418,
           "column": 11,
           "symbol": "handleCheckData",
           "defaultMessage": "This data set is under review and cannot be validated",
@@ -57621,7 +57621,7 @@
             },
             {
               "path": "src/pages/Sources/Components/edit.tsx",
-              "line": 415,
+              "line": 418,
               "column": 11,
               "kind": "formatMessage"
             },
@@ -82635,6 +82635,504 @@
         }
       ],
       "defaultMessages": []
+    },
+    {
+      "id": "pages.file.preview.open",
+      "category": "active-static",
+      "dynamicFamilies": [],
+      "moduleOwnership": {
+        "en-US": ["pages_source"],
+        "zh-CN": ["pages_source"],
+        "de-DE": ["pages_source"],
+        "fr-FR": ["pages_source"]
+      },
+      "translations": {
+        "en-US": {
+          "value": "Open file",
+          "argumentSignature": [],
+          "placeholders": [],
+          "source": {
+            "path": "src/locales/en-US/pages_source.ts",
+            "line": 2,
+            "column": 3,
+            "module": "pages_source"
+          }
+        },
+        "zh-CN": {
+          "value": "打开文件",
+          "argumentSignature": [],
+          "placeholders": [],
+          "source": {
+            "path": "src/locales/zh-CN/pages_source.ts",
+            "line": 2,
+            "column": 3,
+            "module": "pages_source"
+          }
+        },
+        "de-DE": {
+          "value": "Datei öffnen",
+          "argumentSignature": [],
+          "placeholders": [],
+          "source": {
+            "path": "src/locales/de-DE/pages_source.ts",
+            "line": 2,
+            "column": 3,
+            "module": "pages_source"
+          }
+        },
+        "fr-FR": {
+          "value": "Ouvrir le fichier",
+          "argumentSignature": [],
+          "placeholders": [],
+          "source": {
+            "path": "src/locales/fr-FR/pages_source.ts",
+            "line": 2,
+            "column": 3,
+            "module": "pages_source"
+          }
+        }
+      },
+      "references": [
+        {
+          "kind": "formatMessage",
+          "path": "src/pages/Sources/Components/form.tsx",
+          "line": 308,
+          "column": 21,
+          "symbol": "actionLabel",
+          "defaultMessage": "Open file",
+          "defaultMessageExpression": null
+        }
+      ],
+      "defaultMessages": [
+        {
+          "value": "Open file",
+          "argumentSignature": [],
+          "placeholders": [],
+          "locations": [
+            {
+              "path": "src/pages/Sources/Components/form.tsx",
+              "line": 308,
+              "column": 21,
+              "kind": "formatMessage"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pages.file.preview.resolved",
+      "category": "active-static",
+      "dynamicFamilies": [],
+      "moduleOwnership": {
+        "en-US": ["pages_source"],
+        "zh-CN": ["pages_source"],
+        "de-DE": ["pages_source"],
+        "fr-FR": ["pages_source"]
+      },
+      "translations": {
+        "en-US": {
+          "value": "File preview ready",
+          "argumentSignature": [],
+          "placeholders": [],
+          "source": {
+            "path": "src/locales/en-US/pages_source.ts",
+            "line": 5,
+            "column": 3,
+            "module": "pages_source"
+          }
+        },
+        "zh-CN": {
+          "value": "文件预览已就绪",
+          "argumentSignature": [],
+          "placeholders": [],
+          "source": {
+            "path": "src/locales/zh-CN/pages_source.ts",
+            "line": 5,
+            "column": 3,
+            "module": "pages_source"
+          }
+        },
+        "de-DE": {
+          "value": "Dateivorschau bereit",
+          "argumentSignature": [],
+          "placeholders": [],
+          "source": {
+            "path": "src/locales/de-DE/pages_source.ts",
+            "line": 5,
+            "column": 3,
+            "module": "pages_source"
+          }
+        },
+        "fr-FR": {
+          "value": "Aperçu du fichier prêt",
+          "argumentSignature": [],
+          "placeholders": [],
+          "source": {
+            "path": "src/locales/fr-FR/pages_source.ts",
+            "line": 5,
+            "column": 3,
+            "module": "pages_source"
+          }
+        }
+      },
+      "references": [
+        {
+          "kind": "formatMessage",
+          "path": "src/components/FileViewer/preview.ts",
+          "line": 10,
+          "column": 12,
+          "symbol": "filePreviewLabel",
+          "defaultMessage": "File preview ready",
+          "defaultMessageExpression": null
+        }
+      ],
+      "defaultMessages": [
+        {
+          "value": "File preview ready",
+          "argumentSignature": [],
+          "placeholders": [],
+          "locations": [
+            {
+              "path": "src/components/FileViewer/preview.ts",
+              "line": 10,
+              "column": 12,
+              "kind": "formatMessage"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pages.file.preview.retry",
+      "category": "active-static",
+      "dynamicFamilies": [],
+      "moduleOwnership": {
+        "en-US": ["pages_source"],
+        "zh-CN": ["pages_source"],
+        "de-DE": ["pages_source"],
+        "fr-FR": ["pages_source"]
+      },
+      "translations": {
+        "en-US": {
+          "value": "Retry preview",
+          "argumentSignature": [],
+          "placeholders": [],
+          "source": {
+            "path": "src/locales/en-US/pages_source.ts",
+            "line": 3,
+            "column": 3,
+            "module": "pages_source"
+          }
+        },
+        "zh-CN": {
+          "value": "重试预览",
+          "argumentSignature": [],
+          "placeholders": [],
+          "source": {
+            "path": "src/locales/zh-CN/pages_source.ts",
+            "line": 3,
+            "column": 3,
+            "module": "pages_source"
+          }
+        },
+        "de-DE": {
+          "value": "Vorschau erneut versuchen",
+          "argumentSignature": [],
+          "placeholders": [],
+          "source": {
+            "path": "src/locales/de-DE/pages_source.ts",
+            "line": 3,
+            "column": 3,
+            "module": "pages_source"
+          }
+        },
+        "fr-FR": {
+          "value": "Réessayer l’aperçu",
+          "argumentSignature": [],
+          "placeholders": [],
+          "source": {
+            "path": "src/locales/fr-FR/pages_source.ts",
+            "line": 3,
+            "column": 3,
+            "module": "pages_source"
+          }
+        }
+      },
+      "references": [
+        {
+          "kind": "formatMessage",
+          "path": "src/pages/Sources/Components/form.tsx",
+          "line": 304,
+          "column": 21,
+          "symbol": "actionLabel",
+          "defaultMessage": "Retry preview",
+          "defaultMessageExpression": null
+        }
+      ],
+      "defaultMessages": [
+        {
+          "value": "Retry preview",
+          "argumentSignature": [],
+          "placeholders": [],
+          "locations": [
+            {
+              "path": "src/pages/Sources/Components/form.tsx",
+              "line": 304,
+              "column": 21,
+              "kind": "formatMessage"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pages.file.preview.unavailable",
+      "category": "active-static",
+      "dynamicFamilies": [],
+      "moduleOwnership": {
+        "en-US": ["pages_source"],
+        "zh-CN": ["pages_source"],
+        "de-DE": ["pages_source"],
+        "fr-FR": ["pages_source"]
+      },
+      "translations": {
+        "en-US": {
+          "value": "File preview unavailable",
+          "argumentSignature": [],
+          "placeholders": [],
+          "source": {
+            "path": "src/locales/en-US/pages_source.ts",
+            "line": 8,
+            "column": 3,
+            "module": "pages_source"
+          }
+        },
+        "zh-CN": {
+          "value": "文件预览不可用",
+          "argumentSignature": [],
+          "placeholders": [],
+          "source": {
+            "path": "src/locales/zh-CN/pages_source.ts",
+            "line": 8,
+            "column": 3,
+            "module": "pages_source"
+          }
+        },
+        "de-DE": {
+          "value": "Dateivorschau nicht verfügbar",
+          "argumentSignature": [],
+          "placeholders": [],
+          "source": {
+            "path": "src/locales/de-DE/pages_source.ts",
+            "line": 8,
+            "column": 3,
+            "module": "pages_source"
+          }
+        },
+        "fr-FR": {
+          "value": "Aperçu du fichier indisponible",
+          "argumentSignature": [],
+          "placeholders": [],
+          "source": {
+            "path": "src/locales/fr-FR/pages_source.ts",
+            "line": 8,
+            "column": 3,
+            "module": "pages_source"
+          }
+        }
+      },
+      "references": [
+        {
+          "kind": "formatMessage",
+          "path": "src/components/FileViewer/preview.ts",
+          "line": 16,
+          "column": 12,
+          "symbol": "filePreviewLabel",
+          "defaultMessage": "File preview unavailable",
+          "defaultMessageExpression": null
+        }
+      ],
+      "defaultMessages": [
+        {
+          "value": "File preview unavailable",
+          "argumentSignature": [],
+          "placeholders": [],
+          "locations": [
+            {
+              "path": "src/components/FileViewer/preview.ts",
+              "line": 16,
+              "column": 12,
+              "kind": "formatMessage"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pages.file.preview.unchecked",
+      "category": "active-static",
+      "dynamicFamilies": [],
+      "moduleOwnership": {
+        "en-US": ["pages_source"],
+        "zh-CN": ["pages_source"],
+        "de-DE": ["pages_source"],
+        "fr-FR": ["pages_source"]
+      },
+      "translations": {
+        "en-US": {
+          "value": "File access not checked",
+          "argumentSignature": [],
+          "placeholders": [],
+          "source": {
+            "path": "src/locales/en-US/pages_source.ts",
+            "line": 7,
+            "column": 3,
+            "module": "pages_source"
+          }
+        },
+        "zh-CN": {
+          "value": "尚未检查文件访问",
+          "argumentSignature": [],
+          "placeholders": [],
+          "source": {
+            "path": "src/locales/zh-CN/pages_source.ts",
+            "line": 7,
+            "column": 3,
+            "module": "pages_source"
+          }
+        },
+        "de-DE": {
+          "value": "Dateizugriff nicht geprüft",
+          "argumentSignature": [],
+          "placeholders": [],
+          "source": {
+            "path": "src/locales/de-DE/pages_source.ts",
+            "line": 7,
+            "column": 3,
+            "module": "pages_source"
+          }
+        },
+        "fr-FR": {
+          "value": "Accès au fichier non vérifié",
+          "argumentSignature": [],
+          "placeholders": [],
+          "source": {
+            "path": "src/locales/fr-FR/pages_source.ts",
+            "line": 7,
+            "column": 3,
+            "module": "pages_source"
+          }
+        }
+      },
+      "references": [
+        {
+          "kind": "formatMessage",
+          "path": "src/components/FileViewer/preview.ts",
+          "line": 28,
+          "column": 12,
+          "symbol": "filePreviewLabel",
+          "defaultMessage": "File access not checked",
+          "defaultMessageExpression": null
+        }
+      ],
+      "defaultMessages": [
+        {
+          "value": "File access not checked",
+          "argumentSignature": [],
+          "placeholders": [],
+          "locations": [
+            {
+              "path": "src/components/FileViewer/preview.ts",
+              "line": 28,
+              "column": 12,
+              "kind": "formatMessage"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pages.file.preview.unsupported",
+      "category": "active-static",
+      "dynamicFamilies": [],
+      "moduleOwnership": {
+        "en-US": ["pages_source"],
+        "zh-CN": ["pages_source"],
+        "de-DE": ["pages_source"],
+        "fr-FR": ["pages_source"]
+      },
+      "translations": {
+        "en-US": {
+          "value": "Preview not supported for this reference",
+          "argumentSignature": [],
+          "placeholders": [],
+          "source": {
+            "path": "src/locales/en-US/pages_source.ts",
+            "line": 9,
+            "column": 3,
+            "module": "pages_source"
+          }
+        },
+        "zh-CN": {
+          "value": "此引用不支持预览",
+          "argumentSignature": [],
+          "placeholders": [],
+          "source": {
+            "path": "src/locales/zh-CN/pages_source.ts",
+            "line": 9,
+            "column": 3,
+            "module": "pages_source"
+          }
+        },
+        "de-DE": {
+          "value": "Vorschau für diese Referenz nicht unterstützt",
+          "argumentSignature": [],
+          "placeholders": [],
+          "source": {
+            "path": "src/locales/de-DE/pages_source.ts",
+            "line": 9,
+            "column": 3,
+            "module": "pages_source"
+          }
+        },
+        "fr-FR": {
+          "value": "Aperçu non pris en charge pour cette référence",
+          "argumentSignature": [],
+          "placeholders": [],
+          "source": {
+            "path": "src/locales/fr-FR/pages_source.ts",
+            "line": 9,
+            "column": 3,
+            "module": "pages_source"
+          }
+        }
+      },
+      "references": [
+        {
+          "kind": "formatMessage",
+          "path": "src/components/FileViewer/preview.ts",
+          "line": 22,
+          "column": 12,
+          "symbol": "filePreviewLabel",
+          "defaultMessage": "Preview not supported for this reference",
+          "defaultMessageExpression": null
+        }
+      ],
+      "defaultMessages": [
+        {
+          "value": "Preview not supported for this reference",
+          "argumentSignature": [],
+          "placeholders": [],
+          "locations": [
+            {
+              "path": "src/components/FileViewer/preview.ts",
+              "line": 22,
+              "column": 12,
+              "kind": "formatMessage"
+            }
+          ]
+        }
+      ]
     },
     {
       "id": "pages.flow.CASNumber",
@@ -232272,7 +232770,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Sources/Components/edit.tsx",
-          "line": 348,
+          "line": 351,
           "column": 11,
           "symbol": "handleSubmit",
           "defaultMessage": "This data is open data, save failed",
@@ -232332,7 +232830,7 @@
             },
             {
               "path": "src/pages/Sources/Components/edit.tsx",
-              "line": 348,
+              "line": 351,
               "column": 11,
               "kind": "formatMessage"
             },
@@ -245030,7 +245528,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Sources/Components/edit.tsx",
-          "line": 355,
+          "line": 358,
           "column": 11,
           "symbol": "handleSubmit",
           "defaultMessage": "Data is under review, save failed",
@@ -245090,7 +245588,7 @@
             },
             {
               "path": "src/pages/Sources/Components/edit.tsx",
-              "line": 355,
+              "line": 358,
               "column": 11,
               "kind": "formatMessage"
             },
@@ -250347,7 +250845,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 62,
+            "line": 71,
             "column": 3,
             "module": "pages_source"
           }
@@ -250358,7 +250856,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 61,
+            "line": 70,
             "column": 3,
             "module": "pages_source"
           }
@@ -250369,7 +250867,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 62,
+            "line": 71,
             "column": 3,
             "module": "pages_source"
           }
@@ -250380,7 +250878,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 62,
+            "line": 71,
             "column": 3,
             "module": "pages_source"
           }
@@ -250406,7 +250904,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 63,
+            "line": 72,
             "column": 3,
             "module": "pages_source"
           }
@@ -250417,7 +250915,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 62,
+            "line": 71,
             "column": 3,
             "module": "pages_source"
           }
@@ -250428,7 +250926,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 63,
+            "line": 72,
             "column": 3,
             "module": "pages_source"
           }
@@ -250439,7 +250937,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 63,
+            "line": 72,
             "column": 3,
             "module": "pages_source"
           }
@@ -250465,7 +250963,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 67,
+            "line": 76,
             "column": 3,
             "module": "pages_source"
           }
@@ -250476,7 +250974,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 66,
+            "line": 75,
             "column": 3,
             "module": "pages_source"
           }
@@ -250487,7 +250985,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 67,
+            "line": 76,
             "column": 3,
             "module": "pages_source"
           }
@@ -250498,7 +250996,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 67,
+            "line": 76,
             "column": 3,
             "module": "pages_source"
           }
@@ -250524,7 +251022,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 68,
+            "line": 77,
             "column": 3,
             "module": "pages_source"
           }
@@ -250535,7 +251033,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 67,
+            "line": 76,
             "column": 3,
             "module": "pages_source"
           }
@@ -250546,7 +251044,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 68,
+            "line": 77,
             "column": 3,
             "module": "pages_source"
           }
@@ -250557,7 +251055,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 68,
+            "line": 77,
             "column": 3,
             "module": "pages_source"
           }
@@ -250583,7 +251081,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 66,
+            "line": 75,
             "column": 3,
             "module": "pages_source"
           }
@@ -250594,7 +251092,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 65,
+            "line": 74,
             "column": 3,
             "module": "pages_source"
           }
@@ -250605,7 +251103,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 66,
+            "line": 75,
             "column": 3,
             "module": "pages_source"
           }
@@ -250616,7 +251114,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 66,
+            "line": 75,
             "column": 3,
             "module": "pages_source"
           }
@@ -250642,7 +251140,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 65,
+            "line": 74,
             "column": 3,
             "module": "pages_source"
           }
@@ -250653,7 +251151,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 64,
+            "line": 73,
             "column": 3,
             "module": "pages_source"
           }
@@ -250664,7 +251162,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 65,
+            "line": 74,
             "column": 3,
             "module": "pages_source"
           }
@@ -250675,7 +251173,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 65,
+            "line": 74,
             "column": 3,
             "module": "pages_source"
           }
@@ -250701,7 +251199,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 69,
+            "line": 78,
             "column": 3,
             "module": "pages_source"
           }
@@ -250712,7 +251210,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 68,
+            "line": 77,
             "column": 3,
             "module": "pages_source"
           }
@@ -250723,7 +251221,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 69,
+            "line": 78,
             "column": 3,
             "module": "pages_source"
           }
@@ -250734,7 +251232,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 69,
+            "line": 78,
             "column": 3,
             "module": "pages_source"
           }
@@ -250760,7 +251258,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 64,
+            "line": 73,
             "column": 3,
             "module": "pages_source"
           }
@@ -250771,7 +251269,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 63,
+            "line": 72,
             "column": 3,
             "module": "pages_source"
           }
@@ -250782,7 +251280,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 64,
+            "line": 73,
             "column": 3,
             "module": "pages_source"
           }
@@ -250793,7 +251291,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 64,
+            "line": 73,
             "column": 3,
             "module": "pages_source"
           }
@@ -250819,7 +251317,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 54,
+            "line": 63,
             "column": 3,
             "module": "pages_source"
           }
@@ -250830,7 +251328,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 53,
+            "line": 62,
             "column": 3,
             "module": "pages_source"
           }
@@ -250841,7 +251339,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 54,
+            "line": 63,
             "column": 3,
             "module": "pages_source"
           }
@@ -250852,7 +251350,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 54,
+            "line": 63,
             "column": 3,
             "module": "pages_source"
           }
@@ -250878,7 +251376,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 56,
+            "line": 65,
             "column": 3,
             "module": "pages_source"
           }
@@ -250889,7 +251387,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 55,
+            "line": 64,
             "column": 3,
             "module": "pages_source"
           }
@@ -250900,7 +251398,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 56,
+            "line": 65,
             "column": 3,
             "module": "pages_source"
           }
@@ -250911,7 +251409,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 56,
+            "line": 65,
             "column": 3,
             "module": "pages_source"
           }
@@ -250937,7 +251435,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 58,
+            "line": 67,
             "column": 3,
             "module": "pages_source"
           }
@@ -250948,7 +251446,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 57,
+            "line": 66,
             "column": 3,
             "module": "pages_source"
           }
@@ -250959,7 +251457,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 58,
+            "line": 67,
             "column": 3,
             "module": "pages_source"
           }
@@ -250970,7 +251468,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 58,
+            "line": 67,
             "column": 3,
             "module": "pages_source"
           }
@@ -250996,7 +251494,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 61,
+            "line": 70,
             "column": 3,
             "module": "pages_source"
           }
@@ -251007,7 +251505,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 60,
+            "line": 69,
             "column": 3,
             "module": "pages_source"
           }
@@ -251018,7 +251516,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 61,
+            "line": 70,
             "column": 3,
             "module": "pages_source"
           }
@@ -251029,7 +251527,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 61,
+            "line": 70,
             "column": 3,
             "module": "pages_source"
           }
@@ -251055,7 +251553,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 60,
+            "line": 69,
             "column": 3,
             "module": "pages_source"
           }
@@ -251066,7 +251564,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 59,
+            "line": 68,
             "column": 3,
             "module": "pages_source"
           }
@@ -251077,7 +251575,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 60,
+            "line": 69,
             "column": 3,
             "module": "pages_source"
           }
@@ -251088,7 +251586,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 60,
+            "line": 69,
             "column": 3,
             "module": "pages_source"
           }
@@ -251114,7 +251612,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 55,
+            "line": 64,
             "column": 3,
             "module": "pages_source"
           }
@@ -251125,7 +251623,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 54,
+            "line": 63,
             "column": 3,
             "module": "pages_source"
           }
@@ -251136,7 +251634,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 55,
+            "line": 64,
             "column": 3,
             "module": "pages_source"
           }
@@ -251147,7 +251645,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 55,
+            "line": 64,
             "column": 3,
             "module": "pages_source"
           }
@@ -251173,7 +251671,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 57,
+            "line": 66,
             "column": 3,
             "module": "pages_source"
           }
@@ -251184,7 +251682,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 56,
+            "line": 65,
             "column": 3,
             "module": "pages_source"
           }
@@ -251195,7 +251693,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 57,
+            "line": 66,
             "column": 3,
             "module": "pages_source"
           }
@@ -251206,7 +251704,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 57,
+            "line": 66,
             "column": 3,
             "module": "pages_source"
           }
@@ -251232,7 +251730,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 59,
+            "line": 68,
             "column": 3,
             "module": "pages_source"
           }
@@ -251243,7 +251741,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 58,
+            "line": 67,
             "column": 3,
             "module": "pages_source"
           }
@@ -251254,7 +251752,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 59,
+            "line": 68,
             "column": 3,
             "module": "pages_source"
           }
@@ -251265,7 +251763,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 59,
+            "line": 68,
             "column": 3,
             "module": "pages_source"
           }
@@ -251291,7 +251789,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 7,
+            "line": 16,
             "column": 3,
             "module": "pages_source"
           }
@@ -251302,7 +251800,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 7,
+            "line": 16,
             "column": 3,
             "module": "pages_source"
           }
@@ -251313,7 +251811,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 7,
+            "line": 16,
             "column": 3,
             "module": "pages_source"
           }
@@ -251324,7 +251822,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 7,
+            "line": 16,
             "column": 3,
             "module": "pages_source"
           }
@@ -251334,7 +251832,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Sources/Components/create.tsx",
-          "line": 320,
+          "line": 323,
           "column": 13,
           "symbol": "SourceCreate",
           "defaultMessage": "Copy Source",
@@ -251349,7 +251847,7 @@
           "locations": [
             {
               "path": "src/pages/Sources/Components/create.tsx",
-              "line": 320,
+              "line": 323,
               "column": 13,
               "kind": "FormattedMessage"
             }
@@ -251374,7 +251872,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 4,
+            "line": 13,
             "column": 3,
             "module": "pages_source"
           }
@@ -251385,7 +251883,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 4,
+            "line": 13,
             "column": 3,
             "module": "pages_source"
           }
@@ -251396,7 +251894,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 4,
+            "line": 13,
             "column": 3,
             "module": "pages_source"
           }
@@ -251407,7 +251905,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 4,
+            "line": 13,
             "column": 3,
             "module": "pages_source"
           }
@@ -251417,7 +251915,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Sources/Components/create.tsx",
-          "line": 327,
+          "line": 330,
           "column": 13,
           "symbol": "SourceCreate",
           "defaultMessage": "Create Source",
@@ -251432,7 +251930,7 @@
           "locations": [
             {
               "path": "src/pages/Sources/Components/create.tsx",
-              "line": 327,
+              "line": 330,
               "column": 13,
               "kind": "FormattedMessage"
             }
@@ -251457,7 +251955,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 8,
+            "line": 17,
             "column": 3,
             "module": "pages_source"
           }
@@ -251468,7 +251966,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 8,
+            "line": 17,
             "column": 3,
             "module": "pages_source"
           }
@@ -251479,7 +251977,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 8,
+            "line": 17,
             "column": 3,
             "module": "pages_source"
           }
@@ -251490,7 +251988,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 8,
+            "line": 17,
             "column": 3,
             "module": "pages_source"
           }
@@ -251500,7 +251998,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Sources/Components/create.tsx",
-          "line": 322,
+          "line": 325,
           "column": 13,
           "symbol": "SourceCreate",
           "defaultMessage": "Create Version",
@@ -251515,7 +252013,7 @@
           "locations": [
             {
               "path": "src/pages/Sources/Components/create.tsx",
-              "line": 322,
+              "line": 325,
               "column": 13,
               "kind": "FormattedMessage"
             }
@@ -251540,7 +252038,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 9,
+            "line": 18,
             "column": 3,
             "module": "pages_source"
           }
@@ -251551,7 +252049,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 9,
+            "line": 18,
             "column": 3,
             "module": "pages_source"
           }
@@ -251562,7 +252060,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 9,
+            "line": 18,
             "column": 3,
             "module": "pages_source"
           }
@@ -251573,7 +252071,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 9,
+            "line": 18,
             "column": 3,
             "module": "pages_source"
           }
@@ -251599,7 +252097,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 6,
+            "line": 15,
             "column": 3,
             "module": "pages_source"
           }
@@ -251610,7 +252108,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 6,
+            "line": 15,
             "column": 3,
             "module": "pages_source"
           }
@@ -251621,7 +252119,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 6,
+            "line": 15,
             "column": 3,
             "module": "pages_source"
           }
@@ -251632,7 +252130,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 6,
+            "line": 15,
             "column": 3,
             "module": "pages_source"
           }
@@ -251642,7 +252140,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Sources/Components/edit.tsx",
-          "line": 590,
+          "line": 593,
           "column": 11,
           "symbol": "SourceEdit",
           "defaultMessage": "Edit Source",
@@ -251657,7 +252155,7 @@
           "locations": [
             {
               "path": "src/pages/Sources/Components/edit.tsx",
-              "line": 590,
+              "line": 593,
               "column": 11,
               "kind": "FormattedMessage"
             }
@@ -251682,7 +252180,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 10,
+            "line": 19,
             "column": 3,
             "module": "pages_source"
           }
@@ -251693,7 +252191,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 10,
+            "line": 19,
             "column": 3,
             "module": "pages_source"
           }
@@ -251704,7 +252202,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 10,
+            "line": 19,
             "column": 3,
             "module": "pages_source"
           }
@@ -251715,7 +252213,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 10,
+            "line": 19,
             "column": 3,
             "module": "pages_source"
           }
@@ -251765,7 +252263,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 5,
+            "line": 14,
             "column": 3,
             "module": "pages_source"
           }
@@ -251776,7 +252274,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 5,
+            "line": 14,
             "column": 3,
             "module": "pages_source"
           }
@@ -251787,7 +252285,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 5,
+            "line": 14,
             "column": 3,
             "module": "pages_source"
           }
@@ -251798,7 +252296,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 5,
+            "line": 14,
             "column": 3,
             "module": "pages_source"
           }
@@ -251848,7 +252346,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 43,
+            "line": 52,
             "column": 3,
             "module": "pages_source"
           }
@@ -251859,7 +252357,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 42,
+            "line": 51,
             "column": 3,
             "module": "pages_source"
           }
@@ -251870,7 +252368,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 43,
+            "line": 52,
             "column": 3,
             "module": "pages_source"
           }
@@ -251881,7 +252379,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 43,
+            "line": 52,
             "column": 3,
             "module": "pages_source"
           }
@@ -251891,7 +252389,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Sources/Components/form.tsx",
-          "line": 96,
+          "line": 120,
           "column": 7,
           "symbol": "tabLabels",
           "defaultMessage": "Administrative information",
@@ -251906,7 +252404,7 @@
           "locations": [
             {
               "path": "src/pages/Sources/Components/form.tsx",
-              "line": 96,
+              "line": 120,
               "column": 7,
               "kind": "FormattedMessage"
             }
@@ -251931,7 +252429,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 44,
+            "line": 53,
             "column": 3,
             "module": "pages_source"
           }
@@ -251942,7 +252440,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 43,
+            "line": 52,
             "column": 3,
             "module": "pages_source"
           }
@@ -251953,7 +252451,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 44,
+            "line": 53,
             "column": 3,
             "module": "pages_source"
           }
@@ -251964,7 +252462,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 44,
+            "line": 53,
             "column": 3,
             "module": "pages_source"
           }
@@ -251974,7 +252472,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Sources/Components/form.tsx",
-          "line": 332,
+          "line": 407,
           "column": 13,
           "symbol": "tabContent",
           "defaultMessage": "Data entry by",
@@ -251989,7 +252487,7 @@
           "locations": [
             {
               "path": "src/pages/Sources/Components/form.tsx",
-              "line": 332,
+              "line": 407,
               "column": 13,
               "kind": "FormattedMessage"
             }
@@ -252014,7 +252512,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 48,
+            "line": 57,
             "column": 3,
             "module": "pages_source"
           }
@@ -252025,7 +252523,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 47,
+            "line": 56,
             "column": 3,
             "module": "pages_source"
           }
@@ -252036,7 +252534,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 48,
+            "line": 57,
             "column": 3,
             "module": "pages_source"
           }
@@ -252047,7 +252545,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 48,
+            "line": 57,
             "column": 3,
             "module": "pages_source"
           }
@@ -252057,7 +252555,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Sources/Components/form.tsx",
-          "line": 404,
+          "line": 479,
           "column": 19,
           "symbol": "tabContent",
           "defaultMessage": "Data set version",
@@ -252072,7 +252570,7 @@
           "locations": [
             {
               "path": "src/pages/Sources/Components/form.tsx",
-              "line": 404,
+              "line": 479,
               "column": 19,
               "kind": "FormattedMessage"
             }
@@ -252097,7 +252595,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 50,
+            "line": 59,
             "column": 3,
             "module": "pages_source"
           }
@@ -252108,7 +252606,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 49,
+            "line": 58,
             "column": 3,
             "module": "pages_source"
           }
@@ -252119,7 +252617,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 50,
+            "line": 59,
             "column": 3,
             "module": "pages_source"
           }
@@ -252130,7 +252628,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 50,
+            "line": 59,
             "column": 3,
             "module": "pages_source"
           }
@@ -252140,7 +252638,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Sources/Components/form.tsx",
-          "line": 466,
+          "line": 541,
           "column": 15,
           "symbol": "tabContent",
           "defaultMessage": "Permanent data set URI",
@@ -252155,7 +252653,7 @@
           "locations": [
             {
               "path": "src/pages/Sources/Components/form.tsx",
-              "line": 466,
+              "line": 541,
               "column": 15,
               "kind": "FormattedMessage"
             }
@@ -252180,7 +252678,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 51,
+            "line": 60,
             "column": 3,
             "module": "pages_source"
           }
@@ -252191,7 +252689,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 50,
+            "line": 59,
             "column": 3,
             "module": "pages_source"
           }
@@ -252202,7 +252700,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 51,
+            "line": 60,
             "column": 3,
             "module": "pages_source"
           }
@@ -252213,7 +252711,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 51,
+            "line": 60,
             "column": 3,
             "module": "pages_source"
           }
@@ -252223,7 +252721,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Sources/Components/create.tsx",
-          "line": 263,
+          "line": 266,
           "column": 41,
           "symbol": "newData",
           "defaultMessage": "Automatically generated",
@@ -252238,7 +252736,7 @@
           "locations": [
             {
               "path": "src/pages/Sources/Components/create.tsx",
-              "line": 263,
+              "line": 266,
               "column": 41,
               "kind": "formatMessage"
             }
@@ -252263,7 +252761,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 47,
+            "line": 56,
             "column": 3,
             "module": "pages_source"
           }
@@ -252274,7 +252772,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 46,
+            "line": 55,
             "column": 3,
             "module": "pages_source"
           }
@@ -252285,7 +252783,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 47,
+            "line": 56,
             "column": 3,
             "module": "pages_source"
           }
@@ -252296,7 +252794,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 47,
+            "line": 56,
             "column": 3,
             "module": "pages_source"
           }
@@ -252306,7 +252804,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Sources/Components/form.tsx",
-          "line": 392,
+          "line": 467,
           "column": 13,
           "symbol": "tabContent",
           "defaultMessage": "Publication and ownership",
@@ -252321,7 +252819,7 @@
           "locations": [
             {
               "path": "src/pages/Sources/Components/form.tsx",
-              "line": 392,
+              "line": 467,
               "column": 13,
               "kind": "FormattedMessage"
             }
@@ -252346,7 +252844,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 46,
+            "line": 55,
             "column": 3,
             "module": "pages_source"
           }
@@ -252357,7 +252855,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 45,
+            "line": 54,
             "column": 3,
             "module": "pages_source"
           }
@@ -252368,7 +252866,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 46,
+            "line": 55,
             "column": 3,
             "module": "pages_source"
           }
@@ -252379,7 +252877,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 46,
+            "line": 55,
             "column": 3,
             "module": "pages_source"
           }
@@ -252389,7 +252887,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Sources/Components/form.tsx",
-          "line": 368,
+          "line": 443,
           "column": 15,
           "symbol": "tabContent",
           "defaultMessage": "Data set format(s)",
@@ -252404,7 +252902,7 @@
           "locations": [
             {
               "path": "src/pages/Sources/Components/form.tsx",
-              "line": 368,
+              "line": 443,
               "column": 15,
               "kind": "FormattedMessage"
             }
@@ -252429,7 +252927,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 52,
+            "line": 61,
             "column": 3,
             "module": "pages_source"
           }
@@ -252440,7 +252938,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 51,
+            "line": 60,
             "column": 3,
             "module": "pages_source"
           }
@@ -252451,7 +252949,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 52,
+            "line": 61,
             "column": 3,
             "module": "pages_source"
           }
@@ -252462,7 +252960,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 52,
+            "line": 61,
             "column": 3,
             "module": "pages_source"
           }
@@ -252472,7 +252970,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Sources/Components/form.tsx",
-          "line": 422,
+          "line": 497,
           "column": 15,
           "symbol": "tabContent",
           "defaultMessage": "Owner of data set",
@@ -252487,7 +252985,7 @@
           "locations": [
             {
               "path": "src/pages/Sources/Components/form.tsx",
-              "line": 422,
+              "line": 497,
               "column": 15,
               "kind": "FormattedMessage"
             }
@@ -252512,7 +253010,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 49,
+            "line": 58,
             "column": 3,
             "module": "pages_source"
           }
@@ -252523,7 +253021,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 48,
+            "line": 57,
             "column": 3,
             "module": "pages_source"
           }
@@ -252534,7 +253032,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 49,
+            "line": 58,
             "column": 3,
             "module": "pages_source"
           }
@@ -252545,7 +253043,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 49,
+            "line": 58,
             "column": 3,
             "module": "pages_source"
           }
@@ -252571,7 +253069,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 45,
+            "line": 54,
             "column": 3,
             "module": "pages_source"
           }
@@ -252582,7 +253080,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 44,
+            "line": 53,
             "column": 3,
             "module": "pages_source"
           }
@@ -252593,7 +253091,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 45,
+            "line": 54,
             "column": 3,
             "module": "pages_source"
           }
@@ -252604,7 +253102,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 45,
+            "line": 54,
             "column": 3,
             "module": "pages_source"
           }
@@ -252614,7 +253112,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Sources/Components/form.tsx",
-          "line": 344,
+          "line": 419,
           "column": 19,
           "symbol": "tabContent",
           "defaultMessage": "Time stamp",
@@ -252629,7 +253127,7 @@
           "locations": [
             {
               "path": "src/pages/Sources/Components/form.tsx",
-              "line": 344,
+              "line": 419,
               "column": 19,
               "kind": "FormattedMessage"
             }
@@ -252654,7 +253152,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 34,
+            "line": 43,
             "column": 3,
             "module": "pages_source"
           }
@@ -252665,7 +253163,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 33,
+            "line": 42,
             "column": 3,
             "module": "pages_source"
           }
@@ -252676,7 +253174,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 34,
+            "line": 43,
             "column": 3,
             "module": "pages_source"
           }
@@ -252687,7 +253185,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 34,
+            "line": 43,
             "column": 3,
             "module": "pages_source"
           }
@@ -252697,7 +253195,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Sources/Components/form.tsx",
-          "line": 102,
+          "line": 126,
           "column": 7,
           "symbol": "tabLabels",
           "defaultMessage": "Source information",
@@ -252712,7 +253210,7 @@
           "locations": [
             {
               "path": "src/pages/Sources/Components/form.tsx",
-              "line": 102,
+              "line": 126,
               "column": 7,
               "kind": "FormattedMessage"
             }
@@ -252737,7 +253235,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 36,
+            "line": 45,
             "column": 3,
             "module": "pages_source"
           }
@@ -252748,7 +253246,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 35,
+            "line": 44,
             "column": 3,
             "module": "pages_source"
           }
@@ -252759,7 +253257,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 36,
+            "line": 45,
             "column": 3,
             "module": "pages_source"
           }
@@ -252770,7 +253268,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 36,
+            "line": 45,
             "column": 3,
             "module": "pages_source"
           }
@@ -252796,7 +253294,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 38,
+            "line": 47,
             "column": 3,
             "module": "pages_source"
           }
@@ -252807,7 +253305,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 37,
+            "line": 46,
             "column": 3,
             "module": "pages_source"
           }
@@ -252818,7 +253316,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 38,
+            "line": 47,
             "column": 3,
             "module": "pages_source"
           }
@@ -252829,7 +253327,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 38,
+            "line": 47,
             "column": 3,
             "module": "pages_source"
           }
@@ -252839,7 +253337,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Sources/Components/form.tsx",
-          "line": 221,
+          "line": 245,
           "column": 13,
           "symbol": "tabContent",
           "defaultMessage": "Publication type",
@@ -252854,7 +253352,7 @@
           "locations": [
             {
               "path": "src/pages/Sources/Components/form.tsx",
-              "line": 221,
+              "line": 245,
               "column": 13,
               "kind": "FormattedMessage"
             }
@@ -252879,7 +253377,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 41,
+            "line": 50,
             "column": 3,
             "module": "pages_source"
           }
@@ -252890,7 +253388,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 40,
+            "line": 49,
             "column": 3,
             "module": "pages_source"
           }
@@ -252901,7 +253399,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 41,
+            "line": 50,
             "column": 3,
             "module": "pages_source"
           }
@@ -252912,7 +253410,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 41,
+            "line": 50,
             "column": 3,
             "module": "pages_source"
           }
@@ -252922,7 +253420,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Sources/Components/form.tsx",
-          "line": 303,
+          "line": 378,
           "column": 13,
           "symbol": "tabContent",
           "defaultMessage": "Belongs to:",
@@ -252937,7 +253435,7 @@
           "locations": [
             {
               "path": "src/pages/Sources/Components/form.tsx",
-              "line": 303,
+              "line": 378,
               "column": 13,
               "kind": "FormattedMessage"
             }
@@ -252962,7 +253460,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 40,
+            "line": 49,
             "column": 3,
             "module": "pages_source"
           }
@@ -252973,7 +253471,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 39,
+            "line": 48,
             "column": 3,
             "module": "pages_source"
           }
@@ -252984,7 +253482,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 40,
+            "line": 49,
             "column": 3,
             "module": "pages_source"
           }
@@ -252995,7 +253493,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 40,
+            "line": 49,
             "column": 3,
             "module": "pages_source"
           }
@@ -253005,7 +253503,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Sources/Components/form.tsx",
-          "line": 254,
+          "line": 278,
           "column": 13,
           "symbol": "tabContent",
           "defaultMessage": "Link to digital file",
@@ -253029,7 +253527,7 @@
           "locations": [
             {
               "path": "src/pages/Sources/Components/form.tsx",
-              "line": 254,
+              "line": 278,
               "column": 13,
               "kind": "FormattedMessage"
             },
@@ -253060,7 +253558,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 42,
+            "line": 51,
             "column": 3,
             "module": "pages_source"
           }
@@ -253071,7 +253569,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 41,
+            "line": 50,
             "column": 3,
             "module": "pages_source"
           }
@@ -253082,7 +253580,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 42,
+            "line": 51,
             "column": 3,
             "module": "pages_source"
           }
@@ -253093,7 +253591,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 42,
+            "line": 51,
             "column": 3,
             "module": "pages_source"
           }
@@ -253103,7 +253601,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Sources/Components/form.tsx",
-          "line": 315,
+          "line": 390,
           "column": 13,
           "symbol": "tabContent",
           "defaultMessage": "Logo of organisation or source",
@@ -253118,7 +253616,7 @@
           "locations": [
             {
               "path": "src/pages/Sources/Components/form.tsx",
-              "line": 315,
+              "line": 390,
               "column": 13,
               "kind": "FormattedMessage"
             }
@@ -253143,7 +253641,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 35,
+            "line": 44,
             "column": 3,
             "module": "pages_source"
           }
@@ -253154,7 +253652,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 34,
+            "line": 43,
             "column": 3,
             "module": "pages_source"
           }
@@ -253165,7 +253663,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 35,
+            "line": 44,
             "column": 3,
             "module": "pages_source"
           }
@@ -253176,7 +253674,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 35,
+            "line": 44,
             "column": 3,
             "module": "pages_source"
           }
@@ -253186,7 +253684,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Sources/Components/form.tsx",
-          "line": 147,
+          "line": 171,
           "column": 17,
           "symbol": "tabContent",
           "defaultMessage": "Short name of source",
@@ -253195,7 +253693,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Sources/Components/form.tsx",
-          "line": 158,
+          "line": 182,
           "column": 15,
           "symbol": "tabContent",
           "defaultMessage": "Short name of source",
@@ -253210,13 +253708,13 @@
           "locations": [
             {
               "path": "src/pages/Sources/Components/form.tsx",
-              "line": 147,
+              "line": 171,
               "column": 17,
               "kind": "FormattedMessage"
             },
             {
               "path": "src/pages/Sources/Components/form.tsx",
-              "line": 158,
+              "line": 182,
               "column": 15,
               "kind": "FormattedMessage"
             }
@@ -253241,7 +253739,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 37,
+            "line": 46,
             "column": 3,
             "module": "pages_source"
           }
@@ -253252,7 +253750,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 36,
+            "line": 45,
             "column": 3,
             "module": "pages_source"
           }
@@ -253263,7 +253761,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 37,
+            "line": 46,
             "column": 3,
             "module": "pages_source"
           }
@@ -253274,7 +253772,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 37,
+            "line": 46,
             "column": 3,
             "module": "pages_source"
           }
@@ -253284,7 +253782,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Sources/Components/form.tsx",
-          "line": 201,
+          "line": 225,
           "column": 13,
           "symbol": "tabContent",
           "defaultMessage": "Source citation",
@@ -253299,7 +253797,7 @@
           "locations": [
             {
               "path": "src/pages/Sources/Components/form.tsx",
-              "line": 201,
+              "line": 225,
               "column": 13,
               "kind": "FormattedMessage"
             }
@@ -253324,7 +253822,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 39,
+            "line": 48,
             "column": 3,
             "module": "pages_source"
           }
@@ -253335,7 +253833,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 38,
+            "line": 47,
             "column": 3,
             "module": "pages_source"
           }
@@ -253346,7 +253844,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 39,
+            "line": 48,
             "column": 3,
             "module": "pages_source"
           }
@@ -253357,7 +253855,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 39,
+            "line": 48,
             "column": 3,
             "module": "pages_source"
           }
@@ -253367,7 +253865,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Sources/Components/form.tsx",
-          "line": 234,
+          "line": 258,
           "column": 13,
           "symbol": "tabContent",
           "defaultMessage": "Source description or comment",
@@ -253376,7 +253874,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Sources/Components/form.tsx",
-          "line": 243,
+          "line": 267,
           "column": 15,
           "symbol": "tabContent",
           "defaultMessage": "Source description or comment",
@@ -253391,13 +253889,13 @@
           "locations": [
             {
               "path": "src/pages/Sources/Components/form.tsx",
-              "line": 234,
+              "line": 258,
               "column": 13,
               "kind": "FormattedMessage"
             },
             {
               "path": "src/pages/Sources/Components/form.tsx",
-              "line": 243,
+              "line": 267,
               "column": 15,
               "kind": "FormattedMessage"
             }
@@ -253422,7 +253920,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 2,
+            "line": 11,
             "column": 3,
             "module": "pages_source"
           }
@@ -253433,7 +253931,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 2,
+            "line": 11,
             "column": 3,
             "module": "pages_source"
           }
@@ -253444,7 +253942,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 2,
+            "line": 11,
             "column": 3,
             "module": "pages_source"
           }
@@ -253455,7 +253953,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 2,
+            "line": 11,
             "column": 3,
             "module": "pages_source"
           }
@@ -253520,7 +254018,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 3,
+            "line": 12,
             "column": 3,
             "module": "pages_source"
           }
@@ -253531,7 +254029,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 3,
+            "line": 12,
             "column": 3,
             "module": "pages_source"
           }
@@ -253542,7 +254040,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 3,
+            "line": 12,
             "column": 3,
             "module": "pages_source"
           }
@@ -253553,7 +254051,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 3,
+            "line": 12,
             "column": 3,
             "module": "pages_source"
           }
@@ -253633,7 +254131,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 85,
+            "line": 94,
             "column": 3,
             "module": "pages_source"
           }
@@ -253644,7 +254142,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 84,
+            "line": 93,
             "column": 3,
             "module": "pages_source"
           }
@@ -253655,7 +254153,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 85,
+            "line": 94,
             "column": 3,
             "module": "pages_source"
           }
@@ -253666,7 +254164,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 85,
+            "line": 94,
             "column": 3,
             "module": "pages_source"
           }
@@ -253716,7 +254214,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 88,
+            "line": 97,
             "column": 3,
             "module": "pages_source"
           }
@@ -253727,7 +254225,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 87,
+            "line": 96,
             "column": 3,
             "module": "pages_source"
           }
@@ -253738,7 +254236,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 88,
+            "line": 97,
             "column": 3,
             "module": "pages_source"
           }
@@ -253749,7 +254247,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 88,
+            "line": 97,
             "column": 3,
             "module": "pages_source"
           }
@@ -253799,7 +254297,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 87,
+            "line": 96,
             "column": 3,
             "module": "pages_source"
           }
@@ -253810,7 +254308,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 86,
+            "line": 95,
             "column": 3,
             "module": "pages_source"
           }
@@ -253821,7 +254319,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 87,
+            "line": 96,
             "column": 3,
             "module": "pages_source"
           }
@@ -253832,7 +254330,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 87,
+            "line": 96,
             "column": 3,
             "module": "pages_source"
           }
@@ -253882,7 +254380,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 89,
+            "line": 98,
             "column": 3,
             "module": "pages_source"
           }
@@ -253893,7 +254391,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 88,
+            "line": 97,
             "column": 3,
             "module": "pages_source"
           }
@@ -253904,7 +254402,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 89,
+            "line": 98,
             "column": 3,
             "module": "pages_source"
           }
@@ -253915,7 +254413,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 89,
+            "line": 98,
             "column": 3,
             "module": "pages_source"
           }
@@ -253965,7 +254463,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 84,
+            "line": 93,
             "column": 3,
             "module": "pages_source"
           }
@@ -253976,7 +254474,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 83,
+            "line": 92,
             "column": 3,
             "module": "pages_source"
           }
@@ -253987,7 +254485,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 84,
+            "line": 93,
             "column": 3,
             "module": "pages_source"
           }
@@ -253998,7 +254496,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 84,
+            "line": 93,
             "column": 3,
             "module": "pages_source"
           }
@@ -254048,7 +254546,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 86,
+            "line": 95,
             "column": 3,
             "module": "pages_source"
           }
@@ -254059,7 +254557,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 85,
+            "line": 94,
             "column": 3,
             "module": "pages_source"
           }
@@ -254070,7 +254568,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 86,
+            "line": 95,
             "column": 3,
             "module": "pages_source"
           }
@@ -254081,7 +254579,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 86,
+            "line": 95,
             "column": 3,
             "module": "pages_source"
           }
@@ -254131,7 +254629,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 83,
+            "line": 92,
             "column": 3,
             "module": "pages_source"
           }
@@ -254142,7 +254640,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 82,
+            "line": 91,
             "column": 3,
             "module": "pages_source"
           }
@@ -254153,7 +254651,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 83,
+            "line": 92,
             "column": 3,
             "module": "pages_source"
           }
@@ -254164,7 +254662,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 83,
+            "line": 92,
             "column": 3,
             "module": "pages_source"
           }
@@ -254214,7 +254712,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 82,
+            "line": 91,
             "column": 3,
             "module": "pages_source"
           }
@@ -254225,7 +254723,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 81,
+            "line": 90,
             "column": 3,
             "module": "pages_source"
           }
@@ -254236,7 +254734,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 82,
+            "line": 91,
             "column": 3,
             "module": "pages_source"
           }
@@ -254247,7 +254745,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 82,
+            "line": 91,
             "column": 3,
             "module": "pages_source"
           }
@@ -254297,7 +254795,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 23,
+            "line": 32,
             "column": 3,
             "module": "pages_source"
           }
@@ -254308,7 +254806,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 22,
+            "line": 31,
             "column": 3,
             "module": "pages_source"
           }
@@ -254319,7 +254817,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 23,
+            "line": 32,
             "column": 3,
             "module": "pages_source"
           }
@@ -254330,7 +254828,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 23,
+            "line": 32,
             "column": 3,
             "module": "pages_source"
           }
@@ -254380,7 +254878,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 25,
+            "line": 34,
             "column": 3,
             "module": "pages_source"
           }
@@ -254391,7 +254889,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 24,
+            "line": 33,
             "column": 3,
             "module": "pages_source"
           }
@@ -254402,7 +254900,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 25,
+            "line": 34,
             "column": 3,
             "module": "pages_source"
           }
@@ -254413,7 +254911,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 25,
+            "line": 34,
             "column": 3,
             "module": "pages_source"
           }
@@ -254463,7 +254961,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 24,
+            "line": 33,
             "column": 3,
             "module": "pages_source"
           }
@@ -254474,7 +254972,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 23,
+            "line": 32,
             "column": 3,
             "module": "pages_source"
           }
@@ -254485,7 +254983,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 24,
+            "line": 33,
             "column": 3,
             "module": "pages_source"
           }
@@ -254496,7 +254994,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 24,
+            "line": 33,
             "column": 3,
             "module": "pages_source"
           }
@@ -254546,7 +255044,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 28,
+            "line": 37,
             "column": 3,
             "module": "pages_source"
           }
@@ -254557,7 +255055,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 27,
+            "line": 36,
             "column": 3,
             "module": "pages_source"
           }
@@ -254568,7 +255066,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 28,
+            "line": 37,
             "column": 3,
             "module": "pages_source"
           }
@@ -254579,7 +255077,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 28,
+            "line": 37,
             "column": 3,
             "module": "pages_source"
           }
@@ -254629,7 +255127,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 29,
+            "line": 38,
             "column": 3,
             "module": "pages_source"
           }
@@ -254640,7 +255138,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 28,
+            "line": 37,
             "column": 3,
             "module": "pages_source"
           }
@@ -254651,7 +255149,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 29,
+            "line": 38,
             "column": 3,
             "module": "pages_source"
           }
@@ -254662,7 +255160,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 29,
+            "line": 38,
             "column": 3,
             "module": "pages_source"
           }
@@ -254712,7 +255210,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 27,
+            "line": 36,
             "column": 3,
             "module": "pages_source"
           }
@@ -254723,7 +255221,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 26,
+            "line": 35,
             "column": 3,
             "module": "pages_source"
           }
@@ -254734,7 +255232,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 27,
+            "line": 36,
             "column": 3,
             "module": "pages_source"
           }
@@ -254745,7 +255243,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 27,
+            "line": 36,
             "column": 3,
             "module": "pages_source"
           }
@@ -254795,7 +255293,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 26,
+            "line": 35,
             "column": 3,
             "module": "pages_source"
           }
@@ -254806,7 +255304,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 25,
+            "line": 34,
             "column": 3,
             "module": "pages_source"
           }
@@ -254817,7 +255315,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 26,
+            "line": 35,
             "column": 3,
             "module": "pages_source"
           }
@@ -254828,7 +255326,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 26,
+            "line": 35,
             "column": 3,
             "module": "pages_source"
           }
@@ -254878,7 +255376,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 30,
+            "line": 39,
             "column": 3,
             "module": "pages_source"
           }
@@ -254889,7 +255387,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 29,
+            "line": 38,
             "column": 3,
             "module": "pages_source"
           }
@@ -254900,7 +255398,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 30,
+            "line": 39,
             "column": 3,
             "module": "pages_source"
           }
@@ -254911,7 +255409,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 30,
+            "line": 39,
             "column": 3,
             "module": "pages_source"
           }
@@ -254961,7 +255459,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 31,
+            "line": 40,
             "column": 3,
             "module": "pages_source"
           }
@@ -254972,7 +255470,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 30,
+            "line": 39,
             "column": 3,
             "module": "pages_source"
           }
@@ -254983,7 +255481,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 31,
+            "line": 40,
             "column": 3,
             "module": "pages_source"
           }
@@ -254994,7 +255492,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 31,
+            "line": 40,
             "column": 3,
             "module": "pages_source"
           }
@@ -255044,7 +255542,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 13,
+            "line": 22,
             "column": 3,
             "module": "pages_source"
           }
@@ -255055,7 +255553,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 12,
+            "line": 21,
             "column": 3,
             "module": "pages_source"
           }
@@ -255066,7 +255564,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 13,
+            "line": 22,
             "column": 3,
             "module": "pages_source"
           }
@@ -255077,7 +255575,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 13,
+            "line": 22,
             "column": 3,
             "module": "pages_source"
           }
@@ -255127,7 +255625,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 16,
+            "line": 25,
             "column": 3,
             "module": "pages_source"
           }
@@ -255138,7 +255636,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 15,
+            "line": 24,
             "column": 3,
             "module": "pages_source"
           }
@@ -255149,7 +255647,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 16,
+            "line": 25,
             "column": 3,
             "module": "pages_source"
           }
@@ -255160,7 +255658,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 16,
+            "line": 25,
             "column": 3,
             "module": "pages_source"
           }
@@ -255186,7 +255684,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 14,
+            "line": 23,
             "column": 3,
             "module": "pages_source"
           }
@@ -255197,7 +255695,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 13,
+            "line": 22,
             "column": 3,
             "module": "pages_source"
           }
@@ -255208,7 +255706,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 14,
+            "line": 23,
             "column": 3,
             "module": "pages_source"
           }
@@ -255219,7 +255717,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 14,
+            "line": 23,
             "column": 3,
             "module": "pages_source"
           }
@@ -255299,7 +255797,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 18,
+            "line": 27,
             "column": 3,
             "module": "pages_source"
           }
@@ -255310,7 +255808,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 17,
+            "line": 26,
             "column": 3,
             "module": "pages_source"
           }
@@ -255321,7 +255819,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 18,
+            "line": 27,
             "column": 3,
             "module": "pages_source"
           }
@@ -255332,7 +255830,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 18,
+            "line": 27,
             "column": 3,
             "module": "pages_source"
           }
@@ -255382,7 +255880,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 72,
+            "line": 81,
             "column": 3,
             "module": "pages_source"
           }
@@ -255393,7 +255891,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 71,
+            "line": 80,
             "column": 3,
             "module": "pages_source"
           }
@@ -255404,7 +255902,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 72,
+            "line": 81,
             "column": 3,
             "module": "pages_source"
           }
@@ -255415,7 +255913,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 72,
+            "line": 81,
             "column": 3,
             "module": "pages_source"
           }
@@ -255465,7 +255963,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 73,
+            "line": 82,
             "column": 3,
             "module": "pages_source"
           }
@@ -255476,7 +255974,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 72,
+            "line": 81,
             "column": 3,
             "module": "pages_source"
           }
@@ -255487,7 +255985,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 73,
+            "line": 82,
             "column": 3,
             "module": "pages_source"
           }
@@ -255498,7 +255996,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 73,
+            "line": 82,
             "column": 3,
             "module": "pages_source"
           }
@@ -255548,7 +256046,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 75,
+            "line": 84,
             "column": 3,
             "module": "pages_source"
           }
@@ -255559,7 +256057,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 74,
+            "line": 83,
             "column": 3,
             "module": "pages_source"
           }
@@ -255570,7 +256068,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 75,
+            "line": 84,
             "column": 3,
             "module": "pages_source"
           }
@@ -255581,7 +256079,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 75,
+            "line": 84,
             "column": 3,
             "module": "pages_source"
           }
@@ -255631,7 +256129,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 74,
+            "line": 83,
             "column": 3,
             "module": "pages_source"
           }
@@ -255642,7 +256140,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 73,
+            "line": 82,
             "column": 3,
             "module": "pages_source"
           }
@@ -255653,7 +256151,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 74,
+            "line": 83,
             "column": 3,
             "module": "pages_source"
           }
@@ -255664,7 +256162,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 74,
+            "line": 83,
             "column": 3,
             "module": "pages_source"
           }
@@ -255714,7 +256212,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 76,
+            "line": 85,
             "column": 3,
             "module": "pages_source"
           }
@@ -255725,7 +256223,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 75,
+            "line": 84,
             "column": 3,
             "module": "pages_source"
           }
@@ -255736,7 +256234,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 76,
+            "line": 85,
             "column": 3,
             "module": "pages_source"
           }
@@ -255747,7 +256245,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 76,
+            "line": 85,
             "column": 3,
             "module": "pages_source"
           }
@@ -255797,7 +256295,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 80,
+            "line": 89,
             "column": 3,
             "module": "pages_source"
           }
@@ -255808,7 +256306,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 79,
+            "line": 88,
             "column": 3,
             "module": "pages_source"
           }
@@ -255819,7 +256317,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 80,
+            "line": 89,
             "column": 3,
             "module": "pages_source"
           }
@@ -255830,7 +256328,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 80,
+            "line": 89,
             "column": 3,
             "module": "pages_source"
           }
@@ -255880,7 +256378,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 77,
+            "line": 86,
             "column": 3,
             "module": "pages_source"
           }
@@ -255891,7 +256389,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 76,
+            "line": 85,
             "column": 3,
             "module": "pages_source"
           }
@@ -255902,7 +256400,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 77,
+            "line": 86,
             "column": 3,
             "module": "pages_source"
           }
@@ -255913,7 +256411,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 77,
+            "line": 86,
             "column": 3,
             "module": "pages_source"
           }
@@ -255963,7 +256461,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 78,
+            "line": 87,
             "column": 3,
             "module": "pages_source"
           }
@@ -255974,7 +256472,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 77,
+            "line": 86,
             "column": 3,
             "module": "pages_source"
           }
@@ -255985,7 +256483,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 78,
+            "line": 87,
             "column": 3,
             "module": "pages_source"
           }
@@ -255996,7 +256494,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 78,
+            "line": 87,
             "column": 3,
             "module": "pages_source"
           }
@@ -256046,7 +256544,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 79,
+            "line": 88,
             "column": 3,
             "module": "pages_source"
           }
@@ -256057,7 +256555,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 78,
+            "line": 87,
             "column": 3,
             "module": "pages_source"
           }
@@ -256068,7 +256566,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 79,
+            "line": 88,
             "column": 3,
             "module": "pages_source"
           }
@@ -256079,7 +256577,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 79,
+            "line": 88,
             "column": 3,
             "module": "pages_source"
           }
@@ -256129,7 +256627,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 71,
+            "line": 80,
             "column": 3,
             "module": "pages_source"
           }
@@ -256140,7 +256638,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 70,
+            "line": 79,
             "column": 3,
             "module": "pages_source"
           }
@@ -256151,7 +256649,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 71,
+            "line": 80,
             "column": 3,
             "module": "pages_source"
           }
@@ -256162,7 +256660,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 71,
+            "line": 80,
             "column": 3,
             "module": "pages_source"
           }
@@ -256212,7 +256710,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 21,
+            "line": 30,
             "column": 3,
             "module": "pages_source"
           }
@@ -256223,7 +256721,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 20,
+            "line": 29,
             "column": 3,
             "module": "pages_source"
           }
@@ -256234,7 +256732,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 21,
+            "line": 30,
             "column": 3,
             "module": "pages_source"
           }
@@ -256245,7 +256743,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 21,
+            "line": 30,
             "column": 3,
             "module": "pages_source"
           }
@@ -256295,7 +256793,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 20,
+            "line": 29,
             "column": 3,
             "module": "pages_source"
           }
@@ -256306,7 +256804,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 19,
+            "line": 28,
             "column": 3,
             "module": "pages_source"
           }
@@ -256317,7 +256815,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 20,
+            "line": 29,
             "column": 3,
             "module": "pages_source"
           }
@@ -256328,7 +256826,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 20,
+            "line": 29,
             "column": 3,
             "module": "pages_source"
           }
@@ -256354,7 +256852,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 22,
+            "line": 31,
             "column": 3,
             "module": "pages_source"
           }
@@ -256365,7 +256863,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 21,
+            "line": 30,
             "column": 3,
             "module": "pages_source"
           }
@@ -256376,7 +256874,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 22,
+            "line": 31,
             "column": 3,
             "module": "pages_source"
           }
@@ -256387,7 +256885,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 22,
+            "line": 31,
             "column": 3,
             "module": "pages_source"
           }
@@ -256437,7 +256935,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 15,
+            "line": 24,
             "column": 3,
             "module": "pages_source"
           }
@@ -256448,7 +256946,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 14,
+            "line": 23,
             "column": 3,
             "module": "pages_source"
           }
@@ -256459,7 +256957,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 15,
+            "line": 24,
             "column": 3,
             "module": "pages_source"
           }
@@ -256470,7 +256968,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 15,
+            "line": 24,
             "column": 3,
             "module": "pages_source"
           }
@@ -256520,7 +257018,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 17,
+            "line": 26,
             "column": 3,
             "module": "pages_source"
           }
@@ -256531,7 +257029,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 16,
+            "line": 25,
             "column": 3,
             "module": "pages_source"
           }
@@ -256542,7 +257040,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 17,
+            "line": 26,
             "column": 3,
             "module": "pages_source"
           }
@@ -256553,7 +257051,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 17,
+            "line": 26,
             "column": 3,
             "module": "pages_source"
           }
@@ -256603,7 +257101,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 19,
+            "line": 28,
             "column": 3,
             "module": "pages_source"
           }
@@ -256614,7 +257112,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 18,
+            "line": 27,
             "column": 3,
             "module": "pages_source"
           }
@@ -256625,7 +257123,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 19,
+            "line": 28,
             "column": 3,
             "module": "pages_source"
           }
@@ -256636,7 +257134,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 19,
+            "line": 28,
             "column": 3,
             "module": "pages_source"
           }
@@ -259324,7 +259822,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/components/AllVersions/index.tsx",
-          "line": 108,
+          "line": 115,
           "column": 9,
           "symbol": "allVersionsColumns",
           "defaultMessage": "Actions",
@@ -259582,7 +260080,7 @@
           "locations": [
             {
               "path": "src/components/AllVersions/index.tsx",
-              "line": 108,
+              "line": 115,
               "column": 9,
               "kind": "FormattedMessage"
             },

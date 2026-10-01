@@ -43,9 +43,9 @@ checkPaths:
   - pnpm-lock.yaml
   - pnpm-workspace.yaml
   - Dockerfile.app
-lastReviewedAt: 2026-09-29
-lastReviewedCommit: d8e6adac7bee507a3cac2393dc500e23eb4cd731
-lastReviewedNote: 'Reviewed for Platform #1146 on current dev: report-download decoding, invocation, rendering, and interaction proof follow the existing unit/component strategy and do not change the long-term testing model.'
+lastReviewedAt: 2026-10-01
+lastReviewedCommit: 44443529e544d2b2ec3b3ec5765d0b2830db69d4
+lastReviewedNote: 'Reviewed Platform #1130 follow-up: real Upload Open/Retry actions and wrapping footers preserve locator, preview, authority and schema boundaries; thumbnail typing reflects the producer contract without artificial fallback states.'
 ---
 
 # Testing Strategy

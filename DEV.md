@@ -42,9 +42,9 @@ checkPaths:
   - .github/workflows/release-readiness.yml
   - .github/workflows/build.yml
   - .nvmrc
-lastReviewedAt: 2026-09-29
-lastReviewedCommit: d8e6adac7bee507a3cac2393dc500e23eb4cd731
-lastReviewedNote: 'Reviewed for Platform #1146 on current dev: rejected-review report download implementation uses the existing local bootstrap, locale artifact generation, focused Jest, and managed pre-push workflow; commands and prerequisites are unchanged.'
+lastReviewedAt: 2026-10-01
+lastReviewedCommit: 44443529e544d2b2ec3b3ec5765d0b2830db69d4
+lastReviewedNote: 'Reviewed Platform #1130 Source-only picture-card specificity correction; locator, schema, authority and existing validation contracts remain unchanged.'
 ---
 
 # Development Bootstrap

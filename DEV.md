@@ -43,8 +43,8 @@ checkPaths:
   - .github/workflows/build.yml
   - .nvmrc
 lastReviewedAt: 2026-10-01
-lastReviewedCommit: a4a565142b6e3f3821a4754417cfb44fd2756b42
-lastReviewedNote: 'Reviewed Platform #1130 follow-up; real Upload actions and precise thumbnail typing retain the pinned bootstrap and validation workflow.'
+lastReviewedCommit: aad48a307c78321c892340b8f181b5cd50efcbae
+lastReviewedNote: 'Reviewed Platform #1130 Source-only picture-card specificity correction; locator, schema, authority and existing validation contracts remain unchanged.'
 ---
 
 # Development Bootstrap

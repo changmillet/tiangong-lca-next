@@ -46,8 +46,8 @@ checkPaths:
   - .husky/pre-push
   - .github/workflows/**
 lastReviewedAt: 2026-10-01
-lastReviewedCommit: a4a565142b6e3f3821a4754417cfb44fd2756b42
-lastReviewedNote: 'Reviewed Platform #1130 follow-up: real Upload Open/Retry actions and wrapping footers preserve locator, preview, authority and schema boundaries; thumbnail typing reflects the producer contract without artificial fallback states.'
+lastReviewedCommit: aad48a307c78321c892340b8f181b5cd50efcbae
+lastReviewedNote: 'Reviewed Platform #1130 Source-only picture-card specificity correction; locator, schema, authority and existing validation contracts remain unchanged.'
 related:
   - .docpact/config.yaml
   - docs/agents/repo-validation.md

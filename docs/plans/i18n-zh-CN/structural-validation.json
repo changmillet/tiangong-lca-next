@@ -3,7 +3,7 @@
   "locale": "zh-CN",
   "validationClosure": {
     "baselineSha": "c26f306e82ac66f50a56aafe8f89ea96c0b0c67d",
-    "auditedInputDigest": "eb60997832582e2b058971c8689155674cb5f2720eac9781e8199a9e7810e8bc",
+    "auditedInputDigest": "8fab9e843dc687281163c104da8c73edce1f53a6305f3b003ad3d74d0b853732",
     "validatedMessageCount": 3517,
     "validatedModules": [
       "$entry",
@@ -41,10 +41,10 @@
     ],
     "highRiskMessageCount": 1649,
     "highRiskMessageDigest": "68d4e517bc8d6ae6f0661f1ba802b12238f1b2ebc1ec99b730a54d34b371bf57",
-    "catalogDigest": "46c43790dba236ea7284d3d4c765d07b9b0b2c6763757b896266064106e5cb2d",
-    "dossierDigest": "64ddbffef85aef1654c86ab29d2ac21356ad4f6017cf4ca0735a45a03d297fe4",
+    "catalogDigest": "a0c820d5a74660221888d7cc761f4c26ae6b2fcab1ec6c371dc3fc898fc9431d",
+    "dossierDigest": "d8741745df46b97121416261b2a3b8f854bb6ccc46c238582ccaab194b14aa2e",
     "typedContentDossierDigest": "cea189a77b03f66042197c8383d684813c09e3a0356684d325e62eaf73af4c99",
-    "routeEvidenceDigest": "7c780d9abe91a1878528ad7f5e401417108b48b0f05504309fade468bad7cd55",
+    "routeEvidenceDigest": "3d4ab4d8863e4642ea795dde09ca876067b35770407ee0fdbcc919de97d15517",
     "scope": "deterministic structure only; semantic translation and rendered route review are separate production blockers owned by #635"
   },
   "validationLanes": [
@@ -98,7 +98,7 @@
         "messageDigest": "86f9549a4f90be16588d70ae2d367c1b6047a89a6195134df70a5c53c4a73469",
         "highRiskMessageCount": 1649,
         "highRiskMessageDigest": "68d4e517bc8d6ae6f0661f1ba802b12238f1b2ebc1ec99b730a54d34b371bf57",
-        "dossierDigest": "64ddbffef85aef1654c86ab29d2ac21356ad4f6017cf4ca0735a45a03d297fe4",
+        "dossierDigest": "d8741745df46b97121416261b2a3b8f854bb6ccc46c238582ccaab194b14aa2e",
         "checks": {
           "nonEmptyTargets": true,
           "icuArgumentSignatureParity": true,
@@ -113,5 +113,5 @@
     }
   ],
   "blockedItems": [],
-  "validationDigest": "10fda722faab3e54b27e3a2df7eb46385d02783ad31a6c930988130e2e580cd8"
+  "validationDigest": "c8e240cb94d14f62ce8cf1ea7c7bbc824e7c3f687c8640be8ac61b36a19f9740"
 }

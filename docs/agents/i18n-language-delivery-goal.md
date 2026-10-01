@@ -56,8 +56,8 @@ checkPaths:
   - .github/workflows/i18n-semantic-e2e.yml
   - .github/workflows/build.yml
   - package.json
-lastReviewedAt: 2026-09-29
-lastReviewedCommit: 2f9c9cde1bc874f52d5aaf09ab4d65c56c1278f6
+lastReviewedAt: 2026-09-30
+lastReviewedCommit: 72de4725
 lastReviewedNote: 'Reviewed Platform #1137 after integrating current dev: rejection-details copy remains aligned across all active locales and generated artifacts are refreshed without changing language-delivery policy.'
 baselineObservedAt: 2026-07-18
 related:

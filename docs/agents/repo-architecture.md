@@ -26,8 +26,8 @@ checkPaths:
   - config/docs-capture/**
   - tests/e2e/i18n/**
 lastReviewedAt: 2026-10-01
-lastReviewedCommit: e0eee5163912265bb6f285c06c169f2f010dfdda
-lastReviewedNote: 'Reviewed Platform #1159 shared version-list sorting against the current service/UI, toolchain and validation contracts; version/date allowlisting preserves scope and pagination without schema or dependency changes.'
+lastReviewedCommit: 639abca401c18608d23b5e58db164a53fd6fb1a2
+lastReviewedNote: 'Reviewed Platform #1157 after rebasing reviewer workload and status presentation onto current dev; UI, service, test, locale, data-boundary, and gate contracts remain aligned without ownership or policy changes.'
 related:
   - ../AGENTS.md
   - ../.docpact/config.yaml

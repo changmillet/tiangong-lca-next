@@ -47,6 +47,7 @@ export const AUDITED_READ_ONLY_RPC_NAMES = [
   'qry_review_get_member_queue_items_v6',
   'qry_review_get_rejection_details_v1',
   'qry_review_get_member_workload',
+  'qry_review_get_member_workload_items_v1',
   'qry_root_review_reference_progress_v2',
   'qry_system_find_member_candidate_by_email',
   'qry_system_get_member_list',

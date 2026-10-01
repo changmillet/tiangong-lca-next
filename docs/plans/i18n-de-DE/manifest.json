@@ -3,7 +3,7 @@
   "source": {
     "baseRef": "c26f306e82ac66f50a56aafe8f89ea96c0b0c67d",
     "baseCommit": "c26f306e82ac66f50a56aafe8f89ea96c0b0c67d",
-    "auditedInputDigest": "a4f996b8c8e5c83815fca7f665ad37486db9e82b8ce1491ae9bc72261fd244e9",
+    "auditedInputDigest": "eb60997832582e2b058971c8689155674cb5f2720eac9781e8199a9e7810e8bc",
     "auditedInputDigestAlgorithm": "sha256(path\\0content\\0)",
     "repository": "tiangong-lca/platform"
   },
@@ -47258,7 +47258,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/components/AllVersions/index.tsx",
-          "line": 170,
+          "line": 177,
           "column": 16,
           "symbol": "AllVersionsList",
           "defaultMessage": "All Versions",
@@ -47267,7 +47267,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/components/AllVersions/index.tsx",
-          "line": 185,
+          "line": 192,
           "column": 16,
           "symbol": "AllVersionsList",
           "defaultMessage": "All Versions",
@@ -47282,13 +47282,13 @@
           "locations": [
             {
               "path": "src/components/AllVersions/index.tsx",
-              "line": 170,
+              "line": 177,
               "column": 16,
               "kind": "FormattedMessage"
             },
             {
               "path": "src/components/AllVersions/index.tsx",
-              "line": 185,
+              "line": 192,
               "column": 16,
               "kind": "FormattedMessage"
             }
@@ -47365,7 +47365,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/components/AllVersions/index.tsx",
-          "line": 193,
+          "line": 200,
           "column": 17,
           "symbol": "AllVersionsList",
           "defaultMessage": "Cancel",
@@ -47692,7 +47692,7 @@
             },
             {
               "path": "src/components/AllVersions/index.tsx",
-              "line": 193,
+              "line": 200,
               "column": 17,
               "kind": "FormattedMessage"
             },
@@ -55948,7 +55948,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/components/AllVersions/index.tsx",
-          "line": 196,
+          "line": 203,
           "column": 17,
           "symbol": "AllVersionsList",
           "defaultMessage": "Submit",
@@ -56062,7 +56062,7 @@
           "locations": [
             {
               "path": "src/components/AllVersions/index.tsx",
-              "line": 196,
+              "line": 203,
               "column": 17,
               "kind": "FormattedMessage"
             },
@@ -259324,7 +259324,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/components/AllVersions/index.tsx",
-          "line": 108,
+          "line": 115,
           "column": 9,
           "symbol": "allVersionsColumns",
           "defaultMessage": "Actions",
@@ -259582,7 +259582,7 @@
           "locations": [
             {
               "path": "src/components/AllVersions/index.tsx",
-              "line": 108,
+              "line": 115,
               "column": 9,
               "kind": "FormattedMessage"
             },

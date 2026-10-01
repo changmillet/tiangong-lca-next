@@ -42,9 +42,9 @@ checkPaths:
   - scripts/typescript-native-parser.*
   - scripts/reference-data/**
   - .github/workflows/**
-lastReviewedAt: 2026-09-29
-lastReviewedCommit: d8e6adac7bee507a3cac2393dc500e23eb4cd731
-lastReviewedNote: 'Reviewed for Platform #1146 on current dev: report-download service and component tests use the existing Jest and coverage paths; pre-push ownership and trigger policy are unchanged.'
+lastReviewedAt: 2026-10-01
+lastReviewedCommit: e0eee5163912265bb6f285c06c169f2f010dfdda
+lastReviewedNote: 'Reviewed Platform #1159 shared version-list sorting against the current service/UI, toolchain and validation contracts; version/date allowlisting preserves scope and pagination without schema or dependency changes.'
 ---
 
 # Pre-Push Gate Policy

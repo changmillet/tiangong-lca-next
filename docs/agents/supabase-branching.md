@@ -22,9 +22,9 @@ checkPaths:
   - scripts/e2e/**
   - playwright.config.ts
   - tests/e2e/i18n/**
-lastReviewedAt: 2026-09-29
-lastReviewedCommit: 632471dd242d7caac2bffc05def0b661ef8694e9
-lastReviewedNote: 'Reviewed Platform #1146 on current dev: the frontend invokes one actor-bound Edge report-download command and receives short-lived signed links; database/Edge ownership, branch bindings, and environment selection are unchanged.'
+lastReviewedAt: 2026-10-01
+lastReviewedCommit: e0eee5163912265bb6f285c06c169f2f010dfdda
+lastReviewedNote: 'Reviewed Platform #1159 shared version-list sorting against the current service/UI, toolchain and validation contracts; version/date allowlisting preserves scope and pagination without schema or dependency changes.'
 ---
 
 # Supabase Environment And Database Workflow

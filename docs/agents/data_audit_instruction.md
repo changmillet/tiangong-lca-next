@@ -18,9 +18,9 @@ checkPaths:
   - docs/agents/data_audit_instruction.md
   - src/pages/Review/**
   - src/pages/ManageSystem/**
-lastReviewedAt: 2026-09-28
-lastReviewedCommit: 428e1a7f2140cd6b3c8c6222b207cca40ee6dcdd
-lastReviewedNote: 'Aligned the Review workspace with pending/submitted/completed member stages, unassigned/in-progress/completed admin stages, V5 queue facts, and batch preflight behavior.'
+lastReviewedAt: 2026-10-01
+lastReviewedCommit: a4a565142b6e3f3821a4754417cfb44fd2756b42
+lastReviewedNote: 'Reviewed Platform #1130 follow-up: real Upload Open/Retry actions and wrapping footers preserve locator, preview, authority and schema boundaries; thumbnail typing reflects the producer contract without artificial fallback states.'
 ---
 
 # Audit Status Reference

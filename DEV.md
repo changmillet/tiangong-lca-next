@@ -43,8 +43,8 @@ checkPaths:
   - .github/workflows/build.yml
   - .nvmrc
 lastReviewedAt: 2026-10-01
-lastReviewedCommit: e0eee5163912265bb6f285c06c169f2f010dfdda
-lastReviewedNote: 'Reviewed Platform #1159 shared version-list sorting against the current service/UI, toolchain and validation contracts; version/date allowlisting preserves scope and pagination without schema or dependency changes.'
+lastReviewedCommit: aad48a307c78321c892340b8f181b5cd50efcbae
+lastReviewedNote: 'Reviewed Platform #1130 Source-only picture-card specificity correction; locator, schema, authority and existing validation contracts remain unchanged.'
 ---
 
 # Development Bootstrap

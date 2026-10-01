@@ -19,9 +19,9 @@ checkPaths:
   - src/pages/Teams/**
   - src/pages/Review/**
   - src/pages/ManageSystem/**
-lastReviewedAt: 2026-09-28
-lastReviewedCommit: 428e1a7f2140cd6b3c8c6222b207cca40ee6dcdd
-lastReviewedNote: 'Reviewed review input/output display parity against shared Process and LifeCycleModel data views. Audit transitions, ownership, validation requirements, and testing policy are unchanged.'
+lastReviewedAt: 2026-10-01
+lastReviewedCommit: a4a565142b6e3f3821a4754417cfb44fd2756b42
+lastReviewedNote: 'Reviewed Platform #1130 follow-up: real Upload Open/Retry actions and wrapping footers preserve locator, preview, authority and schema boundaries; thumbnail typing reflects the producer contract without artificial fallback states.'
 ---
 
 # Team Management Reference

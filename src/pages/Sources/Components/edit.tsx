@@ -34,6 +34,7 @@ import { FormSource, SourceDataSetObjectKeys, SourceDetailResponse } from '@/ser
 import { genSourceFromData, genSourceJsonOrdered } from '@/services/sources/util';
 import type { SupabaseMutationResult } from '@/services/supabase/data';
 import { supabaseStorageBucket } from '@/services/supabase/key';
+import { getManagedFileRemovalKeys } from '@/services/supabase/fileLocator';
 import { getThumbFileUrls, removeFile, uploadFile } from '@/services/supabase/storage';
 import styles from '@/style/custom.less';
 import { isRuleVerificationPassed } from '@/utils/ruleVerification';
@@ -268,10 +269,12 @@ const SourceEdit: FC<Props> = ({
       const nonExistentFiles = fileList0.filter(
         (file0) => !fileList.some((file) => file.uid === file0.uid),
       );
-      if (nonExistentFiles.length > 0) {
-        const { error } = await removeFile(
-          nonExistentFiles.map((file) => file.uid.replace(`../${supabaseStorageBucket}/`, '')),
-        );
+      const removalKeys = getManagedFileRemovalKeys(
+        nonExistentFiles.map((file) => file.uid),
+        supabaseStorageBucket,
+      );
+      if (removalKeys.length > 0) {
+        const { error } = await removeFile(removalKeys);
         if (error && !silent) {
           message.error(error.message);
         }

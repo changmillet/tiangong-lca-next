@@ -18,9 +18,9 @@ checkPaths:
   - docs/agents/data_audit_instruction.md
   - src/pages/Review/**
   - src/pages/ManageSystem/**
-lastReviewedAt: 2026-09-28
-lastReviewedCommit: 428e1a7f2140cd6b3c8c6222b207cca40ee6dcdd
-lastReviewedNote: 'Aligned the Review workspace with pending/submitted/completed member stages, unassigned/in-progress/completed admin stages, V5 queue facts, and batch preflight behavior.'
+lastReviewedAt: 2026-10-01
+lastReviewedCommit: 639abca401c18608d23b5e58db164a53fd6fb1a2
+lastReviewedNote: 'Reviewed Platform #1130 digital-file locator preservation and explicit preview states; shared logo fallbacks retain existing team/review authority, schema, dependency and delivery contracts.'
 ---
 
 # Audit Status Reference

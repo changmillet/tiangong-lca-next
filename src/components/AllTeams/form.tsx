@@ -22,13 +22,13 @@ const TeamForm: FC<Props> = ({ onLogoChange, lightLogoProps, darkLogoProps }) =>
   useEffect(() => {
     getThumbFileUrls([{ '@uri': `${lightLogoProps}` }]).then((res) => {
       if (res[0]?.status === 'done') {
-        setLightLogoPreviewUrl(res[0]?.thumbUrl);
+        setLightLogoPreviewUrl(res[0]?.thumbUrl ?? '');
       }
     });
 
     getThumbFileUrls([{ '@uri': `${darkLogoProps}` }]).then((res) => {
       if (res[0]?.status === 'done') {
-        setDarkLogoPreviewUrl(res[0]?.thumbUrl);
+        setDarkLogoPreviewUrl(res[0]?.thumbUrl ?? '');
       }
     });
   }, [lightLogoProps, darkLogoProps]);

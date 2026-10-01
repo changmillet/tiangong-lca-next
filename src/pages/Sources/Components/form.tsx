@@ -1,4 +1,12 @@
-import { FileType, getBase64, getOriginalFileUrl, isImage } from '@/services/supabase/storage';
+import {
+  FileType,
+  getBase64,
+  getOriginalFileUrl,
+  isImage,
+  type StorageFilePreview,
+} from '@/services/supabase/storage';
+import { resolveFileLocator } from '@/services/supabase/fileLocator';
+import { filePreviewLabel } from '@/components/FileViewer/preview';
 import { Card, Form, Image, Input, Select, Space, Upload, UploadFile } from 'antd';
 import { FC, useMemo, useState } from 'react';
 
@@ -74,20 +82,36 @@ export const SourceForm: FC<Props> = ({
     [validationIssueTabNames],
   );
   const handlePreview = async (file: UploadFile) => {
+    if (file.originFileObj && isImage(file)) {
+      const preview = file.preview || (await getBase64(file.originFileObj as FileType));
+      setPreviewImage(preview);
+      setPreviewOpen(true);
+      return;
+    }
+    const locator = resolveFileLocator(file.uid);
+    if (locator.kind === 'external') {
+      window.open(locator.url, '_blank', 'noopener,noreferrer');
+      return;
+    }
+    if (locator.kind !== 'managed') return;
+    const result = await getOriginalFileUrl(file.uid, file.name);
+    setFileList((files) =>
+      files.map((entry) =>
+        entry.uid === file.uid
+          ? {
+              ...entry,
+              ...result,
+              previewState: result.url ? (result.previewState ?? 'resolved') : 'unavailable',
+            }
+          : entry,
+      ),
+    );
+    if (!result.url) return;
     if (isImage(file)) {
-      if (!file.url && !file.preview) {
-        file.preview = await getBase64(file.originFileObj as FileType);
-        setPreviewImage(file.preview);
-      } else {
-        getOriginalFileUrl(file.uid, file.name).then((res) => {
-          setPreviewImage(res?.url ?? '');
-        });
-      }
+      setPreviewImage(result.url);
       setPreviewOpen(true);
     } else {
-      getOriginalFileUrl(file.uid, file.name).then((res) => {
-        window.open(res.url, '_blank');
-      });
+      window.open(result.url, '_blank', 'noopener,noreferrer');
     }
   };
 
@@ -259,6 +283,23 @@ export const SourceForm: FC<Props> = ({
         >
           <Upload
             name='avatar'
+            isImageUrl={(file) =>
+              (Boolean(file.originFileObj) || resolveFileLocator(file.uid).kind === 'managed') &&
+              isImage(file)
+            }
+            showUploadList={{
+              showPreviewIcon: (file) =>
+                (Boolean(file.originFileObj) && isImage(file)) ||
+                resolveFileLocator(file.uid).kind !== 'opaque',
+            }}
+            itemRender={(node, file) => (
+              <div>
+                {node}
+                <div>
+                  {filePreviewLabel((file as StorageFilePreview).previewState, intl.formatMessage)}
+                </div>
+              </div>
+            )}
             listType='picture-card'
             fileList={fileList}
             onPreview={handlePreview}

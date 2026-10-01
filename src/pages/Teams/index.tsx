@@ -139,7 +139,7 @@ const Team = () => {
 
       getThumbFileUrls([{ '@uri': `${data[0]?.json?.lightLogo}` }]).then((res) => {
         if (res[0]?.status === 'done') {
-          setLightLogoPreviewUrl(res[0]?.thumbUrl ?? '');
+          setLightLogoPreviewUrl(res[0]?.thumbUrl);
         }
       });
       if (data[0]?.json?.lightLogo) {
@@ -154,7 +154,7 @@ const Team = () => {
 
       getThumbFileUrls([{ '@uri': `${data[0]?.json?.darkLogo}` }]).then((res) => {
         if (res[0]?.status === 'done') {
-          setDarkLogoPreviewUrl(res[0]?.thumbUrl ?? '');
+          setDarkLogoPreviewUrl(res[0]?.thumbUrl);
         }
       });
       if (data[0]?.json?.darkLogo) {

@@ -43,8 +43,8 @@ checkPaths:
   - .github/workflows/build.yml
   - .nvmrc
 lastReviewedAt: 2026-10-01
-lastReviewedCommit: 639abca401c18608d23b5e58db164a53fd6fb1a2
-lastReviewedNote: 'Reviewed Platform #1130 digital-file locator preservation and explicit preview states; shared logo fallbacks retain existing team/review authority, schema, dependency and delivery contracts.'
+lastReviewedCommit: a4a565142b6e3f3821a4754417cfb44fd2756b42
+lastReviewedNote: 'Reviewed Platform #1130 follow-up; real Upload actions and precise thumbnail typing retain the pinned bootstrap and validation workflow.'
 ---
 
 # Development Bootstrap

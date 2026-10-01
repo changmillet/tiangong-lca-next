@@ -7,7 +7,8 @@ import {
 } from '@/services/supabase/storage';
 import { resolveFileLocator } from '@/services/supabase/fileLocator';
 import { filePreviewLabel } from '@/components/FileViewer/preview';
-import { Card, Form, Image, Input, Select, Space, Upload, UploadFile } from 'antd';
+import fileViewerStyles from '@/components/FileViewer/sourceUpload.module.less';
+import { Button, Card, Form, Image, Input, Select, Space, Upload, UploadFile } from 'antd';
 import { FC, useMemo, useState } from 'react';
 
 import DatasetCreateVersionFormItem from '@/components/DatasetCreateVersionFormItem';
@@ -101,7 +102,6 @@ export const SourceForm: FC<Props> = ({
           ? {
               ...entry,
               ...result,
-              previewState: result.url ? (result.previewState ?? 'resolved') : 'unavailable',
             }
           : entry,
       ),
@@ -283,6 +283,8 @@ export const SourceForm: FC<Props> = ({
         >
           <Upload
             name='avatar'
+            className={fileViewerStyles.sourceUpload}
+            styles={{ item: { height: 104 } }}
             isImageUrl={(file) =>
               (Boolean(file.originFileObj) || resolveFileLocator(file.uid).kind === 'managed') &&
               isImage(file)
@@ -292,14 +294,46 @@ export const SourceForm: FC<Props> = ({
                 (Boolean(file.originFileObj) && isImage(file)) ||
                 resolveFileLocator(file.uid).kind !== 'opaque',
             }}
-            itemRender={(node, file) => (
-              <div>
-                {node}
+            itemRender={(node, file) => {
+              const state = (file as StorageFilePreview).previewState;
+              const needsManagedAction =
+                resolveFileLocator(file.uid).kind === 'managed' &&
+                (state === 'unavailable' || (!file.url && !file.thumbUrl));
+              const actionLabel =
+                state === 'unavailable'
+                  ? intl.formatMessage({
+                      id: 'pages.file.preview.retry',
+                      defaultMessage: 'Retry preview',
+                    })
+                  : intl.formatMessage({
+                      id: 'pages.file.preview.open',
+                      defaultMessage: 'Open file',
+                    });
+              return (
                 <div>
-                  {filePreviewLabel((file as StorageFilePreview).previewState, intl.formatMessage)}
+                  {node}
+                  <div style={{ position: 'relative', zIndex: 2, flex: 'none' }}>
+                    <div>{filePreviewLabel(state, intl.formatMessage)}</div>
+                    {needsManagedAction && (
+                      <Button
+                        type='link'
+                        size='small'
+                        aria-label={`${actionLabel}: ${file.name}`}
+                        style={{
+                          maxWidth: '100%',
+                          height: 'auto',
+                          whiteSpace: 'normal',
+                          paddingInline: 0,
+                        }}
+                        onClick={() => void handlePreview(file)}
+                      >
+                        {actionLabel}
+                      </Button>
+                    )}
+                  </div>
                 </div>
-              </div>
-            )}
+              );
+            }}
             listType='picture-card'
             fileList={fileList}
             onPreview={handlePreview}

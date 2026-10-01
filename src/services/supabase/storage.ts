@@ -27,6 +27,11 @@ export type StorageFilePreview = UploadFile & {
   previewError?: 'permission' | 'not-found' | 'transport' | 'unknown';
 };
 
+// A completed thumbnail is created only after downloading Blob bytes and always has a URL.
+export type StorageFileThumbnail =
+  | (StorageFilePreview & { status: 'done'; thumbUrl: string })
+  | (StorageFilePreview & { status?: Exclude<UploadFile['status'], 'done'> });
+
 const previewErrorKind = (error: unknown): StorageFilePreview['previewError'] => {
   const status = String((error as { statusCode?: unknown } | null)?.statusCode ?? '');
   if (status === '401' || status === '403') return 'permission';
@@ -79,11 +84,11 @@ export async function getOriginalFileUrl(
   }
 }
 
-export async function getThumbFileUrls(fileList: any): Promise<StorageFilePreview[]> {
+export async function getThumbFileUrls(fileList: any): Promise<StorageFileThumbnail[]> {
   if (!fileList) return [];
   const files = Array.isArray(fileList) ? fileList : [fileList];
   return Promise.all(
-    files.map(async (fileJson: any, index: number): Promise<StorageFilePreview> => {
+    files.map(async (fileJson: any, index: number): Promise<StorageFileThumbnail> => {
       const file = typeof fileJson?.['@uri'] === 'string' ? fileJson['@uri'] : '';
       const locator = resolveFileLocator(file);
       const extension = path

@@ -3,7 +3,7 @@
   "source": {
     "baseRef": "c26f306e82ac66f50a56aafe8f89ea96c0b0c67d",
     "baseCommit": "c26f306e82ac66f50a56aafe8f89ea96c0b0c67d",
-    "auditedInputDigest": "9fe6abee38f84c69a64cbbddff307267aa13c996706cda8eedccbb5668356dc9",
+    "auditedInputDigest": "8df06bf7db37d43842fd10e51edec5b8d6827a590da60e8a401e64cde1c4839b",
     "auditedInputDigestAlgorithm": "sha256(path\\0content\\0)",
     "repository": "tiangong-lca/platform"
   },
@@ -69,13 +69,13 @@
   "summary": {
     "localeCount": 4,
     "localeLeafModuleCounts": { "en-US": 31, "zh-CN": 31, "de-DE": 31, "fr-FR": 31 },
-    "localeUniqueKeyCounts": { "en-US": 3521, "zh-CN": 3521, "de-DE": 3521, "fr-FR": 3521 },
-    "canonicalCandidateKeyCount": 3521,
-    "activeStaticKeyCount": 2342,
+    "localeUniqueKeyCounts": { "en-US": 3523, "zh-CN": 3523, "de-DE": 3523, "fr-FR": 3523 },
+    "canonicalCandidateKeyCount": 3523,
+    "activeStaticKeyCount": 2344,
     "activeDynamicKeyCount": 321,
     "reservedKeyCount": 858,
     "productionSourceFileCount": 486,
-    "literalReferenceCount": 4286,
+    "literalReferenceCount": 4288,
     "dynamicCallsiteCount": 33,
     "dynamicCallsiteSummaryCount": 33,
     "registeredDynamicCallsiteCount": 33,
@@ -82637,6 +82637,89 @@
       "defaultMessages": []
     },
     {
+      "id": "pages.file.preview.open",
+      "category": "active-static",
+      "dynamicFamilies": [],
+      "moduleOwnership": {
+        "en-US": ["pages_source"],
+        "zh-CN": ["pages_source"],
+        "de-DE": ["pages_source"],
+        "fr-FR": ["pages_source"]
+      },
+      "translations": {
+        "en-US": {
+          "value": "Open file",
+          "argumentSignature": [],
+          "placeholders": [],
+          "source": {
+            "path": "src/locales/en-US/pages_source.ts",
+            "line": 2,
+            "column": 3,
+            "module": "pages_source"
+          }
+        },
+        "zh-CN": {
+          "value": "打开文件",
+          "argumentSignature": [],
+          "placeholders": [],
+          "source": {
+            "path": "src/locales/zh-CN/pages_source.ts",
+            "line": 2,
+            "column": 3,
+            "module": "pages_source"
+          }
+        },
+        "de-DE": {
+          "value": "Datei öffnen",
+          "argumentSignature": [],
+          "placeholders": [],
+          "source": {
+            "path": "src/locales/de-DE/pages_source.ts",
+            "line": 2,
+            "column": 3,
+            "module": "pages_source"
+          }
+        },
+        "fr-FR": {
+          "value": "Ouvrir le fichier",
+          "argumentSignature": [],
+          "placeholders": [],
+          "source": {
+            "path": "src/locales/fr-FR/pages_source.ts",
+            "line": 2,
+            "column": 3,
+            "module": "pages_source"
+          }
+        }
+      },
+      "references": [
+        {
+          "kind": "formatMessage",
+          "path": "src/pages/Sources/Components/form.tsx",
+          "line": 308,
+          "column": 21,
+          "symbol": "actionLabel",
+          "defaultMessage": "Open file",
+          "defaultMessageExpression": null
+        }
+      ],
+      "defaultMessages": [
+        {
+          "value": "Open file",
+          "argumentSignature": [],
+          "placeholders": [],
+          "locations": [
+            {
+              "path": "src/pages/Sources/Components/form.tsx",
+              "line": 308,
+              "column": 21,
+              "kind": "formatMessage"
+            }
+          ]
+        }
+      ]
+    },
+    {
       "id": "pages.file.preview.resolved",
       "category": "active-static",
       "dynamicFamilies": [],
@@ -82653,7 +82736,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 2,
+            "line": 5,
             "column": 3,
             "module": "pages_source"
           }
@@ -82664,7 +82747,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 2,
+            "line": 5,
             "column": 3,
             "module": "pages_source"
           }
@@ -82675,7 +82758,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 2,
+            "line": 5,
             "column": 3,
             "module": "pages_source"
           }
@@ -82686,7 +82769,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 2,
+            "line": 5,
             "column": 3,
             "module": "pages_source"
           }
@@ -82720,6 +82803,89 @@
       ]
     },
     {
+      "id": "pages.file.preview.retry",
+      "category": "active-static",
+      "dynamicFamilies": [],
+      "moduleOwnership": {
+        "en-US": ["pages_source"],
+        "zh-CN": ["pages_source"],
+        "de-DE": ["pages_source"],
+        "fr-FR": ["pages_source"]
+      },
+      "translations": {
+        "en-US": {
+          "value": "Retry preview",
+          "argumentSignature": [],
+          "placeholders": [],
+          "source": {
+            "path": "src/locales/en-US/pages_source.ts",
+            "line": 3,
+            "column": 3,
+            "module": "pages_source"
+          }
+        },
+        "zh-CN": {
+          "value": "重试预览",
+          "argumentSignature": [],
+          "placeholders": [],
+          "source": {
+            "path": "src/locales/zh-CN/pages_source.ts",
+            "line": 3,
+            "column": 3,
+            "module": "pages_source"
+          }
+        },
+        "de-DE": {
+          "value": "Vorschau erneut versuchen",
+          "argumentSignature": [],
+          "placeholders": [],
+          "source": {
+            "path": "src/locales/de-DE/pages_source.ts",
+            "line": 3,
+            "column": 3,
+            "module": "pages_source"
+          }
+        },
+        "fr-FR": {
+          "value": "Réessayer l’aperçu",
+          "argumentSignature": [],
+          "placeholders": [],
+          "source": {
+            "path": "src/locales/fr-FR/pages_source.ts",
+            "line": 3,
+            "column": 3,
+            "module": "pages_source"
+          }
+        }
+      },
+      "references": [
+        {
+          "kind": "formatMessage",
+          "path": "src/pages/Sources/Components/form.tsx",
+          "line": 304,
+          "column": 21,
+          "symbol": "actionLabel",
+          "defaultMessage": "Retry preview",
+          "defaultMessageExpression": null
+        }
+      ],
+      "defaultMessages": [
+        {
+          "value": "Retry preview",
+          "argumentSignature": [],
+          "placeholders": [],
+          "locations": [
+            {
+              "path": "src/pages/Sources/Components/form.tsx",
+              "line": 304,
+              "column": 21,
+              "kind": "formatMessage"
+            }
+          ]
+        }
+      ]
+    },
+    {
       "id": "pages.file.preview.unavailable",
       "category": "active-static",
       "dynamicFamilies": [],
@@ -82736,7 +82902,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 5,
+            "line": 8,
             "column": 3,
             "module": "pages_source"
           }
@@ -82747,7 +82913,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 5,
+            "line": 8,
             "column": 3,
             "module": "pages_source"
           }
@@ -82758,7 +82924,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 5,
+            "line": 8,
             "column": 3,
             "module": "pages_source"
           }
@@ -82769,7 +82935,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 5,
+            "line": 8,
             "column": 3,
             "module": "pages_source"
           }
@@ -82819,7 +82985,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 4,
+            "line": 7,
             "column": 3,
             "module": "pages_source"
           }
@@ -82830,7 +82996,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 4,
+            "line": 7,
             "column": 3,
             "module": "pages_source"
           }
@@ -82841,7 +83007,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 4,
+            "line": 7,
             "column": 3,
             "module": "pages_source"
           }
@@ -82852,7 +83018,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 4,
+            "line": 7,
             "column": 3,
             "module": "pages_source"
           }
@@ -82902,7 +83068,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 6,
+            "line": 9,
             "column": 3,
             "module": "pages_source"
           }
@@ -82913,7 +83079,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 6,
+            "line": 9,
             "column": 3,
             "module": "pages_source"
           }
@@ -82924,7 +83090,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 6,
+            "line": 9,
             "column": 3,
             "module": "pages_source"
           }
@@ -82935,7 +83101,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 6,
+            "line": 9,
             "column": 3,
             "module": "pages_source"
           }
@@ -250679,7 +250845,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 68,
+            "line": 71,
             "column": 3,
             "module": "pages_source"
           }
@@ -250690,7 +250856,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 67,
+            "line": 70,
             "column": 3,
             "module": "pages_source"
           }
@@ -250701,7 +250867,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 68,
+            "line": 71,
             "column": 3,
             "module": "pages_source"
           }
@@ -250712,7 +250878,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 68,
+            "line": 71,
             "column": 3,
             "module": "pages_source"
           }
@@ -250738,7 +250904,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 69,
+            "line": 72,
             "column": 3,
             "module": "pages_source"
           }
@@ -250749,7 +250915,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 68,
+            "line": 71,
             "column": 3,
             "module": "pages_source"
           }
@@ -250760,7 +250926,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 69,
+            "line": 72,
             "column": 3,
             "module": "pages_source"
           }
@@ -250771,7 +250937,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 69,
+            "line": 72,
             "column": 3,
             "module": "pages_source"
           }
@@ -250797,7 +250963,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 73,
+            "line": 76,
             "column": 3,
             "module": "pages_source"
           }
@@ -250808,7 +250974,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 72,
+            "line": 75,
             "column": 3,
             "module": "pages_source"
           }
@@ -250819,7 +250985,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 73,
+            "line": 76,
             "column": 3,
             "module": "pages_source"
           }
@@ -250830,7 +250996,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 73,
+            "line": 76,
             "column": 3,
             "module": "pages_source"
           }
@@ -250856,7 +251022,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 74,
+            "line": 77,
             "column": 3,
             "module": "pages_source"
           }
@@ -250867,7 +251033,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 73,
+            "line": 76,
             "column": 3,
             "module": "pages_source"
           }
@@ -250878,7 +251044,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 74,
+            "line": 77,
             "column": 3,
             "module": "pages_source"
           }
@@ -250889,7 +251055,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 74,
+            "line": 77,
             "column": 3,
             "module": "pages_source"
           }
@@ -250915,7 +251081,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 72,
+            "line": 75,
             "column": 3,
             "module": "pages_source"
           }
@@ -250926,7 +251092,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 71,
+            "line": 74,
             "column": 3,
             "module": "pages_source"
           }
@@ -250937,7 +251103,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 72,
+            "line": 75,
             "column": 3,
             "module": "pages_source"
           }
@@ -250948,7 +251114,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 72,
+            "line": 75,
             "column": 3,
             "module": "pages_source"
           }
@@ -250974,7 +251140,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 71,
+            "line": 74,
             "column": 3,
             "module": "pages_source"
           }
@@ -250985,7 +251151,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 70,
+            "line": 73,
             "column": 3,
             "module": "pages_source"
           }
@@ -250996,7 +251162,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 71,
+            "line": 74,
             "column": 3,
             "module": "pages_source"
           }
@@ -251007,7 +251173,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 71,
+            "line": 74,
             "column": 3,
             "module": "pages_source"
           }
@@ -251033,7 +251199,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 75,
+            "line": 78,
             "column": 3,
             "module": "pages_source"
           }
@@ -251044,7 +251210,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 74,
+            "line": 77,
             "column": 3,
             "module": "pages_source"
           }
@@ -251055,7 +251221,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 75,
+            "line": 78,
             "column": 3,
             "module": "pages_source"
           }
@@ -251066,7 +251232,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 75,
+            "line": 78,
             "column": 3,
             "module": "pages_source"
           }
@@ -251092,7 +251258,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 70,
+            "line": 73,
             "column": 3,
             "module": "pages_source"
           }
@@ -251103,7 +251269,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 69,
+            "line": 72,
             "column": 3,
             "module": "pages_source"
           }
@@ -251114,7 +251280,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 70,
+            "line": 73,
             "column": 3,
             "module": "pages_source"
           }
@@ -251125,7 +251291,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 70,
+            "line": 73,
             "column": 3,
             "module": "pages_source"
           }
@@ -251151,7 +251317,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 60,
+            "line": 63,
             "column": 3,
             "module": "pages_source"
           }
@@ -251162,7 +251328,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 59,
+            "line": 62,
             "column": 3,
             "module": "pages_source"
           }
@@ -251173,7 +251339,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 60,
+            "line": 63,
             "column": 3,
             "module": "pages_source"
           }
@@ -251184,7 +251350,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 60,
+            "line": 63,
             "column": 3,
             "module": "pages_source"
           }
@@ -251210,7 +251376,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 62,
+            "line": 65,
             "column": 3,
             "module": "pages_source"
           }
@@ -251221,7 +251387,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 61,
+            "line": 64,
             "column": 3,
             "module": "pages_source"
           }
@@ -251232,7 +251398,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 62,
+            "line": 65,
             "column": 3,
             "module": "pages_source"
           }
@@ -251243,7 +251409,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 62,
+            "line": 65,
             "column": 3,
             "module": "pages_source"
           }
@@ -251269,7 +251435,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 64,
+            "line": 67,
             "column": 3,
             "module": "pages_source"
           }
@@ -251280,7 +251446,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 63,
+            "line": 66,
             "column": 3,
             "module": "pages_source"
           }
@@ -251291,7 +251457,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 64,
+            "line": 67,
             "column": 3,
             "module": "pages_source"
           }
@@ -251302,7 +251468,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 64,
+            "line": 67,
             "column": 3,
             "module": "pages_source"
           }
@@ -251328,7 +251494,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 67,
+            "line": 70,
             "column": 3,
             "module": "pages_source"
           }
@@ -251339,7 +251505,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 66,
+            "line": 69,
             "column": 3,
             "module": "pages_source"
           }
@@ -251350,7 +251516,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 67,
+            "line": 70,
             "column": 3,
             "module": "pages_source"
           }
@@ -251361,7 +251527,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 67,
+            "line": 70,
             "column": 3,
             "module": "pages_source"
           }
@@ -251387,7 +251553,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 66,
+            "line": 69,
             "column": 3,
             "module": "pages_source"
           }
@@ -251398,7 +251564,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 65,
+            "line": 68,
             "column": 3,
             "module": "pages_source"
           }
@@ -251409,7 +251575,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 66,
+            "line": 69,
             "column": 3,
             "module": "pages_source"
           }
@@ -251420,7 +251586,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 66,
+            "line": 69,
             "column": 3,
             "module": "pages_source"
           }
@@ -251446,7 +251612,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 61,
+            "line": 64,
             "column": 3,
             "module": "pages_source"
           }
@@ -251457,7 +251623,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 60,
+            "line": 63,
             "column": 3,
             "module": "pages_source"
           }
@@ -251468,7 +251634,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 61,
+            "line": 64,
             "column": 3,
             "module": "pages_source"
           }
@@ -251479,7 +251645,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 61,
+            "line": 64,
             "column": 3,
             "module": "pages_source"
           }
@@ -251505,7 +251671,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 63,
+            "line": 66,
             "column": 3,
             "module": "pages_source"
           }
@@ -251516,7 +251682,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 62,
+            "line": 65,
             "column": 3,
             "module": "pages_source"
           }
@@ -251527,7 +251693,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 63,
+            "line": 66,
             "column": 3,
             "module": "pages_source"
           }
@@ -251538,7 +251704,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 63,
+            "line": 66,
             "column": 3,
             "module": "pages_source"
           }
@@ -251564,7 +251730,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 65,
+            "line": 68,
             "column": 3,
             "module": "pages_source"
           }
@@ -251575,7 +251741,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 64,
+            "line": 67,
             "column": 3,
             "module": "pages_source"
           }
@@ -251586,7 +251752,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 65,
+            "line": 68,
             "column": 3,
             "module": "pages_source"
           }
@@ -251597,7 +251763,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 65,
+            "line": 68,
             "column": 3,
             "module": "pages_source"
           }
@@ -251623,7 +251789,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 13,
+            "line": 16,
             "column": 3,
             "module": "pages_source"
           }
@@ -251634,7 +251800,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 13,
+            "line": 16,
             "column": 3,
             "module": "pages_source"
           }
@@ -251645,7 +251811,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 13,
+            "line": 16,
             "column": 3,
             "module": "pages_source"
           }
@@ -251656,7 +251822,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 13,
+            "line": 16,
             "column": 3,
             "module": "pages_source"
           }
@@ -251706,7 +251872,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 10,
+            "line": 13,
             "column": 3,
             "module": "pages_source"
           }
@@ -251717,7 +251883,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 10,
+            "line": 13,
             "column": 3,
             "module": "pages_source"
           }
@@ -251728,7 +251894,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 10,
+            "line": 13,
             "column": 3,
             "module": "pages_source"
           }
@@ -251739,7 +251905,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 10,
+            "line": 13,
             "column": 3,
             "module": "pages_source"
           }
@@ -251789,7 +251955,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 14,
+            "line": 17,
             "column": 3,
             "module": "pages_source"
           }
@@ -251800,7 +251966,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 14,
+            "line": 17,
             "column": 3,
             "module": "pages_source"
           }
@@ -251811,7 +251977,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 14,
+            "line": 17,
             "column": 3,
             "module": "pages_source"
           }
@@ -251822,7 +251988,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 14,
+            "line": 17,
             "column": 3,
             "module": "pages_source"
           }
@@ -251872,7 +252038,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 15,
+            "line": 18,
             "column": 3,
             "module": "pages_source"
           }
@@ -251883,7 +252049,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 15,
+            "line": 18,
             "column": 3,
             "module": "pages_source"
           }
@@ -251894,7 +252060,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 15,
+            "line": 18,
             "column": 3,
             "module": "pages_source"
           }
@@ -251905,7 +252071,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 15,
+            "line": 18,
             "column": 3,
             "module": "pages_source"
           }
@@ -251931,7 +252097,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 12,
+            "line": 15,
             "column": 3,
             "module": "pages_source"
           }
@@ -251942,7 +252108,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 12,
+            "line": 15,
             "column": 3,
             "module": "pages_source"
           }
@@ -251953,7 +252119,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 12,
+            "line": 15,
             "column": 3,
             "module": "pages_source"
           }
@@ -251964,7 +252130,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 12,
+            "line": 15,
             "column": 3,
             "module": "pages_source"
           }
@@ -252014,7 +252180,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 16,
+            "line": 19,
             "column": 3,
             "module": "pages_source"
           }
@@ -252025,7 +252191,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 16,
+            "line": 19,
             "column": 3,
             "module": "pages_source"
           }
@@ -252036,7 +252202,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 16,
+            "line": 19,
             "column": 3,
             "module": "pages_source"
           }
@@ -252047,7 +252213,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 16,
+            "line": 19,
             "column": 3,
             "module": "pages_source"
           }
@@ -252097,7 +252263,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 11,
+            "line": 14,
             "column": 3,
             "module": "pages_source"
           }
@@ -252108,7 +252274,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 11,
+            "line": 14,
             "column": 3,
             "module": "pages_source"
           }
@@ -252119,7 +252285,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 11,
+            "line": 14,
             "column": 3,
             "module": "pages_source"
           }
@@ -252130,7 +252296,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 11,
+            "line": 14,
             "column": 3,
             "module": "pages_source"
           }
@@ -252180,7 +252346,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 49,
+            "line": 52,
             "column": 3,
             "module": "pages_source"
           }
@@ -252191,7 +252357,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 48,
+            "line": 51,
             "column": 3,
             "module": "pages_source"
           }
@@ -252202,7 +252368,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 49,
+            "line": 52,
             "column": 3,
             "module": "pages_source"
           }
@@ -252213,7 +252379,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 49,
+            "line": 52,
             "column": 3,
             "module": "pages_source"
           }
@@ -252263,7 +252429,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 50,
+            "line": 53,
             "column": 3,
             "module": "pages_source"
           }
@@ -252274,7 +252440,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 49,
+            "line": 52,
             "column": 3,
             "module": "pages_source"
           }
@@ -252285,7 +252451,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 50,
+            "line": 53,
             "column": 3,
             "module": "pages_source"
           }
@@ -252296,7 +252462,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 50,
+            "line": 53,
             "column": 3,
             "module": "pages_source"
           }
@@ -252306,7 +252472,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Sources/Components/form.tsx",
-          "line": 373,
+          "line": 407,
           "column": 13,
           "symbol": "tabContent",
           "defaultMessage": "Data entry by",
@@ -252321,7 +252487,7 @@
           "locations": [
             {
               "path": "src/pages/Sources/Components/form.tsx",
-              "line": 373,
+              "line": 407,
               "column": 13,
               "kind": "FormattedMessage"
             }
@@ -252346,7 +252512,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 54,
+            "line": 57,
             "column": 3,
             "module": "pages_source"
           }
@@ -252357,7 +252523,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 53,
+            "line": 56,
             "column": 3,
             "module": "pages_source"
           }
@@ -252368,7 +252534,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 54,
+            "line": 57,
             "column": 3,
             "module": "pages_source"
           }
@@ -252379,7 +252545,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 54,
+            "line": 57,
             "column": 3,
             "module": "pages_source"
           }
@@ -252389,7 +252555,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Sources/Components/form.tsx",
-          "line": 445,
+          "line": 479,
           "column": 19,
           "symbol": "tabContent",
           "defaultMessage": "Data set version",
@@ -252404,7 +252570,7 @@
           "locations": [
             {
               "path": "src/pages/Sources/Components/form.tsx",
-              "line": 445,
+              "line": 479,
               "column": 19,
               "kind": "FormattedMessage"
             }
@@ -252429,7 +252595,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 56,
+            "line": 59,
             "column": 3,
             "module": "pages_source"
           }
@@ -252440,7 +252606,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 55,
+            "line": 58,
             "column": 3,
             "module": "pages_source"
           }
@@ -252451,7 +252617,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 56,
+            "line": 59,
             "column": 3,
             "module": "pages_source"
           }
@@ -252462,7 +252628,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 56,
+            "line": 59,
             "column": 3,
             "module": "pages_source"
           }
@@ -252472,7 +252638,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Sources/Components/form.tsx",
-          "line": 507,
+          "line": 541,
           "column": 15,
           "symbol": "tabContent",
           "defaultMessage": "Permanent data set URI",
@@ -252487,7 +252653,7 @@
           "locations": [
             {
               "path": "src/pages/Sources/Components/form.tsx",
-              "line": 507,
+              "line": 541,
               "column": 15,
               "kind": "FormattedMessage"
             }
@@ -252512,7 +252678,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 57,
+            "line": 60,
             "column": 3,
             "module": "pages_source"
           }
@@ -252523,7 +252689,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 56,
+            "line": 59,
             "column": 3,
             "module": "pages_source"
           }
@@ -252534,7 +252700,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 57,
+            "line": 60,
             "column": 3,
             "module": "pages_source"
           }
@@ -252545,7 +252711,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 57,
+            "line": 60,
             "column": 3,
             "module": "pages_source"
           }
@@ -252595,7 +252761,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 53,
+            "line": 56,
             "column": 3,
             "module": "pages_source"
           }
@@ -252606,7 +252772,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 52,
+            "line": 55,
             "column": 3,
             "module": "pages_source"
           }
@@ -252617,7 +252783,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 53,
+            "line": 56,
             "column": 3,
             "module": "pages_source"
           }
@@ -252628,7 +252794,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 53,
+            "line": 56,
             "column": 3,
             "module": "pages_source"
           }
@@ -252638,7 +252804,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Sources/Components/form.tsx",
-          "line": 433,
+          "line": 467,
           "column": 13,
           "symbol": "tabContent",
           "defaultMessage": "Publication and ownership",
@@ -252653,7 +252819,7 @@
           "locations": [
             {
               "path": "src/pages/Sources/Components/form.tsx",
-              "line": 433,
+              "line": 467,
               "column": 13,
               "kind": "FormattedMessage"
             }
@@ -252678,7 +252844,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 52,
+            "line": 55,
             "column": 3,
             "module": "pages_source"
           }
@@ -252689,7 +252855,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 51,
+            "line": 54,
             "column": 3,
             "module": "pages_source"
           }
@@ -252700,7 +252866,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 52,
+            "line": 55,
             "column": 3,
             "module": "pages_source"
           }
@@ -252711,7 +252877,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 52,
+            "line": 55,
             "column": 3,
             "module": "pages_source"
           }
@@ -252721,7 +252887,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Sources/Components/form.tsx",
-          "line": 409,
+          "line": 443,
           "column": 15,
           "symbol": "tabContent",
           "defaultMessage": "Data set format(s)",
@@ -252736,7 +252902,7 @@
           "locations": [
             {
               "path": "src/pages/Sources/Components/form.tsx",
-              "line": 409,
+              "line": 443,
               "column": 15,
               "kind": "FormattedMessage"
             }
@@ -252761,7 +252927,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 58,
+            "line": 61,
             "column": 3,
             "module": "pages_source"
           }
@@ -252772,7 +252938,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 57,
+            "line": 60,
             "column": 3,
             "module": "pages_source"
           }
@@ -252783,7 +252949,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 58,
+            "line": 61,
             "column": 3,
             "module": "pages_source"
           }
@@ -252794,7 +252960,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 58,
+            "line": 61,
             "column": 3,
             "module": "pages_source"
           }
@@ -252804,7 +252970,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Sources/Components/form.tsx",
-          "line": 463,
+          "line": 497,
           "column": 15,
           "symbol": "tabContent",
           "defaultMessage": "Owner of data set",
@@ -252819,7 +252985,7 @@
           "locations": [
             {
               "path": "src/pages/Sources/Components/form.tsx",
-              "line": 463,
+              "line": 497,
               "column": 15,
               "kind": "FormattedMessage"
             }
@@ -252844,7 +253010,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 55,
+            "line": 58,
             "column": 3,
             "module": "pages_source"
           }
@@ -252855,7 +253021,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 54,
+            "line": 57,
             "column": 3,
             "module": "pages_source"
           }
@@ -252866,7 +253032,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 55,
+            "line": 58,
             "column": 3,
             "module": "pages_source"
           }
@@ -252877,7 +253043,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 55,
+            "line": 58,
             "column": 3,
             "module": "pages_source"
           }
@@ -252903,7 +253069,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 51,
+            "line": 54,
             "column": 3,
             "module": "pages_source"
           }
@@ -252914,7 +253080,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 50,
+            "line": 53,
             "column": 3,
             "module": "pages_source"
           }
@@ -252925,7 +253091,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 51,
+            "line": 54,
             "column": 3,
             "module": "pages_source"
           }
@@ -252936,7 +253102,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 51,
+            "line": 54,
             "column": 3,
             "module": "pages_source"
           }
@@ -252946,7 +253112,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Sources/Components/form.tsx",
-          "line": 385,
+          "line": 419,
           "column": 19,
           "symbol": "tabContent",
           "defaultMessage": "Time stamp",
@@ -252961,7 +253127,7 @@
           "locations": [
             {
               "path": "src/pages/Sources/Components/form.tsx",
-              "line": 385,
+              "line": 419,
               "column": 19,
               "kind": "FormattedMessage"
             }
@@ -252986,7 +253152,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 40,
+            "line": 43,
             "column": 3,
             "module": "pages_source"
           }
@@ -252997,7 +253163,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 39,
+            "line": 42,
             "column": 3,
             "module": "pages_source"
           }
@@ -253008,7 +253174,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 40,
+            "line": 43,
             "column": 3,
             "module": "pages_source"
           }
@@ -253019,7 +253185,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 40,
+            "line": 43,
             "column": 3,
             "module": "pages_source"
           }
@@ -253069,7 +253235,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 42,
+            "line": 45,
             "column": 3,
             "module": "pages_source"
           }
@@ -253080,7 +253246,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 41,
+            "line": 44,
             "column": 3,
             "module": "pages_source"
           }
@@ -253091,7 +253257,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 42,
+            "line": 45,
             "column": 3,
             "module": "pages_source"
           }
@@ -253102,7 +253268,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 42,
+            "line": 45,
             "column": 3,
             "module": "pages_source"
           }
@@ -253128,7 +253294,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 44,
+            "line": 47,
             "column": 3,
             "module": "pages_source"
           }
@@ -253139,7 +253305,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 43,
+            "line": 46,
             "column": 3,
             "module": "pages_source"
           }
@@ -253150,7 +253316,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 44,
+            "line": 47,
             "column": 3,
             "module": "pages_source"
           }
@@ -253161,7 +253327,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 44,
+            "line": 47,
             "column": 3,
             "module": "pages_source"
           }
@@ -253211,7 +253377,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 47,
+            "line": 50,
             "column": 3,
             "module": "pages_source"
           }
@@ -253222,7 +253388,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 46,
+            "line": 49,
             "column": 3,
             "module": "pages_source"
           }
@@ -253233,7 +253399,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 47,
+            "line": 50,
             "column": 3,
             "module": "pages_source"
           }
@@ -253244,7 +253410,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 47,
+            "line": 50,
             "column": 3,
             "module": "pages_source"
           }
@@ -253254,7 +253420,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Sources/Components/form.tsx",
-          "line": 344,
+          "line": 378,
           "column": 13,
           "symbol": "tabContent",
           "defaultMessage": "Belongs to:",
@@ -253269,7 +253435,7 @@
           "locations": [
             {
               "path": "src/pages/Sources/Components/form.tsx",
-              "line": 344,
+              "line": 378,
               "column": 13,
               "kind": "FormattedMessage"
             }
@@ -253294,7 +253460,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 46,
+            "line": 49,
             "column": 3,
             "module": "pages_source"
           }
@@ -253305,7 +253471,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 45,
+            "line": 48,
             "column": 3,
             "module": "pages_source"
           }
@@ -253316,7 +253482,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 46,
+            "line": 49,
             "column": 3,
             "module": "pages_source"
           }
@@ -253327,7 +253493,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 46,
+            "line": 49,
             "column": 3,
             "module": "pages_source"
           }
@@ -253392,7 +253558,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 48,
+            "line": 51,
             "column": 3,
             "module": "pages_source"
           }
@@ -253403,7 +253569,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 47,
+            "line": 50,
             "column": 3,
             "module": "pages_source"
           }
@@ -253414,7 +253580,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 48,
+            "line": 51,
             "column": 3,
             "module": "pages_source"
           }
@@ -253425,7 +253591,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 48,
+            "line": 51,
             "column": 3,
             "module": "pages_source"
           }
@@ -253435,7 +253601,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Sources/Components/form.tsx",
-          "line": 356,
+          "line": 390,
           "column": 13,
           "symbol": "tabContent",
           "defaultMessage": "Logo of organisation or source",
@@ -253450,7 +253616,7 @@
           "locations": [
             {
               "path": "src/pages/Sources/Components/form.tsx",
-              "line": 356,
+              "line": 390,
               "column": 13,
               "kind": "FormattedMessage"
             }
@@ -253475,7 +253641,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 41,
+            "line": 44,
             "column": 3,
             "module": "pages_source"
           }
@@ -253486,7 +253652,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 40,
+            "line": 43,
             "column": 3,
             "module": "pages_source"
           }
@@ -253497,7 +253663,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 41,
+            "line": 44,
             "column": 3,
             "module": "pages_source"
           }
@@ -253508,7 +253674,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 41,
+            "line": 44,
             "column": 3,
             "module": "pages_source"
           }
@@ -253573,7 +253739,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 43,
+            "line": 46,
             "column": 3,
             "module": "pages_source"
           }
@@ -253584,7 +253750,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 42,
+            "line": 45,
             "column": 3,
             "module": "pages_source"
           }
@@ -253595,7 +253761,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 43,
+            "line": 46,
             "column": 3,
             "module": "pages_source"
           }
@@ -253606,7 +253772,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 43,
+            "line": 46,
             "column": 3,
             "module": "pages_source"
           }
@@ -253656,7 +253822,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 45,
+            "line": 48,
             "column": 3,
             "module": "pages_source"
           }
@@ -253667,7 +253833,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 44,
+            "line": 47,
             "column": 3,
             "module": "pages_source"
           }
@@ -253678,7 +253844,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 45,
+            "line": 48,
             "column": 3,
             "module": "pages_source"
           }
@@ -253689,7 +253855,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 45,
+            "line": 48,
             "column": 3,
             "module": "pages_source"
           }
@@ -253754,7 +253920,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 8,
+            "line": 11,
             "column": 3,
             "module": "pages_source"
           }
@@ -253765,7 +253931,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 8,
+            "line": 11,
             "column": 3,
             "module": "pages_source"
           }
@@ -253776,7 +253942,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 8,
+            "line": 11,
             "column": 3,
             "module": "pages_source"
           }
@@ -253787,7 +253953,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 8,
+            "line": 11,
             "column": 3,
             "module": "pages_source"
           }
@@ -253852,7 +254018,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 9,
+            "line": 12,
             "column": 3,
             "module": "pages_source"
           }
@@ -253863,7 +254029,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 9,
+            "line": 12,
             "column": 3,
             "module": "pages_source"
           }
@@ -253874,7 +254040,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 9,
+            "line": 12,
             "column": 3,
             "module": "pages_source"
           }
@@ -253885,7 +254051,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 9,
+            "line": 12,
             "column": 3,
             "module": "pages_source"
           }
@@ -253965,7 +254131,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 91,
+            "line": 94,
             "column": 3,
             "module": "pages_source"
           }
@@ -253976,7 +254142,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 90,
+            "line": 93,
             "column": 3,
             "module": "pages_source"
           }
@@ -253987,7 +254153,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 91,
+            "line": 94,
             "column": 3,
             "module": "pages_source"
           }
@@ -253998,7 +254164,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 91,
+            "line": 94,
             "column": 3,
             "module": "pages_source"
           }
@@ -254048,7 +254214,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 94,
+            "line": 97,
             "column": 3,
             "module": "pages_source"
           }
@@ -254059,7 +254225,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 93,
+            "line": 96,
             "column": 3,
             "module": "pages_source"
           }
@@ -254070,7 +254236,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 94,
+            "line": 97,
             "column": 3,
             "module": "pages_source"
           }
@@ -254081,7 +254247,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 94,
+            "line": 97,
             "column": 3,
             "module": "pages_source"
           }
@@ -254131,7 +254297,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 93,
+            "line": 96,
             "column": 3,
             "module": "pages_source"
           }
@@ -254142,7 +254308,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 92,
+            "line": 95,
             "column": 3,
             "module": "pages_source"
           }
@@ -254153,7 +254319,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 93,
+            "line": 96,
             "column": 3,
             "module": "pages_source"
           }
@@ -254164,7 +254330,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 93,
+            "line": 96,
             "column": 3,
             "module": "pages_source"
           }
@@ -254214,7 +254380,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 95,
+            "line": 98,
             "column": 3,
             "module": "pages_source"
           }
@@ -254225,7 +254391,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 94,
+            "line": 97,
             "column": 3,
             "module": "pages_source"
           }
@@ -254236,7 +254402,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 95,
+            "line": 98,
             "column": 3,
             "module": "pages_source"
           }
@@ -254247,7 +254413,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 95,
+            "line": 98,
             "column": 3,
             "module": "pages_source"
           }
@@ -254297,7 +254463,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 90,
+            "line": 93,
             "column": 3,
             "module": "pages_source"
           }
@@ -254308,7 +254474,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 89,
+            "line": 92,
             "column": 3,
             "module": "pages_source"
           }
@@ -254319,7 +254485,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 90,
+            "line": 93,
             "column": 3,
             "module": "pages_source"
           }
@@ -254330,7 +254496,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 90,
+            "line": 93,
             "column": 3,
             "module": "pages_source"
           }
@@ -254380,7 +254546,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 92,
+            "line": 95,
             "column": 3,
             "module": "pages_source"
           }
@@ -254391,7 +254557,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 91,
+            "line": 94,
             "column": 3,
             "module": "pages_source"
           }
@@ -254402,7 +254568,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 92,
+            "line": 95,
             "column": 3,
             "module": "pages_source"
           }
@@ -254413,7 +254579,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 92,
+            "line": 95,
             "column": 3,
             "module": "pages_source"
           }
@@ -254463,7 +254629,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 89,
+            "line": 92,
             "column": 3,
             "module": "pages_source"
           }
@@ -254474,7 +254640,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 88,
+            "line": 91,
             "column": 3,
             "module": "pages_source"
           }
@@ -254485,7 +254651,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 89,
+            "line": 92,
             "column": 3,
             "module": "pages_source"
           }
@@ -254496,7 +254662,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 89,
+            "line": 92,
             "column": 3,
             "module": "pages_source"
           }
@@ -254546,7 +254712,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 88,
+            "line": 91,
             "column": 3,
             "module": "pages_source"
           }
@@ -254557,7 +254723,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 87,
+            "line": 90,
             "column": 3,
             "module": "pages_source"
           }
@@ -254568,7 +254734,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 88,
+            "line": 91,
             "column": 3,
             "module": "pages_source"
           }
@@ -254579,7 +254745,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 88,
+            "line": 91,
             "column": 3,
             "module": "pages_source"
           }
@@ -254629,7 +254795,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 29,
+            "line": 32,
             "column": 3,
             "module": "pages_source"
           }
@@ -254640,7 +254806,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 28,
+            "line": 31,
             "column": 3,
             "module": "pages_source"
           }
@@ -254651,7 +254817,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 29,
+            "line": 32,
             "column": 3,
             "module": "pages_source"
           }
@@ -254662,7 +254828,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 29,
+            "line": 32,
             "column": 3,
             "module": "pages_source"
           }
@@ -254712,7 +254878,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 31,
+            "line": 34,
             "column": 3,
             "module": "pages_source"
           }
@@ -254723,7 +254889,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 30,
+            "line": 33,
             "column": 3,
             "module": "pages_source"
           }
@@ -254734,7 +254900,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 31,
+            "line": 34,
             "column": 3,
             "module": "pages_source"
           }
@@ -254745,7 +254911,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 31,
+            "line": 34,
             "column": 3,
             "module": "pages_source"
           }
@@ -254795,7 +254961,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 30,
+            "line": 33,
             "column": 3,
             "module": "pages_source"
           }
@@ -254806,7 +254972,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 29,
+            "line": 32,
             "column": 3,
             "module": "pages_source"
           }
@@ -254817,7 +254983,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 30,
+            "line": 33,
             "column": 3,
             "module": "pages_source"
           }
@@ -254828,7 +254994,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 30,
+            "line": 33,
             "column": 3,
             "module": "pages_source"
           }
@@ -254878,7 +255044,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 34,
+            "line": 37,
             "column": 3,
             "module": "pages_source"
           }
@@ -254889,7 +255055,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 33,
+            "line": 36,
             "column": 3,
             "module": "pages_source"
           }
@@ -254900,7 +255066,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 34,
+            "line": 37,
             "column": 3,
             "module": "pages_source"
           }
@@ -254911,7 +255077,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 34,
+            "line": 37,
             "column": 3,
             "module": "pages_source"
           }
@@ -254961,7 +255127,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 35,
+            "line": 38,
             "column": 3,
             "module": "pages_source"
           }
@@ -254972,7 +255138,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 34,
+            "line": 37,
             "column": 3,
             "module": "pages_source"
           }
@@ -254983,7 +255149,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 35,
+            "line": 38,
             "column": 3,
             "module": "pages_source"
           }
@@ -254994,7 +255160,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 35,
+            "line": 38,
             "column": 3,
             "module": "pages_source"
           }
@@ -255044,7 +255210,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 33,
+            "line": 36,
             "column": 3,
             "module": "pages_source"
           }
@@ -255055,7 +255221,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 32,
+            "line": 35,
             "column": 3,
             "module": "pages_source"
           }
@@ -255066,7 +255232,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 33,
+            "line": 36,
             "column": 3,
             "module": "pages_source"
           }
@@ -255077,7 +255243,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 33,
+            "line": 36,
             "column": 3,
             "module": "pages_source"
           }
@@ -255127,7 +255293,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 32,
+            "line": 35,
             "column": 3,
             "module": "pages_source"
           }
@@ -255138,7 +255304,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 31,
+            "line": 34,
             "column": 3,
             "module": "pages_source"
           }
@@ -255149,7 +255315,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 32,
+            "line": 35,
             "column": 3,
             "module": "pages_source"
           }
@@ -255160,7 +255326,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 32,
+            "line": 35,
             "column": 3,
             "module": "pages_source"
           }
@@ -255210,7 +255376,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 36,
+            "line": 39,
             "column": 3,
             "module": "pages_source"
           }
@@ -255221,7 +255387,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 35,
+            "line": 38,
             "column": 3,
             "module": "pages_source"
           }
@@ -255232,7 +255398,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 36,
+            "line": 39,
             "column": 3,
             "module": "pages_source"
           }
@@ -255243,7 +255409,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 36,
+            "line": 39,
             "column": 3,
             "module": "pages_source"
           }
@@ -255293,7 +255459,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 37,
+            "line": 40,
             "column": 3,
             "module": "pages_source"
           }
@@ -255304,7 +255470,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 36,
+            "line": 39,
             "column": 3,
             "module": "pages_source"
           }
@@ -255315,7 +255481,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 37,
+            "line": 40,
             "column": 3,
             "module": "pages_source"
           }
@@ -255326,7 +255492,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 37,
+            "line": 40,
             "column": 3,
             "module": "pages_source"
           }
@@ -255376,7 +255542,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 19,
+            "line": 22,
             "column": 3,
             "module": "pages_source"
           }
@@ -255387,7 +255553,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 18,
+            "line": 21,
             "column": 3,
             "module": "pages_source"
           }
@@ -255398,7 +255564,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 19,
+            "line": 22,
             "column": 3,
             "module": "pages_source"
           }
@@ -255409,7 +255575,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 19,
+            "line": 22,
             "column": 3,
             "module": "pages_source"
           }
@@ -255459,7 +255625,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 22,
+            "line": 25,
             "column": 3,
             "module": "pages_source"
           }
@@ -255470,7 +255636,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 21,
+            "line": 24,
             "column": 3,
             "module": "pages_source"
           }
@@ -255481,7 +255647,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 22,
+            "line": 25,
             "column": 3,
             "module": "pages_source"
           }
@@ -255492,7 +255658,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 22,
+            "line": 25,
             "column": 3,
             "module": "pages_source"
           }
@@ -255518,7 +255684,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 20,
+            "line": 23,
             "column": 3,
             "module": "pages_source"
           }
@@ -255529,7 +255695,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 19,
+            "line": 22,
             "column": 3,
             "module": "pages_source"
           }
@@ -255540,7 +255706,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 20,
+            "line": 23,
             "column": 3,
             "module": "pages_source"
           }
@@ -255551,7 +255717,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 20,
+            "line": 23,
             "column": 3,
             "module": "pages_source"
           }
@@ -255631,7 +255797,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 24,
+            "line": 27,
             "column": 3,
             "module": "pages_source"
           }
@@ -255642,7 +255808,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 23,
+            "line": 26,
             "column": 3,
             "module": "pages_source"
           }
@@ -255653,7 +255819,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 24,
+            "line": 27,
             "column": 3,
             "module": "pages_source"
           }
@@ -255664,7 +255830,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 24,
+            "line": 27,
             "column": 3,
             "module": "pages_source"
           }
@@ -255714,7 +255880,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 78,
+            "line": 81,
             "column": 3,
             "module": "pages_source"
           }
@@ -255725,7 +255891,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 77,
+            "line": 80,
             "column": 3,
             "module": "pages_source"
           }
@@ -255736,7 +255902,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 78,
+            "line": 81,
             "column": 3,
             "module": "pages_source"
           }
@@ -255747,7 +255913,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 78,
+            "line": 81,
             "column": 3,
             "module": "pages_source"
           }
@@ -255797,7 +255963,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 79,
+            "line": 82,
             "column": 3,
             "module": "pages_source"
           }
@@ -255808,7 +255974,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 78,
+            "line": 81,
             "column": 3,
             "module": "pages_source"
           }
@@ -255819,7 +255985,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 79,
+            "line": 82,
             "column": 3,
             "module": "pages_source"
           }
@@ -255830,7 +255996,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 79,
+            "line": 82,
             "column": 3,
             "module": "pages_source"
           }
@@ -255880,7 +256046,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 81,
+            "line": 84,
             "column": 3,
             "module": "pages_source"
           }
@@ -255891,7 +256057,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 80,
+            "line": 83,
             "column": 3,
             "module": "pages_source"
           }
@@ -255902,7 +256068,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 81,
+            "line": 84,
             "column": 3,
             "module": "pages_source"
           }
@@ -255913,7 +256079,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 81,
+            "line": 84,
             "column": 3,
             "module": "pages_source"
           }
@@ -255963,7 +256129,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 80,
+            "line": 83,
             "column": 3,
             "module": "pages_source"
           }
@@ -255974,7 +256140,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 79,
+            "line": 82,
             "column": 3,
             "module": "pages_source"
           }
@@ -255985,7 +256151,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 80,
+            "line": 83,
             "column": 3,
             "module": "pages_source"
           }
@@ -255996,7 +256162,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 80,
+            "line": 83,
             "column": 3,
             "module": "pages_source"
           }
@@ -256046,7 +256212,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 82,
+            "line": 85,
             "column": 3,
             "module": "pages_source"
           }
@@ -256057,7 +256223,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 81,
+            "line": 84,
             "column": 3,
             "module": "pages_source"
           }
@@ -256068,7 +256234,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 82,
+            "line": 85,
             "column": 3,
             "module": "pages_source"
           }
@@ -256079,7 +256245,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 82,
+            "line": 85,
             "column": 3,
             "module": "pages_source"
           }
@@ -256129,7 +256295,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 86,
+            "line": 89,
             "column": 3,
             "module": "pages_source"
           }
@@ -256140,7 +256306,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 85,
+            "line": 88,
             "column": 3,
             "module": "pages_source"
           }
@@ -256151,7 +256317,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 86,
+            "line": 89,
             "column": 3,
             "module": "pages_source"
           }
@@ -256162,7 +256328,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 86,
+            "line": 89,
             "column": 3,
             "module": "pages_source"
           }
@@ -256212,7 +256378,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 83,
+            "line": 86,
             "column": 3,
             "module": "pages_source"
           }
@@ -256223,7 +256389,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 82,
+            "line": 85,
             "column": 3,
             "module": "pages_source"
           }
@@ -256234,7 +256400,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 83,
+            "line": 86,
             "column": 3,
             "module": "pages_source"
           }
@@ -256245,7 +256411,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 83,
+            "line": 86,
             "column": 3,
             "module": "pages_source"
           }
@@ -256295,7 +256461,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 84,
+            "line": 87,
             "column": 3,
             "module": "pages_source"
           }
@@ -256306,7 +256472,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 83,
+            "line": 86,
             "column": 3,
             "module": "pages_source"
           }
@@ -256317,7 +256483,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 84,
+            "line": 87,
             "column": 3,
             "module": "pages_source"
           }
@@ -256328,7 +256494,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 84,
+            "line": 87,
             "column": 3,
             "module": "pages_source"
           }
@@ -256378,7 +256544,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 85,
+            "line": 88,
             "column": 3,
             "module": "pages_source"
           }
@@ -256389,7 +256555,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 84,
+            "line": 87,
             "column": 3,
             "module": "pages_source"
           }
@@ -256400,7 +256566,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 85,
+            "line": 88,
             "column": 3,
             "module": "pages_source"
           }
@@ -256411,7 +256577,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 85,
+            "line": 88,
             "column": 3,
             "module": "pages_source"
           }
@@ -256461,7 +256627,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 77,
+            "line": 80,
             "column": 3,
             "module": "pages_source"
           }
@@ -256472,7 +256638,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 76,
+            "line": 79,
             "column": 3,
             "module": "pages_source"
           }
@@ -256483,7 +256649,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 77,
+            "line": 80,
             "column": 3,
             "module": "pages_source"
           }
@@ -256494,7 +256660,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 77,
+            "line": 80,
             "column": 3,
             "module": "pages_source"
           }
@@ -256544,7 +256710,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 27,
+            "line": 30,
             "column": 3,
             "module": "pages_source"
           }
@@ -256555,7 +256721,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 26,
+            "line": 29,
             "column": 3,
             "module": "pages_source"
           }
@@ -256566,7 +256732,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 27,
+            "line": 30,
             "column": 3,
             "module": "pages_source"
           }
@@ -256577,7 +256743,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 27,
+            "line": 30,
             "column": 3,
             "module": "pages_source"
           }
@@ -256627,7 +256793,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 26,
+            "line": 29,
             "column": 3,
             "module": "pages_source"
           }
@@ -256638,7 +256804,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 25,
+            "line": 28,
             "column": 3,
             "module": "pages_source"
           }
@@ -256649,7 +256815,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 26,
+            "line": 29,
             "column": 3,
             "module": "pages_source"
           }
@@ -256660,7 +256826,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 26,
+            "line": 29,
             "column": 3,
             "module": "pages_source"
           }
@@ -256686,7 +256852,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 28,
+            "line": 31,
             "column": 3,
             "module": "pages_source"
           }
@@ -256697,7 +256863,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 27,
+            "line": 30,
             "column": 3,
             "module": "pages_source"
           }
@@ -256708,7 +256874,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 28,
+            "line": 31,
             "column": 3,
             "module": "pages_source"
           }
@@ -256719,7 +256885,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 28,
+            "line": 31,
             "column": 3,
             "module": "pages_source"
           }
@@ -256769,7 +256935,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 21,
+            "line": 24,
             "column": 3,
             "module": "pages_source"
           }
@@ -256780,7 +256946,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 20,
+            "line": 23,
             "column": 3,
             "module": "pages_source"
           }
@@ -256791,7 +256957,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 21,
+            "line": 24,
             "column": 3,
             "module": "pages_source"
           }
@@ -256802,7 +256968,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 21,
+            "line": 24,
             "column": 3,
             "module": "pages_source"
           }
@@ -256852,7 +257018,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 23,
+            "line": 26,
             "column": 3,
             "module": "pages_source"
           }
@@ -256863,7 +257029,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 22,
+            "line": 25,
             "column": 3,
             "module": "pages_source"
           }
@@ -256874,7 +257040,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 23,
+            "line": 26,
             "column": 3,
             "module": "pages_source"
           }
@@ -256885,7 +257051,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 23,
+            "line": 26,
             "column": 3,
             "module": "pages_source"
           }
@@ -256935,7 +257101,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/en-US/pages_source.ts",
-            "line": 25,
+            "line": 28,
             "column": 3,
             "module": "pages_source"
           }
@@ -256946,7 +257112,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/zh-CN/pages_source.ts",
-            "line": 24,
+            "line": 27,
             "column": 3,
             "module": "pages_source"
           }
@@ -256957,7 +257123,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/de-DE/pages_source.ts",
-            "line": 25,
+            "line": 28,
             "column": 3,
             "module": "pages_source"
           }
@@ -256968,7 +257134,7 @@
           "placeholders": [],
           "source": {
             "path": "src/locales/fr-FR/pages_source.ts",
-            "line": 25,
+            "line": 28,
             "column": 3,
             "module": "pages_source"
           }

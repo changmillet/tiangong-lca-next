@@ -41,8 +41,8 @@ checkPaths:
   - .github/workflows/release-gate.yml
   - .github/workflows/release-readiness.yml
 lastReviewedAt: 2026-10-01
-lastReviewedCommit: 639abca401c18608d23b5e58db164a53fd6fb1a2
-lastReviewedNote: 'Reviewed Platform #1130 digital-file locator preservation and explicit preview states; shared logo fallbacks retain existing team/review authority, schema, dependency and delivery contracts.'
+lastReviewedCommit: a4a565142b6e3f3821a4754417cfb44fd2756b42
+lastReviewedNote: 'Reviewed Platform #1130 follow-up: real Upload Open/Retry actions and wrapping footers preserve locator, preview, authority and schema boundaries; thumbnail typing reflects the producer contract without artificial fallback states.'
 ---
 
 # Testing Execution State

@@ -1,4 +1,7 @@
 export default {
+  'pages.file.preview.open': '打开文件',
+  'pages.file.preview.retry': '重试预览',
+
   'pages.file.preview.resolved': '文件预览已就绪',
 
   'pages.file.preview.unchecked': '尚未检查文件访问',

@@ -1,4 +1,7 @@
 export default {
+  'pages.file.preview.open': 'Ouvrir le fichier',
+  'pages.file.preview.retry': 'Réessayer l’aperçu',
+
   'pages.file.preview.resolved': 'Aperçu du fichier prêt',
 
   'pages.file.preview.unchecked': 'Accès au fichier non vérifié',

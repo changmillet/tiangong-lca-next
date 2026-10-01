@@ -1,4 +1,7 @@
 export default {
+  'pages.file.preview.open': 'Open file',
+  'pages.file.preview.retry': 'Retry preview',
+
   'pages.file.preview.resolved': 'File preview ready',
 
   'pages.file.preview.unchecked': 'File access not checked',

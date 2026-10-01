@@ -350,10 +350,16 @@ it.each([
   [{ 'common:category': { '#text': 'Alpha' } }],
   [{}],
   [undefined],
-])('retains the legacy taxonomy lookup for unnamed systems (%p)', (systems) => {
+])('retains the legacy taxonomy lookup for unnamed systems (%p)', async (systems) => {
   mockGetILCDClassification.mockResolvedValue({ success: true, data: [] });
   render(
     <LevelTextItemDescription data={null} lang='en' categoryType='Process' systems={systems} />,
   );
-  expect(screen.getByTestId('level-spin')).toBeInTheDocument();
+  await waitFor(() => {
+    expect(screen.getByTestId('level-spin')).toHaveAttribute('data-spinning', 'false');
+    expect(screen.getByTestId('reference-resource-classification')).toHaveAttribute(
+      'data-reference-pending',
+      'false',
+    );
+  });
 });

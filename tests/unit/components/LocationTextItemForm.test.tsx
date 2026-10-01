@@ -354,7 +354,11 @@ describe('LocationTextItemForm', () => {
   });
 });
 
-it('presents a legacy single location as a multiple selection', () => {
+it('presents a legacy single location as a multiple selection', async () => {
+  mockGetILCDLocationAll.mockResolvedValueOnce({
+    success: true,
+    data: [{ location: [{ '@value': 'CN', '#text': 'China' }] }],
+  });
   render(
     <Form initialValues={{ location: 'CN' }}>
       <LocationTextItemForm
@@ -366,6 +370,7 @@ it('presents a legacy single location as a multiple selection', () => {
       />
     </Form>,
   );
+  expect(await screen.findByRole('button', { name: 'CN (China)' })).toBeInTheDocument();
   expect(latestSelectProps.mode).toBe('multiple');
   expect(latestSelectProps.value).toEqual(['CN']);
 });

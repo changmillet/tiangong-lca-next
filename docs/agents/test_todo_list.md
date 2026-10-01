@@ -41,8 +41,8 @@ checkPaths:
   - .github/workflows/release-gate.yml
   - .github/workflows/release-readiness.yml
 lastReviewedAt: 2026-10-01
-lastReviewedCommit: 104410d66b704a0020ba52a46bed3435470d3bed
-lastReviewedNote: 'Reviewed Platform #1163: exact SDK 0.5.0 adopts published spec 0.3.0; real installed-package contracts cover repeated fields and alias conflicts while existing review/calculation policy and full gate remain unchanged.'
+lastReviewedCommit: 1c00e0378fde0ed0a024b3dfd83ae5042ff8560b
+lastReviewedNote: 'Reviewed #1170 asynchronous ILCD test completion under CI=true; runtime behavior, warning enforcement and coverage thresholds remain unchanged.'
 ---
 
 # Testing Execution State

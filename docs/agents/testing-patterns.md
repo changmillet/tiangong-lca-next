@@ -43,8 +43,8 @@ checkPaths:
   - .github/workflows/release-gate.yml
   - .github/workflows/release-readiness.yml
 lastReviewedAt: 2026-10-01
-lastReviewedCommit: 104410d66b704a0020ba52a46bed3435470d3bed
-lastReviewedNote: 'Reviewed Platform #1163: exact SDK 0.5.0 adopts published spec 0.3.0; real installed-package contracts cover repeated fields and alias conflicts while existing review/calculation policy and full gate remain unchanged.'
+lastReviewedCommit: 1c00e0378fde0ed0a024b3dfd83ae5042ff8560b
+lastReviewedNote: 'Reviewed #1170 asynchronous ILCD test completion under CI=true; runtime behavior, warning enforcement and coverage thresholds remain unchanged.'
 ---
 
 # Testing Patterns Reference
@@ -260,3 +260,7 @@ Canonical baseline and proof ownership stays with `DEV.md` and `docs/agents/repo
 ## Workflow guard fixtures (platform #1055)
 
 Inline release-admission guards stay workflow-owned. Focused tests extract the exact `run:` block from the workflow file and execute it against fixture git remotes (insteadOf-mapped bare upstream, fixture `GITHUB_*` environment) instead of re-implementing the shell logic; see `tests/unit/scripts/buildReleaseContextGuard.test.ts`.
+
+### ILCD asynchronous editor proof
+
+Run affected React form suites with `CI=true` so the existing act-warning guard matches release CI. Wait for the classification pending state to clear and the expected location option to render. Await the actual Form interaction with async `act` when assertions inspect the form store after promise-driven updates. A synchronous DOM-presence assertion does not prove resource loading has completed. Keep warnings fatal; do not add arbitrary sleeps or suppressions.

@@ -84,7 +84,7 @@ const SourceCreate: FC<CreateProps> = ({
     if (fromData)
       setFromData({
         ...fromData,
-        [activeTabKey]: formRefCreate.current?.getFieldsValue()?.[activeTabKey] ?? {},
+        [activeTabKey]: formRefCreate.current?.getFieldsValue(true)?.[activeTabKey] ?? {},
       });
   };
 
@@ -133,7 +133,7 @@ const SourceCreate: FC<CreateProps> = ({
       }
 
       const paramsId = actionType === 'createVersion' ? id! : (importedId ?? v4());
-      const formFieldsValue = formRefCreate.current?.getFieldsValue();
+      const formFieldsValue = formRefCreate.current?.getFieldsValue(true);
       const sourcePayload = {
         ...formFieldsValue,
         sourceInformation: {
@@ -272,7 +272,7 @@ const SourceCreate: FC<CreateProps> = ({
     };
     setInitData(newData as FormSource);
     // formRefCreate.current?.resetFields();
-    const currentData = formRefCreate.current?.getFieldsValue();
+    const currentData = formRefCreate.current?.getFieldsValue(true);
     formRefCreate.current?.setFieldsValue({ ...currentData, ...newData });
     setFromData(newData as FormSource);
     setFileList0([]);
@@ -360,7 +360,8 @@ const SourceCreate: FC<CreateProps> = ({
           <ProForm
             formRef={formRefCreate}
             initialValues={initData}
-            onValuesChange={(_, allValues) => {
+            onValuesChange={() => {
+              const allValues = formRefCreate.current!.getFieldsValue(true);
               setFromData({
                 ...fromData,
                 [activeTabKey]: allValues[activeTabKey] ?? {},

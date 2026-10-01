@@ -1,4 +1,10 @@
 export default {
+  'pages.classification.systemName': '分类体系',
+  'pages.classification.systemUri': '分类体系 URI',
+  'pages.classification.level': '层级',
+  'pages.classification.code': '编码',
+  'pages.classification.label': '分类名称',
+
   'pages.theme.toggleDarkMode': '切换深色模式',
   'pages.table.title.index': '序号',
   'pages.table.title.name': '名称',

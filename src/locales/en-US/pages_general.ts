@@ -1,4 +1,10 @@
 export default {
+  'pages.classification.systemName': 'Classification system',
+  'pages.classification.systemUri': 'Classification system URI',
+  'pages.classification.level': 'Level',
+  'pages.classification.code': 'Code',
+  'pages.classification.label': 'Class name',
+
   'pages.theme.toggleDarkMode': 'Toggle dark mode',
   'pages.table.title.index': 'Index',
   'pages.table.title.name': 'Name',

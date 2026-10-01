@@ -1,3 +1,4 @@
+import { mapTidasRepeated } from '../general/tidasRepeatedFields';
 import { createLifeCycleModel as createTidasLifeCycleModel } from '@tiangong-lca/tidas-sdk/core';
 import { v4 } from 'uuid';
 import { getContentGraphTextWidthDivisor } from '../general/contentLanguageRegistry';
@@ -230,7 +231,13 @@ export function genLifeCycleModelJsonOrdered(id: string, data: any) {
   const nodes = data?.model?.nodes as LifeCycleModelGraphNode[] | undefined;
 
   let referenceToReferenceProcess: number | undefined;
+  const storedInstances = jsonToList(
+    data?.lifeCycleModelInformation?.technology?.processes?.processInstance,
+  );
   const processInstance = nodes?.map((n: any) => {
+    const storedInstance = storedInstances.find(
+      (item: any) => String(item?.['@dataSetInternalID']) === String(n?.data?.index),
+    );
     if (n?.data?.quantitativeReference === '1') {
       referenceToReferenceProcess = toReferenceProcessNumber(n?.data?.index);
     }
@@ -281,9 +288,8 @@ export function genLifeCycleModelJsonOrdered(id: string, data: any) {
     });
 
     return removeEmptyObjects({
+      ...storedInstance,
       '@dataSetInternalID': n?.data?.index ?? {},
-      // '@multiplicationFactor': n?.data?.multiplicationFactor ?? {},
-      // scalingFactor: n?.data?.scalingFactor,
       referenceToProcess: {
         '@refObjectId': n?.data?.id ?? {},
         '@type': 'process data set',
@@ -291,8 +297,6 @@ export function genLifeCycleModelJsonOrdered(id: string, data: any) {
         '@version': n?.data?.version ?? {},
         'common:shortDescription': n?.data?.shortDescription ?? {},
       },
-      groups: {},
-      parameters: {},
       connections: {
         outputExchange: listToJson(outputExchange),
       },
@@ -328,13 +332,18 @@ export function genLifeCycleModelJsonOrdered(id: string, data: any) {
             ),
           },
           classificationInformation: {
-            'common:classification': {
-              'common:class': classificationToJsonList(
-                data?.lifeCycleModelInformation?.dataSetInformation?.classificationInformation?.[
-                  'common:classification'
-                ]?.['common:class'],
-              ),
-            },
+            ...data?.lifeCycleModelInformation?.dataSetInformation?.classificationInformation,
+            'common:classification': mapTidasRepeated(
+              data?.lifeCycleModelInformation?.dataSetInformation?.classificationInformation?.[
+                'common:classification'
+              ],
+              (item) => ({
+                ...item,
+                'common:class': item?.['@name']
+                  ? item?.['common:class']
+                  : classificationToJsonList(item?.['common:class']),
+              }),
+            ),
           },
           referenceToResultingProcess: {
             '@refObjectId':
@@ -385,7 +394,7 @@ export function genLifeCycleModelJsonOrdered(id: string, data: any) {
           referenceToReferenceProcess,
         },
         technology: {
-          groupDeclarations: {},
+          groupDeclarations: data?.lifeCycleModelInformation?.technology?.groupDeclarations,
           processes: {
             processInstance: listToJson(processInstance),
           },
@@ -470,10 +479,12 @@ export function genLifeCycleModelJsonOrdered(id: string, data: any) {
             }),
           ),
         },
-        complianceDeclarations: {
-          compliance: listToJson(
-            jsonToList(data?.modellingAndValidation?.complianceDeclarations?.compliance)?.map(
-              (compliance: any) => {
+        complianceDeclarations: mapTidasRepeated(
+          data?.modellingAndValidation?.complianceDeclarations,
+          (item) => ({
+            ...item,
+            compliance: listToJson(
+              jsonToList(item?.compliance)?.map((compliance: any) => {
                 return {
                   'common:referenceToComplianceSystem': {
                     '@refObjectId':
@@ -499,10 +510,10 @@ export function genLifeCycleModelJsonOrdered(id: string, data: any) {
                     compliance?.['common:documentationCompliance'] ?? {},
                   'common:qualityCompliance': compliance?.['common:qualityCompliance'] ?? {},
                 };
-              },
+              }),
             ),
-          ),
-        },
+          }),
+        ),
       },
       administrativeInformation: {
         'common:commissionerAndGoal': {
@@ -709,13 +720,18 @@ export function genLifeCycleModelInfoFromData(data: any): FormLifeCycleModel {
             ),
           },
           classificationInformation: {
-            'common:classification': {
-              'common:class': classificationToStringList(
-                data?.lifeCycleModelInformation?.dataSetInformation?.classificationInformation?.[
-                  'common:classification'
-                ]?.['common:class'],
-              ) as any,
-            },
+            ...data?.lifeCycleModelInformation?.dataSetInformation?.classificationInformation,
+            'common:classification': mapTidasRepeated(
+              data?.lifeCycleModelInformation?.dataSetInformation?.classificationInformation?.[
+                'common:classification'
+              ],
+              (item) => ({
+                ...item,
+                'common:class': item?.['@name']
+                  ? item?.['common:class']
+                  : (classificationToStringList(item?.['common:class']) as any),
+              }),
+            ),
           },
           referenceToResultingProcess: {
             '@refObjectId':
@@ -773,9 +789,10 @@ export function genLifeCycleModelInfoFromData(data: any): FormLifeCycleModel {
             toReferenceProcessNumber(referenceToReferenceProcess) ?? referenceToReferenceProcess,
         } as any,
         technology: {
-          groupDeclarations: {},
+          groupDeclarations: data?.lifeCycleModelInformation?.technology?.groupDeclarations,
           processes: {
-            processInstance: {} as any,
+            processInstance: data?.lifeCycleModelInformation?.technology?.processes
+              ?.processInstance as any,
           },
           referenceToDiagram: {
             '@refObjectId':
@@ -838,31 +855,33 @@ export function genLifeCycleModelInfoFromData(data: any): FormLifeCycleModel {
             },
           ),
         },
-        complianceDeclarations: {
-          compliance: jsonToList(
-            data?.modellingAndValidation?.complianceDeclarations?.compliance,
-          ).map((compliance: any) => {
-            return {
-              'common:referenceToComplianceSystem': {
-                '@refObjectId':
-                  compliance?.['common:referenceToComplianceSystem']?.['@refObjectId'],
-                '@type': compliance?.['common:referenceToComplianceSystem']?.['@type'],
-                '@uri': compliance?.['common:referenceToComplianceSystem']?.['@uri'],
-                '@version': compliance?.['common:referenceToComplianceSystem']?.['@version'],
-                'common:shortDescription': getLangList(
-                  compliance?.['common:referenceToComplianceSystem']?.['common:shortDescription'],
-                ),
-              },
-              'common:approvalOfOverallCompliance':
-                compliance?.['common:approvalOfOverallCompliance'],
-              'common:nomenclatureCompliance': compliance?.['common:nomenclatureCompliance'],
-              'common:methodologicalCompliance': compliance?.['common:methodologicalCompliance'],
-              'common:reviewCompliance': compliance?.['common:reviewCompliance'],
-              'common:documentationCompliance': compliance?.['common:documentationCompliance'],
-              'common:qualityCompliance': compliance?.['common:qualityCompliance'],
-            };
-          }) as any,
-        },
+        complianceDeclarations: mapTidasRepeated(
+          data?.modellingAndValidation?.complianceDeclarations,
+          (item) => ({
+            ...item,
+            compliance: jsonToList(item?.compliance).map((compliance: any) => {
+              return {
+                'common:referenceToComplianceSystem': {
+                  '@refObjectId':
+                    compliance?.['common:referenceToComplianceSystem']?.['@refObjectId'],
+                  '@type': compliance?.['common:referenceToComplianceSystem']?.['@type'],
+                  '@uri': compliance?.['common:referenceToComplianceSystem']?.['@uri'],
+                  '@version': compliance?.['common:referenceToComplianceSystem']?.['@version'],
+                  'common:shortDescription': getLangList(
+                    compliance?.['common:referenceToComplianceSystem']?.['common:shortDescription'],
+                  ),
+                },
+                'common:approvalOfOverallCompliance':
+                  compliance?.['common:approvalOfOverallCompliance'],
+                'common:nomenclatureCompliance': compliance?.['common:nomenclatureCompliance'],
+                'common:methodologicalCompliance': compliance?.['common:methodologicalCompliance'],
+                'common:reviewCompliance': compliance?.['common:reviewCompliance'],
+                'common:documentationCompliance': compliance?.['common:documentationCompliance'],
+                'common:qualityCompliance': compliance?.['common:qualityCompliance'],
+              };
+            }) as any,
+          }),
+        ),
       },
       administrativeInformation: {
         'common:commissionerAndGoal': {

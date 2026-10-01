@@ -20,9 +20,9 @@ checkPaths:
   - docs/agents/util_calculate.md
   - src/pages/Processes/Analysis/**
   - src/components/LcaTaskCenter/**
-lastReviewedAt: 2026-09-29
-lastReviewedCommit: 017006ab000457f64255dbaae31e43fa0395fd29
-lastReviewedNote: 'Reviewed Platform #1120 after integrating current dev: Open Data catalog filtering and Process publication do not alter contribution-path analysis scope or behavior.'
+lastReviewedAt: 2026-10-01
+lastReviewedCommit: 639abca401c18608d23b5e58db164a53fd6fb1a2
+lastReviewedNote: 'Reviewed Platform #1163: repeated ILCD editor data, complete form-store saves, unchanged review/calculation policy, and released SDK 0.4.1 baseline; formal candidate SDK adoption remains tracked.'
 ---
 
 # Contribution Path Analysis Design

@@ -43,8 +43,8 @@ checkPaths:
   - scripts/reference-data/**
   - .github/workflows/**
 lastReviewedAt: 2026-10-01
-lastReviewedCommit: 44443529e544d2b2ec3b3ec5765d0b2830db69d4
-lastReviewedNote: 'Reviewed Platform #1130 follow-up: real Upload Open/Retry actions and wrapping footers preserve locator, preview, authority and schema boundaries; thumbnail typing reflects the producer contract without artificial fallback states.'
+lastReviewedCommit: 104410d66b704a0020ba52a46bed3435470d3bed
+lastReviewedNote: 'Reviewed Platform #1163: exact SDK 0.5.0 adopts published spec 0.3.0; real installed-package contracts cover repeated fields and alias conflicts while existing review/calculation policy and full gate remain unchanged.'
 ---
 
 # Pre-Push Gate Policy

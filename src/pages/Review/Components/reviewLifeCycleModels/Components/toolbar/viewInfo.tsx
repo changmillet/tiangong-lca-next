@@ -1,3 +1,5 @@
+import TidasRepeatedField from '@/components/TidasRepeatedField';
+import { mapTidasRepeated } from '@/services/general/tidasRepeatedFields';
 import LangTextItemDescription from '@/components/LangTextItem/description';
 import LevelTextItemDescription from '@/components/LevelTextItem/description';
 import LocationTextItemDescription from '@/components/LocationTextItem/description';
@@ -271,6 +273,11 @@ const ToolbarViewInfo: FC<Props> = ({ lang, data, type, reviewId, tabType, actio
         />
         <br />
         <LevelTextItemDescription
+          systems={
+            data?.lifeCycleModelInformation?.dataSetInformation?.classificationInformation?.[
+              'common:classification'
+            ]
+          }
           data={
             data.lifeCycleModelInformation?.dataSetInformation?.classificationInformation?.[
               'common:classification'
@@ -1589,25 +1596,31 @@ const ToolbarViewInfo: FC<Props> = ({ lang, data, type, reviewId, tabType, actio
             />
           ),
           complianceDeclarations: (
-            <ComplianceItemForm
-              name={['modellingAndValidation', 'complianceDeclarations', 'compliance']}
-              lang={lang}
-              formRef={formRef}
-              onData={() => {}}
-            />
+            <TidasRepeatedField
+              name={['modellingAndValidation', 'complianceDeclarations']}
+              onChange={() => {}}
+            >
+              {(itemPath) => (
+                <ComplianceItemForm
+                  name={[...itemPath, 'compliance']}
+                  lang={lang}
+                  formRef={formRef}
+                  onData={() => {}}
+                />
+              )}
+            </TidasRepeatedField>
           ),
         }
       : {
           ...defaultTabContent,
           validation: <ReviewItemView data={data?.modellingAndValidation?.validation?.review} />,
-          complianceDeclarations: (
-            <ComplianceItemView
-              data={data?.modellingAndValidation?.complianceDeclarations?.compliance}
-            />
+          complianceDeclarations: mapTidasRepeated(
+            data?.modellingAndValidation?.complianceDeclarations,
+            (item, index) => <ComplianceItemView key={index} data={item?.compliance} />,
           ),
         };
   const temporarySave = async () => {
-    const fieldsValue = formRef.current?.getFieldsValue();
+    const fieldsValue = formRef.current?.getFieldsValue(true);
     const submitData = {
       modellingAndValidation: {
         complianceDeclarations: fieldsValue?.modellingAndValidation?.complianceDeclarations,
@@ -1764,7 +1777,7 @@ const ToolbarViewInfo: FC<Props> = ({ lang, data, type, reviewId, tabType, actio
                   },
                 }}
                 onFinish={async () => {
-                  const fieldsValue = formRef.current?.getFieldsValue();
+                  const fieldsValue = formRef.current?.getFieldsValue(true);
                   const submitData = {
                     modellingAndValidation: {
                       complianceDeclarations:

@@ -40,8 +40,8 @@ checkPaths:
   - .github/workflows/release-gate.yml
   - .github/workflows/release-readiness.yml
 lastReviewedAt: 2026-10-01
-lastReviewedCommit: 639abca401c18608d23b5e58db164a53fd6fb1a2
-lastReviewedNote: 'Reviewed Platform #1163: repeated ILCD editor data, complete form-store saves, unchanged review/calculation policy, and released SDK 0.4.1 baseline; formal candidate SDK adoption remains tracked.'
+lastReviewedCommit: 104410d66b704a0020ba52a46bed3435470d3bed
+lastReviewedNote: 'Reviewed Platform #1163: exact SDK 0.5.0 adopts published spec 0.3.0; real installed-package contracts cover repeated fields and alias conflicts while existing review/calculation policy and full gate remain unchanged.'
 ---
 
 # Testing Troubleshooting

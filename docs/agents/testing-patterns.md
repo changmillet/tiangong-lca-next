@@ -43,8 +43,8 @@ checkPaths:
   - .github/workflows/release-gate.yml
   - .github/workflows/release-readiness.yml
 lastReviewedAt: 2026-10-01
-lastReviewedCommit: 639abca401c18608d23b5e58db164a53fd6fb1a2
-lastReviewedNote: 'Reviewed Platform #1163: repeated ILCD editor data, complete form-store saves, unchanged review/calculation policy, and released SDK 0.4.1 baseline; formal candidate SDK adoption remains tracked.'
+lastReviewedCommit: 104410d66b704a0020ba52a46bed3435470d3bed
+lastReviewedNote: 'Reviewed Platform #1163: exact SDK 0.5.0 adopts published spec 0.3.0; real installed-package contracts cover repeated fields and alias conflicts while existing review/calculation policy and full gate remain unchanged.'
 ---
 
 # Testing Patterns Reference
@@ -112,7 +112,7 @@ Validation-specific rule:
 Toolchain-specific rule:
 
 - keep TypeScript `7.0.2` as the only direct compiler/API implementation; command-contract tests must reject a TS6 alias, a `tsc6`/compat command, or a non-repository compiler entrypoint
-- for an upgraded package that Jest maps to a test double, launch a child Node test through normal package resolution and assert the real installed manifest plus representative runtime behavior. The TIDAS SDK contract must cover all seven dataset factories, `validateEnhanced`, the normalized failure envelope, and required Process general-comment validation at exact version `0.4.0`
+- for an upgraded package that Jest maps to a test double, launch a child Node test through normal package resolution and assert the real installed manifest plus representative runtime behavior. The TIDAS SDK contract must cover all seven dataset factories, `validateEnhanced`, the normalized failure envelope, and required Process general-comment validation at the exact version pinned by package.json
 - keep every `typescript/unstable/*` import inside `scripts/typescript-native-parser.mjs` and `scripts/typescript-native-parser.d.mts`. Adapter proof must cover source replacement without stale AST state, traversal and parent/text ranges, TSX guards, syntactic diagnostics, JSON parsing, and clean process exit
 - use Oxlint for unused and deprecated API correctness and Prettier for formatting only. Keep the focused repo-local `tiangong/no-invalid-this` rule until Oxlint provides a native equivalent, and prove it rejects module-level `this`. Tests must reject reintroducing ESLint, the standalone deprecated scanner, or a Prettier organize-imports plugin
 

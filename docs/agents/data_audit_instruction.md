@@ -19,8 +19,8 @@ checkPaths:
   - src/pages/Review/**
   - src/pages/ManageSystem/**
 lastReviewedAt: 2026-10-01
-lastReviewedCommit: 639abca401c18608d23b5e58db164a53fd6fb1a2
-lastReviewedNote: 'Reviewed Platform #1163: repeated ILCD editor data, complete form-store saves, unchanged review/calculation policy, and released SDK 0.4.1 baseline; formal candidate SDK adoption remains tracked.'
+lastReviewedCommit: 104410d66b704a0020ba52a46bed3435470d3bed
+lastReviewedNote: 'Reviewed the combined ILCD adoption and Source upload fixes; existing authority and review/calculation policies remain unchanged.'
 ---
 
 # Audit Status Reference

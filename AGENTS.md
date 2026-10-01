@@ -46,7 +46,7 @@ checkPaths:
   - .husky/pre-push
   - .github/workflows/**
 lastReviewedAt: 2026-10-01
-lastReviewedCommit: 1c00e0378fde0ed0a024b3dfd83ae5042ff8560b
+lastReviewedCommit: 40b1cde11de69fd04abf779ee23604a02c041034
 lastReviewedNote: 'Reviewed #1170 asynchronous ILCD test completion under CI=true; runtime behavior, warning enforcement and coverage thresholds remain unchanged.'
 related:
   - .docpact/config.yaml

@@ -25,9 +25,9 @@ checkPaths:
   - playwright.config.ts
   - config/docs-capture/**
   - tests/e2e/i18n/**
-lastReviewedAt: 2026-09-29
-lastReviewedCommit: be1310dbc5467630f96ad70af5102c885dcdb170
-lastReviewedNote: 'Reviewed Platform #1146 on current dev: rejected Process report downloads stay within the existing Process view, review service, and Edge command boundaries; Source detail behavior and stable ownership boundaries are unchanged.'
+lastReviewedAt: 2026-10-01
+lastReviewedCommit: e0eee5163912265bb6f285c06c169f2f010dfdda
+lastReviewedNote: 'Reviewed Platform #1159 shared version-list sorting against the current service/UI, toolchain and validation contracts; version/date allowlisting preserves scope and pagination without schema or dependency changes.'
 related:
   - ../AGENTS.md
   - ../.docpact/config.yaml
@@ -80,6 +80,7 @@ Rules:
 - process exchange creation initializes direction from its input/output entrypoint through ProForm `initialValues`, including reopening after a manual direction change. Exchange create/edit read the current complete form store when synchronizing reference selection and saving, so multilingual names are retained while dynamic `Form.List` fields register.
 - Process allocation authoring uses `src/services/processes/allocation.ts` for object/array round trips and vector checks, `allocationTargets.ts` for exact-revision product verification, and shared exchange editor/batch controls. Generated Model Process results keep their already allocated inventories without adding legacy default shares. Calculation semantics remain in `util_calculate.md`.
 - service modules own app-side data access
+- shared AllVersions drawers sort complete server-side version pages only by `version`, `created_at` and `modified_at`; the service maps display date aliases and falls back to descending version for unsupported sorting. The drawer preserves existing version/date controls and disables inherited localized name/classification sorting. Dataset scope and pagination remain service-owned.
 - `src/utils/browserNavigation.ts` owns the thin `Location.assign`/`reload`/`replace` side-effect boundary. Runtime callers always pass the real `window.location`; tests pass an explicit mock `Location` or mock this module and must not redefine jsdom's global `window` or `location`
 - Account Basic Information reads current profile metadata through `supabase.auth.getUser()` and writes `display_name` plus the optional, trimmed, 200-character `organization` string through `supabase.auth.updateUser()`. The page may refresh the session after a successful write, but organization remains descriptive profile data and must never control frontend access or backend authorization
 - Account Connected Applications lists and revokes Supabase OAuth grants only. It contains no API-key history, password reauthentication form, Cognito provisioning action, or Cognito password/email synchronization helper; Supabase Auth is the sole account identity and credential owner

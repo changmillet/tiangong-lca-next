@@ -43,9 +43,9 @@ checkPaths:
   - pnpm-lock.yaml
   - pnpm-workspace.yaml
   - Dockerfile.app
-lastReviewedAt: 2026-09-29
-lastReviewedCommit: d8e6adac7bee507a3cac2393dc500e23eb4cd731
-lastReviewedNote: 'Reviewed for Platform #1146 on current dev: report-download decoding, invocation, rendering, and interaction proof follow the existing unit/component strategy and do not change the long-term testing model.'
+lastReviewedAt: 2026-10-01
+lastReviewedCommit: e0eee5163912265bb6f285c06c169f2f010dfdda
+lastReviewedNote: 'Reviewed Platform #1159 shared version-list sorting against the current service/UI, toolchain and validation contracts; version/date allowlisting preserves scope and pagination without schema or dependency changes.'
 ---
 
 # Testing Strategy

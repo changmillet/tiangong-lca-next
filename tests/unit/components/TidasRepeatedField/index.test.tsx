@@ -1,6 +1,6 @@
 import ClassificationSystemsForm from '@/components/LevelTextItem/form';
 import TidasRepeatedField from '@/components/TidasRepeatedField';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { Form, Input } from 'antd';
 
 jest.mock('umi', () => ({
@@ -47,7 +47,7 @@ it('edits, appends and removes repeated entries without changing the untouched e
   expect(changed).toHaveBeenCalledTimes(4);
 });
 
-it('edits classes in the second named system while preserving both system identities', () => {
+it('edits classes in the second named system while preserving both system identities', async () => {
   let form: any;
   const systems = [
     {
@@ -76,8 +76,10 @@ it('edits classes in the second named system while preserving both system identi
     );
   }
   render(<Harness />);
-  fireEvent.change(screen.getAllByLabelText('Class name')[1], {
-    target: { value: 'Updated beta' },
+  await act(async () => {
+    fireEvent.change(screen.getAllByLabelText('Class name')[1], {
+      target: { value: 'Updated beta' },
+    });
   });
   const result = form.getFieldsValue(true).classification;
   expect(result[0]).toEqual(systems[0]);
@@ -113,7 +115,7 @@ it.each([undefined, { '@level': '0', '#text': 'Alpha' }])(
   },
 );
 
-it('can change a pinned singleton classification to a named system and back', () => {
+it('can change a pinned singleton classification to a named system and back', async () => {
   let form: any;
   function Harness() {
     [form] = Form.useForm();
@@ -132,13 +134,21 @@ it('can change a pinned singleton classification to a named system and back', ()
       </Form>
     );
   }
-  render(<Harness />);
-  fireEvent.change(screen.getByLabelText('Classification system'), { target: { value: 'Custom' } });
+  await act(async () => {
+    render(<Harness />);
+  });
+  await act(async () => {
+    fireEvent.change(screen.getByLabelText('Classification system'), {
+      target: { value: 'Custom' },
+    });
+  });
   expect(form.getFieldValue(['classification', 'common:class'])).toEqual({
     '@level': '0',
     '@classId': 'a',
     '#text': 'Alpha',
   });
-  fireEvent.change(screen.getByLabelText('Classification system'), { target: { value: '' } });
+  await act(async () => {
+    fireEvent.change(screen.getByLabelText('Classification system'), { target: { value: '' } });
+  });
   expect(form.getFieldValue(['classification', 'common:class']).value).toEqual(['Alpha']);
 });

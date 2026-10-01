@@ -527,6 +527,7 @@ describe('ReviewLifeCycleModelToolbarViewInfo', () => {
 
     await userEvent.click(screen.getByRole('button', { name: /compliance declarations/i }));
     await userEvent.click(screen.getByTestId('compliance-form'));
+    await userEvent.click(screen.getByRole('button', { name: 'Repeated change' }));
   });
 
   it('falls back to dash labels when mapped option fields are omitted entirely', async () => {
@@ -775,6 +776,7 @@ describe('ReviewLifeCycleModelToolbarViewInfo', () => {
 
     await userEvent.click(screen.getByRole('button', { name: /compliance declarations/i }));
     await userEvent.click(screen.getByTestId('compliance-form'));
+    await userEvent.click(screen.getByRole('button', { name: 'Repeated change' }));
 
     expect(screen.getByTestId('review-form')).toBeInTheDocument();
     expect(screen.getByTestId('compliance-form')).toBeInTheDocument();

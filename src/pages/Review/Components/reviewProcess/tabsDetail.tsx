@@ -62,10 +62,12 @@ const getLCIMethodPrincipleOptions = (value: string) => {
   const option = LCIMethodPrincipleOptions.find((opt) => opt.value === value);
   return option ? option.label : '-';
 };
-const getLCIMethodApproachOptions = (value: string) => {
-  const option = LCIMethodApproachOptions.find((opt) => opt.value === value);
-  return option ? option.label : '-';
-};
+const getLCIMethodApproachOptions = (value: string | string[]) =>
+  mapTidasRepeated(value, (entry, index) => (
+    <div key={index}>
+      {LCIMethodApproachOptions.find((option) => option.value === entry)?.label ?? entry}
+    </div>
+  ));
 
 const getCopyrightOptions = (value: string) => {
   const option = copyrightOptions.find((opt) => opt.value === value);

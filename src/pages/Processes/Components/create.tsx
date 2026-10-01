@@ -314,8 +314,8 @@ const ProcessCreate: FC<CreateProps> = ({
           <ProForm
             formRef={formRefCreate}
             initialValues={initData}
-            onValuesChange={async (_, changedFormValues) => {
-              const allValues = formRefCreate.current?.getFieldsValue(true) ?? changedFormValues;
+            onValuesChange={async () => {
+              const allValues = formRefCreate.current!.getFieldsValue(true);
               if (activeTabKey === 'validation') {
                 await setFromData({
                   ...fromData,

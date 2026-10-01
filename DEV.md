@@ -43,8 +43,8 @@ checkPaths:
   - .github/workflows/build.yml
   - .nvmrc
 lastReviewedAt: 2026-10-01
-lastReviewedCommit: 44443529e544d2b2ec3b3ec5765d0b2830db69d4
-lastReviewedNote: 'Reviewed Platform #1130 Source-only picture-card specificity correction; locator, schema, authority and existing validation contracts remain unchanged.'
+lastReviewedCommit: 40b1cde11de69fd04abf779ee23604a02c041034
+lastReviewedNote: 'Reviewed #1170 asynchronous ILCD test completion under CI=true; runtime behavior, warning enforcement and coverage thresholds remain unchanged.'
 ---
 
 # Development Bootstrap
@@ -172,7 +172,7 @@ If no push will occur and a standalone handoff needs final evidence, run `pnpm d
 
 The repository has one TypeScript track: the direct `typescript` dependency is exact-pinned to `7.0.2`, and every compiler entry uses that package. There is no TypeScript 6 alias or `tsc6` fallback. Repository-owned source analysis uses `scripts/typescript-native-parser.mjs`; that file and `scripts/typescript-native-parser.d.mts` are the only places allowed to import `typescript/unstable/*`. Run the adapter contract tests after every TypeScript upgrade.
 
-The TIDAS consumer is exact-pinned to released `@tiangong-lca/tidas-sdk` `0.4.0`. The focused installed-package contract launches Node outside the Jest module mapper, exercises all seven dataset factories, and verifies `validateEnhanced`, its normalized failure envelope, singleton/ordered Process review acceptance, and required Process general-comment validation; keep that proof with dependency/toolchain upgrades so the SDK mock cannot hide a package incompatibility.
+The TIDAS consumer is exact-pinned to released `@tiangong-lca/tidas-sdk` `0.4.1`. The focused installed-package contract launches Node outside the Jest module mapper, exercises all seven dataset factories, and verifies `validateEnhanced`, its normalized failure envelope, singleton/ordered Process review acceptance, and required Process general-comment validation; keep that proof with dependency/toolchain upgrades so the SDK mock cannot hide a package incompatibility.
 
 Both application and release-E2E Node container sources retain exact Node `24.19.0` tags plus immutable multi-architecture digests. The E2E environment contract and candidate manifest additionally bind the pinned Node image reference; never replace either digest with a movable tag-only source.
 

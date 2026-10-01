@@ -43,8 +43,8 @@ checkPaths:
   - scripts/reference-data/**
   - .github/workflows/**
 lastReviewedAt: 2026-10-01
-lastReviewedCommit: 44443529e544d2b2ec3b3ec5765d0b2830db69d4
-lastReviewedNote: 'Reviewed Platform #1130 follow-up: real Upload Open/Retry actions and wrapping footers preserve locator, preview, authority and schema boundaries; thumbnail typing reflects the producer contract without artificial fallback states.'
+lastReviewedCommit: 40b1cde11de69fd04abf779ee23604a02c041034
+lastReviewedNote: 'Reviewed #1170 asynchronous ILCD test completion under CI=true; runtime behavior, warning enforcement and coverage thresholds remain unchanged.'
 ---
 
 # Pre-Push Gate Policy

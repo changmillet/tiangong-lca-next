@@ -21,9 +21,9 @@ checkPaths:
   - src/services/lciaMethods/**
   - src/components/LcaTaskCenter/**
   - src/pages/Processes/Analysis/**
-lastReviewedAt: 2026-09-28
-lastReviewedCommit: 924b053cf3fbaf4dc64fe51f405075591a1c7a25
-lastReviewedNote: 'Reviewed Platform #1120 after integrating current dev: Open Data catalog filtering and publication do not change lifecycle-model calculation behavior or ownership.'
+lastReviewedAt: 2026-10-01
+lastReviewedCommit: 639abca401c18608d23b5e58db164a53fd6fb1a2
+lastReviewedNote: 'Reviewed Platform #1163: repeated ILCD editor data, complete form-store saves, unchanged review/calculation policy, and released SDK 0.4.1 baseline; formal candidate SDK adoption remains tracked.'
 ---
 
 # Lifecycle Model Calculation Reference

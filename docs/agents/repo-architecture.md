@@ -26,8 +26,8 @@ checkPaths:
   - config/docs-capture/**
   - tests/e2e/i18n/**
 lastReviewedAt: 2026-10-01
-lastReviewedCommit: aad48a307c78321c892340b8f181b5cd50efcbae
-lastReviewedNote: 'Reviewed Platform #1130 Source-only picture-card specificity correction; locator, schema, authority and existing validation contracts remain unchanged.'
+lastReviewedCommit: 104410d66b704a0020ba52a46bed3435470d3bed
+lastReviewedNote: 'Reviewed the combined ILCD adoption and Source upload fixes; existing authority and review/calculation policies remain unchanged.'
 related:
   - ../AGENTS.md
   - ../.docpact/config.yaml
@@ -224,3 +224,11 @@ All new TIDAS ZIP import helpers submit `root_closure_v2` asynchronously after s
 `ImportTidasPackage/ImportResult.tsx` presents one report-download icon beside the Task Center row's View icon, matching the export download action. A user click calls `tidas_package_jobs` to obtain a fresh signed URL, fetches the JSON import report, and downloads a browser-generated JSON with multilingual guidance, a file-grouped issue sample, truncation flags, and the untouched backend report. V1 and v2 reports retain their distinct import semantics; v2 issue, root, and skipped-record arrays may be bounded samples. The expanded Task Center detail retains file name, data scope, root count and the four execution stages. When a bounded import summary is available, it additionally shows total, newly imported, exact-existing skipped, not-imported, successful-root and blocked-root counts; partial outcomes add localized report guidance. The row retains phase/progress and diagnostics. Publication-time availability flags disable known absent reports but downloads revalidate live expiry/access. Unknown availability for historical tasks remains requestable.
 
 TIDAS Task Center retains backend start, finish and update timestamps through list refresh and local recovery. Finished package duration uses start-to-finish time (legacy records fall back to created/update time); readback never stamps a new business update time. The combined LCA/package list orders by creation time and task ID. Overlapping list requests for one authenticated owner share a refresh. Running-to-terminal reconciliation persists the terminal state before dispatching `tidas-package-imported` and an optional enqueue callback once when newly inserted data exists, including data retained after interruption. Restored running imports use the same reconciliation; owner changes discard pending callbacks and late responses. Export polling remains unchanged.
+
+## ILCD-compatible editor data boundaries
+
+The seven dataset serializers preserve singleton and repeated classification systems, including system name, URI and raw named classes. Unnamed classifications retain the existing taxonomy selector. Process parameters, sublocations and completeness entries use absolute repeated field paths; Flow locations and LCI approaches accept multiple selections. Form saves read the complete Ant Design store (`getFieldsValue(true)`) so fields without a mounted editor remain present.
+
+LifecycleModel graph saves merge stored instance metadata by internal ID before replacing graph-owned references and connections. Group declarations, instance parameters, groups and scaling fields remain data. Multiple Process reference-flow identities survive serialization; the existing exactly-one review and calculation policy remains consumer policy. Required documentation fields remain unchanged.
+
+The committed dependency is released SDK 0.4.1. Expanded ILCD validation requires the subsequent SDK release from tidas-sdks #158; candidate package qualification does not constitute registry publication or final dependency adoption.

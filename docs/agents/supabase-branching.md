@@ -23,8 +23,8 @@ checkPaths:
   - playwright.config.ts
   - tests/e2e/i18n/**
 lastReviewedAt: 2026-10-01
-lastReviewedCommit: a4a565142b6e3f3821a4754417cfb44fd2756b42
-lastReviewedNote: 'Reviewed Platform #1130 follow-up: real Upload Open/Retry actions and wrapping footers preserve locator, preview, authority and schema boundaries; thumbnail typing reflects the producer contract without artificial fallback states.'
+lastReviewedCommit: 104410d66b704a0020ba52a46bed3435470d3bed
+lastReviewedNote: 'Reviewed the combined ILCD adoption and Source upload fixes; existing authority and review/calculation policies remain unchanged.'
 ---
 
 # Supabase Environment And Database Workflow

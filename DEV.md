@@ -43,7 +43,7 @@ checkPaths:
   - .github/workflows/build.yml
   - .nvmrc
 lastReviewedAt: 2026-10-01
-lastReviewedCommit: aad48a307c78321c892340b8f181b5cd50efcbae
+lastReviewedCommit: 44443529e544d2b2ec3b3ec5765d0b2830db69d4
 lastReviewedNote: 'Reviewed Platform #1130 Source-only picture-card specificity correction; locator, schema, authority and existing validation contracts remain unchanged.'
 ---
 

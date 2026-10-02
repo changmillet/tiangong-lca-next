@@ -43,7 +43,7 @@ checkPaths:
   - .github/workflows/release-gate.yml
   - .github/workflows/release-readiness.yml
 lastReviewedAt: 2026-10-02
-lastReviewedCommit: 0ff23cc0844706f4d12a1c148acfd108ba9832f2
+lastReviewedCommit: df2707ef96dec4f9eed5bbc6a724bb96f22ed4c0
 lastReviewedNote: 'Reviewed Flow property snapshot fallbacks and unindexed-array diagnostic isolation coverage; Process/Flow SDK and nested-save fixes remain aligned with unchanged contracts and validation policy.'
 ---
 

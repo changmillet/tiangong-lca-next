@@ -47,7 +47,7 @@ export default {
   'pages.review.opinion.reject': '驳回',
   'pages.review.opinion.pending': '待提交',
   'pages.review.result.approved': '已通过',
-  'pages.review.result.returned': '已退回',
+  'pages.review.result.returned': '已驳回',
   'pages.review.result.inProgress': '审核中',
   'pages.review.reviewKind': '审核类型',
   'pages.review.detail.data': '审核数据',

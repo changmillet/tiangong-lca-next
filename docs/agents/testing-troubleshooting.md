@@ -39,9 +39,9 @@ checkPaths:
   - .github/workflows/build.yml
   - .github/workflows/release-gate.yml
   - .github/workflows/release-readiness.yml
-lastReviewedAt: 2026-10-01
-lastReviewedCommit: 40b1cde11de69fd04abf779ee23604a02c041034
-lastReviewedNote: 'Reviewed #1170 asynchronous ILCD test completion under CI=true; runtime behavior, warning enforcement and coverage thresholds remain unchanged.'
+lastReviewedAt: 2026-10-02
+lastReviewedCommit: ef8439efebc41d182d439e7d6b30b8eba939874a
+lastReviewedNote: 'Reviewed Platform #1157 after merging current dev; reviewer workload/status behavior and current ILCD, testing, locale, service, and governance contracts remain aligned without policy changes.'
 ---
 
 # Testing Troubleshooting

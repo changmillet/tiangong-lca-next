@@ -43,8 +43,8 @@ checkPaths:
   - .github/workflows/release-gate.yml
   - .github/workflows/release-readiness.yml
 lastReviewedAt: 2026-10-02
-lastReviewedCommit: ef8439efebc41d182d439e7d6b30b8eba939874a
-lastReviewedNote: 'Reviewed Platform #1157 after merging current dev; reviewer workload/status behavior and current ILCD, testing, locale, service, and governance contracts remain aligned without policy changes.'
+lastReviewedCommit: 0ff23cc0844706f4d12a1c148acfd108ba9832f2
+lastReviewedNote: 'Reviewed Flow property snapshot fallbacks and unindexed-array diagnostic isolation coverage; Process/Flow SDK and nested-save fixes remain aligned with unchanged contracts and validation policy.'
 ---
 
 # Testing Patterns Reference

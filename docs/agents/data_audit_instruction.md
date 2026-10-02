@@ -18,9 +18,9 @@ checkPaths:
   - docs/agents/data_audit_instruction.md
   - src/pages/Review/**
   - src/pages/ManageSystem/**
-lastReviewedAt: 2026-09-30
-lastReviewedCommit: e0eee5163912265bb6f285c06c169f2f010dfdda
-lastReviewedNote: 'Aligned the Review workspace with pending/submitted/completed member stages, unassigned/in-progress/completed admin stages, V5 queue facts, and batch preflight behavior.'
+lastReviewedAt: 2026-10-02
+lastReviewedCommit: ef8439efebc41d182d439e7d6b30b8eba939874a
+lastReviewedNote: 'Reviewed Platform #1157 after merging current dev; reviewer workload/status behavior and current ILCD, testing, locale, service, and governance contracts remain aligned without policy changes.'
 ---
 
 # Audit Status Reference

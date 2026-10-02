@@ -39,9 +39,9 @@ checkPaths:
   - .github/workflows/build.yml
   - .github/workflows/release-gate.yml
   - .github/workflows/release-readiness.yml
-lastReviewedAt: 2026-10-01
-lastReviewedCommit: 639abca401c18608d23b5e58db164a53fd6fb1a2
-lastReviewedNote: 'Reviewed Platform #1157 after rebasing reviewer workload and status presentation onto current dev; UI, service, test, locale, data-boundary, and gate contracts remain aligned without ownership or policy changes.'
+lastReviewedAt: 2026-10-02
+lastReviewedCommit: ef8439efebc41d182d439e7d6b30b8eba939874a
+lastReviewedNote: 'Reviewed Platform #1157 after merging current dev; reviewer workload/status behavior and current ILCD, testing, locale, service, and governance contracts remain aligned without policy changes.'
 ---
 
 # Testing Troubleshooting
@@ -72,7 +72,7 @@ Canonical baseline and proof ownership stays with `DEV.md` and `docs/agents/repo
 | a visible action exists but the expected request never starts | the control is present but still disabled while prerequisite data loads | wait for the control to become enabled, then interact; do not replace the product guard with an arbitrary delay |
 | a table browser fixture rejects the same fallback sort already asserted by the page and service unit tests | the fixture encoded a stale or invented initial order rather than the product contract | confirm the product decision, correct the fixture to the one exact service-owned RPC body, and rerun the browser scope; do not add `defaultSortOrder` merely to satisfy a wrong fixture or accept two contracts |
 | mock not hit | wrong import path or mock order | verify module path and set mocks before importing the subject |
-| SDK-backed Jest suites pass but the installed TIDAS SDK contract fails | Jest's `@tiangong-lca/tidas-sdk/core` mapper hid a package-version, factory, validation-envelope, Process review-shape, or required general-comment incompatibility | run `pnpm test:ci tests/unit/config/installedTidasSdkContract.test.ts --runInBand --no-coverage`, inspect the child Node output, and repair the exact installed `0.4.0` graph or real package contract instead of weakening the mapper-independent assertion |
+| SDK-backed Jest suites pass but the installed TIDAS SDK contract fails | Jest's `@tiangong-lca/tidas-sdk/core` mapper hid a package-version, factory, validation-envelope, Process review-shape, or required general-comment incompatibility | run `pnpm test:ci tests/unit/config/installedTidasSdkContract.test.ts --runInBand --no-coverage`, inspect the child Node output, and repair the exact installed `0.4.1` graph or real package contract instead of weakening the mapper-independent assertion |
 | Jest 30 fails before or during discovery after a dependency update | a removed matcher alias, `jest.SpyInstance`-only typing, `testPathPattern`, unsupported internal deep import, or custom-sequencer constructor drift escaped the migration contract | run `pnpm test:ci tests/unit/config/packageManagerContract.test.ts tests/unit/scripts/slowJestSequencer.test.ts --runInBand --no-coverage`, preserve the explicit inventory and public package entrypoints, and fix the first exact migration finding instead of narrowing discovery |
 | Jest exits successfully with zero suites on macOS while stderr reports Watchman `dyld` or `SIGABRT` | the local Watchman binary depends on a removed Homebrew ICU library, so file discovery silently returns an empty result | inspect the Jest log and structured suite count; use `--no-watchman` for focused runs. The full pre-push receipt and coverage commands include `--no-watchman` so they still run the complete Jest inventory through Node filesystem discovery; never count zero suites as a passing gate |
 | a slow or instrumented run briefly renders loaded data and then replaces it with an empty response | mount initialization and an immediate user action called the same async loader before React committed its loading state | guard the request with a ref-backed in-flight owner rather than a render-state closure, then add a deferred-response test that fires the action before resolving the first request and requires one service call |

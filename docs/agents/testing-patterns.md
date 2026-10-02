@@ -42,9 +42,9 @@ checkPaths:
   - .github/workflows/build.yml
   - .github/workflows/release-gate.yml
   - .github/workflows/release-readiness.yml
-lastReviewedAt: 2026-10-01
-lastReviewedCommit: 639abca401c18608d23b5e58db164a53fd6fb1a2
-lastReviewedNote: 'Reviewed Platform #1157 after rebasing reviewer workload and status presentation onto current dev; UI, service, test, locale, data-boundary, and gate contracts remain aligned without ownership or policy changes.'
+lastReviewedAt: 2026-10-02
+lastReviewedCommit: ef8439efebc41d182d439e7d6b30b8eba939874a
+lastReviewedNote: 'Reviewed Platform #1157 after merging current dev; reviewer workload/status behavior and current ILCD, testing, locale, service, and governance contracts remain aligned without policy changes.'
 ---
 
 # Testing Patterns Reference
@@ -112,7 +112,7 @@ Validation-specific rule:
 Toolchain-specific rule:
 
 - keep TypeScript `7.0.2` as the only direct compiler/API implementation; command-contract tests must reject a TS6 alias, a `tsc6`/compat command, or a non-repository compiler entrypoint
-- for an upgraded package that Jest maps to a test double, launch a child Node test through normal package resolution and assert the real installed manifest plus representative runtime behavior. The TIDAS SDK contract must cover all seven dataset factories, `validateEnhanced`, the normalized failure envelope, and required Process general-comment validation at exact version `0.4.0`
+- for an upgraded package that Jest maps to a test double, launch a child Node test through normal package resolution and assert the real installed manifest plus representative runtime behavior. The TIDAS SDK contract must cover all seven dataset factories, `validateEnhanced`, the normalized failure envelope, and required Process general-comment validation at the exact version pinned by package.json
 - keep every `typescript/unstable/*` import inside `scripts/typescript-native-parser.mjs` and `scripts/typescript-native-parser.d.mts`. Adapter proof must cover source replacement without stale AST state, traversal and parent/text ranges, TSX guards, syntactic diagnostics, JSON parsing, and clean process exit
 - use Oxlint for unused and deprecated API correctness and Prettier for formatting only. Keep the focused repo-local `tiangong/no-invalid-this` rule until Oxlint provides a native equivalent, and prove it rejects module-level `this`. Tests must reject reintroducing ESLint, the standalone deprecated scanner, or a Prettier organize-imports plugin
 
@@ -260,3 +260,7 @@ Canonical baseline and proof ownership stays with `DEV.md` and `docs/agents/repo
 ## Workflow guard fixtures (platform #1055)
 
 Inline release-admission guards stay workflow-owned. Focused tests extract the exact `run:` block from the workflow file and execute it against fixture git remotes (insteadOf-mapped bare upstream, fixture `GITHUB_*` environment) instead of re-implementing the shell logic; see `tests/unit/scripts/buildReleaseContextGuard.test.ts`.
+
+### ILCD asynchronous editor proof
+
+Run affected React form suites with `CI=true` so the existing act-warning guard matches release CI. Wait for the classification pending state to clear and the expected location option to render. Await the actual Form interaction with async `act` when assertions inspect the form store after promise-driven updates. A synchronous DOM-presence assertion does not prove resource loading has completed. Keep warnings fatal; do not add arbitrary sleeps or suppressions.

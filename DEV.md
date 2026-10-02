@@ -43,8 +43,8 @@ checkPaths:
   - .github/workflows/build.yml
   - .nvmrc
 lastReviewedAt: 2026-10-02
-lastReviewedCommit: 3ee91cf5a84fba7b2a1d93539985471a8f5eb9d3
-lastReviewedNote: 'Reviewed local Process and Flow property save-persistence fixes, SDK drawer initialization and singleton/array issue routing with real selector/form/table regression proof; contracts and validation policy remain unchanged.'
+lastReviewedCommit: 0ff23cc0844706f4d12a1c148acfd108ba9832f2
+lastReviewedNote: 'Reviewed Flow property snapshot fallbacks and unindexed-array diagnostic isolation coverage; Process/Flow SDK and nested-save fixes remain aligned with unchanged contracts and validation policy.'
 ---
 
 # Development Bootstrap

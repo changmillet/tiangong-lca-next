@@ -419,6 +419,7 @@ const mockGetRootReviewReferenceProgress = jest.fn();
 const mockGetReviewBatchEligibility = jest.fn();
 const mockGetReviewsTableDataOfReviewAdmin = jest.fn();
 const mockGetReviewsTableDataOfReviewMember = jest.fn();
+const mockGetReviewsTableDataOfReviewerWorkload = jest.fn();
 
 jest.mock('@/services/reviews/api', () => ({
   __esModule: true,
@@ -428,6 +429,8 @@ jest.mock('@/services/reviews/api', () => ({
     mockGetReviewsTableDataOfReviewAdmin(...args),
   getReviewsTableDataOfReviewMember: (...args: any[]) =>
     mockGetReviewsTableDataOfReviewMember(...args),
+  getReviewsTableDataOfReviewerWorkload: (...args: any[]) =>
+    mockGetReviewsTableDataOfReviewerWorkload(...args),
 }));
 
 const getSelectReviewerByContent = (content: string) => {
@@ -899,6 +902,24 @@ describe('AssignmentReview', () => {
       total: 1,
     });
     mockGetReviewsTableDataOfReviewMember.mockResolvedValue({
+      success: true,
+      data: [
+        {
+          id: 'review-2',
+          name: 'Process Review',
+          userName: 'Reviewer',
+          isFromLifeCycle: false,
+          reviewKind: 'root',
+          targetTable: 'processes',
+          json: {
+            data: { id: 'process-2', version: '2.0.0' },
+            user: { id: 'user-2' },
+          },
+        },
+      ],
+      total: 1,
+    });
+    mockGetReviewsTableDataOfReviewerWorkload.mockResolvedValue({
       success: true,
       data: [
         {
@@ -1888,12 +1909,12 @@ describe('AssignmentReview', () => {
     );
 
     await waitFor(() =>
-      expect(mockGetReviewsTableDataOfReviewMember).toHaveBeenCalledWith(
+      expect(mockGetReviewsTableDataOfReviewerWorkload).toHaveBeenCalledWith(
         { pageSize: 50, current: 1 },
         {},
         'pending',
         'en',
-        { user_id: 'member-1' },
+        'member-1',
       ),
     );
 
@@ -1906,12 +1927,12 @@ describe('AssignmentReview', () => {
 
     await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Display mode' }), 'other');
     await waitFor(() =>
-      expect(mockGetReviewsTableDataOfReviewMember).toHaveBeenLastCalledWith(
+      expect(mockGetReviewsTableDataOfReviewerWorkload).toHaveBeenLastCalledWith(
         { pageSize: 50, current: 1 },
         {},
         'pending',
         'en',
-        { user_id: 'member-1' },
+        'member-1',
         { displayMode: 'other' },
       ),
     );

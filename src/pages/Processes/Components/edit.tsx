@@ -289,7 +289,7 @@ const ProcessEdit: FC<Props> = ({
           ...fieldsValue?.modellingAndValidation?.complianceDeclarations,
         },
       };
-    } else {
+    } else if (activeTabKey !== 'exchanges') {
       currentData[activeTabKey] = fieldsValue?.[activeTabKey] ?? baseData?.[activeTabKey];
     }
 

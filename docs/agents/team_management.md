@@ -19,9 +19,9 @@ checkPaths:
   - src/pages/Teams/**
   - src/pages/Review/**
   - src/pages/ManageSystem/**
-lastReviewedAt: 2026-10-01
-lastReviewedCommit: 104410d66b704a0020ba52a46bed3435470d3bed
-lastReviewedNote: 'Reviewed the combined ILCD adoption and Source upload fixes; existing authority and review/calculation policies remain unchanged.'
+lastReviewedAt: 2026-10-02
+lastReviewedCommit: ef8439efebc41d182d439e7d6b30b8eba939874a
+lastReviewedNote: 'Reviewed Platform #1157 after merging current dev; reviewer workload/status behavior and current ILCD, testing, locale, service, and governance contracts remain aligned without policy changes.'
 ---
 
 # Team Management Reference

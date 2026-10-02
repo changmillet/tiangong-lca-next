@@ -87,10 +87,10 @@ export default function ReviewProgress({ reviewId }: ReviewProgressProps) {
       case 1:
         return {
           text: intl.formatMessage({
-            id: 'pages.review.progress.status.reviewed',
-            defaultMessage: 'Reviewed',
+            id: 'pages.review.result.approved',
+            defaultMessage: 'Approved',
           }),
-          color: 'blue',
+          color: 'green',
         };
       default:
         return {

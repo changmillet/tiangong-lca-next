@@ -25,9 +25,9 @@ checkPaths:
   - playwright.config.ts
   - config/docs-capture/**
   - tests/e2e/i18n/**
-lastReviewedAt: 2026-10-01
-lastReviewedCommit: 104410d66b704a0020ba52a46bed3435470d3bed
-lastReviewedNote: 'Reviewed the combined ILCD adoption and Source upload fixes; existing authority and review/calculation policies remain unchanged.'
+lastReviewedAt: 2026-10-02
+lastReviewedCommit: 0ff23cc0844706f4d12a1c148acfd108ba9832f2
+lastReviewedNote: 'Reviewed Flow property snapshot fallbacks and unindexed-array diagnostic isolation coverage; Process/Flow SDK and nested-save fixes remain aligned with unchanged contracts and validation policy.'
 related:
   - ../AGENTS.md
   - ../.docpact/config.yaml

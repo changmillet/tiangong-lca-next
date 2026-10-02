@@ -14,6 +14,7 @@ import {
   getReviewBatchEligibility,
   getReviewsTableDataOfReviewAdmin,
   getReviewsTableDataOfReviewMember,
+  getReviewsTableDataOfReviewerWorkload,
   getRootReviewReferenceProgress,
   type ReviewDisplayMode,
   type ReviewQueueFilters,
@@ -1364,18 +1365,28 @@ const AssignmentReview = ({
       tableType === 'reviewer-rejected' ||
       (tableType === 'completed' && userData?.role !== 'review-admin')
     ) {
-      const scopedUserData =
-        actionFrom === 'reviewMember' ? { user_id: userData?.user_id } : undefined;
+      if (actionFrom === 'reviewMember' && (tableType === 'pending' || tableType === 'reviewed')) {
+        return reviewQueueFilters
+          ? getReviewsTableDataOfReviewerWorkload(
+              params,
+              sort,
+              tableType,
+              lang,
+              userData?.user_id,
+              reviewQueueFilters,
+            )
+          : getReviewsTableDataOfReviewerWorkload(params, sort, tableType, lang, userData?.user_id);
+      }
       return reviewQueueFilters
         ? getReviewsTableDataOfReviewMember(
             params,
             sort,
             tableType,
             lang,
-            scopedUserData,
+            undefined,
             reviewQueueFilters,
           )
-        : getReviewsTableDataOfReviewMember(params, sort, tableType, lang, scopedUserData);
+        : getReviewsTableDataOfReviewMember(params, sort, tableType, lang, undefined);
     }
 
     return Promise.resolve({

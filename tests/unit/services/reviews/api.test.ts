@@ -1567,6 +1567,61 @@ describe('getReviewsTableDataOfReviewMember', () => {
   });
 });
 
+describe('getReviewsTableDataOfReviewerWorkload', () => {
+  it('queries the selected reviewer with the shared workload status and filters', async () => {
+    mockRpc.mockResolvedValueOnce({ data: [], error: null });
+
+    const result = await reviewsApi.getReviewsTableDataOfReviewerWorkload(
+      { pageSize: undefined as any, current: undefined as any },
+      {},
+      'reviewed',
+      'en',
+      'reviewer-2',
+      { displayMode: 'other', targetTable: 'sources' },
+    );
+
+    expect(mockRpc).toHaveBeenCalledWith('qry_review_get_member_workload_items_v1', {
+      p_reviewer_id: 'reviewer-2',
+      p_status: 'reviewed',
+      p_query: null,
+      p_page: 1,
+      p_page_size: 50,
+      p_sort_by: 'modified_at',
+      p_sort_order: 'descend',
+      p_display_mode: 'other',
+      p_target_table: 'sources',
+    });
+    expect(result).toEqual({ data: [], success: true, total: 0 });
+  });
+
+  it('does not query when the selected reviewer id is missing', async () => {
+    const result = await reviewsApi.getReviewsTableDataOfReviewerWorkload(
+      { pageSize: 10, current: 1 },
+      {},
+      'pending',
+      'en',
+    );
+
+    expect(mockRpc).not.toHaveBeenCalled();
+    expect(result).toEqual({ data: [], success: true, total: 0 });
+  });
+
+  it('preserves workload detail query errors', async () => {
+    const error = { message: 'workload failed' };
+    mockRpc.mockResolvedValueOnce({ data: null, error });
+
+    const result = await reviewsApi.getReviewsTableDataOfReviewerWorkload(
+      { pageSize: 10, current: 1 },
+      {},
+      'pending',
+      'en',
+      'reviewer-2',
+    );
+
+    expect(result).toEqual({ data: [], success: false, total: 0, error });
+  });
+});
+
 describe('getReviewsTableDataOfReviewAdmin', () => {
   it('forwards queue filters and defaults the page size to fifty', async () => {
     mockRpc.mockResolvedValueOnce({ data: [], error: null });

@@ -45,9 +45,9 @@ checkPaths:
   - .nvmrc
   - .husky/pre-push
   - .github/workflows/**
-lastReviewedAt: 2026-10-01
-lastReviewedCommit: 40b1cde11de69fd04abf779ee23604a02c041034
-lastReviewedNote: 'Reviewed #1170 asynchronous ILCD test completion under CI=true; runtime behavior, warning enforcement and coverage thresholds remain unchanged.'
+lastReviewedAt: 2026-10-02
+lastReviewedCommit: df2707ef96dec4f9eed5bbc6a724bb96f22ed4c0
+lastReviewedNote: 'Reviewed Flow property snapshot fallbacks and unindexed-array diagnostic isolation coverage; Process/Flow SDK and nested-save fixes remain aligned with unchanged contracts and validation policy.'
 related:
   - .docpact/config.yaml
   - docs/agents/repo-validation.md

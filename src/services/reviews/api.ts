@@ -648,39 +648,12 @@ export async function getReviewsDetailByReviewIds(reviewIds: React.Key[]) {
   return data;
 }
 
-export async function getReviewsTableDataOfReviewMember(
+async function mapReviewMemberQueueRows(
+  rows: ReviewMemberQueueRpcRow[],
+  error: any,
   params: { pageSize: number; current: number },
-  sort: any,
-  type: 'pending' | 'submitted' | 'completed' | 'reviewed' | 'reviewer-rejected',
   lang: string,
-  userData?: { user_id: string | undefined },
-  filters: ReviewQueueFilters = {},
 ) {
-  const userId = userData?.user_id ?? (await getUserId());
-  if (!userId) {
-    return Promise.resolve({
-      data: [],
-      success: true,
-      total: 0,
-    });
-  }
-
-  const { field: sortBy, order: orderBy } = resolveTableSort(sort, 'modified_at');
-
-  const status =
-    type === 'reviewed' ? 'submitted' : type === 'reviewer-rejected' ? 'completed' : type;
-  const { data, error } = await supabase.rpc('qry_review_get_member_queue_items_v6', {
-    p_status: status,
-    p_query: filters.query ?? null,
-    p_page: params.current ?? 1,
-    p_page_size: params.pageSize ?? 50,
-    p_sort_by: sortBy,
-    p_sort_order: orderBy,
-    ...(filters.displayMode ? { p_display_mode: filters.displayMode } : {}),
-    ...(filters.targetTable ? { p_target_table: filters.targetTable } : {}),
-  });
-
-  const rows = (data ?? []) as ReviewMemberQueueRpcRow[];
   if (error) {
     return { data: [], success: false, total: 0, error };
   }
@@ -717,6 +690,74 @@ export async function getReviewsTableDataOfReviewMember(
     success: true,
     total: normalizeTotalCount(rows[0]?.total_count),
   });
+}
+
+export async function getReviewsTableDataOfReviewMember(
+  params: { pageSize: number; current: number },
+  sort: any,
+  type: 'pending' | 'submitted' | 'completed' | 'reviewed' | 'reviewer-rejected',
+  lang: string,
+  userData?: { user_id: string | undefined },
+  filters: ReviewQueueFilters = {},
+) {
+  const userId = userData?.user_id ?? (await getUserId());
+  if (!userId) {
+    return Promise.resolve({
+      data: [],
+      success: true,
+      total: 0,
+    });
+  }
+
+  const { field: sortBy, order: orderBy } = resolveTableSort(sort, 'modified_at');
+
+  const status =
+    type === 'reviewed' ? 'submitted' : type === 'reviewer-rejected' ? 'completed' : type;
+  const { data, error } = await supabase.rpc('qry_review_get_member_queue_items_v6', {
+    p_status: status,
+    p_query: filters.query ?? null,
+    p_page: params.current ?? 1,
+    p_page_size: params.pageSize ?? 50,
+    p_sort_by: sortBy,
+    p_sort_order: orderBy,
+    ...(filters.displayMode ? { p_display_mode: filters.displayMode } : {}),
+    ...(filters.targetTable ? { p_target_table: filters.targetTable } : {}),
+  });
+
+  const rows = (data ?? []) as ReviewMemberQueueRpcRow[];
+  return mapReviewMemberQueueRows(rows, error, params, lang);
+}
+
+export async function getReviewsTableDataOfReviewerWorkload(
+  params: { pageSize: number; current: number },
+  sort: any,
+  type: 'pending' | 'reviewed',
+  lang: string,
+  reviewerId?: string,
+  filters: ReviewQueueFilters = {},
+) {
+  if (!reviewerId) {
+    return Promise.resolve({
+      data: [],
+      success: true,
+      total: 0,
+    });
+  }
+
+  const { field: sortBy, order: orderBy } = resolveTableSort(sort, 'modified_at');
+  const { data, error } = await supabase.rpc('qry_review_get_member_workload_items_v1', {
+    p_reviewer_id: reviewerId,
+    p_status: type,
+    p_query: filters.query ?? null,
+    p_page: params.current ?? 1,
+    p_page_size: params.pageSize ?? 50,
+    p_sort_by: sortBy,
+    p_sort_order: orderBy,
+    ...(filters.displayMode ? { p_display_mode: filters.displayMode } : {}),
+    ...(filters.targetTable ? { p_target_table: filters.targetTable } : {}),
+  });
+
+  return mapReviewMemberQueueRows((data ?? []) as ReviewMemberQueueRpcRow[], error, params, lang);
 }
 
 export async function getReviewsTableDataOfReviewAdmin(

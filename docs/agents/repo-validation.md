@@ -44,8 +44,8 @@ checkPaths:
   - scripts/i18n/locale-delivery.mjs
   - .github/workflows/**
 lastReviewedAt: 2026-10-02
-lastReviewedCommit: ef8439efebc41d182d439e7d6b30b8eba939874a
-lastReviewedNote: 'Reviewed Platform #1157 after merging current dev; reviewer workload/status behavior and current ILCD, testing, locale, service, and governance contracts remain aligned without policy changes.'
+lastReviewedCommit: 3ee91cf5a84fba7b2a1d93539985471a8f5eb9d3
+lastReviewedNote: 'Reviewed local Process and Flow property save-persistence fixes, SDK drawer initialization and singleton/array issue routing with real selector/form/table regression proof; contracts and validation policy remain unchanged.'
 related:
   - ../AGENTS.md
   - ../.docpact/config.yaml

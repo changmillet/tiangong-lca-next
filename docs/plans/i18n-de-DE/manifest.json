@@ -3,7 +3,7 @@
   "source": {
     "baseRef": "c26f306e82ac66f50a56aafe8f89ea96c0b0c67d",
     "baseCommit": "c26f306e82ac66f50a56aafe8f89ea96c0b0c67d",
-    "auditedInputDigest": "c5f111448e0c3b7bdc97a568a83ecd96e6d718b29caed69ca71e9b6f35056721",
+    "auditedInputDigest": "4db16a41ea847c19c75c540c93c79192fec402b9a34763e4788ae73cd862feda",
     "auditedInputDigestAlgorithm": "sha256(path\\0content\\0)",
     "repository": "tiangong-lca/platform"
   },
@@ -47154,7 +47154,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Components/Exchange/edit.tsx",
-          "line": 920,
+          "line": 927,
           "column": 33,
           "symbol": "ProcessExchangeEdit",
           "defaultMessage": "Add",
@@ -47184,7 +47184,7 @@
             },
             {
               "path": "src/pages/Processes/Components/Exchange/edit.tsx",
-              "line": 920,
+              "line": 927,
               "column": 33,
               "kind": "FormattedMessage"
             },
@@ -47455,7 +47455,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Flows/Components/Property/edit.tsx",
-          "line": 373,
+          "line": 375,
           "column": 15,
           "symbol": "PropertyEdit",
           "defaultMessage": "Cancel",
@@ -47554,7 +47554,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Components/Exchange/edit.tsx",
-          "line": 465,
+          "line": 467,
           "column": 15,
           "symbol": "ProcessExchangeEdit",
           "defaultMessage": "Cancel",
@@ -47752,7 +47752,7 @@
             },
             {
               "path": "src/pages/Flows/Components/Property/edit.tsx",
-              "line": 373,
+              "line": 375,
               "column": 15,
               "kind": "FormattedMessage"
             },
@@ -47818,7 +47818,7 @@
             },
             {
               "path": "src/pages/Processes/Components/Exchange/edit.tsx",
-              "line": 465,
+              "line": 467,
               "column": 15,
               "kind": "FormattedMessage"
             },
@@ -51268,7 +51268,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Flows/Components/Property/edit.tsx",
-          "line": 341,
+          "line": 343,
           "column": 23,
           "symbol": "PropertyEdit",
           "defaultMessage": "Edit",
@@ -51277,7 +51277,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Flows/Components/Property/edit.tsx",
-          "line": 346,
+          "line": 348,
           "column": 13,
           "symbol": "PropertyEdit",
           "defaultMessage": "Edit",
@@ -51322,7 +51322,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Components/Exchange/edit.tsx",
-          "line": 415,
+          "line": 417,
           "column": 23,
           "symbol": "ProcessExchangeEdit",
           "defaultMessage": "Edit",
@@ -51331,7 +51331,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Components/Exchange/edit.tsx",
-          "line": 426,
+          "line": 428,
           "column": 13,
           "symbol": "ProcessExchangeEdit",
           "defaultMessage": "Edit",
@@ -51466,13 +51466,13 @@
             },
             {
               "path": "src/pages/Flows/Components/Property/edit.tsx",
-              "line": 341,
+              "line": 343,
               "column": 23,
               "kind": "FormattedMessage"
             },
             {
               "path": "src/pages/Flows/Components/Property/edit.tsx",
-              "line": 346,
+              "line": 348,
               "column": 13,
               "kind": "FormattedMessage"
             },
@@ -51502,13 +51502,13 @@
             },
             {
               "path": "src/pages/Processes/Components/Exchange/edit.tsx",
-              "line": 415,
+              "line": 417,
               "column": 23,
               "kind": "FormattedMessage"
             },
             {
               "path": "src/pages/Processes/Components/Exchange/edit.tsx",
-              "line": 426,
+              "line": 428,
               "column": 13,
               "kind": "FormattedMessage"
             },
@@ -52080,7 +52080,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Components/Exchange/edit.tsx",
-          "line": 925,
+          "line": 932,
           "column": 31,
           "symbol": "ProcessExchangeEdit",
           "defaultMessage": "Item",
@@ -52176,7 +52176,7 @@
             },
             {
               "path": "src/pages/Processes/Components/Exchange/edit.tsx",
-              "line": 925,
+              "line": 932,
               "column": 31,
               "kind": "FormattedMessage"
             },
@@ -55276,7 +55276,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Flows/Components/Property/edit.tsx",
-          "line": 376,
+          "line": 378,
           "column": 15,
           "symbol": "PropertyEdit",
           "defaultMessage": "Save",
@@ -55330,7 +55330,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Components/Exchange/edit.tsx",
-          "line": 468,
+          "line": 470,
           "column": 15,
           "symbol": "ProcessExchangeEdit",
           "defaultMessage": "Save",
@@ -55465,7 +55465,7 @@
             },
             {
               "path": "src/pages/Flows/Components/Property/edit.tsx",
-              "line": 376,
+              "line": 378,
               "column": 15,
               "kind": "FormattedMessage"
             },
@@ -55501,7 +55501,7 @@
             },
             {
               "path": "src/pages/Processes/Components/Exchange/edit.tsx",
-              "line": 468,
+              "line": 470,
               "column": 15,
               "kind": "FormattedMessage"
             },
@@ -90579,7 +90579,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Flows/Components/Property/create.tsx",
-          "line": 201,
+          "line": 203,
           "column": 17,
           "symbol": "PropertyCreate",
           "defaultMessage": "Data derivation type/status",
@@ -90588,7 +90588,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Flows/Components/Property/edit.tsx",
-          "line": 505,
+          "line": 514,
           "column": 17,
           "symbol": "PropertyEdit",
           "defaultMessage": "Data derivation type/status",
@@ -90603,13 +90603,13 @@
           "locations": [
             {
               "path": "src/pages/Flows/Components/Property/create.tsx",
-              "line": 201,
+              "line": 203,
               "column": 17,
               "kind": "FormattedMessage"
             },
             {
               "path": "src/pages/Flows/Components/Property/edit.tsx",
-              "line": 505,
+              "line": 514,
               "column": 17,
               "kind": "FormattedMessage"
             }
@@ -91009,7 +91009,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Flows/Components/Property/create.tsx",
-          "line": 213,
+          "line": 215,
           "column": 17,
           "symbol": "PropertyCreate",
           "defaultMessage": "Comment",
@@ -91018,7 +91018,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Flows/Components/Property/create.tsx",
-          "line": 222,
+          "line": 224,
           "column": 19,
           "symbol": "PropertyCreate",
           "defaultMessage": "Comment",
@@ -91027,7 +91027,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Flows/Components/Property/edit.tsx",
-          "line": 517,
+          "line": 526,
           "column": 17,
           "symbol": "PropertyEdit",
           "defaultMessage": "Comment",
@@ -91036,7 +91036,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Flows/Components/Property/edit.tsx",
-          "line": 527,
+          "line": 536,
           "column": 19,
           "symbol": "PropertyEdit",
           "defaultMessage": "Comment",
@@ -91051,25 +91051,25 @@
           "locations": [
             {
               "path": "src/pages/Flows/Components/Property/create.tsx",
-              "line": 213,
+              "line": 215,
               "column": 17,
               "kind": "FormattedMessage"
             },
             {
               "path": "src/pages/Flows/Components/Property/create.tsx",
-              "line": 222,
+              "line": 224,
               "column": 19,
               "kind": "FormattedMessage"
             },
             {
               "path": "src/pages/Flows/Components/Property/edit.tsx",
-              "line": 517,
+              "line": 526,
               "column": 17,
               "kind": "FormattedMessage"
             },
             {
               "path": "src/pages/Flows/Components/Property/edit.tsx",
-              "line": 527,
+              "line": 536,
               "column": 19,
               "kind": "FormattedMessage"
             }
@@ -91137,7 +91137,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Flows/Components/Property/create.tsx",
-          "line": 161,
+          "line": 163,
           "column": 17,
           "symbol": "PropertyCreate",
           "defaultMessage": "Maximum value",
@@ -91146,7 +91146,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Flows/Components/Property/edit.tsx",
-          "line": 465,
+          "line": 474,
           "column": 17,
           "symbol": "PropertyEdit",
           "defaultMessage": "Maximum value",
@@ -91161,13 +91161,13 @@
           "locations": [
             {
               "path": "src/pages/Flows/Components/Property/create.tsx",
-              "line": 161,
+              "line": 163,
               "column": 17,
               "kind": "FormattedMessage"
             },
             {
               "path": "src/pages/Flows/Components/Property/edit.tsx",
-              "line": 465,
+              "line": 474,
               "column": 17,
               "kind": "FormattedMessage"
             }
@@ -91244,7 +91244,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Flows/Components/Property/create.tsx",
-          "line": 132,
+          "line": 134,
           "column": 17,
           "symbol": "PropertyCreate",
           "defaultMessage": "Mean value (of flow property)",
@@ -91253,7 +91253,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Flows/Components/Property/edit.tsx",
-          "line": 436,
+          "line": 445,
           "column": 17,
           "symbol": "PropertyEdit",
           "defaultMessage": "Mean value (of flow property)",
@@ -91292,13 +91292,13 @@
             },
             {
               "path": "src/pages/Flows/Components/Property/create.tsx",
-              "line": 132,
+              "line": 134,
               "column": 17,
               "kind": "FormattedMessage"
             },
             {
               "path": "src/pages/Flows/Components/Property/edit.tsx",
-              "line": 436,
+              "line": 445,
               "column": 17,
               "kind": "FormattedMessage"
             },
@@ -91378,7 +91378,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Flows/Components/Property/create.tsx",
-          "line": 150,
+          "line": 152,
           "column": 17,
           "symbol": "PropertyCreate",
           "defaultMessage": "Minimum value",
@@ -91387,7 +91387,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Flows/Components/Property/edit.tsx",
-          "line": 454,
+          "line": 463,
           "column": 17,
           "symbol": "PropertyEdit",
           "defaultMessage": "Minimum value",
@@ -91402,13 +91402,13 @@
           "locations": [
             {
               "path": "src/pages/Flows/Components/Property/create.tsx",
-              "line": 150,
+              "line": 152,
               "column": 17,
               "kind": "FormattedMessage"
             },
             {
               "path": "src/pages/Flows/Components/Property/edit.tsx",
-              "line": 454,
+              "line": 463,
               "column": 17,
               "kind": "FormattedMessage"
             }
@@ -91574,7 +91574,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Flows/Components/Property/create.tsx",
-          "line": 109,
+          "line": 111,
           "column": 17,
           "symbol": "PropertyCreate",
           "defaultMessage": "Data set format(s)",
@@ -91589,7 +91589,7 @@
           "locations": [
             {
               "path": "src/pages/Flows/Components/Property/create.tsx",
-              "line": 109,
+              "line": 111,
               "column": 17,
               "kind": "FormattedMessage"
             }
@@ -91666,7 +91666,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Flows/Components/Property/edit.tsx",
-          "line": 413,
+          "line": 422,
           "column": 17,
           "symbol": "PropertyEdit",
           "defaultMessage": "Flow property",
@@ -91705,7 +91705,7 @@
             },
             {
               "path": "src/pages/Flows/Components/Property/edit.tsx",
-              "line": 413,
+              "line": 422,
               "column": 17,
               "kind": "FormattedMessage"
             },
@@ -91785,7 +91785,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Flows/Components/Property/create.tsx",
-          "line": 183,
+          "line": 185,
           "column": 17,
           "symbol": "PropertyCreate",
           "defaultMessage": "Relative standard deviation (95%) in %",
@@ -91794,7 +91794,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Flows/Components/Property/edit.tsx",
-          "line": 487,
+          "line": 496,
           "column": 17,
           "symbol": "PropertyEdit",
           "defaultMessage": "Relative standard deviation (95%) in %",
@@ -91809,13 +91809,13 @@
           "locations": [
             {
               "path": "src/pages/Flows/Components/Property/create.tsx",
-              "line": 183,
+              "line": 185,
               "column": 17,
               "kind": "FormattedMessage"
             },
             {
               "path": "src/pages/Flows/Components/Property/edit.tsx",
-              "line": 487,
+              "line": 496,
               "column": 17,
               "kind": "FormattedMessage"
             }
@@ -92064,7 +92064,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Flows/Components/Property/create.tsx",
-          "line": 172,
+          "line": 174,
           "column": 17,
           "symbol": "PropertyCreate",
           "defaultMessage": "Uncertainty distribution type",
@@ -92073,7 +92073,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Flows/Components/Property/edit.tsx",
-          "line": 476,
+          "line": 485,
           "column": 17,
           "symbol": "PropertyEdit",
           "defaultMessage": "Uncertainty distribution type",
@@ -92088,13 +92088,13 @@
           "locations": [
             {
               "path": "src/pages/Flows/Components/Property/create.tsx",
-              "line": 172,
+              "line": 174,
               "column": 17,
               "kind": "FormattedMessage"
             },
             {
               "path": "src/pages/Flows/Components/Property/edit.tsx",
-              "line": 476,
+              "line": 485,
               "column": 17,
               "kind": "FormattedMessage"
             }
@@ -95089,7 +95089,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Flows/Components/Property/edit.tsx",
-          "line": 353,
+          "line": 355,
           "column": 11,
           "symbol": "PropertyEdit",
           "defaultMessage": "Edit Flow property",
@@ -95110,7 +95110,7 @@
             },
             {
               "path": "src/pages/Flows/Components/Property/edit.tsx",
-              "line": 353,
+              "line": 355,
               "column": 11,
               "kind": "FormattedMessage"
             }
@@ -151534,7 +151534,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Components/Exchange/edit.tsx",
-          "line": 445,
+          "line": 447,
           "column": 11,
           "symbol": "ProcessExchangeEdit",
           "defaultMessage": "Edit Exchange",
@@ -151549,7 +151549,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Components/Exchange/edit.tsx",
-              "line": 445,
+              "line": 447,
               "column": 11,
               "kind": "FormattedMessage"
             }
@@ -151783,7 +151783,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Components/Exchange/edit.tsx",
-          "line": 541,
+          "line": 548,
           "column": 25,
           "symbol": "ProcessExchangeEdit",
           "defaultMessage": "Input",
@@ -151831,7 +151831,7 @@
             },
             {
               "path": "src/pages/Processes/Components/Exchange/edit.tsx",
-              "line": 541,
+              "line": 548,
               "column": 25,
               "kind": "FormattedMessage"
             },
@@ -152009,7 +152009,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Components/Exchange/edit.tsx",
-          "line": 550,
+          "line": 557,
           "column": 25,
           "symbol": "ProcessExchangeEdit",
           "defaultMessage": "Output",
@@ -152057,7 +152057,7 @@
             },
             {
               "path": "src/pages/Processes/Components/Exchange/edit.tsx",
-              "line": 550,
+              "line": 557,
               "column": 25,
               "kind": "FormattedMessage"
             },
@@ -203668,7 +203668,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Components/Exchange/edit.tsx",
-          "line": 810,
+          "line": 817,
           "column": 17,
           "symbol": "ProcessExchangeEdit",
           "defaultMessage": "Allocation",
@@ -203698,7 +203698,7 @@
             },
             {
               "path": "src/pages/Processes/Components/Exchange/edit.tsx",
-              "line": 810,
+              "line": 817,
               "column": 17,
               "kind": "FormattedMessage"
             },
@@ -203799,7 +203799,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Components/Exchange/edit.tsx",
-          "line": 841,
+          "line": 848,
           "column": 19,
           "symbol": "ProcessExchangeEdit",
           "defaultMessage": "Data derivation type / status",
@@ -203841,7 +203841,7 @@
             },
             {
               "path": "src/pages/Processes/Components/Exchange/edit.tsx",
-              "line": 841,
+              "line": 848,
               "column": 19,
               "kind": "FormattedMessage"
             },
@@ -203924,7 +203924,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Components/Exchange/edit.tsx",
-          "line": 827,
+          "line": 834,
           "column": 19,
           "symbol": "ProcessExchangeEdit",
           "defaultMessage": "Data source type",
@@ -203954,7 +203954,7 @@
             },
             {
               "path": "src/pages/Processes/Components/Exchange/edit.tsx",
-              "line": 827,
+              "line": 834,
               "column": 19,
               "kind": "FormattedMessage"
             },
@@ -204055,7 +204055,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Components/Exchange/edit.tsx",
-          "line": 514,
+          "line": 521,
           "column": 19,
           "symbol": "ProcessExchangeEdit",
           "defaultMessage": "Exchange direction",
@@ -204097,7 +204097,7 @@
             },
             {
               "path": "src/pages/Processes/Components/Exchange/edit.tsx",
-              "line": 514,
+              "line": 521,
               "column": 19,
               "kind": "FormattedMessage"
             },
@@ -204180,7 +204180,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Components/Exchange/edit.tsx",
-          "line": 609,
+          "line": 616,
           "column": 19,
           "symbol": "ProcessExchangeEdit",
           "defaultMessage": "Function type",
@@ -204210,7 +204210,7 @@
             },
             {
               "path": "src/pages/Processes/Components/Exchange/edit.tsx",
-              "line": 609,
+              "line": 616,
               "column": 19,
               "kind": "FormattedMessage"
             },
@@ -204320,7 +204320,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Components/Exchange/edit.tsx",
-          "line": 987,
+          "line": 994,
           "column": 23,
           "symbol": "ProcessExchangeEdit",
           "defaultMessage": "Functional unit, Production period, or Other parameter",
@@ -204329,7 +204329,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Components/Exchange/edit.tsx",
-          "line": 996,
+          "line": 1003,
           "column": 25,
           "symbol": "ProcessExchangeEdit",
           "defaultMessage": "Functional unit, Production period, or Other parameter",
@@ -204377,13 +204377,13 @@
             },
             {
               "path": "src/pages/Processes/Components/Exchange/edit.tsx",
-              "line": 987,
+              "line": 994,
               "column": 23,
               "kind": "FormattedMessage"
             },
             {
               "path": "src/pages/Processes/Components/Exchange/edit.tsx",
-              "line": 996,
+              "line": 1003,
               "column": 25,
               "kind": "FormattedMessage"
             },
@@ -204493,7 +204493,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Components/Exchange/edit.tsx",
-          "line": 942,
+          "line": 949,
           "column": 19,
           "symbol": "ProcessExchangeEdit",
           "defaultMessage": "Comment",
@@ -204502,7 +204502,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Components/Exchange/edit.tsx",
-          "line": 951,
+          "line": 958,
           "column": 21,
           "symbol": "ProcessExchangeEdit",
           "defaultMessage": "Comment",
@@ -204550,13 +204550,13 @@
             },
             {
               "path": "src/pages/Processes/Components/Exchange/edit.tsx",
-              "line": 942,
+              "line": 949,
               "column": 19,
               "kind": "FormattedMessage"
             },
             {
               "path": "src/pages/Processes/Components/Exchange/edit.tsx",
-              "line": 951,
+              "line": 958,
               "column": 21,
               "kind": "FormattedMessage"
             },
@@ -204698,7 +204698,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Components/Exchange/edit.tsx",
-          "line": 595,
+          "line": 602,
           "column": 19,
           "symbol": "ProcessExchangeEdit",
           "defaultMessage": "Location",
@@ -204728,7 +204728,7 @@
             },
             {
               "path": "src/pages/Processes/Components/Exchange/edit.tsx",
-              "line": 595,
+              "line": 602,
               "column": 19,
               "kind": "FormattedMessage"
             },
@@ -204829,7 +204829,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Components/Exchange/edit.tsx",
-          "line": 637,
+          "line": 644,
           "column": 19,
           "symbol": "ProcessExchangeEdit",
           "defaultMessage": "Mean amount",
@@ -204862,7 +204862,7 @@
             },
             {
               "path": "src/pages/Processes/Components/Exchange/edit.tsx",
-              "line": 637,
+              "line": 644,
               "column": 19,
               "kind": "FormattedMessage"
             }
@@ -204930,7 +204930,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Flows/Components/Property/create.tsx",
-          "line": 232,
+          "line": 234,
           "column": 17,
           "symbol": "PropertyCreate",
           "defaultMessage": "Quantitative reference",
@@ -204939,7 +204939,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Flows/Components/Property/edit.tsx",
-          "line": 537,
+          "line": 546,
           "column": 17,
           "symbol": "PropertyEdit",
           "defaultMessage": "Quantitative reference",
@@ -204984,7 +204984,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Components/Exchange/edit.tsx",
-          "line": 962,
+          "line": 969,
           "column": 17,
           "symbol": "ProcessExchangeEdit",
           "defaultMessage": "Quantitative reference",
@@ -205008,13 +205008,13 @@
           "locations": [
             {
               "path": "src/pages/Flows/Components/Property/create.tsx",
-              "line": 232,
+              "line": 234,
               "column": 17,
               "kind": "FormattedMessage"
             },
             {
               "path": "src/pages/Flows/Components/Property/edit.tsx",
-              "line": 537,
+              "line": 546,
               "column": 17,
               "kind": "FormattedMessage"
             },
@@ -205044,7 +205044,7 @@
             },
             {
               "path": "src/pages/Processes/Components/Exchange/edit.tsx",
-              "line": 962,
+              "line": 969,
               "column": 17,
               "kind": "FormattedMessage"
             },
@@ -205273,7 +205273,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Components/Exchange/edit.tsx",
-          "line": 870,
+          "line": 877,
           "column": 23,
           "symbol": "ProcessExchangeEdit",
           "defaultMessage": "Data source(s)",
@@ -205282,7 +205282,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Components/Exchange/edit.tsx",
-          "line": 889,
+          "line": 896,
           "column": 39,
           "symbol": "ProcessExchangeEdit",
           "defaultMessage": "Data source(s)",
@@ -205291,7 +205291,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Components/Exchange/edit.tsx",
-          "line": 921,
+          "line": 928,
           "column": 31,
           "symbol": "ProcessExchangeEdit",
           "defaultMessage": "Data source(s)",
@@ -205342,19 +205342,19 @@
             },
             {
               "path": "src/pages/Processes/Components/Exchange/edit.tsx",
-              "line": 870,
+              "line": 877,
               "column": 23,
               "kind": "FormattedMessage"
             },
             {
               "path": "src/pages/Processes/Components/Exchange/edit.tsx",
-              "line": 889,
+              "line": 896,
               "column": 39,
               "kind": "FormattedMessage"
             },
             {
               "path": "src/pages/Processes/Components/Exchange/edit.tsx",
-              "line": 921,
+              "line": 928,
               "column": 31,
               "kind": "FormattedMessage"
             },
@@ -205461,7 +205461,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Components/Exchange/edit.tsx",
-          "line": 569,
+          "line": 576,
           "column": 21,
           "symbol": "ProcessExchangeEdit",
           "defaultMessage": "Flow",
@@ -205503,7 +205503,7 @@
             },
             {
               "path": "src/pages/Processes/Components/Exchange/edit.tsx",
-              "line": 569,
+              "line": 576,
               "column": 21,
               "kind": "FormattedMessage"
             },
@@ -205604,7 +205604,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Components/Exchange/edit.tsx",
-          "line": 972,
+          "line": 979,
           "column": 21,
           "symbol": "ProcessExchangeEdit",
           "defaultMessage": "Reference flow(s)",
@@ -205646,7 +205646,7 @@
             },
             {
               "path": "src/pages/Processes/Components/Exchange/edit.tsx",
-              "line": 972,
+              "line": 979,
               "column": 21,
               "kind": "FormattedMessage"
             },
@@ -205729,7 +205729,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Components/Exchange/edit.tsx",
-          "line": 623,
+          "line": 630,
           "column": 19,
           "symbol": "ProcessExchangeEdit",
           "defaultMessage": "Variable",
@@ -205759,7 +205759,7 @@
             },
             {
               "path": "src/pages/Processes/Components/Exchange/edit.tsx",
-              "line": 623,
+              "line": 630,
               "column": 19,
               "kind": "FormattedMessage"
             },
@@ -205860,7 +205860,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Components/Exchange/edit.tsx",
-          "line": 663,
+          "line": 670,
           "column": 19,
           "symbol": "ProcessExchangeEdit",
           "defaultMessage": "Resulting amount",
@@ -205893,7 +205893,7 @@
             },
             {
               "path": "src/pages/Processes/Components/Exchange/edit.tsx",
-              "line": 663,
+              "line": 670,
               "column": 19,
               "kind": "FormattedMessage"
             }
@@ -205961,7 +205961,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Components/Exchange/edit.tsx",
-          "line": 532,
+          "line": 539,
           "column": 21,
           "symbol": "ProcessExchangeEdit",
           "defaultMessage": "Select a direction",
@@ -205976,7 +205976,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Components/Exchange/edit.tsx",
-              "line": 532,
+              "line": 539,
               "column": 21,
               "kind": "FormattedMessage"
             }
@@ -218743,7 +218743,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Components/Exchange/edit.tsx",
-          "line": 713,
+          "line": 720,
           "column": 25,
           "symbol": "ProcessExchangeEdit",
           "defaultMessage": "Log-normal",
@@ -218773,7 +218773,7 @@
             },
             {
               "path": "src/pages/Processes/Components/Exchange/edit.tsx",
-              "line": 713,
+              "line": 720,
               "column": 25,
               "kind": "FormattedMessage"
             },
@@ -218856,7 +218856,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Components/Exchange/edit.tsx",
-          "line": 722,
+          "line": 729,
           "column": 25,
           "symbol": "ProcessExchangeEdit",
           "defaultMessage": "Normal",
@@ -218886,7 +218886,7 @@
             },
             {
               "path": "src/pages/Processes/Components/Exchange/edit.tsx",
-              "line": 722,
+              "line": 729,
               "column": 25,
               "kind": "FormattedMessage"
             },
@@ -218969,7 +218969,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Components/Exchange/edit.tsx",
-          "line": 731,
+          "line": 738,
           "column": 25,
           "symbol": "ProcessExchangeEdit",
           "defaultMessage": "Triangular",
@@ -218999,7 +218999,7 @@
             },
             {
               "path": "src/pages/Processes/Components/Exchange/edit.tsx",
-              "line": 731,
+              "line": 738,
               "column": 25,
               "kind": "FormattedMessage"
             },
@@ -219082,7 +219082,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Components/Exchange/edit.tsx",
-          "line": 704,
+          "line": 711,
           "column": 25,
           "symbol": "ProcessExchangeEdit",
           "defaultMessage": "Undefined",
@@ -219112,7 +219112,7 @@
             },
             {
               "path": "src/pages/Processes/Components/Exchange/edit.tsx",
-              "line": 704,
+              "line": 711,
               "column": 25,
               "kind": "FormattedMessage"
             },
@@ -219195,7 +219195,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Components/Exchange/edit.tsx",
-          "line": 740,
+          "line": 747,
           "column": 25,
           "symbol": "ProcessExchangeEdit",
           "defaultMessage": "Uniform",
@@ -219225,7 +219225,7 @@
             },
             {
               "path": "src/pages/Processes/Components/Exchange/edit.tsx",
-              "line": 740,
+              "line": 747,
               "column": 25,
               "kind": "FormattedMessage"
             },
@@ -280989,7 +280989,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Components/Exchange/edit.tsx",
-          "line": 771,
+          "line": 778,
           "column": 23,
           "symbol": "ProcessExchangeEdit",
           "defaultMessage": "Maximum amount",
@@ -281019,7 +281019,7 @@
             },
             {
               "path": "src/pages/Processes/Components/Exchange/edit.tsx",
-              "line": 771,
+              "line": 778,
               "column": 23,
               "kind": "FormattedMessage"
             },
@@ -281230,7 +281230,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Components/Exchange/edit.tsx",
-          "line": 757,
+          "line": 764,
           "column": 23,
           "symbol": "ProcessExchangeEdit",
           "defaultMessage": "Minimum amount",
@@ -281260,7 +281260,7 @@
             },
             {
               "path": "src/pages/Processes/Components/Exchange/edit.tsx",
-              "line": 757,
+              "line": 764,
               "column": 23,
               "kind": "FormattedMessage"
             },
@@ -281584,7 +281584,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Components/Exchange/edit.tsx",
-          "line": 793,
+          "line": 800,
           "column": 23,
           "symbol": "ProcessExchangeEdit",
           "defaultMessage": "Relative StdDev in %",
@@ -281614,7 +281614,7 @@
             },
             {
               "path": "src/pages/Processes/Components/Exchange/edit.tsx",
-              "line": 793,
+              "line": 800,
               "column": 23,
               "kind": "FormattedMessage"
             },
@@ -281938,7 +281938,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Components/Exchange/edit.tsx",
-          "line": 692,
+          "line": 699,
           "column": 19,
           "symbol": "ProcessExchangeEdit",
           "defaultMessage": "Uncertainty distribution type",
@@ -281968,7 +281968,7 @@
             },
             {
               "path": "src/pages/Processes/Components/Exchange/edit.tsx",
-              "line": 692,
+              "line": 699,
               "column": 19,
               "kind": "FormattedMessage"
             },

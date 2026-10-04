@@ -43,7 +43,7 @@ checkPaths:
   - .github/workflows/release-gate.yml
   - .github/workflows/release-readiness.yml
 lastReviewedAt: 2026-10-04
-lastReviewedCommit: 4880287176bec8b80eca3adf1df8039f56ff3d28
+lastReviewedCommit: 23962f4bf51ebd1ad6e166e041998b04dbd3a6a9
 lastReviewedNote: 'Reviewed Platform #1177 qualification closure repair against the current route contract and browser inventory; v5 proof, strict negative cases and sanitized CI diagnostics preserve complete evidence requirements without changing product language or release authorization policy.'
 ---
 

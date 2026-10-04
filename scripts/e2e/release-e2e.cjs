@@ -6,6 +6,13 @@ const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
 const { spawnSync } = require('node:child_process');
+const {
+  loadQualificationClosureContract,
+  qualificationAssertionFailures,
+  qualificationCleanupFailures,
+  qualificationCoverageFailures,
+  qualificationReportFailures,
+} = require('./qualification-closure.cjs');
 
 const REPOSITORY_ROOT = path.resolve(__dirname, '../..');
 const RUNTIME_ROOT = path.join(REPOSITORY_ROOT, '.local/e2e-release');
@@ -16,7 +23,7 @@ const RECEIPT_KEY_PATH = path.join(RUNTIME_ROOT, 'continuation-receipt.key');
 const INVOCATION_LOCK_PATH = path.join(RUNTIME_ROOT, 'invocation.lock');
 const ENVIRONMENT_MANIFEST_PATH = path.join(RUNTIME_ROOT, 'environment-manifest.json');
 const DEFAULT_QUALIFICATION_PROOF_PATH = path.join(RUNTIME_ROOT, 'qualification-proof.json');
-const QUALIFICATION_PROOF_SCHEMA_VERSION = 'tiangong.semantic-harness-qualification.v4';
+const QUALIFICATION_PROOF_SCHEMA_VERSION = 'tiangong.semantic-harness-qualification.v5';
 const ENVIRONMENT_CONTRACT_RELATIVE_PATH = 'docker/e2e/environment.json';
 const DOCKERFILE_RELATIVE_PATH = 'docker/e2e/Dockerfile';
 const QUALIFICATION_ENVIRONMENT_RELATIVE_PATH = 'docker/e2e/qualification.env';
@@ -1265,30 +1272,32 @@ function assertExternalProofPath(proofPath) {
 }
 
 function validateQualificationProof(proof, expectedIdentity = qualificationIdentity()) {
+  const contract = loadQualificationClosureContract(REPOSITORY_ROOT);
+  const closureFailures = [
+    ...qualificationCoverageFailures(proof?.coverage, contract),
+    ...qualificationAssertionFailures(proof, contract),
+    ...qualificationCleanupFailures(proof?.cleanup),
+  ];
   if (
     proof?.schemaVersion !== QUALIFICATION_PROOF_SCHEMA_VERSION ||
     proof.status !== 'qualified' ||
-    proof.coverage?.discoveredCases !== 81 ||
-    proof.coverage?.contractAssertionCount !== 50 ||
-    proof.coverage?.liveAssertionCount !== 50 ||
-    proof.coverage?.executedCases !== 51 ||
-    proof.coverage?.skippedCases !== 30 ||
-    proof.coverage?.harnessControlCases !== 12 ||
-    proof.coverage?.qualificationDiscoveredCases !== 93 ||
+    closureFailures.length > 0 ||
     proof.productionWrites !== 0 ||
     proof.externalRequests !== 0 ||
-    proof.cleanup?.created !== 0 ||
-    proof.cleanup?.cleaned !== 0 ||
-    proof.cleanup?.leaked !== 0 ||
     proof.qualificationInputSha256 !== expectedIdentity.inputSha256 ||
     proof.environmentContractSha256 !== expectedIdentity.environmentContractSha256 ||
     proof.proofKey !== expectedIdentity.proofKey ||
     !/^[0-9a-f]{64}$/u.test(proof.environmentManifestSha256 || '') ||
     !/^[0-9a-f]{40}$/u.test(proof.candidate?.commit || '') ||
     !/^[0-9a-f]{40}$/u.test(proof.candidate?.tree || '') ||
-    JSON.stringify(proof.browsers?.map(({ name }) => name)) !==
-      JSON.stringify(['chromium', 'firefox', 'webkit']) ||
-    proof.browsers.some(({ version }) => typeof version !== 'string' || version.length === 0)
+    !Array.isArray(proof.browsers) ||
+    proof.browsers.length !== contract.browsers.length ||
+    proof.browsers.some(
+      (browser, index) =>
+        browser?.name !== contract.browsers[index] ||
+        typeof browser?.version !== 'string' ||
+        browser.version.length === 0,
+    )
   ) {
     throw new ReleaseE2EError(
       'The external semantic qualification proof is missing, stale, or incomplete.',
@@ -1296,6 +1305,7 @@ function validateQualificationProof(proof, expectedIdentity = qualificationIdent
         exitCode: EXIT.CANDIDATE,
         failureCode: 'E2E_QUALIFICATION_PROOF_INVALID',
         phase: 'candidate',
+        details: { closureFailures },
         nextCommand: 'pnpm e2e:qualify --proof .local/e2e-release/qualification-proof.json',
       },
     );
@@ -1793,40 +1803,26 @@ function finalizeQualification(result, options) {
   const discovery = preflight.checks.find(
     ({ id }) => id === 'environment.playwright-discovery',
   )?.summary;
-  const coverage = readJson(path.join(REPOSITORY_ROOT, 'docs/plans/i18n/route-view-coverage.json'));
-  const assertionCount = Object.keys(coverage.executableTargets ?? {}).length;
+  const contract = loadQualificationClosureContract(REPOSITORY_ROOT);
   const containerResult = readJson(result.artifacts.containerResult);
   const cleanup = containerResult.cleanup;
   const qualification = containerResult.qualification;
-  const totalCounts = (browserCounts) =>
-    Object.values(browserCounts ?? {}).reduce(
-      (total, counts) => ({
-        executed: total.executed + Number(counts?.executed ?? 0),
-        skipped: total.skipped + Number(counts?.skipped ?? 0),
-      }),
-      { executed: 0, skipped: 0 },
-    );
-  const canonicalCounts = totalCounts(qualification?.canonicalBrowsers);
-  const harnessCounts = totalCounts(qualification?.harnessBrowsers);
-  if (
-    discovery?.fullListedTests !== 81 ||
-    discovery?.listedTests !== 93 ||
-    assertionCount !== 50 ||
-    qualification?.assertionIds?.length !== 50 ||
-    canonicalCounts.executed !== 51 ||
-    canonicalCounts.skipped !== 30 ||
-    harnessCounts.executed !== 12 ||
-    harnessCounts.skipped !== 0 ||
-    qualification?.externalRequests !== 0 ||
-    qualification?.productionWrites !== 0 ||
-    cleanup?.created !== 0 ||
-    cleanup?.cleaned !== 0 ||
-    cleanup?.leaked !== 0
-  ) {
+  const closureFailures = [
+    ...qualificationReportFailures(qualification, contract),
+    ...qualificationCleanupFailures(cleanup),
+  ];
+  if (discovery?.fullListedTests !== contract.coverage.discoveredCases) {
+    closureFailures.push('discovery-canonical-cases');
+  }
+  if (discovery?.listedTests !== contract.coverage.qualificationDiscoveredCases) {
+    closureFailures.push('discovery-qualification-cases');
+  }
+  if (closureFailures.length > 0) {
     throw new ReleaseE2EError('Semantic harness qualification closure is incomplete.', {
       exitCode: EXIT.FINALIZATION,
       failureCode: 'E2E_QUALIFICATION_INCOMPLETE',
       phase: 'finalization',
+      details: { closureFailures },
     });
   }
   const identity = qualificationIdentity();
@@ -1846,15 +1842,9 @@ function finalizeQualification(result, options) {
       name,
       version: result.environment.environmentBrowsers[name],
     })),
-    coverage: {
-      contractAssertionCount: assertionCount,
-      discoveredCases: discovery.fullListedTests,
-      executedCases: canonicalCounts.executed,
-      harnessControlCases: harnessCounts.executed,
-      liveAssertionCount: qualification.assertionIds.length,
-      qualificationDiscoveredCases: discovery.listedTests,
-      skippedCases: canonicalCounts.skipped,
-    },
+    assertionIds: qualification.assertionIds,
+    assertionBrowsers: qualification.assertionBrowsers,
+    coverage: contract.coverage,
     cleanup,
     externalRequests: qualification.externalRequests,
     productionWrites: qualification.productionWrites,
@@ -2197,6 +2187,7 @@ module.exports = {
   commandHelp,
   createReceipt,
   dockerRunArguments,
+  finalizeQualification,
   jsonText,
   loadEnvironmentContractFromWorkingTree,
   lockedDependencyVersion,

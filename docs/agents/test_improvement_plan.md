@@ -44,8 +44,8 @@ checkPaths:
   - pnpm-workspace.yaml
   - Dockerfile.app
 lastReviewedAt: 2026-10-04
-lastReviewedCommit: 6c695c11bd52a505bf453a8818f7f1298a470618
-lastReviewedNote: 'Reviewed Platform #1177: settled adaptive task discovery, verified auth-event ownership, startup epoch revalidation, owner snapshots and stale optimistic callback fences; calculation, authorization, environment and quality-gate policy remain aligned.'
+lastReviewedCommit: 4880287176bec8b80eca3adf1df8039f56ff3d28
+lastReviewedNote: 'Reviewed Platform #1177 qualification closure repair against the current route contract and browser inventory; v5 proof, strict negative cases and sanitized CI diagnostics preserve complete evidence requirements without changing product language or release authorization policy.'
 ---
 
 # Testing Strategy
@@ -64,7 +64,7 @@ lastReviewedNote: 'Reviewed Platform #1177: settled adaptive task discovery, ver
 - shared validation adapters and helper modules should stay unit-heavy; do not expand wrapper-only branch testing unless the user-visible contract actually changes
 - data workflow smoke coverage should grow through paired data/result fixtures and workflow-lib unit proof only when the workflow phase or backend-facing assertion changes
 - localization quality should combine deterministic topology, context, terminology-token, route-view, fallback, correction, and activation gates with a separately produced semantic/route/E2E proof; the deterministic structural artifact must not present itself as independent semantic review, and delivery does not create a human translation-approval state
-- the localization semantic E2E layer is deliberately bounded: 58 stable route/view assertion IDs, a Chromium full matrix, three-browser critical scenarios, registry-derived locale/content-language loops, and external digest-bound evidence that invalidates itself when a locale, covered input, or executable dependency lock changes
+- the localization semantic E2E layer is deliberately bounded: the exact contract-declared stable route/view assertion IDs, a Chromium full matrix, three-browser critical scenarios, registry-derived locale/content-language loops, and external digest-bound evidence that invalidates itself when a locale, covered input, or executable dependency lock changes
 - production-backed E2E uses a local candidate frontend and an explicitly authorized local operator trust boundary; GitHub Actions provides a manually dispatched credential-free hermetic qualification for an open business PR or chosen ref when browser evidence is warranted. Host `CI`/`GITHUB_ACTIONS` rejects production-data mode before Docker; an authorized local closure still requires authenticated mode, two explicit production-write guards, a separate verified-evidence opt-in, intent before create, UUID/owner/five-field marker verification before delete, and `created=cleaned`, `leaked=0`
 - exact committed browser qualification treats environment setup as productized test infrastructure: a pinned-image installer, read-only doctor, archived clean candidate, one cached production build, ordered pre-fixture checks, phase-coded diagnostics, and exact one-hour continuation remove repeated environment exploration without weakening browser or cleanup evidence
 - semantic-harness qualification is content-addressed credential-free proof run manually on the open business PR before `release:to-dev` when risk warrants it; it builds against a fixed `.invalid` backend profile and intercepts every backend request, so deployment-target `.env` is not part of the semantic identity. Canonical discovery recursively includes nested `tests/e2e/i18n/**` specs and pins the complete executed/designed-skip closure, while the key also covers shared helpers plus Git mode/type. `release:to-dev --apply` and every later release stage run no browser and write no browser proof

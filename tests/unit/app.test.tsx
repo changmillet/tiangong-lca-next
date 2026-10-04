@@ -118,6 +118,31 @@ jest.mock('@/services/roles/api', () => ({
   getSystemUserRoleApi: (...args: any[]) => mockGetSystemUserRoleApi(...args),
 }));
 
+const mockReloadBrowserPage = jest.fn();
+jest.mock('@/utils/browserNavigation', () => ({
+  reloadBrowserPage: (...args: any[]) => mockReloadBrowserPage(...args),
+}));
+let mockTaskAuthCallback: any;
+jest.mock('@/services/supabase', () => ({
+  supabase: {
+    auth: {
+      onAuthStateChange: (callback: any) => {
+        mockTaskAuthCallback = callback;
+        return { data: { subscription: { unsubscribe: jest.fn() } } };
+      },
+      getClaims: jest.fn(),
+    },
+  },
+}));
+const mockBindLcaTaskCenterOwner = jest.fn();
+const mockBindDataProductTaskCenterOwner = jest.fn();
+jest.mock('@/services/lca/taskCenter', () => ({
+  bindLcaTaskCenterOwner: (...args: any[]) => mockBindLcaTaskCenterOwner(...args),
+}));
+jest.mock('@/services/dataProducts/taskCenter', () => ({
+  bindDataProductTaskCenterOwner: (...args: any[]) => mockBindDataProductTaskCenterOwner(...args),
+}));
+
 jest.mock('@/services/tidasPackage/taskCenter', () => ({
   __esModule: true,
   bindTidasPackageTaskCenterOwner: (...args: any[]) => mockBindTidasPackageTaskCenterOwner(...args),
@@ -364,6 +389,8 @@ describe('app runtime config', () => {
     expect(mockGetSystemUserRoleApi).not.toHaveBeenCalled();
     expect(mockHistory.push).not.toHaveBeenCalled();
     expect(mockBindTidasPackageTaskCenterOwner).toHaveBeenCalledWith(null);
+    expect(mockBindLcaTaskCenterOwner).toHaveBeenCalledWith(null);
+    expect(mockBindDataProductTaskCenterOwner).toHaveBeenCalledWith(null);
     expect(state.systemStatus.phase).toBe('maintenance');
   });
 
@@ -391,13 +418,155 @@ describe('app runtime config', () => {
     expect(runtimeLayout.menuDataRender?.([{ path: '/tgdata' }])).toEqual([]);
   });
 
-  it('binds the package task center to the authenticated user before rendering', async () => {
+  it('binds every task center to the authenticated user before rendering', async () => {
     const { getInitialState } = require('@/app');
     mockQueryCurrentUser.mockResolvedValueOnce({ name: 'Current User', userid: 'user-a' });
 
     await getInitialState();
 
     expect(mockBindTidasPackageTaskCenterOwner).toHaveBeenCalledWith('user-a');
+    expect(mockBindLcaTaskCenterOwner).toHaveBeenCalledWith('user-a');
+    expect(mockBindDataProductTaskCenterOwner).toHaveBeenCalledWith('user-a');
+  });
+
+  it('re-reads a lookup superseded by a new identity instead of admitting the old user', async () => {
+    const { getInitialState } = require('@/app');
+    const centers = require('@/services/auth/taskCenters');
+    let finish: (value: any) => void = () => undefined;
+    mockQueryCurrentUser
+      .mockReturnValueOnce(
+        new Promise((resolve) => {
+          finish = resolve;
+        }),
+      )
+      .mockResolvedValueOnce({ name: 'New user', userid: 'owner-b' });
+    const initial = getInitialState();
+    for (let i = 0; i < 12; i += 1) await Promise.resolve();
+    centers.bindTaskCenterOwner('owner-b');
+    finish({ name: 'Previous user', userid: 'owner-a' });
+    const state = await initial;
+    expect(state.currentUser?.userid).toBe('owner-b');
+    expect(mockBindLcaTaskCenterOwner).toHaveBeenLastCalledWith('owner-b');
+    expect(mockBindDataProductTaskCenterOwner).toHaveBeenLastCalledWith('owner-b');
+    expect(mockBindTidasPackageTaskCenterOwner).toHaveBeenLastCalledWith('owner-b');
+  });
+
+  it('admits a valid startup identity when INITIAL_SESSION settles during its first claims lookup', async () => {
+    const { getInitialState } = require('@/app');
+    let finish: (value: any) => void = () => undefined;
+    const user = { name: 'Current user', userid: 'owner-a' };
+    mockQueryCurrentUser
+      .mockReturnValueOnce(
+        new Promise((resolve) => {
+          finish = resolve;
+        }),
+      )
+      .mockResolvedValueOnce(user);
+    const initial = getInitialState();
+    for (let i = 0; i < 12; i += 1) await Promise.resolve();
+    mockTaskAuthCallback('INITIAL_SESSION', { user: { id: 'owner-a' } });
+    finish(user);
+    const state = await initial;
+    expect(state.currentUser?.userid).toBe('owner-a');
+    expect(mockQueryCurrentUser).toHaveBeenCalledTimes(2);
+    expect(mockBindLcaTaskCenterOwner).toHaveBeenLastCalledWith('owner-a');
+    expect(mockBindDataProductTaskCenterOwner).toHaveBeenLastCalledWith('owner-a');
+  });
+
+  it('revalidates identity when a role lookup finishes for an earlier owner', async () => {
+    const { getInitialState } = require('@/app');
+    const centers = require('@/services/auth/taskCenters');
+    let finish: (value: any) => void = () => undefined;
+    mockQueryCurrentUser
+      .mockResolvedValueOnce({ name: 'Previous', userid: 'owner-a' })
+      .mockResolvedValueOnce({ name: 'Current', userid: 'owner-b' });
+    mockGetSystemUserRoleApi
+      .mockReturnValueOnce(
+        new Promise((resolve) => {
+          finish = resolve;
+        }),
+      )
+      .mockResolvedValueOnce({ role: 'member' });
+    const initial = getInitialState();
+    for (let i = 0; i < 12; i += 1) await Promise.resolve();
+    centers.bindTaskCenterOwner('owner-b');
+    finish({ role: 'admin' });
+    const state = await initial;
+    expect(state.currentUser).toMatchObject({ userid: 'owner-b', access: undefined });
+    expect(mockQueryCurrentUser).toHaveBeenCalledTimes(2);
+  });
+
+  it('ignores an old identity lookup failure after a newer owner was admitted', async () => {
+    const { getInitialState } = require('@/app');
+    const centers = require('@/services/auth/taskCenters');
+    let reject: (value: any) => void = () => undefined;
+    mockQueryCurrentUser
+      .mockReturnValueOnce(
+        new Promise((_, fail) => {
+          reject = fail;
+        }),
+      )
+      .mockResolvedValueOnce({ name: 'Current', userid: 'owner-b' });
+    const initial = getInitialState();
+    for (let i = 0; i < 12; i += 1) await Promise.resolve();
+    centers.bindTaskCenterOwner('owner-b');
+    reject(new Error('Old claims failed'));
+    const state = await initial;
+    expect(state.currentUser?.userid).toBe('owner-b');
+    expect(mockHistory.push).not.toHaveBeenCalled();
+  });
+
+  it('bounds revalidation and fails closed if identity changes during both startup attempts', async () => {
+    const { getInitialState } = require('@/app');
+    mockQueryCurrentUser.mockImplementation(async () => {
+      mockTaskAuthCallback('INITIAL_SESSION', { user: { id: 'changing-owner' } });
+      return { name: 'Superseded', userid: 'changing-owner' };
+    });
+    const state = await getInitialState();
+    expect(state.currentUser).toBeNull();
+    expect(mockQueryCurrentUser).toHaveBeenCalledTimes(2);
+    expect(mockBindLcaTaskCenterOwner).not.toHaveBeenCalledWith('changing-owner');
+  });
+
+  it('reloads cross-tab signout through full app admission while keeping tasks ownerless', async () => {
+    jest.useFakeTimers();
+    const { getInitialState } = require('@/app');
+    mockQueryCurrentUser.mockResolvedValueOnce({ name: 'Previous', userid: 'owner-a' });
+    await getInitialState();
+    mockTaskAuthCallback('SIGNED_OUT', null);
+    expect(mockReloadBrowserPage).not.toHaveBeenCalled();
+    expect(mockBindLcaTaskCenterOwner).toHaveBeenLastCalledWith(null);
+    jest.runOnlyPendingTimers();
+    expect(mockReloadBrowserPage).toHaveBeenCalledWith(window.location);
+    jest.useRealTimers();
+  });
+
+  it('keeps foreign tasks unbound when same-document Login lookup waits for roles and cannot cancel reload', async () => {
+    jest.useFakeTimers();
+    const { getInitialState } = require('@/app');
+    mockQueryCurrentUser.mockResolvedValueOnce({ name: 'Previous', userid: 'owner-a' });
+    const current = await getInitialState();
+    let finish: (value: any) => void = () => undefined;
+    mockQueryCurrentUser.mockResolvedValueOnce({ name: 'New user', userid: 'owner-b' });
+    mockGetSystemUserRoleApi.mockReturnValueOnce(
+      new Promise((resolve) => {
+        finish = resolve;
+      }),
+    );
+    mockTaskAuthCallback('SIGNED_IN', { user: { id: 'owner-b' } });
+    const lookup = current.fetchUserInfo();
+    for (let i = 0; i < 12; i += 1) await Promise.resolve();
+    const boundWhileRolesPending = mockBindLcaTaskCenterOwner.mock.calls.at(-1)?.[0];
+    jest.runOnlyPendingTimers();
+    const reloadCount = mockReloadBrowserPage.mock.calls.length;
+    finish({ role: 'data_product_manager' });
+    const user = await lookup;
+    expect(boundWhileRolesPending).toBeNull();
+    expect(reloadCount).toBe(1);
+    expect(mockBindLcaTaskCenterOwner).toHaveBeenLastCalledWith(null);
+    expect(mockBindDataProductTaskCenterOwner).toHaveBeenLastCalledWith(null);
+    expect(user).toBeNull();
+    jest.useRealTimers();
   });
 
   it('getInitialState loads dashboard users so admin route access can gate the page', async () => {
@@ -459,6 +628,8 @@ describe('app runtime config', () => {
 
     expect(mockHistory.push).toHaveBeenCalledWith('/user/login');
     expect(mockBindTidasPackageTaskCenterOwner).toHaveBeenCalledWith(null);
+    expect(mockBindLcaTaskCenterOwner).toHaveBeenCalledWith(null);
+    expect(mockBindDataProductTaskCenterOwner).toHaveBeenCalledWith(null);
     expect(state.currentUser).toBeNull();
   });
 
@@ -502,6 +673,8 @@ describe('app runtime config', () => {
 
       expect(mockQueryCurrentUser).not.toHaveBeenCalled();
       expect(mockBindTidasPackageTaskCenterOwner).toHaveBeenCalledWith(null);
+      expect(mockBindLcaTaskCenterOwner).toHaveBeenCalledWith(null);
+      expect(mockBindDataProductTaskCenterOwner).toHaveBeenCalledWith(null);
       expect(state.currentUser).toBeUndefined();
       expect(typeof state.fetchUserInfo).toBe('function');
     },

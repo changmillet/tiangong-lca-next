@@ -42,9 +42,9 @@ checkPaths:
   - scripts/typescript-native-parser.*
   - scripts/reference-data/**
   - .github/workflows/**
-lastReviewedAt: 2026-10-02
-lastReviewedCommit: df2707ef96dec4f9eed5bbc6a724bb96f22ed4c0
-lastReviewedNote: 'Reviewed Flow property snapshot fallbacks and unindexed-array diagnostic isolation coverage; Process/Flow SDK and nested-save fixes remain aligned with unchanged contracts and validation policy.'
+lastReviewedAt: 2026-10-04
+lastReviewedCommit: 23962f4bf51ebd1ad6e166e041998b04dbd3a6a9
+lastReviewedNote: 'Reviewed Platform #1177: settled adaptive task discovery, verified auth-event ownership, startup epoch revalidation, owner snapshots and stale optimistic callback fences; calculation, authorization, environment and quality-gate policy remain aligned.'
 ---
 
 # Pre-Push Gate Policy

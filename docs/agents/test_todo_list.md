@@ -40,9 +40,9 @@ checkPaths:
   - .github/workflows/build.yml
   - .github/workflows/release-gate.yml
   - .github/workflows/release-readiness.yml
-lastReviewedAt: 2026-10-02
-lastReviewedCommit: df2707ef96dec4f9eed5bbc6a724bb96f22ed4c0
-lastReviewedNote: 'Reviewed Flow property snapshot fallbacks and unindexed-array diagnostic isolation coverage; Process/Flow SDK and nested-save fixes remain aligned with unchanged contracts and validation policy.'
+lastReviewedAt: 2026-10-04
+lastReviewedCommit: 23962f4bf51ebd1ad6e166e041998b04dbd3a6a9
+lastReviewedNote: 'Reviewed Platform #1177 canonical proof-source repair: producer digest binding, strict v6 projection, real-report fixture replay and unchanged credential redaction. Test fixtures are not candidate qualification; a complete exact-commit run remains required.'
 ---
 
 # Testing Execution State
@@ -84,13 +84,14 @@ This is a checked-in reference, not a per-PR execution ledger. A delivery's post
 - locale topology, message ownership, ICU placeholders, and dynamic families are additionally protected by `pnpm i18n:audit`
 - active German pins the accepted 2,737-message catalog/runtime state at `c26f306e82ac66f50a56aafe8f89ea96c0b0c67d`; post-baseline existing-message changes use the tracked automated correction overlay, while Issue #601/#602/#606 confirmations retain frozen-history semantics only
 - active locale proof uses `i18n:audit`, the registry/Manifest and hardcoding audits, registry-driven context/quality, `i18n:corrections:check`, and all-locale activation; focused proof stays in the edit loop, and each delivery gets one post-commit full gate through `push:checked`
-- Issue #635 adds a separate Playwright semantic localization proof surface: `pnpm test:e2e:i18n` derives all locale/content-language expectations from registries, now binds 58 stable route/view assertion IDs including OAuth consent, runs Chromium across the complete matrix, and requires the login/selector, team authoring, and process lifecycle critical scenarios in Chromium, Firefox, and WebKit
+- Issue #635 adds a separate Playwright semantic localization proof surface: `pnpm test:e2e:i18n` derives all locale/content-language expectations from registries, binds the current contract-declared stable route/view assertion IDs including OAuth consent, runs Chromium across the complete matrix, and requires the login/selector, team authoring, and process lifecycle critical scenarios in Chromium, Firefox, and WebKit
 - semantic E2E GitHub Actions is credential-free/read-only and manual through `workflow_dispatch`: an operator selects an open business PR or exact SHA when its change risk warrants the content-addressed hermetic qualification, including the complete Chromium matrix and Firefox/WebKit critical scenarios; it is absent from routine PR/dev/release triggers, while authenticated candidate-local/production-backend closure is restricted to an explicitly authorized local operator session with authenticated mode, both production-write guards, and an explicit verified-evidence opt-in
 - Issue #654 adds `e2e:env:install`, read-only `e2e:env:doctor`, exact-candidate `e2e:release`, argument-free bounded `e2e:release:resume`, owned cleanup, and focused `e2e:dev`; release mode archives only a clean Next commit, uses a digest-pinned container and cached production build, performs all safe checks before fixture intent, and never mounts the workspace
-- canonical qualification discovery is recursive: nested specs cannot escape the fail-closed executed/designed-skip inventory, and all 50 assertion IDs remain mandatory
+- canonical qualification discovery is recursive: nested specs cannot escape the fail-closed executed/designed-skip inventory, and every contract-declared assertion ID remains mandatory
+- Issue #1177 unifies the three hermetic qualification closure checks against exact governed assertion IDs, required browser applicability, and the reviewed per-browser test inventory. External proof v6 records assertion identities/applicability and the digest-bound canonical report, rejects unexpected fields and earlier schemas, and keeps sanitized diagnostics outside the proof-source boundary; partial evidence and nonzero side effects remain failures. Manual CI retains sanitized allowlisted diagnostics even when closure fails.
 - semantic evidence formatting resolves repository-owned Prettier configuration even when the output is an ignored local or external artifact path
 - Issue #660 keeps production-data E2E fail-closed on real CI hosts while allowing an authorized local run to override only the release image's inherited `CI`/`GITHUB_ACTIONS` markers before the unchanged in-container authorization and ledger checks
-- authenticated local evidence remains external to Git and must prove all 50 assertion IDs plus exact `created=cleaned` and `leaked=0`; adding a registry locale invalidates older evidence rather than shrinking coverage
+- authenticated local evidence remains external to Git and must prove every contract-declared assertion ID plus exact `created=cleaned` and `leaked=0`; adding a registry locale invalidates older evidence rather than shrinking coverage
 - Header locale switching now keeps Umi `SelectLang` at `reload={false}`; focused proof covers same-document identity, URL retention, live reference-label refresh, and rejection of a delayed old-locale response
 - clean-checkout active German and new-locale suites require zero confirmation-file dependencies; only explicit historical compatibility tests may exercise generated private fixtures
 - pre-push receipt coverage includes a setup-node-style active Node 24 with an unusable NVM install, so runner bootstrap cannot exit before the repo-owned hook coordinator

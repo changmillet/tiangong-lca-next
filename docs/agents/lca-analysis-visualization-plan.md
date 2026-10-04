@@ -20,9 +20,9 @@ checkPaths:
   - docs/agents/util_calculate.md
   - src/pages/Processes/Analysis/**
   - src/components/LcaTaskCenter/**
-lastReviewedAt: 2026-10-01
-lastReviewedCommit: 639abca401c18608d23b5e58db164a53fd6fb1a2
-lastReviewedNote: 'Reviewed Platform #1163: repeated ILCD editor data, complete form-store saves, unchanged review/calculation policy, and released SDK 0.4.1 baseline; formal candidate SDK adoption remains tracked.'
+lastReviewedAt: 2026-10-04
+lastReviewedCommit: 529b5ef9dc4b263e1a934747efae9c54963e184f
+lastReviewedNote: 'Reviewed Platform #1177 final owner admission and native dispatch fences: foreign identities require fresh full application admission; task writes and TIDAS phases verify captured identity through native fetch. Calculation, authorization, environment and quality-gate policy remain unchanged.'
 ---
 
 # LCA Analysis And Visualization Plan

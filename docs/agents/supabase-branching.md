@@ -23,7 +23,7 @@ checkPaths:
   - playwright.config.ts
   - tests/e2e/i18n/**
 lastReviewedAt: 2026-10-04
-lastReviewedCommit: 7d0829afaa865f74b80deefa41fc094ac457cf23
+lastReviewedCommit: 6c695c11bd52a505bf453a8818f7f1298a470618
 lastReviewedNote: 'Reviewed Platform #1177: settled adaptive task discovery, verified auth-event ownership, startup epoch revalidation, owner snapshots and stale optimistic callback fences; calculation, authorization, environment and quality-gate policy remain aligned.'
 ---
 

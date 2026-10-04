@@ -469,6 +469,61 @@ describe('app runtime config', () => {
     expect(mockBindDataProductTaskCenterOwner).toHaveBeenLastCalledWith('owner-a');
   });
 
+  it('revalidates identity when a role lookup finishes for an earlier owner', async () => {
+    const { getInitialState } = require('@/app');
+    const centers = require('@/services/auth/taskCenters');
+    let finish: (value: any) => void = () => undefined;
+    mockQueryCurrentUser
+      .mockResolvedValueOnce({ name: 'Previous', userid: 'owner-a' })
+      .mockResolvedValueOnce({ name: 'Current', userid: 'owner-b' });
+    mockGetSystemUserRoleApi
+      .mockReturnValueOnce(
+        new Promise((resolve) => {
+          finish = resolve;
+        }),
+      )
+      .mockResolvedValueOnce({ role: 'member' });
+    const initial = getInitialState();
+    for (let i = 0; i < 12; i += 1) await Promise.resolve();
+    centers.bindTaskCenterOwner('owner-b');
+    finish({ role: 'admin' });
+    const state = await initial;
+    expect(state.currentUser).toMatchObject({ userid: 'owner-b', access: undefined });
+    expect(mockQueryCurrentUser).toHaveBeenCalledTimes(2);
+  });
+
+  it('ignores an old identity lookup failure after a newer owner was admitted', async () => {
+    const { getInitialState } = require('@/app');
+    const centers = require('@/services/auth/taskCenters');
+    let reject: (value: any) => void = () => undefined;
+    mockQueryCurrentUser
+      .mockReturnValueOnce(
+        new Promise((_, fail) => {
+          reject = fail;
+        }),
+      )
+      .mockResolvedValueOnce({ name: 'Current', userid: 'owner-b' });
+    const initial = getInitialState();
+    for (let i = 0; i < 12; i += 1) await Promise.resolve();
+    centers.bindTaskCenterOwner('owner-b');
+    reject(new Error('Old claims failed'));
+    const state = await initial;
+    expect(state.currentUser?.userid).toBe('owner-b');
+    expect(mockHistory.push).not.toHaveBeenCalled();
+  });
+
+  it('bounds revalidation and fails closed if identity changes during both startup attempts', async () => {
+    const { getInitialState } = require('@/app');
+    mockQueryCurrentUser.mockImplementation(async () => {
+      mockTaskAuthCallback('INITIAL_SESSION', { user: { id: 'changing-owner' } });
+      return { name: 'Superseded', userid: 'changing-owner' };
+    });
+    const state = await getInitialState();
+    expect(state.currentUser).toBeNull();
+    expect(mockQueryCurrentUser).toHaveBeenCalledTimes(2);
+    expect(mockBindLcaTaskCenterOwner).not.toHaveBeenCalledWith('changing-owner');
+  });
+
   it('getInitialState loads dashboard users so admin route access can gate the page', async () => {
     const { getInitialState } = require('@/app');
     mockHistory.location.pathname = '/dashboard/national-carbon';

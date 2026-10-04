@@ -150,7 +150,7 @@ export async function getInitialState(): Promise<{
           history.push(LOGIN_PATH);
           return null;
         }
-        if (!bindTaskCenterOwner(msg.userid, identityGeneration)) continue;
+        bindTaskCenterOwner(msg.userid, identityGeneration);
         const admittedGeneration = getTaskCenterIdentityGeneration();
         const access = await getSystemAccess();
         if (admittedGeneration !== getTaskCenterIdentityGeneration()) continue;

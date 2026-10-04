@@ -21,3 +21,7 @@ export function qualificationCoverageFailures(
   contract: QualificationClosureContract,
 ): string[];
 export function qualificationCleanupFailures(value: unknown): string[];
+export function readQualificationReportReceipt(reportPath: string): {
+  qualification: unknown;
+  qualificationReportSha256: string;
+};

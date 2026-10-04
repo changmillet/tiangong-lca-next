@@ -41,8 +41,8 @@ checkPaths:
   - .github/workflows/release-gate.yml
   - .github/workflows/release-readiness.yml
 lastReviewedAt: 2026-10-04
-lastReviewedCommit: 4880287176bec8b80eca3adf1df8039f56ff3d28
-lastReviewedNote: 'Reviewed Platform #1177 qualification closure repair against the current route contract and browser inventory; v5 proof, strict negative cases and sanitized CI diagnostics preserve complete evidence requirements without changing product language or release authorization policy.'
+lastReviewedCommit: 8715529f157c12b1fff9c9dbcafa9dc660566634
+lastReviewedNote: 'Reviewed Platform #1177 canonical proof-source repair: producer digest binding, strict v6 projection, real-report fixture replay and unchanged credential redaction. Test fixtures are not candidate qualification; a complete exact-commit run remains required.'
 ---
 
 # Testing Execution State
@@ -88,7 +88,7 @@ This is a checked-in reference, not a per-PR execution ledger. A delivery's post
 - semantic E2E GitHub Actions is credential-free/read-only and manual through `workflow_dispatch`: an operator selects an open business PR or exact SHA when its change risk warrants the content-addressed hermetic qualification, including the complete Chromium matrix and Firefox/WebKit critical scenarios; it is absent from routine PR/dev/release triggers, while authenticated candidate-local/production-backend closure is restricted to an explicitly authorized local operator session with authenticated mode, both production-write guards, and an explicit verified-evidence opt-in
 - Issue #654 adds `e2e:env:install`, read-only `e2e:env:doctor`, exact-candidate `e2e:release`, argument-free bounded `e2e:release:resume`, owned cleanup, and focused `e2e:dev`; release mode archives only a clean Next commit, uses a digest-pinned container and cached production build, performs all safe checks before fixture intent, and never mounts the workspace
 - canonical qualification discovery is recursive: nested specs cannot escape the fail-closed executed/designed-skip inventory, and every contract-declared assertion ID remains mandatory
-- Issue #1177 unifies the three hermetic qualification closure checks against exact governed assertion IDs, required browser applicability, and the reviewed per-browser test inventory. External proof v5 records assertion identities/applicability and rejects earlier schemas; partial evidence and nonzero side effects remain failures. Manual CI retains sanitized allowlisted diagnostics even when closure fails.
+- Issue #1177 unifies the three hermetic qualification closure checks against exact governed assertion IDs, required browser applicability, and the reviewed per-browser test inventory. External proof v6 records assertion identities/applicability and the digest-bound canonical report, rejects unexpected fields and earlier schemas, and keeps sanitized diagnostics outside the proof-source boundary; partial evidence and nonzero side effects remain failures. Manual CI retains sanitized allowlisted diagnostics even when closure fails.
 - semantic evidence formatting resolves repository-owned Prettier configuration even when the output is an ignored local or external artifact path
 - Issue #660 keeps production-data E2E fail-closed on real CI hosts while allowing an authorized local run to override only the release image's inherited `CI`/`GITHUB_ACTIONS` markers before the unchanged in-container authorization and ledger checks
 - authenticated local evidence remains external to Git and must prove every contract-declared assertion ID plus exact `created=cleaned` and `leaked=0`; adding a registry locale invalidates older evidence rather than shrinking coverage

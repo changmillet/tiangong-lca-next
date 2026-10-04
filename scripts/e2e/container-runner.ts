@@ -23,6 +23,7 @@ import { assertProductionDataWriteAuthorization } from '../../tests/e2e/i18n/pro
 import {
   loadQualificationClosureContract,
   qualificationReportFailures,
+  readQualificationReportReceipt,
 } from './qualification-closure.cjs';
 import { handoffOutputOwnership } from './output-ownership.cjs';
 
@@ -666,12 +667,15 @@ async function main(): Promise<number> {
         phase,
       });
     }
-    let qualification: Record<string, unknown> | undefined;
+    let qualification: unknown;
+    let qualificationReportSha256: string | undefined;
     if (process.env.E2E_QUALIFICATION === 'true') {
-      qualification = await readJson<Record<string, unknown>>(
+      const receipt = readQualificationReportReceipt(
         process.env.E2E_QUALIFICATION_RESULT_PATH ||
           '/e2e-output/semantic-harness-qualification.json',
       );
+      qualification = receipt.qualification;
+      qualificationReportSha256 = receipt.qualificationReportSha256;
       const contract = loadQualificationClosureContract(process.cwd());
       const closureFailures = qualificationReportFailures(qualification, contract);
       const canonicalCheck = spawnSync(
@@ -726,6 +730,7 @@ async function main(): Promise<number> {
       finishedAt: new Date(finishedAtMs).toISOString(),
       fixtureIntentCreated,
       qualification,
+      qualificationReportSha256,
       phase,
       preflight: { checks: checks.length, status: 'passed' },
       startedAt: new Date(startedAtMs).toISOString(),

@@ -181,16 +181,22 @@ describe('release E2E controller contracts', () => {
       productionWrites: 0,
       candidate: { commit: 'd'.repeat(40), tree: 'e'.repeat(40) },
       qualificationInputSha256: identity.inputSha256,
+      generatedAt: '2026-10-04T00:00:00.000Z',
       environmentContractSha256: identity.environmentContractSha256,
       environmentManifestSha256: 'a'.repeat(64),
       proofKey: identity.proofKey,
       schemaVersion: controller.QUALIFICATION_PROOF_SCHEMA_VERSION,
+      diagnostics: {
+        retainedOutsideGit: true,
+        runResultSha256: 'a'.repeat(64),
+        qualificationReportSha256: 'b'.repeat(64),
+      },
       status: 'qualified',
     };
     expect(controller.validateQualificationProof(proof, identity)).toBe(proof);
     expect(() =>
       controller.validateQualificationProof(
-        { ...proof, schemaVersion: 'tiangong.semantic-harness-qualification.v4' },
+        { ...proof, schemaVersion: 'tiangong.semantic-harness-qualification.v5' },
         identity,
       ),
     ).toThrow('missing, stale, or incomplete');
@@ -242,16 +248,22 @@ describe('release E2E controller contracts', () => {
     ).toThrow('missing, stale, or incomplete');
   });
 
-  it('assembles a v5 fixture proof only after current report, discovery and cleanup closure', () => {
+  it('assembles a v6 fixture proof only after bound report, discovery and cleanup closure', () => {
     const contract =
       require('../../../scripts/e2e/qualification-closure.cjs').loadQualificationClosureContract(
         process.cwd(),
       );
     const directory = makeTemporaryDirectory();
-    const preflightReport = path.join(directory, 'preflight.json');
-    const containerResult = path.join(directory, 'container.json');
+    const preflightReport = path.join(directory, 'preflight-report.json');
+    const containerResult = path.join(directory, 'run-result.json');
+    const qualificationReport = path.join(directory, 'semantic-harness-qualification.json');
     const proof = path.join(directory, 'fixture-proof.json');
+    const candidate = { commit: 'd'.repeat(40), tree: 'e'.repeat(40) };
     const preflight = {
+      kind: 'tiangong-next-release-e2e-preflight-report',
+      schemaVersion: 2,
+      candidate,
+      status: 'passed',
       checks: [
         {
           id: 'environment.playwright-discovery',
@@ -277,11 +289,30 @@ describe('release E2E controller contracts', () => {
     };
     const writeResults = (cleanup = { created: 0, cleaned: 0, leaked: 0 }) => {
       fs.writeFileSync(preflightReport, JSON.stringify(preflight));
-      fs.writeFileSync(containerResult, JSON.stringify({ qualification, cleanup }));
+      fs.writeFileSync(qualificationReport, JSON.stringify(qualification));
+      const { qualificationReportSha256 } =
+        require('../../../scripts/e2e/qualification-closure.cjs').readQualificationReportReceipt(
+          qualificationReport,
+        );
+      fs.writeFileSync(
+        containerResult,
+        JSON.stringify({
+          kind: 'tiangong-next-release-e2e-run-result',
+          schemaVersion: 2,
+          status: 'passed',
+          exitCode: 0,
+          preflight: { status: 'passed' },
+          candidate,
+          qualification: controller.sanitize(qualification),
+          qualificationReportSha256,
+          cleanup,
+        }),
+      );
     };
     const result = {
       artifacts: { preflightReport, containerResult },
-      candidate: { commit: 'd'.repeat(40), tree: 'e'.repeat(40) },
+      candidate,
+      runDirectory: directory,
       environment: {
         manifestSha256: 'f'.repeat(64),
         environmentBrowsers: { chromium: '1', firefox: '2', webkit: '3' },

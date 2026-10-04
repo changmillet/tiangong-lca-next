@@ -1,6 +1,7 @@
 'use strict';
 
 const fs = require('node:fs');
+const { createHash } = require('node:crypto');
 const path = require('node:path');
 
 const BROWSERS = ['chromium', 'firefox', 'webkit'];
@@ -21,6 +22,20 @@ const sameSet = (actual, expected) =>
   actual.length === expected.length &&
   new Set(actual).size === actual.length &&
   expected.every((value) => actual.includes(value));
+
+function readQualificationReportReceipt(reportPath) {
+  const raw = fs.readFileSync(reportPath);
+  let qualification;
+  try {
+    qualification = JSON.parse(raw.toString('utf8'));
+  } catch {
+    throw new Error('Semantic qualification report is not valid JSON.');
+  }
+  return {
+    qualification,
+    qualificationReportSha256: createHash('sha256').update(raw).digest('hex'),
+  };
+}
 const totals = (counts) =>
   Object.values(counts).reduce(
     (result, count) => ({
@@ -109,6 +124,21 @@ function qualificationAssertionFailures(value, contract) {
 
 function qualificationReportFailures(value, contract) {
   const failures = qualificationAssertionFailures(value, contract);
+  if (
+    !isRecord(value) ||
+    !sameSet(Object.keys(value), [
+      'assertionIds',
+      'assertionBrowsers',
+      'browsers',
+      'canonicalBrowsers',
+      'harnessBrowsers',
+      'externalRequests',
+      'productionWrites',
+      'status',
+    ])
+  ) {
+    failures.push('report-shape');
+  }
   if (value?.status !== 'passed') failures.push('report-status');
   for (const [field, expected] of [
     ['canonicalBrowsers', contract.canonicalBrowsers],
@@ -138,6 +168,7 @@ function qualificationReportFailures(value, contract) {
     for (const browser of contract.browsers) {
       if (
         !isRecord(actual[browser]) ||
+        !sameSet(Object.keys(actual[browser]), ['executed', 'skipped']) ||
         actual[browser].executed !== expected[browser].executed ||
         actual[browser].skipped !== expected[browser].skipped
       ) {
@@ -169,4 +200,5 @@ module.exports = {
   qualificationClosureContract,
   qualificationCoverageFailures,
   qualificationReportFailures,
+  readQualificationReportReceipt,
 };

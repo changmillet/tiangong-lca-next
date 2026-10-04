@@ -12,6 +12,7 @@ const {
   qualificationCleanupFailures,
   qualificationCoverageFailures,
   qualificationReportFailures,
+  readQualificationReportReceipt,
 } = require('./qualification-closure.cjs');
 
 const REPOSITORY_ROOT = path.resolve(__dirname, '../..');
@@ -23,7 +24,7 @@ const RECEIPT_KEY_PATH = path.join(RUNTIME_ROOT, 'continuation-receipt.key');
 const INVOCATION_LOCK_PATH = path.join(RUNTIME_ROOT, 'invocation.lock');
 const ENVIRONMENT_MANIFEST_PATH = path.join(RUNTIME_ROOT, 'environment-manifest.json');
 const DEFAULT_QUALIFICATION_PROOF_PATH = path.join(RUNTIME_ROOT, 'qualification-proof.json');
-const QUALIFICATION_PROOF_SCHEMA_VERSION = 'tiangong.semantic-harness-qualification.v5';
+const QUALIFICATION_PROOF_SCHEMA_VERSION = 'tiangong.semantic-harness-qualification.v6';
 const ENVIRONMENT_CONTRACT_RELATIVE_PATH = 'docker/e2e/environment.json';
 const DOCKERFILE_RELATIVE_PATH = 'docker/e2e/Dockerfile';
 const QUALIFICATION_ENVIRONMENT_RELATIVE_PATH = 'docker/e2e/qualification.env';
@@ -1273,14 +1274,53 @@ function assertExternalProofPath(proofPath) {
 
 function validateQualificationProof(proof, expectedIdentity = qualificationIdentity()) {
   const contract = loadQualificationClosureContract(REPOSITORY_ROOT);
+  const exactKeys = (value, keys) =>
+    value !== null &&
+    typeof value === 'object' &&
+    !Array.isArray(value) &&
+    Object.keys(value).length === keys.length &&
+    keys.every((key) => Object.hasOwn(value, key));
   const closureFailures = [
     ...qualificationCoverageFailures(proof?.coverage, contract),
     ...qualificationAssertionFailures(proof, contract),
     ...qualificationCleanupFailures(proof?.cleanup),
   ];
   if (
+    !exactKeys(proof, [
+      'schemaVersion',
+      'status',
+      'generatedAt',
+      'proofKey',
+      'candidate',
+      'qualificationInputSha256',
+      'environmentContractSha256',
+      'environmentManifestSha256',
+      'browsers',
+      'assertionIds',
+      'assertionBrowsers',
+      'coverage',
+      'cleanup',
+      'externalRequests',
+      'productionWrites',
+      'diagnostics',
+    ]) ||
+    !exactKeys(proof?.candidate, ['commit', 'tree']) ||
+    !exactKeys(proof?.coverage, Object.keys(contract.coverage)) ||
+    !exactKeys(proof?.cleanup, ['created', 'cleaned', 'leaked']) ||
+    !exactKeys(proof?.diagnostics, [
+      'retainedOutsideGit',
+      'runResultSha256',
+      'qualificationReportSha256',
+    ])
+  ) {
+    closureFailures.push('proof-shape');
+  }
+  if (
     proof?.schemaVersion !== QUALIFICATION_PROOF_SCHEMA_VERSION ||
     proof.status !== 'qualified' ||
+    typeof proof.generatedAt !== 'string' ||
+    !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/u.test(proof.generatedAt) ||
+    !Number.isFinite(Date.parse(proof.generatedAt)) ||
     closureFailures.length > 0 ||
     proof.productionWrites !== 0 ||
     proof.externalRequests !== 0 ||
@@ -1290,13 +1330,17 @@ function validateQualificationProof(proof, expectedIdentity = qualificationIdent
     !/^[0-9a-f]{64}$/u.test(proof.environmentManifestSha256 || '') ||
     !/^[0-9a-f]{40}$/u.test(proof.candidate?.commit || '') ||
     !/^[0-9a-f]{40}$/u.test(proof.candidate?.tree || '') ||
+    proof.diagnostics?.retainedOutsideGit !== true ||
+    !/^[0-9a-f]{64}$/u.test(proof.diagnostics?.runResultSha256 || '') ||
+    !/^[0-9a-f]{64}$/u.test(proof.diagnostics?.qualificationReportSha256 || '') ||
     !Array.isArray(proof.browsers) ||
     proof.browsers.length !== contract.browsers.length ||
     proof.browsers.some(
       (browser, index) =>
-        browser?.name !== contract.browsers[index] ||
+        !exactKeys(browser, ['name', 'version']) ||
+        browser.name !== contract.browsers[index] ||
         typeof browser?.version !== 'string' ||
-        browser.version.length === 0,
+        !/^\d+(?:\.\d+){0,3}$/u.test(browser.version),
     )
   ) {
     throw new ReleaseE2EError(
@@ -1324,7 +1368,19 @@ function readQualificationProof(options) {
       nextCommand: `pnpm e2e:qualify --proof ${proofPath}`,
     });
   }
-  const proof = validateQualificationProof(readJson(proofPath));
+  let proofInput;
+  try {
+    proofInput = readJson(proofPath);
+  } catch (error) {
+    throw new ReleaseE2EError('The external semantic qualification proof cannot be read.', {
+      exitCode: EXIT.CANDIDATE,
+      failureCode: 'E2E_QUALIFICATION_PROOF_INVALID',
+      phase: 'candidate',
+      details: { errorCode: error instanceof SyntaxError ? 'INVALID_JSON' : error?.code },
+      nextCommand: 'pnpm e2e:qualify --proof .local/e2e-release/qualification-proof.json',
+    });
+  }
+  const proof = validateQualificationProof(proofInput);
   const currentCandidate = {
     commit: git(['rev-parse', 'HEAD^{commit}']),
     tree: git(['rev-parse', 'HEAD^{tree}']),
@@ -1759,6 +1815,9 @@ function runRelease(options, state = {}) {
       artifacts: {
         containerResult: path.join(runDirectory, 'run-result.json'),
         preflightReport: path.join(runDirectory, 'preflight-report.json'),
+        qualificationReport: options.qualification
+          ? path.join(runDirectory, 'semantic-harness-qualification.json')
+          : undefined,
         releaseEvidence: options.writeVerifiedEvidence
           ? path.join(runDirectory, 'semantic-e2e-evidence.json')
           : undefined,
@@ -1806,18 +1865,69 @@ function runRelease(options, state = {}) {
 }
 
 function finalizeQualification(result, options) {
-  const preflight = readJson(result.artifacts.preflightReport);
-  const discovery = preflight.checks.find(
+  const runDirectory = path.resolve(result.runDirectory);
+  const qualificationReportPath = path.join(runDirectory, 'semantic-harness-qualification.json');
+  let preflight;
+  let containerResult;
+  let receipt;
+  try {
+    if (!fs.lstatSync(runDirectory).isDirectory())
+      throw new Error('Artifact run is not a directory.');
+    for (const [filePath, basename] of [
+      [result.artifacts.preflightReport, 'preflight-report.json'],
+      [result.artifacts.containerResult, 'run-result.json'],
+      [qualificationReportPath, 'semantic-harness-qualification.json'],
+    ]) {
+      if (
+        path.resolve(filePath) !== path.join(runDirectory, basename) ||
+        !fs.lstatSync(filePath).isFile()
+      ) {
+        throw new Error('Qualification artifacts must be regular files from the same run.');
+      }
+    }
+    preflight = readJson(result.artifacts.preflightReport);
+    containerResult = readJson(result.artifacts.containerResult);
+    receipt = readQualificationReportReceipt(qualificationReportPath);
+  } catch (error) {
+    throw new ReleaseE2EError('The canonical semantic qualification artifacts are unavailable.', {
+      exitCode: EXIT.FINALIZATION,
+      failureCode: 'E2E_QUALIFICATION_ARTIFACT_INVALID',
+      phase: 'finalization',
+      details: { errorCode: error?.code || 'INVALID_ARTIFACT' },
+    });
+  }
+  const discovery = preflight.checks?.find?.(
     ({ id }) => id === 'environment.playwright-discovery',
   )?.summary;
   const contract = loadQualificationClosureContract(REPOSITORY_ROOT);
-  const containerResult = readJson(result.artifacts.containerResult);
-  const cleanup = containerResult.cleanup;
-  const qualification = containerResult.qualification;
+  const cleanup = Object.fromEntries(
+    ['created', 'cleaned', 'leaked'].map((key) => [key, containerResult?.cleanup?.[key]]),
+  );
+  const qualification = receipt.qualification;
   const closureFailures = [
     ...qualificationReportFailures(qualification, contract),
     ...qualificationCleanupFailures(cleanup),
   ];
+  if (containerResult?.qualificationReportSha256 !== receipt.qualificationReportSha256) {
+    closureFailures.push('qualification-report-digest');
+  }
+  for (const [name, artifact, kind] of [
+    ['run-result', containerResult, 'tiangong-next-release-e2e-run-result'],
+    ['preflight', preflight, 'tiangong-next-release-e2e-preflight-report'],
+  ]) {
+    if (
+      artifact?.kind !== kind ||
+      artifact?.schemaVersion !== 2 ||
+      artifact?.status !== 'passed' ||
+      artifact?.candidate?.commit !== result.candidate.commit ||
+      artifact?.candidate?.tree !== result.candidate.tree
+    ) {
+      closureFailures.push(`${name}-identity-status`);
+    }
+  }
+  if (containerResult?.exitCode !== 0 || containerResult?.preflight?.status !== 'passed') {
+    closureFailures.push('run-result-exit-preflight');
+  }
   if (discovery?.fullListedTests !== contract.coverage.discoveredCases) {
     closureFailures.push('discovery-canonical-cases');
   }
@@ -1858,6 +1968,7 @@ function finalizeQualification(result, options) {
     diagnostics: {
       retainedOutsideGit: true,
       runResultSha256: sha256(fs.readFileSync(result.artifacts.containerResult)),
+      qualificationReportSha256: receipt.qualificationReportSha256,
     },
   };
   const proofPath = resolveQualificationProofPath(options.proof);

@@ -41,7 +41,7 @@ checkPaths:
   - .github/workflows/release-gate.yml
   - .github/workflows/release-readiness.yml
 lastReviewedAt: 2026-10-04
-lastReviewedCommit: 8715529f157c12b1fff9c9dbcafa9dc660566634
+lastReviewedCommit: 23962f4bf51ebd1ad6e166e041998b04dbd3a6a9
 lastReviewedNote: 'Reviewed Platform #1177 canonical proof-source repair: producer digest binding, strict v6 projection, real-report fixture replay and unchanged credential redaction. Test fixtures are not candidate qualification; a complete exact-commit run remains required.'
 ---
 

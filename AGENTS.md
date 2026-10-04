@@ -46,7 +46,7 @@ checkPaths:
   - .husky/pre-push
   - .github/workflows/**
 lastReviewedAt: 2026-10-04
-lastReviewedCommit: 529b5ef9dc4b263e1a934747efae9c54963e184f
+lastReviewedCommit: 23962f4bf51ebd1ad6e166e041998b04dbd3a6a9
 lastReviewedNote: 'Reviewed Platform #1177 final owner admission and native dispatch fences: foreign identities require fresh full application admission; task writes and TIDAS phases verify captured identity through native fetch. Calculation, authorization, environment and quality-gate policy remain unchanged.'
 related:
   - .docpact/config.yaml

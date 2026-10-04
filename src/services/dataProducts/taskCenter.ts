@@ -209,6 +209,10 @@ export function listDataProductTasks(): TaskSummaryV2[] {
   return dataProductSummaries;
 }
 
+export function getDataProductTaskOwnerId(): string | null {
+  return taskOwnerId;
+}
+
 export function getDataProductTaskGeneration(): number | null {
   return taskOwnerId ? taskGeneration : null;
 }

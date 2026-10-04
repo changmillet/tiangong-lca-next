@@ -21,6 +21,7 @@ import {
   bindDataProductTaskCenterOwner,
   decodeDataProductTaskSummary,
   getDataProductTaskGeneration,
+  getDataProductTaskOwnerId,
   listDataProductTaskFeed,
   listDataProductTasks,
   refreshDataProductTasks,
@@ -138,7 +139,10 @@ describe('Data Product TaskSummaryV2 safe projection', () => {
 
   it('rejects late optimistic submissions across logout and a return to the same account', () => {
     const generation = getDataProductTaskGeneration();
+    expect(getDataProductTaskOwnerId()).toBe('owner-a');
     bindDataProductTaskCenterOwner(null);
+    expect(getDataProductTaskOwnerId()).toBeNull();
+    expect(getDataProductTaskGeneration()).toBeNull();
     bindDataProductTaskCenterOwner('owner-a');
     upsertOwnedDataProductTasks(
       [

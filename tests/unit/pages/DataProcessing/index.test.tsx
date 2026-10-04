@@ -310,6 +310,7 @@ jest.mock('@/services/dataProducts', () => ({
 jest.mock('@/services/dataProducts/taskCenter', () => ({
   __esModule: true,
   getDataProductTaskGeneration: () => mockTaskGeneration,
+  getDataProductTaskOwnerId: () => (mockTaskGeneration === null ? null : 'owner-a'),
   refreshDataProductTasks: (...args: any[]) =>
     Reflect.apply(mockRefreshDataProductTasks, undefined, args),
   listDataProductTasks: (...args: any[]) =>
@@ -879,6 +880,12 @@ describe('DataProcessing page', () => {
     await waitFor(() =>
       expect(mockCreateLciaResultBuildRequest).toHaveBeenCalledWith(
         expect.objectContaining({ name: 'Legacy result set', closureCheckId: 'closure-valid' }),
+        expect.objectContaining({
+          taskSession: expect.objectContaining({
+            ownerId: 'owner-a',
+            isCurrent: expect.any(Function),
+          }),
+        }),
       ),
     );
 
@@ -1228,15 +1235,23 @@ describe('DataProcessing page', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Use this check to start calculation' }));
 
     await waitFor(() =>
-      expect(mockCreateLciaResultBuildRequest).toHaveBeenCalledWith({
-        name: 'Test result set',
-        coverageMode: 'global_eligible',
-        defaultImpactCategory: 'climate-change',
-        lciaMethodSet: expectedReviewedLciaMethods,
-        closureCheckId: 'closure-new',
-        requestedScopeHash: 'scope-hash-new',
-        policyFingerprint: 'policy-new',
-      }),
+      expect(mockCreateLciaResultBuildRequest).toHaveBeenCalledWith(
+        {
+          name: 'Test result set',
+          coverageMode: 'global_eligible',
+          defaultImpactCategory: 'climate-change',
+          lciaMethodSet: expectedReviewedLciaMethods,
+          closureCheckId: 'closure-new',
+          requestedScopeHash: 'scope-hash-new',
+          policyFingerprint: 'policy-new',
+        },
+        expect.objectContaining({
+          taskSession: expect.objectContaining({
+            ownerId: 'owner-a',
+            isCurrent: expect.any(Function),
+          }),
+        }),
+      ),
     );
     const runningJob = await screen.findByTestId('data-product-job-worker-job-1');
     expect(within(runningJob).getByLabelText('queued')).toBeInTheDocument();
@@ -1676,28 +1691,43 @@ describe('DataProcessing page', () => {
     expect(screen.queryByText(/process-from-raw-manifest/)).not.toBeInTheDocument();
   });
 
-  it('discards an optimistic build callback after owner generation changes, including a return to the same user', async () => {
-    mockDataProductTasks = [];
-    let finish: (value: any) => void = () => undefined;
-    mockCreateLciaResultBuildRequest.mockReturnValueOnce(
-      new Promise((resolve) => {
-        finish = resolve;
-      }),
-    );
-    render(<DataProcessing />);
-    expect(await screen.findByTestId('page-title')).toHaveTextContent('Data Processing');
-    await waitForValidCertificate();
-    fireEvent.change(screen.getByLabelText('Result set name'), {
-      target: { value: 'Pending package' },
-    });
-    fireEvent.click(screen.getByRole('button', { name: 'Use this check to start calculation' }));
-    await waitFor(() => expect(mockCreateLciaResultBuildRequest).toHaveBeenCalledTimes(1));
-    mockTaskGeneration = 2;
-    await act(async () => {
-      finish({ data: { buildId: 'old-build', workerJobId: 'old-worker' }, error: null });
-    });
-    expect(mockUpsertDataProductTasks).not.toHaveBeenCalled();
-  });
+  it.each(['success', 'error', 'rejection'])(
+    'discards an optimistic build callback after owner generation changes (outcome: %s)',
+    async (outcome) => {
+      mockDataProductTasks = [];
+      let finish: (value: any) => void = () => undefined;
+      let reject: (error: Error) => void = () => undefined;
+      mockCreateLciaResultBuildRequest.mockReturnValueOnce(
+        new Promise((resolve, no) => {
+          finish = resolve;
+          reject = no;
+        }),
+      );
+      render(<DataProcessing />);
+      expect(await screen.findByTestId('page-title')).toHaveTextContent('Data Processing');
+      await waitForValidCertificate();
+      fireEvent.change(screen.getByLabelText('Result set name'), {
+        target: { value: 'Pending package' },
+      });
+      fireEvent.click(screen.getByRole('button', { name: 'Use this check to start calculation' }));
+      await waitFor(() => expect(mockCreateLciaResultBuildRequest).toHaveBeenCalledTimes(1));
+      const guard = mockCreateLciaResultBuildRequest.mock.calls[0][1].taskSession;
+      expect(guard.ownerId).toBe('owner-a');
+      expect(guard.isCurrent()).toBe(true);
+      mockTaskGeneration = 2;
+      expect(guard.isCurrent()).toBe(false);
+      await act(async () => {
+        if (outcome === 'success')
+          finish({ data: { buildId: 'old-build', workerJobId: 'old-worker' }, error: null });
+        else if (outcome === 'error')
+          finish({ data: null, error: { message: 'stale owner error' } });
+        else reject(new Error('stale owner error'));
+      });
+      expect(mockUpsertDataProductTasks).not.toHaveBeenCalled();
+      expect(screen.queryByText('stale owner error')).not.toBeInTheDocument();
+      expect(screen.queryByText('Result generation request submitted')).not.toBeInTheDocument();
+    },
+  );
 
   it('stops a build before submission when the owner changes during form validation', async () => {
     let finish: () => void = () => undefined;
@@ -2523,14 +2553,22 @@ describe('DataProcessing page', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Use this check to start calculation' }));
 
     await waitFor(() =>
-      expect(mockCreateLciaResultBuildRequest).toHaveBeenCalledWith({
-        name: 'Test result set',
-        coverageMode: 'global_eligible',
-        lciaMethodSet: expectedReviewedLciaMethods,
-        closureCheckId: 'closure-valid',
-        requestedScopeHash: 'scope-hash-valid',
-        policyFingerprint: 'policy-valid',
-      }),
+      expect(mockCreateLciaResultBuildRequest).toHaveBeenCalledWith(
+        {
+          name: 'Test result set',
+          coverageMode: 'global_eligible',
+          lciaMethodSet: expectedReviewedLciaMethods,
+          closureCheckId: 'closure-valid',
+          requestedScopeHash: 'scope-hash-valid',
+          policyFingerprint: 'policy-valid',
+        },
+        expect.objectContaining({
+          taskSession: expect.objectContaining({
+            ownerId: 'owner-a',
+            isCurrent: expect.any(Function),
+          }),
+        }),
+      ),
     );
     expect(await screen.findByText('Command failed')).toBeInTheDocument();
 
@@ -3052,6 +3090,12 @@ describe('DataProcessing page', () => {
       await waitFor(() =>
         expect(mockCreateLciaResultBuildRequest).toHaveBeenCalledWith(
           expect.objectContaining({ coverageMode: 'global_eligible' }),
+          expect.objectContaining({
+            taskSession: expect.objectContaining({
+              ownerId: 'owner-a',
+              isCurrent: expect.any(Function),
+            }),
+          }),
         ),
       );
 

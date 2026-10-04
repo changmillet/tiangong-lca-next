@@ -1,3 +1,4 @@
+import type { TaskSessionGuard } from '@/services/taskCenter/sessionGuard';
 import {
   requestWorkerJobsApi,
   type WorkerJobResult,
@@ -103,6 +104,10 @@ export function getLcaTaskStorageKey(ownerId: string): string {
 
 function isActiveGeneration(generation: number): boolean {
   return taskOwnerId !== null && generation === taskGeneration;
+}
+
+function taskSessionGuard(generation: number): TaskSessionGuard {
+  return { ownerId: taskOwnerId!, isCurrent: () => isActiveGeneration(generation) };
 }
 
 function persistTasksToStorage(): void {
@@ -1002,7 +1007,7 @@ async function processSubmitResponse(
     if (!isActiveGeneration(generation) || built !== 'ok') {
       return;
     }
-    const nextSubmit = await submitLcaSolve(request);
+    const nextSubmit = await submitLcaSolve(request, { taskSession: taskSessionGuard(generation) });
     await processSubmitResponse(taskId, request, nextSubmit, attempt + 1, generation);
     return;
   }
@@ -1042,7 +1047,7 @@ async function runTask(
 ): Promise<void> {
   if (!isActiveGeneration(generation)) return;
   try {
-    const submit = await submitLcaSolve(request);
+    const submit = await submitLcaSolve(request, { taskSession: taskSessionGuard(generation) });
     if (!isActiveGeneration(generation)) return;
     if (submit.mode === 'queued' || submit.mode === 'in_progress') {
       upsertTask(
@@ -1159,7 +1164,9 @@ async function resumeTaskAfterReload(taskId: string, generation: number): Promis
         );
         return;
       }
-      const nextSubmit = await submitLcaSolve(latest.request);
+      const nextSubmit = await submitLcaSolve(latest.request, {
+        taskSession: taskSessionGuard(generation),
+      });
       await processSubmitResponse(task.id, latest.request, nextSubmit, 0, generation);
       return;
     }

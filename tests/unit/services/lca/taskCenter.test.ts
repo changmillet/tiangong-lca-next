@@ -308,6 +308,26 @@ describe('lca task center', () => {
     module.bindLcaTaskCenterOwner(null);
   });
 
+  it('captures the admitted owner in transport intent and invalidates it before stale requests can send', async () => {
+    const pending = createDeferred();
+    let captured: any;
+    const { module } = loadTaskCenterModule(({ submitLcaSolve }) =>
+      submitLcaSolve.mockImplementation((_, options) => {
+        captured = options.taskSession;
+        return pending.promise;
+      }),
+    );
+    await flushAsync();
+    module.submitLcaTask({ demand_mode: 'all_unit' });
+    expect(captured.ownerId).toBe('owner-a');
+    expect(captured.isCurrent()).toBe(true);
+    module.bindLcaTaskCenterOwner('owner-b');
+    expect(captured.isCurrent()).toBe(false);
+    pending.resolve({ mode: 'cache_hit', snapshot_id: 'old-snapshot', result_id: 'old-result' });
+    await flushAsync();
+    expect(module.listLcaTasks()).toEqual([]);
+  });
+
   it('normalizes stored tasks, skips invalid entries, and applies request/timeline fallbacks', () => {
     storePersistedTasks(
       [
@@ -1948,10 +1968,18 @@ describe('lca task center', () => {
       resultId: 'result-restored',
       message: 'Cache hit (result result-restored)',
     });
-    expect(mocks.submitLcaSolve).toHaveBeenCalledWith({
-      scope: 'data_product',
-      demand: { process_id: 'process-submit', process_version: '1.0.0' },
-    });
+    expect(mocks.submitLcaSolve).toHaveBeenCalledWith(
+      {
+        scope: 'data_product',
+        demand: { process_id: 'process-submit', process_version: '1.0.0' },
+      },
+      expect.objectContaining({
+        taskSession: expect.objectContaining({
+          ownerId: 'owner-a',
+          isCurrent: expect.any(Function),
+        }),
+      }),
+    );
   });
 
   it('fails reload recovery when a snapshot build finishes but the stored request is missing', async () => {
@@ -2106,10 +2134,18 @@ describe('lca task center', () => {
       resultId: 'result-restored-submit',
       snapshotId: 'snapshot-restored-submit',
     });
-    expect(mocks.submitLcaSolve).toHaveBeenCalledWith({
-      scope: 'data_product',
-      demand: { process_id: 'process-build-submit', process_version: '3.0.0' },
-    });
+    expect(mocks.submitLcaSolve).toHaveBeenCalledWith(
+      {
+        scope: 'data_product',
+        demand: { process_id: 'process-build-submit', process_version: '3.0.0' },
+      },
+      expect.objectContaining({
+        taskSession: expect.objectContaining({
+          ownerId: 'owner-a',
+          isCurrent: expect.any(Function),
+        }),
+      }),
+    );
   });
 
   it('fails reload recovery immediately when a stored running task has no request metadata', async () => {

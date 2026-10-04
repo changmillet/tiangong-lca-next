@@ -1,3 +1,4 @@
+import { Form } from 'antd';
 import DataProcessing, {
   buildImpactCategoryOptions,
   createSubmittedBuildTask,
@@ -160,6 +161,7 @@ const mockSubscribeDataProductTasks = jest.fn((listener: () => void) => {
   taskListeners.add(listener);
   return () => taskListeners.delete(listener);
 });
+let mockTaskGeneration: number | null = 0;
 const mockUpsertDataProductTasks = jest.fn((rows: any[]) => {
   const byId = new Map(mockDataProductTasks.map((task) => [task.jobId, task]));
   rows.forEach((task) => byId.set(task.jobId, task));
@@ -307,6 +309,7 @@ jest.mock('@/services/dataProducts', () => ({
 
 jest.mock('@/services/dataProducts/taskCenter', () => ({
   __esModule: true,
+  getDataProductTaskGeneration: () => mockTaskGeneration,
   refreshDataProductTasks: (...args: any[]) =>
     Reflect.apply(mockRefreshDataProductTasks, undefined, args),
   listDataProductTasks: (...args: any[]) =>
@@ -326,6 +329,7 @@ jest.mock('@/services/workerJobs/api', () => ({
 describe('DataProcessing page', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    mockTaskGeneration = 0;
     mockLocale = 'en-US';
     mockInjectResultSet = true;
     mockLocation = { pathname: '/data-processing', search: '?closureCheckId=closure-valid' };
@@ -1670,6 +1674,72 @@ describe('DataProcessing page', () => {
     expect(within(successAlert).getByText('worker-job-with-large-payload')).toBeInTheDocument();
     expect(screen.queryByText(/input_manifest/)).not.toBeInTheDocument();
     expect(screen.queryByText(/process-from-raw-manifest/)).not.toBeInTheDocument();
+  });
+
+  it('discards an optimistic build callback after owner generation changes, including a return to the same user', async () => {
+    mockDataProductTasks = [];
+    let finish: (value: any) => void = () => undefined;
+    mockCreateLciaResultBuildRequest.mockReturnValueOnce(
+      new Promise((resolve) => {
+        finish = resolve;
+      }),
+    );
+    render(<DataProcessing />);
+    expect(await screen.findByTestId('page-title')).toHaveTextContent('Data Processing');
+    await waitForValidCertificate();
+    fireEvent.change(screen.getByLabelText('Result set name'), {
+      target: { value: 'Pending package' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Use this check to start calculation' }));
+    await waitFor(() => expect(mockCreateLciaResultBuildRequest).toHaveBeenCalledTimes(1));
+    mockTaskGeneration = 2;
+    await act(async () => {
+      finish({ data: { buildId: 'old-build', workerJobId: 'old-worker' }, error: null });
+    });
+    expect(mockUpsertDataProductTasks).not.toHaveBeenCalled();
+  });
+
+  it('stops a build before submission when the owner changes during form validation', async () => {
+    let finish: () => void = () => undefined;
+    const pending = new Promise<void>((resolve) => {
+      finish = resolve;
+    });
+    const validationStarted = jest.fn();
+    const forms = new Set<any>();
+    const useForm = Form.useForm;
+    const spy = jest.spyOn(Form, 'useForm').mockImplementation((...args: any[]) => {
+      const result = useForm(...args);
+      forms.add(result[0]);
+      return result;
+    });
+    try {
+      render(<DataProcessing />);
+      expect(await screen.findByTestId('page-title')).toHaveTextContent('Data Processing');
+      await waitForValidCertificate();
+      fireEvent.change(screen.getByLabelText('Result set name'), {
+        target: { value: 'Deferred package' },
+      });
+      const form = [...forms].find(
+        (candidate) => candidate.getFieldValue?.('name') === 'Deferred package',
+      );
+      const validate = form.validateFields;
+      form.validateFields = async () => {
+        const values = await validate();
+        validationStarted();
+        await pending;
+        return values;
+      };
+      fireEvent.click(screen.getByRole('button', { name: 'Use this check to start calculation' }));
+      await waitFor(() => expect(validationStarted).toHaveBeenCalledTimes(1));
+      mockTaskGeneration = null;
+      await act(async () => {
+        finish();
+      });
+      expect(mockCreateLciaResultBuildRequest).not.toHaveBeenCalled();
+      expect(mockUpsertDataProductTasks).not.toHaveBeenCalled();
+    } finally {
+      spy.mockRestore();
+    }
   });
 
   it('keeps a newly submitted build visible when the refreshed task feed is still empty', async () => {

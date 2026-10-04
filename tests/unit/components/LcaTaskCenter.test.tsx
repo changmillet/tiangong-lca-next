@@ -2,6 +2,16 @@
 import LcaTaskCenter from '@/components/LcaTaskCenter';
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 
+let mockTaskIdentity = 0;
+const mockIdentityListeners = new Set<() => void>();
+jest.mock('@/services/auth/taskCenters', () => ({
+  getTaskCenterIdentityGeneration: () => mockTaskIdentity,
+  subscribeTaskCenterIdentity: (listener: () => void) => {
+    mockIdentityListeners.add(listener);
+    return () => mockIdentityListeners.delete(listener);
+  },
+}));
+
 let mockTasks: any[] = [];
 let mockPackageTasks: any[] = [];
 let mockDataProductTasks: any[] = [];
@@ -254,6 +264,7 @@ const { message } = jest.requireMock('antd') as {
 describe('LcaTaskCenter', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    mockTaskIdentity = 0;
     mockTasks = [];
     mockPackageTasks = [];
     mockDataProductTasks = [];
@@ -800,6 +811,27 @@ describe('LcaTaskCenter', () => {
     expect(mockRefreshLcaTasksFromWorkerJobs).toHaveBeenCalledTimes(2);
     view.unmount();
     jest.useRealTimers();
+  });
+
+  it('starts new-owner discovery immediately while an old-owner cycle remains pending', async () => {
+    let finish: () => void = () => undefined;
+    mockRefreshDataProductTasks.mockReturnValueOnce(
+      new Promise<void>((resolve) => {
+        finish = resolve;
+      }),
+    );
+    const view = render(<LcaTaskCenter />);
+    await act(async () => {});
+    expect(mockRefreshDataProductTasks).toHaveBeenCalledTimes(1);
+    await act(async () => {
+      mockTaskIdentity += 1;
+      mockIdentityListeners.forEach((listener) => listener());
+    });
+    expect(mockRefreshDataProductTasks).toHaveBeenCalledTimes(2);
+    await act(async () => {
+      finish();
+    });
+    view.unmount();
   });
 
   it('refreshes worker-backed task families on mount, timer, open request, and manual refresh failures', async () => {

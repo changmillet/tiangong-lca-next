@@ -1,5 +1,9 @@
 import TidasImportResult from '@/components/ImportTidasPackage/ImportResult';
 import ClosureTaskDetail from '@/components/ClosureTaskDetail';
+import {
+  getTaskCenterIdentityGeneration,
+  subscribeTaskCenterIdentity,
+} from '@/services/auth/taskCenters';
 import { useAntdAppApi } from '@/contexts/AntdAppContext';
 import HeaderActionIcon, { getHeaderBadgeStyle } from '@/components/HeaderActionIcon';
 import {
@@ -1450,9 +1454,14 @@ const LcaTaskCenter: React.FC = () => {
   const packageTasks = useTidasPackageTasks();
   const dataProductTasks = useDataProductTaskSummaries();
 
-  const pendingRefresh = useRef<Promise<void> | null>(null);
+  const identityGeneration = useSyncExternalStore(
+    subscribeTaskCenterIdentity,
+    getTaskCenterIdentityGeneration,
+  );
+  const pendingRefresh = useRef<{ generation: number; promise: Promise<void> } | null>(null);
   const refreshAllTasks = useCallback(() => {
-    if (pendingRefresh.current) return pendingRefresh.current;
+    const generation = getTaskCenterIdentityGeneration();
+    if (pendingRefresh.current?.generation === generation) return pendingRefresh.current.promise;
     // Wait for every read, including when another source fails early.
     const promise = Promise.allSettled([
       refreshLcaTasksFromWorkerJobs(),
@@ -1462,10 +1471,10 @@ const LcaTaskCenter: React.FC = () => {
       const failed = results.find((result) => result.status === 'rejected');
       if (failed?.status === 'rejected') throw failed.reason;
     });
-    pendingRefresh.current = promise;
+    pendingRefresh.current = { generation, promise };
     void promise
       .finally(() => {
-        if (pendingRefresh.current === promise) pendingRefresh.current = null;
+        if (pendingRefresh.current?.promise === promise) pendingRefresh.current = null;
       })
       .catch(() => undefined);
     return promise;
@@ -1546,7 +1555,7 @@ const LcaTaskCenter: React.FC = () => {
       window.removeEventListener('focus', refresh);
       document.removeEventListener('visibilitychange', onVisibility);
     };
-  }, [hasActiveTasks, open, refreshAllTasks]);
+  }, [hasActiveTasks, identityGeneration, open, refreshAllTasks]);
 
   const filteredItems = useMemo(
     () =>

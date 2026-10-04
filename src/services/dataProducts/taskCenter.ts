@@ -209,7 +209,12 @@ export function listDataProductTasks(): TaskSummaryV2[] {
   return dataProductSummaries;
 }
 
-export function upsertDataProductTasks(rows: unknown[]): void {
+export function getDataProductTaskGeneration(): number | null {
+  return taskOwnerId ? taskGeneration : null;
+}
+
+export function upsertDataProductTasks(rows: unknown[], generation: number | null): void {
+  if (generation === null || generation !== taskGeneration || !taskOwnerId) return;
   upsertTaskSummaries(
     rows
       .map(decodeDataProductTaskSummary)
@@ -230,7 +235,7 @@ async function refreshActiveDataProductTasks(generation: number): Promise<TaskSu
   if (generation !== taskGeneration || !taskOwnerId) return listDataProductTasks();
   if (result.error) throw new Error(result.error.message);
   const page = record(result.data);
-  upsertDataProductTasks(Array.isArray(page?.items) ? page.items : []);
+  upsertDataProductTasks(Array.isArray(page?.items) ? page.items : [], generation);
   return listDataProductTasks();
 }
 

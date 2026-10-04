@@ -413,6 +413,25 @@ describe('app runtime config', () => {
     expect(mockBindDataProductTaskCenterOwner).toHaveBeenCalledWith('user-a');
   });
 
+  it('does not rebind an old user lookup after a newer identity generation was admitted', async () => {
+    const { getInitialState } = require('@/app');
+    const centers = require('@/services/auth/taskCenters');
+    let finish: (value: any) => void = () => undefined;
+    mockQueryCurrentUser.mockReturnValueOnce(
+      new Promise((resolve) => {
+        finish = resolve;
+      }),
+    );
+    const initial = getInitialState();
+    for (let i = 0; i < 12; i += 1) await Promise.resolve();
+    centers.bindTaskCenterOwner('owner-b');
+    finish({ name: 'Previous user', userid: 'owner-a' });
+    await initial;
+    expect(mockBindLcaTaskCenterOwner).toHaveBeenLastCalledWith('owner-b');
+    expect(mockBindDataProductTaskCenterOwner).toHaveBeenLastCalledWith('owner-b');
+    expect(mockBindTidasPackageTaskCenterOwner).toHaveBeenLastCalledWith('owner-b');
+  });
+
   it('getInitialState loads dashboard users so admin route access can gate the page', async () => {
     const { getInitialState } = require('@/app');
     mockHistory.location.pathname = '/dashboard/national-carbon';

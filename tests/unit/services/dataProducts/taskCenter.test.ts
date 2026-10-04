@@ -20,11 +20,12 @@ import {
 import {
   bindDataProductTaskCenterOwner,
   decodeDataProductTaskSummary,
+  getDataProductTaskGeneration,
   listDataProductTaskFeed,
   listDataProductTasks,
   refreshDataProductTasks,
   subscribeDataProductTasks,
-  upsertDataProductTasks,
+  upsertDataProductTasks as upsertOwnedDataProductTasks,
 } from '@/services/dataProducts/taskCenter';
 import {
   clearTaskSummaries,
@@ -33,6 +34,9 @@ import {
   subscribeTaskSummaries,
   upsertTaskSummaries,
 } from '@/services/taskCenter/workerJobStore';
+
+const upsertDataProductTasks = (rows: unknown[]) =>
+  upsertOwnedDataProductTasks(rows, getDataProductTaskGeneration());
 
 const databaseArtifactContract = require('../../../fixtures/contracts/20260729_scope_closure_public_artifact_contract.json');
 
@@ -130,6 +134,28 @@ describe('Data Product TaskSummaryV2 safe projection', () => {
     bindDataProductTaskCenterOwner(' ');
     await refreshDataProductTasks();
     expect(invokeDataProductCommand).toHaveBeenCalledTimes(2);
+  });
+
+  it('rejects late optimistic submissions across logout and a return to the same account', () => {
+    const generation = getDataProductTaskGeneration();
+    bindDataProductTaskCenterOwner(null);
+    bindDataProductTaskCenterOwner('owner-a');
+    upsertOwnedDataProductTasks(
+      [
+        {
+          schemaVersion: 'task-summary.v2',
+          jobId: 'old-submit',
+          jobKind: 'lcia_result.package_build',
+          category: 'data_product',
+          workerStatus: 'queued',
+          projectionUpdatedAt: '2026-10-04T00:00:00Z',
+        },
+      ],
+      generation,
+    );
+    expect(listDataProductTasks()).toEqual([]);
+    bindDataProductTaskCenterOwner(null);
+    upsertOwnedDataProductTasks([], null);
   });
 
   it('keeps worker status and certificate validity separate without accepting raw result fields', () => {

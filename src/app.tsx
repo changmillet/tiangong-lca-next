@@ -32,9 +32,11 @@ import {
   type SystemStatus,
 } from '@/services/general/systemStatus';
 import { getSystemUserRoleApi } from '@/services/roles/api';
-import { bindLcaTaskCenterOwner } from '@/services/lca/taskCenter';
-import { bindDataProductTaskCenterOwner } from '@/services/dataProducts/taskCenter';
-import { bindTidasPackageTaskCenterOwner } from '@/services/tidasPackage/taskCenter';
+import {
+  bindTaskCenterOwner,
+  getTaskCenterIdentityGeneration,
+  subscribeToTaskCenterAuthChanges,
+} from '@/services/auth/taskCenters';
 import styles from '@/style/custom.less';
 import { AntdAppApiRegistrar } from '@/contexts/AntdAppContext';
 import { AntdThemeSync, createAntdThemeConfig } from '@/contexts/AntdThemeSync';
@@ -57,6 +59,8 @@ const systemAccessByRole = new Map<string, Auth.CurrentUser['access']>([
   ['owner', 'admin'],
   ['data_product_manager', 'data_product_manager'],
 ]);
+
+subscribeToTaskCenterAuthChanges();
 
 subscribeToPasswordRecovery(() => {
   history.replace(recoveryFormPath);
@@ -134,26 +138,21 @@ export async function getInitialState(): Promise<{
   systemStatus?: SystemStatus;
 }> {
   const fetchUserInfo = async (): Promise<Auth.CurrentUser | null> => {
+    const identityGeneration = getTaskCenterIdentityGeneration();
     try {
       const msg = await queryCurrentUser();
       if (!msg) {
-        bindTidasPackageTaskCenterOwner(null);
-        bindLcaTaskCenterOwner(null);
-        bindDataProductTaskCenterOwner(null);
+        bindTaskCenterOwner(null, identityGeneration);
         history.push(LOGIN_PATH);
         return null;
       }
-      bindTidasPackageTaskCenterOwner(msg.userid);
-      bindLcaTaskCenterOwner(msg.userid);
-      bindDataProductTaskCenterOwner(msg.userid);
+      bindTaskCenterOwner(msg.userid, identityGeneration);
       return {
         ...msg,
         access: await getSystemAccess(),
       };
     } catch (error) {
-      bindTidasPackageTaskCenterOwner(null);
-      bindLcaTaskCenterOwner(null);
-      bindDataProductTaskCenterOwner(null);
+      bindTaskCenterOwner(null, identityGeneration);
       history.push(LOGIN_PATH);
     }
     return null;
@@ -170,9 +169,7 @@ export async function getInitialState(): Promise<{
   // single startup read; a browser refresh is required to check it again.
   const systemStatus = await getSystemStatus();
   if (isSystemMaintenanceActive(systemStatus)) {
-    bindTidasPackageTaskCenterOwner(null);
-    bindLcaTaskCenterOwner(null);
-    bindDataProductTaskCenterOwner(null);
+    bindTaskCenterOwner(null);
     return {
       fetchUserInfo,
       settings: updatedSettings as Partial<LayoutSettings>,
@@ -192,9 +189,7 @@ export async function getInitialState(): Promise<{
       systemStatus,
     };
   }
-  bindTidasPackageTaskCenterOwner(null);
-  bindLcaTaskCenterOwner(null);
-  bindDataProductTaskCenterOwner(null);
+  bindTaskCenterOwner(null);
   return {
     fetchUserInfo,
     settings: updatedSettings as Partial<LayoutSettings>,

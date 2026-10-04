@@ -3,7 +3,7 @@
   "locale": "fr-FR",
   "validationClosure": {
     "baselineSha": "c26f306e82ac66f50a56aafe8f89ea96c0b0c67d",
-    "auditedInputDigest": "4db16a41ea847c19c75c540c93c79192fec402b9a34763e4788ae73cd862feda",
+    "auditedInputDigest": "6bb23057dd3d155398b391ada2952879caa36519bd2072cc526f0ee8e0ddaa95",
     "validatedMessageCount": 3528,
     "validatedModules": [
       "$entry",
@@ -42,9 +42,9 @@
     "highRiskMessageCount": 1655,
     "highRiskMessageDigest": "5cb266319ca1a1f58d63473a13b23a7b0b9e08bde4f2e67523825e5afd468b33",
     "catalogDigest": "9aefc463bc9c0ab3a4c4f3b3a82fa40cac52e634eb895f43078183c36588ed82",
-    "dossierDigest": "a6e698407265b57e51414d707349f7def75f1708d44714700c5a2db90a12b9a4",
+    "dossierDigest": "da191beaa6946e43a198d540e1acb42039d19fa73f4f9e3898b099c2da3ac2c1",
     "typedContentDossierDigest": "381b7b7af87d349151ab51d77de2402d93629029efa5ff964e45d5e00cddf454",
-    "routeEvidenceDigest": "69bb9b6da74512d96aea1e277ca6b3b9385defd0a6b7c05f982074584666d6ca",
+    "routeEvidenceDigest": "fd86da932713ecb6642bad498b4b7d99ad06c7dd3579cc338955dcfbfb436746",
     "scope": "deterministic structure only; semantic translation and rendered route review are separate production blockers owned by #635"
   },
   "validationLanes": [
@@ -98,7 +98,7 @@
         "messageDigest": "def422ab42d84ea5de9a9be3f61f0ff20b1f610297788dd5a9eed6aec3248f38",
         "highRiskMessageCount": 1655,
         "highRiskMessageDigest": "5cb266319ca1a1f58d63473a13b23a7b0b9e08bde4f2e67523825e5afd468b33",
-        "dossierDigest": "a6e698407265b57e51414d707349f7def75f1708d44714700c5a2db90a12b9a4",
+        "dossierDigest": "da191beaa6946e43a198d540e1acb42039d19fa73f4f9e3898b099c2da3ac2c1",
         "checks": {
           "nonEmptyTargets": true,
           "icuArgumentSignatureParity": true,
@@ -113,5 +113,5 @@
     }
   ],
   "blockedItems": [],
-  "validationDigest": "d2b38477e096a0e59f304cfca43fd6109e78093490cf3b0d349a8c9aa32ac205"
+  "validationDigest": "01508c1537ab52757f4c590651e1ce1bff2b6e5475c647a9e2f768ffc24ce318"
 }

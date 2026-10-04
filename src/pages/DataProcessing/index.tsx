@@ -25,6 +25,7 @@ import {
   type LciaResultSetV1,
 } from '@/services/dataProducts';
 import {
+  getDataProductTaskGeneration,
   listDataProductTasks,
   refreshDataProductTasks,
   subscribeDataProductTasks,
@@ -1561,7 +1562,9 @@ const DataProcessing = () => {
   };
 
   const handleCreateBuild = async () => {
+    const taskGeneration = getDataProductTaskGeneration();
     const values = await buildForm.validateFields();
+    if (taskGeneration === null || taskGeneration !== getDataProductTaskGeneration()) return;
     const selectionKey = scopeSelectionKey(values, impactCategoryOptions);
     const lciaMethodSet = reviewedLciaMethodSet(impactCategoryOptions);
     if (lciaMethodSet.length === 0) {
@@ -1603,10 +1606,11 @@ const DataProcessing = () => {
       }),
     );
 
+    if (taskGeneration !== getDataProductTaskGeneration()) return;
     if (result && !result.error) {
       const submittedTask = createSubmittedBuildTask(result.data);
       if (submittedTask) {
-        upsertDataProductTasks([submittedTask]);
+        upsertDataProductTasks([submittedTask], taskGeneration);
       }
       void loadBuildJobs();
     }

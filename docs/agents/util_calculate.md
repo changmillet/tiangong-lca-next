@@ -22,8 +22,8 @@ checkPaths:
   - src/components/LcaTaskCenter/**
   - src/pages/Processes/Analysis/**
 lastReviewedAt: 2026-10-04
-lastReviewedCommit: 6c695c11bd52a505bf453a8818f7f1298a470618
-lastReviewedNote: 'Reviewed Platform #1177: settled adaptive task discovery, verified auth-event ownership, startup epoch revalidation, owner snapshots and stale optimistic callback fences; calculation, authorization, environment and quality-gate policy remain aligned.'
+lastReviewedCommit: 529b5ef9dc4b263e1a934747efae9c54963e184f
+lastReviewedNote: 'Reviewed Platform #1177 final owner admission and native dispatch fences: foreign identities require fresh full application admission; task writes and TIDAS phases verify captured identity through native fetch. Calculation, authorization, environment and quality-gate policy remain unchanged.'
 ---
 
 # Lifecycle Model Calculation Reference

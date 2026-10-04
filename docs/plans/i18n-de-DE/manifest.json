@@ -3,7 +3,7 @@
   "source": {
     "baseRef": "c26f306e82ac66f50a56aafe8f89ea96c0b0c67d",
     "baseCommit": "c26f306e82ac66f50a56aafe8f89ea96c0b0c67d",
-    "auditedInputDigest": "dd094dc0d7feeb102fff6df3cbdbf7c603277718eb22fac6e9bd1b1eeea310e3",
+    "auditedInputDigest": "320c2eb89edf5f1921199ddc0642515b2680ac129584993428640a41daa019f1",
     "auditedInputDigestAlgorithm": "sha256(path\\0content\\0)",
     "repository": "tiangong-lca/platform"
   },
@@ -74,7 +74,7 @@
     "activeStaticKeyCount": 2349,
     "activeDynamicKeyCount": 321,
     "reservedKeyCount": 858,
-    "productionSourceFileCount": 489,
+    "productionSourceFileCount": 490,
     "literalReferenceCount": 4296,
     "dynamicCallsiteCount": 33,
     "dynamicCallsiteSummaryCount": 33,
@@ -17921,7 +17921,7 @@
         {
           "kind": "formatMessage",
           "path": "src/components/ImportTidasPackage/index.tsx",
-          "line": 122,
+          "line": 136,
           "column": 21,
           "symbol": "ImportTidasPackage",
           "defaultMessage": "Cancel",
@@ -17942,7 +17942,7 @@
             },
             {
               "path": "src/components/ImportTidasPackage/index.tsx",
-              "line": 122,
+              "line": 136,
               "column": 21,
               "kind": "formatMessage"
             }
@@ -18597,7 +18597,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/components/ImportTidasPackage/index.tsx",
-          "line": 155,
+          "line": 169,
           "column": 19,
           "symbol": "ImportTidasPackage",
           "defaultMessage": "Open English API import docs",
@@ -18612,7 +18612,7 @@
           "locations": [
             {
               "path": "src/components/ImportTidasPackage/index.tsx",
-              "line": 155,
+              "line": 169,
               "column": 19,
               "kind": "FormattedMessage"
             }
@@ -18680,7 +18680,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/components/ImportTidasPackage/index.tsx",
-          "line": 149,
+          "line": 163,
           "column": 19,
           "symbol": "ImportTidasPackage",
           "defaultMessage": "See the English API import documentation for the full request flow and integration details.",
@@ -18695,7 +18695,7 @@
           "locations": [
             {
               "path": "src/components/ImportTidasPackage/index.tsx",
-              "line": 149,
+              "line": 163,
               "column": 19,
               "kind": "FormattedMessage"
             }
@@ -18763,7 +18763,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/components/ImportTidasPackage/index.tsx",
-          "line": 163,
+          "line": 177,
           "column": 15,
           "symbol": "ImportTidasPackage",
           "defaultMessage": "API import",
@@ -18778,7 +18778,7 @@
           "locations": [
             {
               "path": "src/components/ImportTidasPackage/index.tsx",
-              "line": 163,
+              "line": 177,
               "column": 15,
               "kind": "FormattedMessage"
             }
@@ -18846,7 +18846,7 @@
         {
           "kind": "formatMessage",
           "path": "src/components/ImportTidasPackage/index.tsx",
-          "line": 118,
+          "line": 132,
           "column": 17,
           "symbol": "ImportTidasPackage",
           "defaultMessage": "Import",
@@ -18861,7 +18861,7 @@
           "locations": [
             {
               "path": "src/components/ImportTidasPackage/index.tsx",
-              "line": 118,
+              "line": 132,
               "column": 17,
               "kind": "formatMessage"
             }
@@ -19047,7 +19047,7 @@
         {
           "kind": "formatMessage",
           "path": "src/components/ImportTidasPackage/index.tsx",
-          "line": 54,
+          "line": 68,
           "column": 9,
           "symbol": "handleImport",
           "defaultMessage": "Failed to import TIDAS package",
@@ -19062,7 +19062,7 @@
           "locations": [
             {
               "path": "src/components/ImportTidasPackage/index.tsx",
-              "line": 54,
+              "line": 68,
               "column": 9,
               "kind": "formatMessage"
             }
@@ -19130,7 +19130,7 @@
         {
           "kind": "formatMessage",
           "path": "src/components/ImportTidasPackage/index.tsx",
-          "line": 72,
+          "line": 86,
           "column": 11,
           "symbol": "uploadProps",
           "defaultMessage": "Only ZIP packages are supported",
@@ -19145,7 +19145,7 @@
           "locations": [
             {
               "path": "src/components/ImportTidasPackage/index.tsx",
-              "line": 72,
+              "line": 86,
               "column": 11,
               "kind": "formatMessage"
             }
@@ -19331,7 +19331,7 @@
         {
           "kind": "formatMessage",
           "path": "src/components/ImportTidasPackage/index.tsx",
-          "line": 33,
+          "line": 38,
           "column": 9,
           "symbol": "handleImport",
           "defaultMessage": "Please select a ZIP package to import",
@@ -19346,7 +19346,7 @@
           "locations": [
             {
               "path": "src/components/ImportTidasPackage/index.tsx",
-              "line": 33,
+              "line": 38,
               "column": 9,
               "kind": "formatMessage"
             }
@@ -19414,7 +19414,7 @@
         {
           "kind": "formatMessage",
           "path": "src/components/ImportTidasPackage/index.tsx",
-          "line": 45,
+          "line": 58,
           "column": 9,
           "symbol": "handleImport",
           "defaultMessage": "Import submitted. View progress and results in Task Center.",
@@ -19429,7 +19429,7 @@
           "locations": [
             {
               "path": "src/components/ImportTidasPackage/index.tsx",
-              "line": 45,
+              "line": 58,
               "column": 9,
               "kind": "formatMessage"
             }
@@ -20726,7 +20726,7 @@
         {
           "kind": "formatMessage",
           "path": "src/components/ImportTidasPackage/index.tsx",
-          "line": 105,
+          "line": 119,
           "column": 16,
           "symbol": "ImportTidasPackage",
           "defaultMessage": "Import TIDAS ZIP Package",
@@ -20741,7 +20741,7 @@
           "locations": [
             {
               "path": "src/components/ImportTidasPackage/index.tsx",
-              "line": 105,
+              "line": 119,
               "column": 16,
               "kind": "formatMessage"
             }
@@ -20809,7 +20809,7 @@
         {
           "kind": "formatMessage",
           "path": "src/components/ImportTidasPackage/index.tsx",
-          "line": 91,
+          "line": 105,
           "column": 21,
           "symbol": "ImportTidasPackage",
           "defaultMessage": "Import TIDAS ZIP Package",
@@ -20818,7 +20818,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/components/ImportTidasPackage/index.tsx",
-          "line": 96,
+          "line": 110,
           "column": 11,
           "symbol": "ImportTidasPackage",
           "defaultMessage": "Import TIDAS ZIP Package",
@@ -20833,13 +20833,13 @@
           "locations": [
             {
               "path": "src/components/ImportTidasPackage/index.tsx",
-              "line": 91,
+              "line": 105,
               "column": 21,
               "kind": "formatMessage"
             },
             {
               "path": "src/components/ImportTidasPackage/index.tsx",
-              "line": 96,
+              "line": 110,
               "column": 11,
               "kind": "FormattedMessage"
             }
@@ -20907,7 +20907,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/components/ImportTidasPackage/index.tsx",
-          "line": 139,
+          "line": 153,
           "column": 15,
           "symbol": "ImportTidasPackage",
           "defaultMessage": "The package will be validated before any data is imported",
@@ -20922,7 +20922,7 @@
           "locations": [
             {
               "path": "src/components/ImportTidasPackage/index.tsx",
-              "line": 139,
+              "line": 153,
               "column": 15,
               "kind": "FormattedMessage"
             }
@@ -20990,7 +20990,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/components/ImportTidasPackage/index.tsx",
-          "line": 133,
+          "line": 147,
           "column": 15,
           "symbol": "ImportTidasPackage",
           "defaultMessage": "Click or drag a ZIP package to this area to upload",
@@ -21005,7 +21005,7 @@
           "locations": [
             {
               "path": "src/components/ImportTidasPackage/index.tsx",
-              "line": 133,
+              "line": 147,
               "column": 15,
               "kind": "FormattedMessage"
             }
@@ -63387,7 +63387,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2345,
+          "line": 2369,
           "column": 17,
           "symbol": "renderBuildRequests",
           "defaultMessage": "Use this check to start calculation",
@@ -63402,7 +63402,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2345,
+              "line": 2369,
               "column": 17,
               "kind": "messageHelper"
             }
@@ -63470,7 +63470,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2326,
+          "line": 2350,
           "column": 20,
           "symbol": "renderBuildRequests",
           "defaultMessage": "Check data completeness",
@@ -63485,7 +63485,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2326,
+              "line": 2350,
               "column": 20,
               "kind": "messageHelper"
             }
@@ -63553,7 +63553,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2349,
+          "line": 2373,
           "column": 17,
           "symbol": "renderBuildRequests",
           "defaultMessage": "Generate result set",
@@ -63568,7 +63568,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2349,
+              "line": 2373,
               "column": 17,
               "kind": "messageHelper"
             }
@@ -63802,7 +63802,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 1850,
+          "line": 1874,
           "column": 45,
           "symbol": "previewPackageLabel",
           "defaultMessage": "Preview result set",
@@ -63811,7 +63811,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2690,
+          "line": 2714,
           "column": 14,
           "symbol": "renderPackagePreview",
           "defaultMessage": "Preview result set",
@@ -63826,13 +63826,13 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 1850,
+              "line": 1874,
               "column": 45,
               "kind": "messageHelper"
             },
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2690,
+              "line": 2714,
               "column": 14,
               "kind": "messageHelper"
             }
@@ -63900,7 +63900,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 3006,
+          "line": 3030,
           "column": 14,
           "symbol": "renderPublication",
           "defaultMessage": "Publish result set",
@@ -63915,7 +63915,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 3006,
+              "line": 3030,
               "column": 14,
               "kind": "messageHelper"
             }
@@ -64066,7 +64066,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 3071,
+          "line": 3095,
           "column": 53,
           "symbol": "unpublishPublicationLabel",
           "defaultMessage": "Unpublish publication",
@@ -64081,7 +64081,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 3071,
+              "line": 3095,
               "column": 53,
               "kind": "messageHelper"
             }
@@ -67808,7 +67808,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 1588,
+          "line": 1600,
           "column": 18,
           "symbol": "handleCreateBuild",
           "defaultMessage": "Run a complete data check for the current selection before generating a result set.",
@@ -67823,7 +67823,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 1588,
+              "line": 1600,
               "column": 18,
               "kind": "messageHelper"
             }
@@ -67900,7 +67900,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2200,
+          "line": 2224,
           "column": 30,
           "symbol": "renderBuildRequests",
           "defaultMessage": "Certificate",
@@ -67921,7 +67921,7 @@
             },
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2200,
+              "line": 2224,
               "column": 30,
               "kind": "messageHelper"
             }
@@ -67998,7 +67998,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2205,
+          "line": 2229,
           "column": 30,
           "symbol": "renderBuildRequests",
           "defaultMessage": "Scan completeness",
@@ -68019,7 +68019,7 @@
             },
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2205,
+              "line": 2229,
               "column": 30,
               "kind": "messageHelper"
             }
@@ -68268,7 +68268,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 1440,
+          "line": 1442,
           "column": 35,
           "symbol": "closureErrorMessages",
           "defaultMessage": "The current public release or snapshot is unavailable; a certificate cannot be issued.",
@@ -68283,7 +68283,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 1440,
+              "line": 1442,
               "column": 35,
               "kind": "messageHelper"
             }
@@ -68351,7 +68351,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 1444,
+          "line": 1446,
           "column": 41,
           "symbol": "closureErrorMessages",
           "defaultMessage": "Closure evidence integrity verification failed.",
@@ -68366,7 +68366,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 1444,
+              "line": 1446,
               "column": 41,
               "kind": "messageHelper"
             }
@@ -68434,7 +68434,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 1436,
+          "line": 1438,
           "column": 39,
           "symbol": "closureErrorMessages",
           "defaultMessage": "The current public release or snapshot is unavailable; a certificate cannot be issued.",
@@ -68449,7 +68449,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 1436,
+              "line": 1438,
               "column": 39,
               "kind": "messageHelper"
             }
@@ -68517,7 +68517,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 1416,
+          "line": 1418,
           "column": 35,
           "symbol": "closureErrorMessages",
           "defaultMessage": "The closure scan is incomplete.",
@@ -68532,7 +68532,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 1416,
+              "line": 1418,
               "column": 35,
               "kind": "messageHelper"
             }
@@ -68600,7 +68600,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 1408,
+          "line": 1410,
           "column": 34,
           "symbol": "closureErrorMessages",
           "defaultMessage": "The selected closure check was not found.",
@@ -68615,7 +68615,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 1408,
+              "line": 1410,
               "column": 34,
               "kind": "messageHelper"
             }
@@ -68683,7 +68683,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 1412,
+          "line": 1414,
           "column": 35,
           "symbol": "closureErrorMessages",
           "defaultMessage": "The closure check has not passed.",
@@ -68698,7 +68698,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 1412,
+              "line": 1414,
               "column": 35,
               "kind": "messageHelper"
             }
@@ -68766,7 +68766,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 1424,
+          "line": 1426,
           "column": 40,
           "symbol": "closureErrorMessages",
           "defaultMessage": "The current policy does not match this closure check.",
@@ -68781,7 +68781,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 1424,
+              "line": 1426,
               "column": 40,
               "kind": "messageHelper"
             }
@@ -68849,7 +68849,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 1404,
+          "line": 1406,
           "column": 33,
           "symbol": "closureErrorMessages",
           "defaultMessage": "A closure check is required.",
@@ -68864,7 +68864,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 1404,
+              "line": 1406,
               "column": 33,
               "kind": "messageHelper"
             }
@@ -68932,7 +68932,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 1432,
+          "line": 1434,
           "column": 32,
           "symbol": "closureErrorMessages",
           "defaultMessage": "The closure certificate was revoked.",
@@ -68947,7 +68947,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 1432,
+              "line": 1434,
               "column": 32,
               "kind": "messageHelper"
             }
@@ -69015,7 +69015,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 1420,
+          "line": 1422,
           "column": 39,
           "symbol": "closureErrorMessages",
           "defaultMessage": "The current selection does not match this closure check.",
@@ -69030,7 +69030,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 1420,
+              "line": 1422,
               "column": 39,
               "kind": "messageHelper"
             }
@@ -69098,7 +69098,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 1428,
+          "line": 1430,
           "column": 30,
           "symbol": "closureErrorMessages",
           "defaultMessage": "The closure certificate is stale.",
@@ -69113,7 +69113,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 1428,
+              "line": 1430,
               "column": 30,
               "kind": "messageHelper"
             }
@@ -69181,7 +69181,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2245,
+          "line": 2269,
           "column": 31,
           "symbol": "renderBuildRequests",
           "defaultMessage": "Error code",
@@ -69196,7 +69196,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2245,
+              "line": 2269,
               "column": 31,
               "kind": "messageHelper"
             }
@@ -69273,7 +69273,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2265,
+          "line": 2289,
           "column": 26,
           "symbol": "renderBuildRequests",
           "defaultMessage": "Data completeness check was cancelled. Run a new check to continue.",
@@ -69294,7 +69294,7 @@
             },
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2265,
+              "line": 2289,
               "column": 26,
               "kind": "messageHelper"
             }
@@ -69371,7 +69371,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2231,
+          "line": 2255,
           "column": 26,
           "symbol": "renderBuildRequests",
           "defaultMessage": "Data completeness check failed to run",
@@ -69392,7 +69392,7 @@
             },
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2231,
+              "line": 2255,
               "column": 26,
               "kind": "messageHelper"
             }
@@ -69469,7 +69469,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2238,
+          "line": 2262,
           "column": 27,
           "symbol": "renderBuildRequests",
           "defaultMessage": "The check did not complete. Retry it; if it fails again, contact an administrator with the identifiers below.",
@@ -69490,7 +69490,7 @@
             },
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2238,
+              "line": 2262,
               "column": 27,
               "kind": "messageHelper"
             }
@@ -69567,7 +69567,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2273,
+          "line": 2297,
           "column": 26,
           "symbol": "renderBuildRequests",
           "defaultMessage": "The check is still running. Closure issues will be available after it completes.",
@@ -69588,7 +69588,7 @@
             },
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2273,
+              "line": 2297,
               "column": 26,
               "kind": "messageHelper"
             }
@@ -69656,7 +69656,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2168,
+          "line": 2192,
           "column": 22,
           "symbol": "renderBuildRequests",
           "defaultMessage": "Check history",
@@ -69665,7 +69665,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2171,
+          "line": 2195,
           "column": 33,
           "symbol": "renderBuildRequests",
           "defaultMessage": "Check history",
@@ -69680,13 +69680,13 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2168,
+              "line": 2192,
               "column": 22,
               "kind": "messageHelper"
             },
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2171,
+              "line": 2195,
               "column": 33,
               "kind": "messageHelper"
             }
@@ -69754,7 +69754,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2281,
+          "line": 2305,
           "column": 28,
           "symbol": "renderBuildRequests",
           "defaultMessage": "Closure issues",
@@ -69769,7 +69769,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2281,
+              "line": 2305,
               "column": 28,
               "kind": "messageHelper"
             }
@@ -69846,7 +69846,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2210,
+          "line": 2234,
           "column": 30,
           "symbol": "renderBuildRequests",
           "defaultMessage": "Issues",
@@ -69867,7 +69867,7 @@
             },
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2210,
+              "line": 2234,
               "column": 30,
               "kind": "messageHelper"
             }
@@ -69935,7 +69935,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2285,
+          "line": 2309,
           "column": 24,
           "symbol": "renderBuildRequests",
           "defaultMessage": "No closure issues found.",
@@ -69950,7 +69950,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2285,
+              "line": 2309,
               "column": 24,
               "kind": "messageHelper"
             }
@@ -70018,7 +70018,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2301,
+          "line": 2325,
           "column": 24,
           "symbol": "renderBuildRequests",
           "defaultMessage": "Load more issues",
@@ -70033,7 +70033,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2301,
+              "line": 2325,
               "column": 24,
               "kind": "messageHelper"
             }
@@ -70101,7 +70101,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2182,
+          "line": 2206,
           "column": 26,
           "symbol": "renderBuildRequests",
           "defaultMessage": "Check data completeness before generation.",
@@ -70116,7 +70116,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2182,
+              "line": 2206,
               "column": 26,
               "kind": "messageHelper"
             }
@@ -70243,7 +70243,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2219,
+          "line": 2243,
           "column": 26,
           "symbol": "renderBuildRequests",
           "defaultMessage": "The current selection differs from this check. Run a new check before generating.",
@@ -70258,7 +70258,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2219,
+              "line": 2243,
               "column": 26,
               "kind": "messageHelper"
             }
@@ -70335,7 +70335,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2195,
+          "line": 2219,
           "column": 30,
           "symbol": "renderBuildRequests",
           "defaultMessage": "Check status",
@@ -70356,7 +70356,7 @@
             },
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2195,
+              "line": 2219,
               "column": 30,
               "kind": "messageHelper"
             }
@@ -70424,7 +70424,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2161,
+          "line": 2185,
           "column": 20,
           "symbol": "renderBuildRequests",
           "defaultMessage": "Data completeness preflight",
@@ -70439,7 +70439,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2161,
+              "line": 2185,
               "column": 20,
               "kind": "messageHelper"
             }
@@ -70516,7 +70516,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2253,
+          "line": 2277,
           "column": 31,
           "symbol": "renderBuildRequests",
           "defaultMessage": "Worker job ID",
@@ -70537,7 +70537,7 @@
             },
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2253,
+              "line": 2277,
               "column": 31,
               "kind": "messageHelper"
             }
@@ -70605,7 +70605,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 1335,
+          "line": 1337,
           "column": 9,
           "symbol": "commandSummaryRows",
           "defaultMessage": "Generation ID",
@@ -70620,7 +70620,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 1335,
+              "line": 1337,
               "column": 9,
               "kind": "messageHelper"
             }
@@ -70697,7 +70697,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 1323,
+          "line": 1325,
           "column": 9,
           "symbol": "commandSummaryRows",
           "defaultMessage": "Closure check ID",
@@ -70718,7 +70718,7 @@
             },
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 1323,
+              "line": 1325,
               "column": 9,
               "kind": "messageHelper"
             }
@@ -70963,7 +70963,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 1454,
+          "line": 1456,
           "column": 11,
           "symbol": "showResult",
           "defaultMessage": "Command failed",
@@ -70972,7 +70972,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 1664,
+          "line": 1688,
           "column": 41,
           "symbol": "handleRecoverClosureCheck",
           "defaultMessage": "Command failed",
@@ -70987,13 +70987,13 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 1454,
+              "line": 1456,
               "column": 11,
               "kind": "messageHelper"
             },
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 1664,
+              "line": 1688,
               "column": 41,
               "kind": "messageHelper"
             }
@@ -71061,7 +71061,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 1361,
+          "line": 1363,
           "column": 9,
           "symbol": "commandSummaryRows",
           "defaultMessage": "Result set ID",
@@ -71076,7 +71076,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 1361,
+              "line": 1363,
               "column": 9,
               "kind": "messageHelper"
             }
@@ -71262,7 +71262,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 1357,
+          "line": 1359,
           "column": 9,
           "symbol": "commandSummaryRows",
           "defaultMessage": "Publication ID",
@@ -71271,7 +71271,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 1369,
+          "line": 1371,
           "column": 7,
           "symbol": "commandSummaryRows",
           "defaultMessage": "Publication ID",
@@ -71286,13 +71286,13 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 1357,
+              "line": 1359,
               "column": 9,
               "kind": "messageHelper"
             },
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 1369,
+              "line": 1371,
               "column": 7,
               "kind": "messageHelper"
             }
@@ -71419,7 +71419,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 1315,
+          "line": 1317,
           "column": 9,
           "symbol": "commandSummaryRows",
           "defaultMessage": "Result set ID",
@@ -71434,7 +71434,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 1315,
+              "line": 1317,
               "column": 9,
               "kind": "messageHelper"
             }
@@ -71502,7 +71502,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 1364,
+          "line": 1366,
           "column": 14,
           "symbol": "commandSummaryRows",
           "defaultMessage": "Status",
@@ -71511,7 +71511,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 1373,
+          "line": 1375,
           "column": 7,
           "symbol": "commandSummaryRows",
           "defaultMessage": "Status",
@@ -71520,7 +71520,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 1831,
+          "line": 1855,
           "column": 20,
           "symbol": "renderBuildJobs",
           "defaultMessage": "Status",
@@ -71529,7 +71529,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 3032,
+          "line": 3056,
           "column": 22,
           "symbol": "renderPublication",
           "defaultMessage": "Status",
@@ -71544,25 +71544,25 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 1364,
+              "line": 1366,
               "column": 14,
               "kind": "messageHelper"
             },
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 1373,
+              "line": 1375,
               "column": 7,
               "kind": "messageHelper"
             },
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 1831,
+              "line": 1855,
               "column": 20,
               "kind": "messageHelper"
             },
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 3032,
+              "line": 3056,
               "column": 22,
               "kind": "messageHelper"
             }
@@ -71748,7 +71748,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 1327,
+          "line": 1329,
           "column": 9,
           "symbol": "commandSummaryRows",
           "defaultMessage": "Worker job ID",
@@ -71757,7 +71757,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 1339,
+          "line": 1341,
           "column": 9,
           "symbol": "commandSummaryRows",
           "defaultMessage": "Worker job ID",
@@ -71772,13 +71772,13 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 1327,
+              "line": 1329,
               "column": 9,
               "kind": "messageHelper"
             },
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 1339,
+              "line": 1341,
               "column": 9,
               "kind": "messageHelper"
             }
@@ -71846,7 +71846,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 1264,
+          "line": 1266,
           "column": 16,
           "symbol": "coverageModeOptions",
           "defaultMessage": "Global eligible",
@@ -71861,7 +71861,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 1264,
+              "line": 1266,
               "column": 16,
               "kind": "messageHelper"
             }
@@ -71929,7 +71929,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 1267,
+          "line": 1269,
           "column": 16,
           "symbol": "coverageModeOptions",
           "defaultMessage": "Subset",
@@ -71944,7 +71944,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 1267,
+              "line": 1269,
               "column": 16,
               "kind": "messageHelper"
             }
@@ -72012,7 +72012,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2143,
+          "line": 2167,
           "column": 20,
           "symbol": "renderBuildRequests",
           "defaultMessage": "Coverage mode",
@@ -72021,7 +72021,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2147,
+          "line": 2171,
           "column": 27,
           "symbol": "renderBuildRequests",
           "defaultMessage": "Coverage mode",
@@ -72036,13 +72036,13 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2143,
+              "line": 2167,
               "column": 20,
               "kind": "messageHelper"
             },
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2147,
+              "line": 2171,
               "column": 27,
               "kind": "messageHelper"
             }
@@ -72110,7 +72110,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2152,
+          "line": 2176,
           "column": 20,
           "symbol": "renderBuildRequests",
           "defaultMessage": "Default impact category",
@@ -72119,7 +72119,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2156,
+          "line": 2180,
           "column": 15,
           "symbol": "renderBuildRequests",
           "defaultMessage": "Default impact category",
@@ -72134,13 +72134,13 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2152,
+              "line": 2176,
               "column": 20,
               "kind": "messageHelper"
             },
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2156,
+              "line": 2180,
               "column": 15,
               "kind": "messageHelper"
             }
@@ -72208,7 +72208,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 1908,
+          "line": 1932,
           "column": 20,
           "symbol": "renderImpactCategorySelect",
           "defaultMessage": "Select an impact category",
@@ -72223,7 +72223,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 1908,
+              "line": 1932,
               "column": 20,
               "kind": "messageHelper"
             }
@@ -72291,7 +72291,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2125,
+          "line": 2149,
           "column": 20,
           "symbol": "renderBuildRequests",
           "defaultMessage": "Result set name",
@@ -72300,7 +72300,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2138,
+          "line": 2162,
           "column": 27,
           "symbol": "renderBuildRequests",
           "defaultMessage": "Result set name",
@@ -72315,13 +72315,13 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2125,
+              "line": 2149,
               "column": 20,
               "kind": "messageHelper"
             },
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2138,
+              "line": 2162,
               "column": 27,
               "kind": "messageHelper"
             }
@@ -72389,7 +72389,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2662,
+          "line": 2686,
           "column": 19,
           "symbol": "renderPackagePreview",
           "defaultMessage": "No preview-ready result set yet. Refresh tasks or wait for the worker to complete.",
@@ -72398,7 +72398,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2951,
+          "line": 2975,
           "column": 19,
           "symbol": "renderPublication",
           "defaultMessage": "No preview-ready result set yet. Refresh tasks or wait for the worker to complete.",
@@ -72413,13 +72413,13 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2662,
+              "line": 2686,
               "column": 19,
               "kind": "messageHelper"
             },
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2951,
+              "line": 2975,
               "column": 19,
               "kind": "messageHelper"
             }
@@ -72487,7 +72487,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 1921,
+          "line": 1945,
           "column": 20,
           "symbol": "renderPackageSelect",
           "defaultMessage": "Select a preview-ready result set",
@@ -72502,7 +72502,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 1921,
+              "line": 1945,
               "column": 20,
               "kind": "messageHelper"
             }
@@ -72570,7 +72570,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2658,
+          "line": 2682,
           "column": 20,
           "symbol": "renderPackagePreview",
           "defaultMessage": "Select result set",
@@ -72579,7 +72579,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2679,
+          "line": 2703,
           "column": 15,
           "symbol": "renderPackagePreview",
           "defaultMessage": "Select result set",
@@ -72594,13 +72594,13 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2658,
+              "line": 2682,
               "column": 20,
               "kind": "messageHelper"
             },
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2679,
+              "line": 2703,
               "column": 15,
               "kind": "messageHelper"
             }
@@ -72668,7 +72668,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2972,
+          "line": 2996,
           "column": 20,
           "symbol": "renderPublication",
           "defaultMessage": "Publish default impact category",
@@ -72677,7 +72677,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2988,
+          "line": 3012,
           "column": 15,
           "symbol": "renderPublication",
           "defaultMessage": "Publish default impact category",
@@ -72686,7 +72686,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 3035,
+          "line": 3059,
           "column": 22,
           "symbol": "renderPublication",
           "defaultMessage": "Publish default impact category",
@@ -72701,19 +72701,19 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2972,
+              "line": 2996,
               "column": 20,
               "kind": "messageHelper"
             },
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2988,
+              "line": 3012,
               "column": 15,
               "kind": "messageHelper"
             },
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 3035,
+              "line": 3059,
               "column": 22,
               "kind": "messageHelper"
             }
@@ -72781,7 +72781,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2947,
+          "line": 2971,
           "column": 20,
           "symbol": "renderPublication",
           "defaultMessage": "Publish result set",
@@ -72790,7 +72790,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2968,
+          "line": 2992,
           "column": 15,
           "symbol": "renderPublication",
           "defaultMessage": "Publish result set",
@@ -72805,13 +72805,13 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2947,
+              "line": 2971,
               "column": 20,
               "kind": "messageHelper"
             },
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2968,
+              "line": 2992,
               "column": 15,
               "kind": "messageHelper"
             }
@@ -72879,7 +72879,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2995,
+          "line": 3019,
           "column": 20,
           "symbol": "renderPublication",
           "defaultMessage": "Publish reason",
@@ -72888,7 +72888,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2998,
+          "line": 3022,
           "column": 32,
           "symbol": "renderPublication",
           "defaultMessage": "Publish reason",
@@ -72903,13 +72903,13 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2995,
+              "line": 3019,
               "column": 20,
               "kind": "messageHelper"
             },
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2998,
+              "line": 3022,
               "column": 32,
               "kind": "messageHelper"
             }
@@ -73095,7 +73095,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 1839,
+          "line": 1863,
           "column": 44,
           "symbol": "renderBuildJobs",
           "defaultMessage": "Action",
@@ -73104,7 +73104,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 3046,
+          "line": 3070,
           "column": 46,
           "symbol": "renderPublication",
           "defaultMessage": "Action",
@@ -73119,13 +73119,13 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 1839,
+              "line": 1863,
               "column": 44,
               "kind": "messageHelper"
             },
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 3046,
+              "line": 3070,
               "column": 46,
               "kind": "messageHelper"
             }
@@ -73252,7 +73252,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 1822,
+          "line": 1846,
           "column": 16,
           "symbol": "renderBuildJobs",
           "defaultMessage": "No result generation tasks",
@@ -73267,7 +73267,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 1822,
+              "line": 1846,
               "column": 16,
               "kind": "messageHelper"
             }
@@ -73453,7 +73453,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 1814,
+          "line": 1838,
           "column": 14,
           "symbol": "renderBuildJobs",
           "defaultMessage": "Result set generation runs asynchronously. Refresh tasks to update progress, then preview or publish the result set after completion.",
@@ -73468,7 +73468,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 1814,
+              "line": 1838,
               "column": 14,
               "kind": "messageHelper"
             }
@@ -73536,7 +73536,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 1834,
+          "line": 1858,
           "column": 20,
           "symbol": "renderBuildJobs",
           "defaultMessage": "Inputs",
@@ -73545,7 +73545,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 3044,
+          "line": 3068,
           "column": 22,
           "symbol": "renderPublication",
           "defaultMessage": "Inputs",
@@ -73560,13 +73560,13 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 1834,
+              "line": 1858,
               "column": 20,
               "kind": "messageHelper"
             },
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 3044,
+              "line": 3068,
               "column": 22,
               "kind": "messageHelper"
             }
@@ -73634,7 +73634,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 1848,
+          "line": 1872,
           "column": 19,
           "symbol": "resultSetLabel",
           "defaultMessage": "Result set generation",
@@ -73649,7 +73649,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 1848,
+              "line": 1872,
               "column": 19,
               "kind": "messageHelper"
             }
@@ -73717,7 +73717,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 1807,
+          "line": 1831,
           "column": 12,
           "symbol": "renderBuildJobs",
           "defaultMessage": "Refresh jobs",
@@ -73732,7 +73732,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 1807,
+              "line": 1831,
               "column": 12,
               "kind": "messageHelper"
             }
@@ -73800,7 +73800,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 1828,
+          "line": 1852,
           "column": 20,
           "symbol": "renderBuildJobs",
           "defaultMessage": "Result set",
@@ -73809,7 +73809,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 3029,
+          "line": 3053,
           "column": 22,
           "symbol": "renderPublication",
           "defaultMessage": "Result set",
@@ -73824,13 +73824,13 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 1828,
+              "line": 1852,
               "column": 20,
               "kind": "messageHelper"
             },
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 3029,
+              "line": 3053,
               "column": 22,
               "kind": "messageHelper"
             }
@@ -73898,7 +73898,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 1804,
+          "line": 1828,
           "column": 14,
           "symbol": "renderBuildJobs",
           "defaultMessage": "Result generation tasks",
@@ -73913,7 +73913,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 1804,
+              "line": 1828,
               "column": 14,
               "kind": "messageHelper"
             }
@@ -73981,7 +73981,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 1837,
+          "line": 1861,
           "column": 20,
           "symbol": "renderBuildJobs",
           "defaultMessage": "Updated at",
@@ -73996,7 +73996,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 1837,
+              "line": 1861,
               "column": 20,
               "kind": "messageHelper"
             }
@@ -74123,7 +74123,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 1799,
+          "line": 1823,
           "column": 9,
           "symbol": "renderJobPhase",
           "defaultMessage": "Waiting for worker processing",
@@ -74138,7 +74138,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 1799,
+              "line": 1823,
               "column": 9,
               "kind": "messageHelper"
             }
@@ -74206,7 +74206,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2884,
+          "line": 2908,
           "column": 26,
           "symbol": "renderPackagePreview",
           "defaultMessage": "Manifest version",
@@ -74221,7 +74221,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2884,
+              "line": 2908,
               "column": 26,
               "kind": "messageHelper"
             }
@@ -74289,7 +74289,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2872,
+          "line": 2896,
           "column": 20,
           "symbol": "renderPackagePreview",
           "defaultMessage": "Artifact verification",
@@ -74304,7 +74304,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2872,
+              "line": 2896,
               "column": 20,
               "kind": "messageHelper"
             }
@@ -74372,7 +74372,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2912,
+          "line": 2936,
           "column": 26,
           "symbol": "renderPackagePreview",
           "defaultMessage": "Artifacts",
@@ -74387,7 +74387,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2912,
+              "line": 2936,
               "column": 26,
               "kind": "messageHelper"
             }
@@ -74455,7 +74455,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2719,
+          "line": 2743,
           "column": 26,
           "symbol": "renderPackagePreview",
           "defaultMessage": "Coverage mode",
@@ -74470,7 +74470,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2719,
+              "line": 2743,
               "column": 26,
               "kind": "messageHelper"
             }
@@ -74538,7 +74538,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2724,
+          "line": 2748,
           "column": 26,
           "symbol": "renderPackagePreview",
           "defaultMessage": "Default impact category",
@@ -74553,7 +74553,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2724,
+              "line": 2748,
               "column": 26,
               "kind": "messageHelper"
             }
@@ -74621,7 +74621,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2742,
+          "line": 2766,
           "column": 26,
           "symbol": "renderPackagePreview",
           "defaultMessage": "Eligible inputs",
@@ -74636,7 +74636,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2742,
+              "line": 2766,
               "column": 26,
               "kind": "messageHelper"
             }
@@ -74704,7 +74704,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2815,
+          "line": 2839,
           "column": 20,
           "symbol": "renderPackagePreview",
           "defaultMessage": "Export Excel",
@@ -74719,7 +74719,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2815,
+              "line": 2839,
               "column": 20,
               "kind": "messageHelper"
             }
@@ -74787,7 +74787,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2491,
+          "line": 2515,
           "column": 15,
           "symbol": "handleExportPreview",
           "defaultMessage": "Failed to export result details",
@@ -74802,7 +74802,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2491,
+              "line": 2515,
               "column": 15,
               "kind": "messageHelper"
             }
@@ -74870,7 +74870,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2747,
+          "line": 2771,
           "column": 26,
           "symbol": "renderPackagePreview",
           "defaultMessage": "Impact category count",
@@ -74885,7 +74885,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2747,
+              "line": 2771,
               "column": 26,
               "kind": "messageHelper"
             }
@@ -74953,7 +74953,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2737,
+          "line": 2761,
           "column": 26,
           "symbol": "renderPackagePreview",
           "defaultMessage": "Included inputs",
@@ -74968,7 +74968,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2737,
+              "line": 2761,
               "column": 26,
               "kind": "messageHelper"
             }
@@ -75036,7 +75036,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2732,
+          "line": 2756,
           "column": 26,
           "symbol": "renderPackagePreview",
           "defaultMessage": "Input manifest hash",
@@ -75051,7 +75051,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2732,
+              "line": 2756,
               "column": 26,
               "kind": "messageHelper"
             }
@@ -75119,7 +75119,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2763,
+          "line": 2787,
           "column": 24,
           "symbol": "renderPackagePreview",
           "defaultMessage": "Input scope",
@@ -75134,7 +75134,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2763,
+              "line": 2787,
               "column": 24,
               "kind": "messageHelper"
             }
@@ -75202,7 +75202,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2822,
+          "line": 2846,
           "column": 24,
           "symbol": "renderPackagePreview",
           "defaultMessage": "LCIA method",
@@ -75211,7 +75211,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2824,
+          "line": 2848,
           "column": 31,
           "symbol": "renderPackagePreview",
           "defaultMessage": "LCIA method",
@@ -75226,13 +75226,13 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2822,
+              "line": 2846,
               "column": 24,
               "kind": "messageHelper"
             },
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2824,
+              "line": 2848,
               "column": 31,
               "kind": "messageHelper"
             }
@@ -75359,7 +75359,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2617,
+          "line": 2641,
           "column": 12,
           "symbol": "renderPreviewPager",
           "defaultMessage": "Next",
@@ -75374,7 +75374,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2617,
+              "line": 2641,
               "column": 12,
               "kind": "messageHelper"
             }
@@ -75442,7 +75442,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2704,
+          "line": 2728,
           "column": 26,
           "symbol": "renderPackagePreview",
           "defaultMessage": "Result set ID",
@@ -75457,7 +75457,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2704,
+              "line": 2728,
               "column": 26,
               "kind": "messageHelper"
             }
@@ -75525,7 +75525,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2709,
+          "line": 2733,
           "column": 26,
           "symbol": "renderPackagePreview",
           "defaultMessage": "Result set version",
@@ -75540,7 +75540,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2709,
+              "line": 2733,
               "column": 26,
               "kind": "messageHelper"
             }
@@ -75608,7 +75608,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2781,
+          "line": 2805,
           "column": 26,
           "symbol": "renderPackagePreview",
           "defaultMessage": "Predicate version",
@@ -75623,7 +75623,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2781,
+              "line": 2805,
               "column": 26,
               "kind": "messageHelper"
             }
@@ -75691,7 +75691,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2613,
+          "line": 2637,
           "column": 12,
           "symbol": "renderPreviewPager",
           "defaultMessage": "Previous",
@@ -75706,7 +75706,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2613,
+              "line": 2637,
               "column": 12,
               "kind": "messageHelper"
             }
@@ -75774,7 +75774,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2771,
+          "line": 2795,
           "column": 26,
           "symbol": "renderPackagePreview",
           "defaultMessage": "Process count",
@@ -75789,7 +75789,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2771,
+              "line": 2795,
               "column": 26,
               "kind": "messageHelper"
             }
@@ -75975,7 +75975,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2519,
+          "line": 2543,
           "column": 11,
           "symbol": "handleExportPreview",
           "defaultMessage": "Process",
@@ -75984,7 +75984,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2547,
+          "line": 2571,
           "column": 14,
           "symbol": "previewDetailColumns",
           "defaultMessage": "Process",
@@ -75999,13 +75999,13 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2519,
+              "line": 2543,
               "column": 11,
               "kind": "messageHelper"
             },
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2547,
+              "line": 2571,
               "column": 14,
               "kind": "messageHelper"
             }
@@ -76073,7 +76073,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2520,
+          "line": 2544,
           "column": 11,
           "symbol": "handleExportPreview",
           "defaultMessage": "Process UUID",
@@ -76088,7 +76088,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2520,
+              "line": 2544,
               "column": 11,
               "kind": "messageHelper"
             }
@@ -76156,7 +76156,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2521,
+          "line": 2545,
           "column": 11,
           "symbol": "handleExportPreview",
           "defaultMessage": "Version",
@@ -76165,7 +76165,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2572,
+          "line": 2596,
           "column": 14,
           "symbol": "previewDetailColumns",
           "defaultMessage": "Version",
@@ -76180,13 +76180,13 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2521,
+              "line": 2545,
               "column": 11,
               "kind": "messageHelper"
             },
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2572,
+              "line": 2596,
               "column": 14,
               "kind": "messageHelper"
             }
@@ -76254,7 +76254,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2920,
+          "line": 2944,
           "column": 25,
           "symbol": "renderPackagePreview",
           "defaultMessage": "Query artifact",
@@ -76269,7 +76269,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2920,
+              "line": 2944,
               "column": 25,
               "kind": "messageHelper"
             }
@@ -76337,7 +76337,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2924,
+          "line": 2948,
           "column": 25,
           "symbol": "renderPackagePreview",
           "defaultMessage": "Result artifact",
@@ -76352,7 +76352,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2924,
+              "line": 2948,
               "column": 25,
               "kind": "messageHelper"
             }
@@ -76420,7 +76420,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2799,
+          "line": 2823,
           "column": 20,
           "symbol": "renderPackagePreview",
           "defaultMessage": "Result details",
@@ -76435,7 +76435,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2799,
+              "line": 2823,
               "column": 20,
               "kind": "messageHelper"
             }
@@ -76503,7 +76503,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2847,
+          "line": 2871,
           "column": 21,
           "symbol": "renderPackagePreview",
           "defaultMessage": "Calculation results are not available for this preview.",
@@ -76518,7 +76518,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2847,
+              "line": 2871,
               "column": 21,
               "kind": "messageHelper"
             }
@@ -76586,7 +76586,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2776,
+          "line": 2800,
           "column": 26,
           "symbol": "renderPackagePreview",
           "defaultMessage": "Selection mode",
@@ -76601,7 +76601,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2776,
+              "line": 2800,
               "column": 26,
               "kind": "messageHelper"
             }
@@ -76669,7 +76669,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2907,
+          "line": 2931,
           "column": 26,
           "symbol": "renderPackagePreview",
           "defaultMessage": "Snapshot coverage",
@@ -76684,7 +76684,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2907,
+              "line": 2931,
               "column": 26,
               "kind": "messageHelper"
             }
@@ -76752,7 +76752,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2897,
+          "line": 2921,
           "column": 26,
           "symbol": "renderPackagePreview",
           "defaultMessage": "Snapshot ID",
@@ -76767,7 +76767,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2897,
+              "line": 2921,
               "column": 26,
               "kind": "messageHelper"
             }
@@ -76835,7 +76835,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2902,
+          "line": 2926,
           "column": 26,
           "symbol": "renderPackagePreview",
           "defaultMessage": "Snapshot matrix",
@@ -76850,7 +76850,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2902,
+              "line": 2926,
               "column": 26,
               "kind": "messageHelper"
             }
@@ -76918,7 +76918,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2522,
+          "line": 2546,
           "column": 11,
           "symbol": "handleExportPreview",
           "defaultMessage": "State code",
@@ -76927,7 +76927,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2578,
+          "line": 2602,
           "column": 14,
           "symbol": "previewDetailColumns",
           "defaultMessage": "State code",
@@ -76942,13 +76942,13 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2522,
+              "line": 2546,
               "column": 11,
               "kind": "messageHelper"
             },
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2578,
+              "line": 2602,
               "column": 14,
               "kind": "messageHelper"
             }
@@ -77016,7 +77016,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2786,
+          "line": 2810,
           "column": 26,
           "symbol": "renderPackagePreview",
           "defaultMessage": "State codes",
@@ -77031,7 +77031,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2786,
+              "line": 2810,
               "column": 26,
               "kind": "messageHelper"
             }
@@ -77099,7 +77099,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2714,
+          "line": 2738,
           "column": 26,
           "symbol": "renderPackagePreview",
           "defaultMessage": "Status",
@@ -77114,7 +77114,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2714,
+              "line": 2738,
               "column": 26,
               "kind": "messageHelper"
             }
@@ -77182,7 +77182,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2892,
+          "line": 2916,
           "column": 26,
           "symbol": "renderPackagePreview",
           "defaultMessage": "Storage",
@@ -77197,7 +77197,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2892,
+              "line": 2916,
               "column": 26,
               "kind": "messageHelper"
             }
@@ -77265,7 +77265,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2696,
+          "line": 2720,
           "column": 24,
           "symbol": "renderPackagePreview",
           "defaultMessage": "Result set overview",
@@ -77280,7 +77280,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2696,
+              "line": 2720,
               "column": 24,
               "kind": "messageHelper"
             }
@@ -77407,7 +77407,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2464,
+          "line": 2488,
           "column": 10,
           "symbol": "previewValueTitle",
           "defaultMessage": "Value",
@@ -77416,7 +77416,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2465,
+          "line": 2489,
           "column": 7,
           "symbol": "previewValueTitle",
           "defaultMessage": "Value",
@@ -77431,13 +77431,13 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2464,
+              "line": 2488,
               "column": 10,
               "kind": "messageHelper"
             },
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2465,
+              "line": 2489,
               "column": 7,
               "kind": "messageHelper"
             }
@@ -77505,7 +77505,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2836,
+          "line": 2860,
           "column": 26,
           "symbol": "renderPackagePreview",
           "defaultMessage": "Some preview data could not be loaded",
@@ -77520,7 +77520,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2836,
+              "line": 2860,
               "column": 26,
               "kind": "messageHelper"
             }
@@ -77588,7 +77588,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 3098,
+          "line": 3122,
           "column": 30,
           "symbol": "renderPublication",
           "defaultMessage": "Current",
@@ -77603,7 +77603,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 3098,
+              "line": 3122,
               "column": 30,
               "kind": "messageHelper"
             }
@@ -77671,7 +77671,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 3023,
+          "line": 3047,
           "column": 18,
           "symbol": "renderPublication",
           "defaultMessage": "No publications yet",
@@ -77686,7 +77686,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 3023,
+              "line": 3047,
               "column": 18,
               "kind": "messageHelper"
             }
@@ -77754,7 +77754,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2944,
+          "line": 2968,
           "column": 20,
           "symbol": "renderPublication",
           "defaultMessage": "Legacy LCIA publication",
@@ -77769,7 +77769,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2944,
+              "line": 2968,
               "column": 20,
               "kind": "messageHelper"
             }
@@ -77837,7 +77837,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 3041,
+          "line": 3065,
           "column": 22,
           "symbol": "renderPublication",
           "defaultMessage": "Published at",
@@ -77852,7 +77852,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 3041,
+              "line": 3065,
               "column": 22,
               "kind": "messageHelper"
             }
@@ -77920,7 +77920,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 3014,
+          "line": 3038,
           "column": 14,
           "symbol": "renderPublication",
           "defaultMessage": "Refresh publications",
@@ -77935,7 +77935,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 3014,
+              "line": 3038,
               "column": 14,
               "kind": "messageHelper"
             }
@@ -78003,7 +78003,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 3011,
+          "line": 3035,
           "column": 16,
           "symbol": "renderPublication",
           "defaultMessage": "Publication management",
@@ -78018,7 +78018,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 3011,
+              "line": 3035,
               "column": 16,
               "kind": "messageHelper"
             }
@@ -79768,7 +79768,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2015,
+          "line": 2039,
           "column": 18,
           "symbol": "renderResultSetWorkspace",
           "defaultMessage": "Back to result sets",
@@ -79783,7 +79783,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2015,
+              "line": 2039,
               "column": 18,
               "kind": "messageHelper"
             }
@@ -80382,7 +80382,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 1984,
+          "line": 2008,
           "column": 16,
           "symbol": "renderResultSetWorkspace",
           "defaultMessage": "Create result set",
@@ -80397,7 +80397,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 1984,
+              "line": 2008,
               "column": 16,
               "kind": "messageHelper"
             }
@@ -80465,7 +80465,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 1948,
+          "line": 1972,
           "column": 12,
           "symbol": "renderResultSetWorkspace",
           "defaultMessage": "Create a named result set before starting an asynchronous check. Return here at any time to continue its current step.",
@@ -80480,7 +80480,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 1948,
+              "line": 1972,
               "column": 12,
               "kind": "messageHelper"
             }
@@ -80548,7 +80548,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2027,
+          "line": 2051,
           "column": 18,
           "symbol": "renderResultSetWorkspace",
           "defaultMessage": "Create the first result set to begin a completeness check.",
@@ -80563,7 +80563,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2027,
+              "line": 2051,
               "column": 18,
               "kind": "messageHelper"
             }
@@ -80631,7 +80631,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2024,
+          "line": 2048,
           "column": 18,
           "symbol": "renderResultSetWorkspace",
           "defaultMessage": "No result sets yet",
@@ -80646,7 +80646,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2024,
+              "line": 2048,
               "column": 18,
               "kind": "messageHelper"
             }
@@ -80714,7 +80714,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 1972,
+          "line": 1996,
           "column": 30,
           "symbol": "renderResultSetWorkspace",
           "defaultMessage": "Name this result set",
@@ -80729,7 +80729,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 1972,
+              "line": 1996,
               "column": 30,
               "kind": "messageHelper"
             }
@@ -80797,7 +80797,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 1969,
+          "line": 1993,
           "column": 29,
           "symbol": "renderResultSetWorkspace",
           "defaultMessage": "New result set name",
@@ -80812,7 +80812,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 1969,
+              "line": 1993,
               "column": 29,
               "kind": "messageHelper"
             }
@@ -81057,7 +81057,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 1942,
+          "line": 1966,
           "column": 12,
           "symbol": "renderResultSetWorkspace",
           "defaultMessage": "Refresh",
@@ -81072,7 +81072,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 1942,
+              "line": 1966,
               "column": 12,
               "kind": "messageHelper"
             }
@@ -81140,7 +81140,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 1988,
+          "line": 2012,
           "column": 25,
           "symbol": "renderResultSetWorkspace",
           "defaultMessage": "Current result set",
@@ -81155,7 +81155,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 1988,
+              "line": 2012,
               "column": 25,
               "kind": "messageHelper"
             }
@@ -81223,7 +81223,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 1994,
+          "line": 2018,
           "column": 26,
           "symbol": "renderResultSetWorkspace",
           "defaultMessage": "Select an existing result set",
@@ -81238,7 +81238,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 1994,
+              "line": 2018,
               "column": 26,
               "kind": "messageHelper"
             }
@@ -81306,7 +81306,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2097,
+          "line": 2121,
           "column": 14,
           "symbol": "renderWorkflowContextRequired",
           "defaultMessage": "Select a result set to continue",
@@ -81321,7 +81321,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2097,
+              "line": 2121,
               "column": 14,
               "kind": "messageHelper"
             }
@@ -81389,7 +81389,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2103,
+          "line": 2127,
           "column": 14,
           "symbol": "renderWorkflowContextRequired",
           "defaultMessage": "The selected result set keeps completeness checks, calculations, previews, and publication in one recoverable context.",
@@ -81404,7 +81404,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2103,
+              "line": 2127,
               "column": 14,
               "kind": "messageHelper"
             }
@@ -81472,7 +81472,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2062,
+          "line": 2086,
           "column": 29,
           "symbol": "renderResultSetWorkspace",
           "defaultMessage": "Calculation",
@@ -81487,7 +81487,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2062,
+              "line": 2086,
               "column": 29,
               "kind": "messageHelper"
             }
@@ -81555,7 +81555,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2059,
+          "line": 2083,
           "column": 29,
           "symbol": "renderResultSetWorkspace",
           "defaultMessage": "Completeness",
@@ -81570,7 +81570,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2059,
+              "line": 2083,
               "column": 29,
               "kind": "messageHelper"
             }
@@ -81638,7 +81638,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 1939,
+          "line": 1963,
           "column": 14,
           "symbol": "renderResultSetWorkspace",
           "defaultMessage": "Result sets",
@@ -81653,7 +81653,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 1939,
+              "line": 1963,
               "column": 14,
               "kind": "messageHelper"
             }
@@ -81721,7 +81721,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 3153,
+          "line": 3177,
           "column": 26,
           "symbol": "DataProcessing",
           "defaultMessage": "Completeness & Calculation",
@@ -81736,7 +81736,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 3153,
+              "line": 3177,
               "column": 26,
               "kind": "messageHelper"
             }
@@ -81804,7 +81804,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 3158,
+          "line": 3182,
           "column": 26,
           "symbol": "DataProcessing",
           "defaultMessage": "Result Preview",
@@ -81819,7 +81819,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 3158,
+              "line": 3182,
               "column": 26,
               "kind": "messageHelper"
             }
@@ -81887,7 +81887,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 3163,
+          "line": 3187,
           "column": 26,
           "symbol": "DataProcessing",
           "defaultMessage": "Publication",
@@ -81902,7 +81902,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 3163,
+              "line": 3187,
               "column": 26,
               "kind": "messageHelper"
             }
@@ -82053,7 +82053,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 3139,
+          "line": 3163,
           "column": 27,
           "symbol": "DataProcessing",
           "defaultMessage": "Data Processing",
@@ -82068,7 +82068,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 3139,
+              "line": 3163,
               "column": 27,
               "kind": "messageHelper"
             }
@@ -82195,7 +82195,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2980,
+          "line": 3004,
           "column": 26,
           "symbol": "renderPublication",
           "defaultMessage": "Default impact category is required",
@@ -82210,7 +82210,7 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2980,
+              "line": 3004,
               "column": 26,
               "kind": "messageHelper"
             }
@@ -82278,7 +82278,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 1573,
+          "line": 1585,
           "column": 18,
           "symbol": "handleCreateBuild",
           "defaultMessage": "The reviewed LCIA method catalog is unavailable.",
@@ -82287,7 +82287,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 1629,
+          "line": 1653,
           "column": 20,
           "symbol": "handleRecoverClosureCheck",
           "defaultMessage": "The reviewed LCIA method catalog is unavailable.",
@@ -82302,13 +82302,13 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 1573,
+              "line": 1585,
               "column": 18,
               "kind": "messageHelper"
             },
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 1629,
+              "line": 1653,
               "column": 20,
               "kind": "messageHelper"
             }
@@ -82376,7 +82376,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2671,
+          "line": 2695,
           "column": 26,
           "symbol": "renderPackagePreview",
           "defaultMessage": "Result set is required",
@@ -82385,7 +82385,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2960,
+          "line": 2984,
           "column": 26,
           "symbol": "renderPublication",
           "defaultMessage": "Result set is required",
@@ -82400,13 +82400,13 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2671,
+              "line": 2695,
               "column": 26,
               "kind": "messageHelper"
             },
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2960,
+              "line": 2984,
               "column": 26,
               "kind": "messageHelper"
             }
@@ -82474,7 +82474,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 1961,
+          "line": 1985,
           "column": 28,
           "symbol": "renderResultSetWorkspace",
           "defaultMessage": "Result set name is required",
@@ -82483,7 +82483,7 @@
         {
           "kind": "messageHelper",
           "path": "src/pages/DataProcessing/index.tsx",
-          "line": 2130,
+          "line": 2154,
           "column": 26,
           "symbol": "renderBuildRequests",
           "defaultMessage": "Result set name is required",
@@ -82498,13 +82498,13 @@
           "locations": [
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 1961,
+              "line": 1985,
               "column": 28,
               "kind": "messageHelper"
             },
             {
               "path": "src/pages/DataProcessing/index.tsx",
-              "line": 2130,
+              "line": 2154,
               "column": 26,
               "kind": "messageHelper"
             }
@@ -289349,7 +289349,7 @@
       "count": 1,
       "file": "src/pages/DataProcessing/index.tsx",
       "expression": "id",
-      "locations": ["801:45"],
+      "locations": ["802:45"],
       "category": "active-dynamic",
       "family": "dataProcessing",
       "reviewStatus": "reviewed"
@@ -289359,7 +289359,7 @@
       "count": 1,
       "file": "src/pages/DataProcessing/index.tsx",
       "expression": "messages[action].id",
-      "locations": ["1299:12"],
+      "locations": ["1301:12"],
       "category": "active-dynamic",
       "family": "dataProcessing",
       "reviewStatus": "reviewed"

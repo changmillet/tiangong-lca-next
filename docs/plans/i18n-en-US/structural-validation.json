@@ -3,7 +3,7 @@
   "locale": "en-US",
   "validationClosure": {
     "baselineSha": "c26f306e82ac66f50a56aafe8f89ea96c0b0c67d",
-    "auditedInputDigest": "dd094dc0d7feeb102fff6df3cbdbf7c603277718eb22fac6e9bd1b1eeea310e3",
+    "auditedInputDigest": "320c2eb89edf5f1921199ddc0642515b2680ac129584993428640a41daa019f1",
     "validatedMessageCount": 3528,
     "validatedModules": [
       "$entry",
@@ -42,9 +42,9 @@
     "highRiskMessageCount": 1655,
     "highRiskMessageDigest": "5cb266319ca1a1f58d63473a13b23a7b0b9e08bde4f2e67523825e5afd468b33",
     "catalogDigest": "92e47769513d632742646c6e24b4b06f6543ce9f4a0129d9e654b6cb97149653",
-    "dossierDigest": "93f5edb4962786d91d225e664454008a0aad179e537d3ea4d96c96f7f218709c",
+    "dossierDigest": "f44e5b1f10bbdfb19bf4ff1688e3c07de3dc0fa953db7595c985248c35093579",
     "typedContentDossierDigest": "93ff72bef2323e7a766f111c3945669da9e0f3fc6c961dfebe977787d5d8b158",
-    "routeEvidenceDigest": "8f4b4042f3997c6166dd8a24cd38e47cd518e39d2edb785b5975dee4a40f56dc",
+    "routeEvidenceDigest": "76a7c56cd54b4cefe2e471f3875332e29744e6620739db3ff4b162b33b3b3b78",
     "scope": "deterministic structure only; semantic translation and rendered route review are separate production blockers owned by #635"
   },
   "validationLanes": [
@@ -98,7 +98,7 @@
         "messageDigest": "def422ab42d84ea5de9a9be3f61f0ff20b1f610297788dd5a9eed6aec3248f38",
         "highRiskMessageCount": 1655,
         "highRiskMessageDigest": "5cb266319ca1a1f58d63473a13b23a7b0b9e08bde4f2e67523825e5afd468b33",
-        "dossierDigest": "93f5edb4962786d91d225e664454008a0aad179e537d3ea4d96c96f7f218709c",
+        "dossierDigest": "f44e5b1f10bbdfb19bf4ff1688e3c07de3dc0fa953db7595c985248c35093579",
         "checks": {
           "nonEmptyTargets": true,
           "icuArgumentSignatureParity": true,
@@ -113,5 +113,5 @@
     }
   ],
   "blockedItems": [],
-  "validationDigest": "4a7544463ba029cbe2d56cc25e1f84a9c27aff8317e8dbdeb544996ccdd50269"
+  "validationDigest": "b2e23b3f7c9e100942382c76e6b514064853c2bcfd6d3e88aa2a44767ffd52b2"
 }

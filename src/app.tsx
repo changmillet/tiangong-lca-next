@@ -32,7 +32,12 @@ import {
   type SystemStatus,
 } from '@/services/general/systemStatus';
 import { getSystemUserRoleApi } from '@/services/roles/api';
-import { bindTidasPackageTaskCenterOwner } from '@/services/tidasPackage/taskCenter';
+import {
+  bindTaskCenterOwner,
+  getTaskCenterIdentityGeneration,
+  subscribeToTaskCenterAuthChanges,
+} from '@/services/auth/taskCenters';
+import { reloadBrowserPage } from '@/utils/browserNavigation';
 import styles from '@/style/custom.less';
 import { AntdAppApiRegistrar } from '@/contexts/AntdAppContext';
 import { AntdThemeSync, createAntdThemeConfig } from '@/contexts/AntdThemeSync';
@@ -55,6 +60,8 @@ const systemAccessByRole = new Map<string, Auth.CurrentUser['access']>([
   ['owner', 'admin'],
   ['data_product_manager', 'data_product_manager'],
 ]);
+
+subscribeToTaskCenterAuthChanges(() => reloadBrowserPage(window.location));
 
 subscribeToPasswordRecovery(() => {
   history.replace(recoveryFormPath);
@@ -132,21 +139,28 @@ export async function getInitialState(): Promise<{
   systemStatus?: SystemStatus;
 }> {
   const fetchUserInfo = async (): Promise<Auth.CurrentUser | null> => {
-    try {
-      const msg = await queryCurrentUser();
-      if (!msg) {
-        bindTidasPackageTaskCenterOwner(null);
+    // INITIAL_SESSION can settle during the first claims lookup. Re-read once
+    // against the new epoch rather than admitting a stale or ownerless user.
+    for (let attempt = 0; attempt < 2; attempt += 1) {
+      const identityGeneration = getTaskCenterIdentityGeneration();
+      try {
+        const msg = await queryCurrentUser();
+        if (identityGeneration !== getTaskCenterIdentityGeneration()) continue;
+        if (!msg) {
+          bindTaskCenterOwner(null, identityGeneration);
+          history.push(LOGIN_PATH);
+          return null;
+        }
+        const access = await getSystemAccess();
+        if (identityGeneration !== getTaskCenterIdentityGeneration()) continue;
+        if (!bindTaskCenterOwner(msg.userid, identityGeneration)) return null;
+        return { ...msg, access };
+      } catch (error) {
+        if (identityGeneration !== getTaskCenterIdentityGeneration()) continue;
+        bindTaskCenterOwner(null, identityGeneration);
         history.push(LOGIN_PATH);
         return null;
       }
-      bindTidasPackageTaskCenterOwner(msg.userid);
-      return {
-        ...msg,
-        access: await getSystemAccess(),
-      };
-    } catch (error) {
-      bindTidasPackageTaskCenterOwner(null);
-      history.push(LOGIN_PATH);
     }
     return null;
   };
@@ -162,7 +176,7 @@ export async function getInitialState(): Promise<{
   // single startup read; a browser refresh is required to check it again.
   const systemStatus = await getSystemStatus();
   if (isSystemMaintenanceActive(systemStatus)) {
-    bindTidasPackageTaskCenterOwner(null);
+    bindTaskCenterOwner(null);
     return {
       fetchUserInfo,
       settings: updatedSettings as Partial<LayoutSettings>,
@@ -182,7 +196,7 @@ export async function getInitialState(): Promise<{
       systemStatus,
     };
   }
-  bindTidasPackageTaskCenterOwner(null);
+  bindTaskCenterOwner(null);
   return {
     fetchUserInfo,
     settings: updatedSettings as Partial<LayoutSettings>,
@@ -240,7 +254,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
         <LocationCacheMonitor key='LocaltionCacheMonitor' />,
         <ImportTidasPackage key='ImportTidasPackage' />,
         <ExportTidasPackage key='ExportTidasPackage' />,
-        <LcaTaskCenter key='LcaTaskCenter' />,
+        <LcaTaskCenter key={`LcaTaskCenter:${initialState.currentUser.userid}`} />,
         <Notification key='Notification' />,
         ...publicActions,
       ];

@@ -1,3 +1,9 @@
+import {
+  assertTaskSession,
+  createTaskSessionClient,
+  TaskSessionChangedError,
+  type TaskSessionGuard,
+} from '@/services/taskCenter/sessionGuard';
 import { supabase } from '@/services/supabase';
 import type { SupabaseError } from '@/services/supabase/data';
 import { FunctionRegion } from '@supabase/supabase-js';
@@ -152,6 +158,7 @@ type DataProductFunctionName = 'app_data_product_commands' | 'data_product_resul
 
 type InvokeOptions = {
   requireAuth?: boolean;
+  taskSession?: TaskSessionGuard;
 };
 
 function authRequiredResult<T>(): DataProductApiResult<T> {
@@ -225,9 +232,12 @@ function isCommandFailure(payload: unknown): payload is {
   );
 }
 
-async function getSessionAccessToken(): Promise<string | undefined> {
+async function getSessionAccessToken(taskSession?: TaskSessionGuard): Promise<string | undefined> {
+  if (taskSession && !taskSession.isCurrent()) throw new TaskSessionChangedError();
   const session = await supabase.auth.getSession();
-  return session.data.session?.access_token || undefined;
+  const accessToken = session.data.session?.access_token || undefined;
+  if (accessToken && taskSession) await assertTaskSession(accessToken, taskSession);
+  return accessToken;
 }
 
 async function invokeDataProductFunction<T>(
@@ -235,7 +245,15 @@ async function invokeDataProductFunction<T>(
   body: Record<string, unknown>,
   options: InvokeOptions = {},
 ): Promise<DataProductApiResult<T>> {
-  const accessToken = await getSessionAccessToken();
+  let accessToken: string | undefined;
+  try {
+    accessToken = await getSessionAccessToken(options.taskSession);
+    if (options.taskSession && !options.taskSession.isCurrent())
+      throw new TaskSessionChangedError();
+  } catch (error) {
+    if (error instanceof TaskSessionChangedError) return authRequiredResult<T>();
+    throw error;
+  }
   if (options.requireAuth && !accessToken) {
     return authRequiredResult<T>();
   }
@@ -255,7 +273,11 @@ async function invokeDataProductFunction<T>(
     };
   }
 
-  const result = await supabase.functions.invoke(functionName, requestOptions);
+  const client = options.taskSession
+    ? createTaskSessionClient(accessToken!, options.taskSession)
+    : supabase;
+  const result = await client.functions.invoke(functionName, requestOptions);
+  if (options.taskSession && !options.taskSession.isCurrent()) return authRequiredResult<T>();
 
   if (result.error) {
     const payload = await parseFunctionErrorPayload(result.error);
@@ -293,11 +315,18 @@ export function invokeDataProductCommand<T>(body: Record<string, unknown>) {
   return invokeDataProductFunction<T>('app_data_product_commands', body, { requireAuth: true });
 }
 
-export function createLciaResultBuildRequest(request: LciaResultBuildRequest) {
-  return invokeDataProductCommand<Record<string, unknown>>({
-    action: 'create_build',
-    ...request,
-  });
+export function createLciaResultBuildRequest(
+  request: LciaResultBuildRequest,
+  options?: { taskSession?: TaskSessionGuard },
+) {
+  return invokeDataProductFunction<Record<string, unknown>>(
+    'app_data_product_commands',
+    {
+      action: 'create_build',
+      ...request,
+    },
+    { requireAuth: true, taskSession: options?.taskSession },
+  );
 }
 
 export function previewLciaResultPackage(request: string | PreviewLciaResultPackageRequest) {

@@ -45,9 +45,9 @@ checkPaths:
   - .nvmrc
   - .husky/pre-push
   - .github/workflows/**
-lastReviewedAt: 2026-10-02
-lastReviewedCommit: df2707ef96dec4f9eed5bbc6a724bb96f22ed4c0
-lastReviewedNote: 'Reviewed Flow property snapshot fallbacks and unindexed-array diagnostic isolation coverage; Process/Flow SDK and nested-save fixes remain aligned with unchanged contracts and validation policy.'
+lastReviewedAt: 2026-10-04
+lastReviewedCommit: 529b5ef9dc4b263e1a934747efae9c54963e184f
+lastReviewedNote: 'Reviewed Platform #1177 final owner admission and native dispatch fences: foreign identities require fresh full application admission; task writes and TIDAS phases verify captured identity through native fetch. Calculation, authorization, environment and quality-gate policy remain unchanged.'
 related:
   - .docpact/config.yaml
   - docs/agents/repo-validation.md

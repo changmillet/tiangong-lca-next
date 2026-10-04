@@ -56,9 +56,9 @@ checkPaths:
   - .github/workflows/i18n-semantic-e2e.yml
   - .github/workflows/build.yml
   - package.json
-lastReviewedAt: 2026-09-30
-lastReviewedCommit: 72de4725
-lastReviewedNote: 'Reviewed Platform #1137 after integrating current dev: rejection-details copy remains aligned across all active locales and generated artifacts are refreshed without changing language-delivery policy.'
+lastReviewedAt: 2026-10-04
+lastReviewedCommit: bddc9bb65da61a71c434843b3a63756d45a981e2
+lastReviewedNote: 'Reviewed Platform #1177 browser fixture maintenance: exact composed route titles and dialog readiness retain all registry locales, access boundaries and complete qualification. No translation, capability or language-delivery Goal policy changes; this task does not instantiate the template.'
 baselineObservedAt: 2026-07-18
 related:
   - ../../AGENTS.md

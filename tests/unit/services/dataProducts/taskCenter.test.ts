@@ -106,6 +106,32 @@ describe('Data Product TaskSummaryV2 safe projection', () => {
     expect(invokeDataProductCommand).not.toHaveBeenCalled();
   });
 
+  it('lets a new owner refresh while old requests settle and treats blank owner ids as logout', async () => {
+    let resolveOld: (value: unknown) => void = () => undefined;
+    let resolveNew: (value: unknown) => void = () => undefined;
+    const oldPending = new Promise((resolve) => {
+      resolveOld = resolve;
+    });
+    const newPending = new Promise((resolve) => {
+      resolveNew = resolve;
+    });
+    (invokeDataProductCommand as jest.Mock)
+      .mockReturnValueOnce(oldPending)
+      .mockReturnValueOnce(newPending);
+    const oldRead = refreshDataProductTasks();
+    bindDataProductTaskCenterOwner('owner-b');
+    const newRead = refreshDataProductTasks();
+    resolveOld({ data: { items: [] }, error: null });
+    await oldRead;
+    const sharedRead = refreshDataProductTasks();
+    expect(invokeDataProductCommand).toHaveBeenCalledTimes(2);
+    resolveNew({ data: { items: [] }, error: null });
+    await Promise.all([newRead, sharedRead]);
+    bindDataProductTaskCenterOwner(' ');
+    await refreshDataProductTasks();
+    expect(invokeDataProductCommand).toHaveBeenCalledTimes(2);
+  });
+
   it('keeps worker status and certificate validity separate without accepting raw result fields', () => {
     const summary = decodeDataProductTaskSummary({
       schemaVersion: 'task-summary.v2',

@@ -207,6 +207,82 @@ describe('lca task center', () => {
     ).toHaveLength(1);
   });
 
+  it('keeps stable same-owner refresh identity and cancels a waiting poll on logout', async () => {
+    const { module, mocks } = loadTaskCenterModule();
+    await flushAsync();
+    module.bindLcaTaskCenterOwner('owner-a');
+    mocks.requestWorkerJobsApi.mockResolvedValue({
+      data: [buildWorkerJob('stable-job', 'completed')],
+      error: null,
+    });
+    await module.refreshLcaTasksFromWorkerJobs();
+    const timeline = module.listLcaTasks()[0].phaseTimeline;
+    await module.refreshLcaTasksFromWorkerJobs();
+    expect(module.listLcaTasks()[0].phaseTimeline).toBe(timeline);
+    mocks.submitLcaSolve.mockResolvedValue({
+      mode: 'queued',
+      job_id: 'waiting-job',
+      worker_job_id: 'waiting-worker',
+    });
+    mocks.requestWorkerJobsApi.mockResolvedValue({
+      data: buildWorkerJob('waiting-worker', 'running'),
+      error: null,
+    });
+    module.submitLcaTask({ demand_mode: 'all_unit' });
+    await flushAsync();
+    module.bindLcaTaskCenterOwner(' ');
+    module.removeLcaTask('stable-job');
+    module.clearFinishedLcaTasks();
+    jest.advanceTimersByTime(5000);
+    await flushAsync();
+    expect(module.listLcaTasks()).toEqual([]);
+    expect(
+      mocks.requestWorkerJobsApi.mock.calls.filter(([request]) => request.action === 'read'),
+    ).toHaveLength(1);
+  });
+
+  it('fences recovery discovery and reentrant owner changes before processing submit responses', async () => {
+    storePersistedTasks([
+      {
+        id: 'legacy-job',
+        sequence: 1,
+        mode: 'single',
+        scope: 'full_library',
+        state: 'running',
+        phase: 'solving',
+        solveJobId: 'legacy-solve',
+        message: 'waiting',
+        createdAt: '2026-03-12T12:00:00Z',
+        updatedAt: '2026-03-12T12:00:00Z',
+        phaseTimeline: [],
+      },
+    ]);
+    const pending = createDeferred();
+    const { module, mocks } = loadTaskCenterModule(({ requestWorkerJobsApi }) =>
+      requestWorkerJobsApi.mockReturnValueOnce(pending.promise),
+    );
+    module.bindLcaTaskCenterOwner('owner-b');
+    pending.resolve({ data: [], error: null });
+    await flushAsync();
+    expect(module.listLcaTasks()).toEqual([]);
+    mocks.submitLcaSolve.mockResolvedValue({
+      mode: 'queued',
+      job_id: 'queued-job',
+      worker_job_id: 'queued-worker',
+    });
+    const unsubscribe = module.subscribeLcaTasks(() => {
+      if (module.listLcaTasks().some((task) => task.workerJobId === 'queued-worker'))
+        module.bindLcaTaskCenterOwner(null);
+    });
+    module.submitLcaTask({ demand_mode: 'all_unit' });
+    await flushAsync();
+    unsubscribe();
+    expect(module.listLcaTasks()).toEqual([]);
+    expect(
+      mocks.requestWorkerJobsApi.mock.calls.filter(([request]) => request.action === 'read'),
+    ).toEqual([]);
+  });
+
   it('normalizes stored tasks, skips invalid entries, and applies request/timeline fallbacks', () => {
     storePersistedTasks(
       [

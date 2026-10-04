@@ -24,6 +24,7 @@ import {
   loadQualificationClosureContract,
   qualificationReportFailures,
 } from './qualification-closure.cjs';
+import { handoffOutputOwnership } from './output-ownership.cjs';
 
 type CheckStatus = 'failed' | 'passed' | 'skipped';
 
@@ -805,4 +806,28 @@ main()
     }).catch(() => undefined);
     process.stderr.write(`E2E_CONTAINER_FATAL_FAILURE: ${redactString(String(error))}\n`);
     process.exitCode = EXIT.FINALIZATION;
+  })
+  .finally(async () => {
+    try {
+      handoffOutputOwnership(OUTPUT_DIRECTORY, process.env.E2E_RECOVERY_LEDGER_PATH);
+    } catch (error) {
+      // A partial ownership transfer can leave the result readable. Keep its
+      // machine-readable status aligned with the failing container exit code.
+      await readFile(RUN_RESULT_PATH, 'utf8')
+        .then((value) => JSON.parse(value))
+        .then((result) =>
+          writePrivateJson(RUN_RESULT_PATH, {
+            ...result,
+            error: { chain: errorChain(error), message: 'E2E artifact ownership handoff failed.' },
+            exitCode: EXIT.FINALIZATION,
+            failureCode: 'E2E_OUTPUT_HANDOFF_FAILED',
+            nextCommand: undefined,
+            phase: 'artifact-handoff',
+            status: 'failed',
+          }),
+        )
+        .catch(() => undefined);
+      process.stderr.write(`E2E_OUTPUT_HANDOFF_FAILED: ${redactString(String(error))}\n`);
+      process.exitCode = EXIT.FINALIZATION;
+    }
   });

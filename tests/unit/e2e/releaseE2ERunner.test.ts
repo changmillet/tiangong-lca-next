@@ -682,6 +682,23 @@ describe('release E2E controller contracts', () => {
     expect(args).toContain('/host/recovery:/e2e-recovery');
   });
 
+  it('keeps authenticated credentials and backend inputs read-only during output handoff', () => {
+    const args = controller.dockerRunArguments(
+      { imageTag: 'candidate:test' },
+      controller.parseOptions('run', ['--authenticated']),
+      '/host/run',
+      {
+        recoveryLedger: '/host/recovery/ledger.json',
+        trackedMainEnvironmentPath: '/host/input/main.env',
+        usersEnvFile: '/host/private/users.env',
+      },
+    );
+    expect(args).toContain('/host/private/users.env:/e2e-input/users.env:ro');
+    expect(args).toContain('/host/input/main.env:/e2e-input/tracked-main.env:ro');
+    expect(args).not.toContain('--user');
+    expect(args.some((value) => value.startsWith('E2E_OUTPUT_OWNER_'))).toBe(false);
+  });
+
   it('pins the Playwright image digest and never mounts the parent workspace', () => {
     const environment = JSON.parse(
       fs.readFileSync(path.resolve(process.cwd(), 'docker/e2e/environment.json'), 'utf8'),

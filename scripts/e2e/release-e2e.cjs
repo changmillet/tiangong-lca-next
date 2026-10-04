@@ -1622,11 +1622,18 @@ function dockerRunArguments(context, options, runDirectory, runtimeInputs) {
 
 function readContainerResult(runDirectory) {
   const resultPath = path.join(runDirectory, 'run-result.json');
-  if (!fs.existsSync(resultPath)) return undefined;
   try {
     return readJson(resultPath);
-  } catch {
-    return undefined;
+  } catch (error) {
+    if (error?.code === 'ENOENT') return undefined;
+    const errorCode = error instanceof SyntaxError ? 'INVALID_JSON' : error?.code;
+    throw new ReleaseE2EError('The isolated E2E result could not be read by the host operator.', {
+      cause: new Error(errorCode || 'READ_FAILED'),
+      details: { containerResult: resultPath, errorCode },
+      exitCode: EXIT.FINALIZATION,
+      failureCode: 'E2E_CONTAINER_RESULT_UNREADABLE',
+      phase: 'artifact-handoff',
+    });
   }
 }
 
@@ -2193,6 +2200,7 @@ module.exports = {
   lockedDependencyVersion,
   parseOptions,
   playwrightArguments,
+  readContainerResult,
   redactString,
   sanitize,
   sha256,

@@ -1,4 +1,6 @@
 import { supabase } from '@/services/supabase';
+import { bindLcaTaskCenterOwner } from '@/services/lca/taskCenter';
+import { bindDataProductTaskCenterOwner } from '@/services/dataProducts/taskCenter';
 import { bindTidasPackageTaskCenterOwner } from '@/services/tidasPackage/taskCenter';
 
 /**
@@ -58,6 +60,8 @@ export async function login(body: Auth.LoginParams): Promise<Auth.LoginResult> {
  */
 export async function logout() {
   bindTidasPackageTaskCenterOwner(null);
+  bindLcaTaskCenterOwner(null);
+  bindDataProductTaskCenterOwner(null);
   const { error } = await supabase.auth.signOut();
   return error;
 }

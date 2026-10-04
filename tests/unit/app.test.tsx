@@ -118,6 +118,15 @@ jest.mock('@/services/roles/api', () => ({
   getSystemUserRoleApi: (...args: any[]) => mockGetSystemUserRoleApi(...args),
 }));
 
+const mockBindLcaTaskCenterOwner = jest.fn();
+const mockBindDataProductTaskCenterOwner = jest.fn();
+jest.mock('@/services/lca/taskCenter', () => ({
+  bindLcaTaskCenterOwner: (...args: any[]) => mockBindLcaTaskCenterOwner(...args),
+}));
+jest.mock('@/services/dataProducts/taskCenter', () => ({
+  bindDataProductTaskCenterOwner: (...args: any[]) => mockBindDataProductTaskCenterOwner(...args),
+}));
+
 jest.mock('@/services/tidasPackage/taskCenter', () => ({
   __esModule: true,
   bindTidasPackageTaskCenterOwner: (...args: any[]) => mockBindTidasPackageTaskCenterOwner(...args),
@@ -364,6 +373,8 @@ describe('app runtime config', () => {
     expect(mockGetSystemUserRoleApi).not.toHaveBeenCalled();
     expect(mockHistory.push).not.toHaveBeenCalled();
     expect(mockBindTidasPackageTaskCenterOwner).toHaveBeenCalledWith(null);
+    expect(mockBindLcaTaskCenterOwner).toHaveBeenCalledWith(null);
+    expect(mockBindDataProductTaskCenterOwner).toHaveBeenCalledWith(null);
     expect(state.systemStatus.phase).toBe('maintenance');
   });
 
@@ -391,13 +402,15 @@ describe('app runtime config', () => {
     expect(runtimeLayout.menuDataRender?.([{ path: '/tgdata' }])).toEqual([]);
   });
 
-  it('binds the package task center to the authenticated user before rendering', async () => {
+  it('binds every task center to the authenticated user before rendering', async () => {
     const { getInitialState } = require('@/app');
     mockQueryCurrentUser.mockResolvedValueOnce({ name: 'Current User', userid: 'user-a' });
 
     await getInitialState();
 
     expect(mockBindTidasPackageTaskCenterOwner).toHaveBeenCalledWith('user-a');
+    expect(mockBindLcaTaskCenterOwner).toHaveBeenCalledWith('user-a');
+    expect(mockBindDataProductTaskCenterOwner).toHaveBeenCalledWith('user-a');
   });
 
   it('getInitialState loads dashboard users so admin route access can gate the page', async () => {
@@ -459,6 +472,8 @@ describe('app runtime config', () => {
 
     expect(mockHistory.push).toHaveBeenCalledWith('/user/login');
     expect(mockBindTidasPackageTaskCenterOwner).toHaveBeenCalledWith(null);
+    expect(mockBindLcaTaskCenterOwner).toHaveBeenCalledWith(null);
+    expect(mockBindDataProductTaskCenterOwner).toHaveBeenCalledWith(null);
     expect(state.currentUser).toBeNull();
   });
 
@@ -502,6 +517,8 @@ describe('app runtime config', () => {
 
       expect(mockQueryCurrentUser).not.toHaveBeenCalled();
       expect(mockBindTidasPackageTaskCenterOwner).toHaveBeenCalledWith(null);
+      expect(mockBindLcaTaskCenterOwner).toHaveBeenCalledWith(null);
+      expect(mockBindDataProductTaskCenterOwner).toHaveBeenCalledWith(null);
       expect(state.currentUser).toBeUndefined();
       expect(typeof state.fetchUserInfo).toBe('function');
     },

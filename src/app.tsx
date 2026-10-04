@@ -32,6 +32,8 @@ import {
   type SystemStatus,
 } from '@/services/general/systemStatus';
 import { getSystemUserRoleApi } from '@/services/roles/api';
+import { bindLcaTaskCenterOwner } from '@/services/lca/taskCenter';
+import { bindDataProductTaskCenterOwner } from '@/services/dataProducts/taskCenter';
 import { bindTidasPackageTaskCenterOwner } from '@/services/tidasPackage/taskCenter';
 import styles from '@/style/custom.less';
 import { AntdAppApiRegistrar } from '@/contexts/AntdAppContext';
@@ -136,16 +138,22 @@ export async function getInitialState(): Promise<{
       const msg = await queryCurrentUser();
       if (!msg) {
         bindTidasPackageTaskCenterOwner(null);
+        bindLcaTaskCenterOwner(null);
+        bindDataProductTaskCenterOwner(null);
         history.push(LOGIN_PATH);
         return null;
       }
       bindTidasPackageTaskCenterOwner(msg.userid);
+      bindLcaTaskCenterOwner(msg.userid);
+      bindDataProductTaskCenterOwner(msg.userid);
       return {
         ...msg,
         access: await getSystemAccess(),
       };
     } catch (error) {
       bindTidasPackageTaskCenterOwner(null);
+      bindLcaTaskCenterOwner(null);
+      bindDataProductTaskCenterOwner(null);
       history.push(LOGIN_PATH);
     }
     return null;
@@ -163,6 +171,8 @@ export async function getInitialState(): Promise<{
   const systemStatus = await getSystemStatus();
   if (isSystemMaintenanceActive(systemStatus)) {
     bindTidasPackageTaskCenterOwner(null);
+    bindLcaTaskCenterOwner(null);
+    bindDataProductTaskCenterOwner(null);
     return {
       fetchUserInfo,
       settings: updatedSettings as Partial<LayoutSettings>,
@@ -183,6 +193,8 @@ export async function getInitialState(): Promise<{
     };
   }
   bindTidasPackageTaskCenterOwner(null);
+  bindLcaTaskCenterOwner(null);
+  bindDataProductTaskCenterOwner(null);
   return {
     fetchUserInfo,
     settings: updatedSettings as Partial<LayoutSettings>,
@@ -240,7 +252,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
         <LocationCacheMonitor key='LocaltionCacheMonitor' />,
         <ImportTidasPackage key='ImportTidasPackage' />,
         <ExportTidasPackage key='ExportTidasPackage' />,
-        <LcaTaskCenter key='LcaTaskCenter' />,
+        <LcaTaskCenter key={`LcaTaskCenter:${initialState.currentUser.userid}`} />,
         <Notification key='Notification' />,
         ...publicActions,
       ];

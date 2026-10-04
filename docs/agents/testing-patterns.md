@@ -43,8 +43,8 @@ checkPaths:
   - .github/workflows/release-gate.yml
   - .github/workflows/release-readiness.yml
 lastReviewedAt: 2026-10-04
-lastReviewedCommit: b48bef31c04ed2044fcd708688f61297afadef1f
-lastReviewedNote: 'Reviewed Platform #1177: owner-scoped task snapshots, session-generation fences, shared pending reads and settled adaptive discovery; calculation, authorization, environment and quality-gate contracts remain unchanged.'
+lastReviewedCommit: 7d0829afaa865f74b80deefa41fc094ac457cf23
+lastReviewedNote: 'Reviewed Platform #1177: settled adaptive task discovery, verified auth-event ownership, startup epoch revalidation, owner snapshots and stale optimistic callback fences; calculation, authorization, environment and quality-gate policy remain aligned.'
 ---
 
 # Testing Patterns Reference

@@ -43,8 +43,8 @@ checkPaths:
   - .github/workflows/release-gate.yml
   - .github/workflows/release-readiness.yml
 lastReviewedAt: 2026-10-04
-lastReviewedCommit: 6c695c11bd52a505bf453a8818f7f1298a470618
-lastReviewedNote: 'Reviewed Platform #1177: settled adaptive task discovery, verified auth-event ownership, startup epoch revalidation, owner snapshots and stale optimistic callback fences; calculation, authorization, environment and quality-gate policy remain aligned.'
+lastReviewedCommit: 2b96799d1c1780e96b0f207f5a9f4024f849667c
+lastReviewedNote: 'Reviewed Platform #1177 browser fixture corrections: exact composed catalog titles and observed dialog readiness preserve semantic assertions, complete qualification and existing gate policy.'
 ---
 
 # Testing Patterns Reference
@@ -84,6 +84,8 @@ lastReviewedNote: 'Reviewed Platform #1177: settled adaptive task discovery, ver
 - when testing Umi config-time environment selection, model both the already-populated `process.env` and each selected env file. Prove exact main-file defaults are decontaminated for Dev, distinct and partial explicit overrides retain priority, missing selected values fall back safely, and qualification ignores ambient deployment values
 - when a Table/ProTable dependency upgrade appears to change the first request in one browser, first compare the page unit request and service fallback. If both intentionally use the same default, correct the browser fixture to that one exact RPC body; add `defaultSortOrder` only when the product truly owns a different initial order
 - when a browser assertion compares several rectangles inside an opening Drawer, Modal, or responsive toolbar, read all rectangles in one in-page evaluation and poll the complete invariant. Sort by rendered coordinates when the contract is visual order; sequential locator `boundingBox()` calls can sample different animation frames, and DOM order is not a horizontal-layout contract
+- when a hidden navigation group is rendered as a composed page title, declare the ordered catalog message IDs and separator in the route target and assert the complete exact localized title. Keep exact route/query, access, locale and page-owned message checks; do not replace them with broad substring matching or unhide product menus for a test
+- before acting in a role-selected dialog, wait for its observed opening preparation and finite Web Animations to settle; before a following confirmation, prove the preceding business mutation and dialog closure. Keep clicks actionable and preserve failure/persistence assertions. A click that returned without a DOM click event is not completion proof; forced clicks, fixed sleeps and retries must not conceal that race
 - Jest 30/jsdom 26 owns non-configurable `window` and `location` objects. Pass mock `Location` methods through `src/utils/browserNavigation.ts`, pass nullable event-target/storage/window inputs to pure runtime helpers, and use `history.pushState` for URL state; never delete or redefine the jsdom globals. jest-dom 7 style expectations use computed normalized colors such as `rgb(...)`, not named-color serialization
 - Jest 30's Babel report may add an alternate slot without source coordinates for an `if` that has no `else`. Keep Babel coverage for Umi/esbuild source-map fidelity; let Jest enforce 100% statements/functions/lines, then let `test:coverage:assert-full` exclude only that exact source-less `if` alternate shape and require 100% of every source-mapped branch. Any other missing map, mismatched path count, invalid hit count, or uncovered source-mapped branch fails closed
 - continuation receipts for the shared release/qualification controller must bind the generated `-main` or `-qualification` image tag, qualification boolean, offline policy, and external proof path. Argument-free resume reuses those values; it must finalize a resumed qualification into the same proof destination rather than returning a raw release result

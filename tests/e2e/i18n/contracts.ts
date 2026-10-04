@@ -77,6 +77,8 @@ export type SpaLocationTarget = {
 type LocalizedVisibleTarget = {
   kind: 'locale-messages';
   messageIds: string[];
+  // When supplied, these messages form one exact visible title in the declared order.
+  separator?: string;
 };
 
 export type LocalizedRouteTarget = {

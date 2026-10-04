@@ -21,9 +21,9 @@ checkPaths:
   - src/services/lciaMethods/**
   - src/components/LcaTaskCenter/**
   - src/pages/Processes/Analysis/**
-lastReviewedAt: 2026-10-01
-lastReviewedCommit: 639abca401c18608d23b5e58db164a53fd6fb1a2
-lastReviewedNote: 'Reviewed Platform #1163: repeated ILCD editor data, complete form-store saves, unchanged review/calculation policy, and released SDK 0.4.1 baseline; formal candidate SDK adoption remains tracked.'
+lastReviewedAt: 2026-10-04
+lastReviewedCommit: b48bef31c04ed2044fcd708688f61297afadef1f
+lastReviewedNote: 'Reviewed Platform #1177: owner-scoped task snapshots, session-generation fences, shared pending reads and settled adaptive discovery; calculation, authorization, environment and quality-gate contracts remain unchanged.'
 ---
 
 # Lifecycle Model Calculation Reference

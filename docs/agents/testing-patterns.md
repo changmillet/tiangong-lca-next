@@ -42,9 +42,9 @@ checkPaths:
   - .github/workflows/build.yml
   - .github/workflows/release-gate.yml
   - .github/workflows/release-readiness.yml
-lastReviewedAt: 2026-10-02
-lastReviewedCommit: df2707ef96dec4f9eed5bbc6a724bb96f22ed4c0
-lastReviewedNote: 'Reviewed Flow property snapshot fallbacks and unindexed-array diagnostic isolation coverage; Process/Flow SDK and nested-save fixes remain aligned with unchanged contracts and validation policy.'
+lastReviewedAt: 2026-10-04
+lastReviewedCommit: b48bef31c04ed2044fcd708688f61297afadef1f
+lastReviewedNote: 'Reviewed Platform #1177: owner-scoped task snapshots, session-generation fences, shared pending reads and settled adaptive discovery; calculation, authorization, environment and quality-gate contracts remain unchanged.'
 ---
 
 # Testing Patterns Reference

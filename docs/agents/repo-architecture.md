@@ -25,9 +25,9 @@ checkPaths:
   - playwright.config.ts
   - config/docs-capture/**
   - tests/e2e/i18n/**
-lastReviewedAt: 2026-10-02
-lastReviewedCommit: 0ff23cc0844706f4d12a1c148acfd108ba9832f2
-lastReviewedNote: 'Reviewed Flow property snapshot fallbacks and unindexed-array diagnostic isolation coverage; Process/Flow SDK and nested-save fixes remain aligned with unchanged contracts and validation policy.'
+lastReviewedAt: 2026-10-04
+lastReviewedCommit: b48bef31c04ed2044fcd708688f61297afadef1f
+lastReviewedNote: 'Reviewed Platform #1177: owner-scoped task snapshots, session-generation fences, shared pending reads and settled adaptive discovery; calculation, authorization, environment and quality-gate contracts remain unchanged.'
 related:
   - ../AGENTS.md
   - ../.docpact/config.yaml

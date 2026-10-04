@@ -138,22 +138,29 @@ export async function getInitialState(): Promise<{
   systemStatus?: SystemStatus;
 }> {
   const fetchUserInfo = async (): Promise<Auth.CurrentUser | null> => {
-    const identityGeneration = getTaskCenterIdentityGeneration();
-    try {
-      const msg = await queryCurrentUser();
-      if (!msg) {
+    // INITIAL_SESSION can settle during the first claims lookup. Re-read once
+    // against the new epoch rather than admitting a stale or ownerless user.
+    for (let attempt = 0; attempt < 2; attempt += 1) {
+      const identityGeneration = getTaskCenterIdentityGeneration();
+      try {
+        const msg = await queryCurrentUser();
+        if (identityGeneration !== getTaskCenterIdentityGeneration()) continue;
+        if (!msg) {
+          bindTaskCenterOwner(null, identityGeneration);
+          history.push(LOGIN_PATH);
+          return null;
+        }
+        if (!bindTaskCenterOwner(msg.userid, identityGeneration)) continue;
+        const admittedGeneration = getTaskCenterIdentityGeneration();
+        const access = await getSystemAccess();
+        if (admittedGeneration !== getTaskCenterIdentityGeneration()) continue;
+        return { ...msg, access };
+      } catch (error) {
+        if (identityGeneration !== getTaskCenterIdentityGeneration()) continue;
         bindTaskCenterOwner(null, identityGeneration);
         history.push(LOGIN_PATH);
         return null;
       }
-      bindTaskCenterOwner(msg.userid, identityGeneration);
-      return {
-        ...msg,
-        access: await getSystemAccess(),
-      };
-    } catch (error) {
-      bindTaskCenterOwner(null, identityGeneration);
-      history.push(LOGIN_PATH);
     }
     return null;
   };

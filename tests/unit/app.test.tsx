@@ -118,6 +118,18 @@ jest.mock('@/services/roles/api', () => ({
   getSystemUserRoleApi: (...args: any[]) => mockGetSystemUserRoleApi(...args),
 }));
 
+let mockTaskAuthCallback: any;
+jest.mock('@/services/supabase', () => ({
+  supabase: {
+    auth: {
+      onAuthStateChange: (callback: any) => {
+        mockTaskAuthCallback = callback;
+        return { data: { subscription: { unsubscribe: jest.fn() } } };
+      },
+      getClaims: jest.fn(),
+    },
+  },
+}));
 const mockBindLcaTaskCenterOwner = jest.fn();
 const mockBindDataProductTaskCenterOwner = jest.fn();
 jest.mock('@/services/lca/taskCenter', () => ({
@@ -413,23 +425,48 @@ describe('app runtime config', () => {
     expect(mockBindDataProductTaskCenterOwner).toHaveBeenCalledWith('user-a');
   });
 
-  it('does not rebind an old user lookup after a newer identity generation was admitted', async () => {
+  it('re-reads a lookup superseded by a new identity instead of admitting the old user', async () => {
     const { getInitialState } = require('@/app');
     const centers = require('@/services/auth/taskCenters');
     let finish: (value: any) => void = () => undefined;
-    mockQueryCurrentUser.mockReturnValueOnce(
-      new Promise((resolve) => {
-        finish = resolve;
-      }),
-    );
+    mockQueryCurrentUser
+      .mockReturnValueOnce(
+        new Promise((resolve) => {
+          finish = resolve;
+        }),
+      )
+      .mockResolvedValueOnce({ name: 'New user', userid: 'owner-b' });
     const initial = getInitialState();
     for (let i = 0; i < 12; i += 1) await Promise.resolve();
     centers.bindTaskCenterOwner('owner-b');
     finish({ name: 'Previous user', userid: 'owner-a' });
-    await initial;
+    const state = await initial;
+    expect(state.currentUser?.userid).toBe('owner-b');
     expect(mockBindLcaTaskCenterOwner).toHaveBeenLastCalledWith('owner-b');
     expect(mockBindDataProductTaskCenterOwner).toHaveBeenLastCalledWith('owner-b');
     expect(mockBindTidasPackageTaskCenterOwner).toHaveBeenLastCalledWith('owner-b');
+  });
+
+  it('admits a valid startup identity when INITIAL_SESSION settles during its first claims lookup', async () => {
+    const { getInitialState } = require('@/app');
+    let finish: (value: any) => void = () => undefined;
+    const user = { name: 'Current user', userid: 'owner-a' };
+    mockQueryCurrentUser
+      .mockReturnValueOnce(
+        new Promise((resolve) => {
+          finish = resolve;
+        }),
+      )
+      .mockResolvedValueOnce(user);
+    const initial = getInitialState();
+    for (let i = 0; i < 12; i += 1) await Promise.resolve();
+    mockTaskAuthCallback('INITIAL_SESSION', { user: { id: 'owner-a' } });
+    finish(user);
+    const state = await initial;
+    expect(state.currentUser?.userid).toBe('owner-a');
+    expect(mockQueryCurrentUser).toHaveBeenCalledTimes(2);
+    expect(mockBindLcaTaskCenterOwner).toHaveBeenLastCalledWith('owner-a');
+    expect(mockBindDataProductTaskCenterOwner).toHaveBeenLastCalledWith('owner-a');
   });
 
   it('getInitialState loads dashboard users so admin route access can gate the page', async () => {

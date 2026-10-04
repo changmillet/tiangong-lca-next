@@ -283,6 +283,31 @@ describe('lca task center', () => {
     ).toEqual([]);
   });
 
+  it('does not submit after a synchronous owner change and does not replay work on duplicate binds', async () => {
+    const { module, mocks } = loadTaskCenterModule();
+    await flushAsync();
+    const unsubscribe = module.subscribeLcaTasks(() => {
+      if (module.listLcaTasks().length) module.bindLcaTaskCenterOwner(null);
+    });
+    module.submitLcaTask({ demand_mode: 'all_unit' });
+    await flushAsync();
+    expect(mocks.submitLcaSolve).not.toHaveBeenCalled();
+    unsubscribe();
+    module.bindLcaTaskCenterOwner('owner-a');
+    await flushAsync();
+    mocks.submitLcaSolve.mockClear();
+    mocks.submitLcaSolve.mockReturnValue(createDeferred().promise);
+    module.submitLcaTask({ demand_mode: 'all_unit' });
+    await flushAsync();
+    const readCount = mocks.requestWorkerJobsApi.mock.calls.length;
+    module.bindLcaTaskCenterOwner('owner-a');
+    module.bindLcaTaskCenterOwner(' owner-a ');
+    await flushAsync();
+    expect(mocks.submitLcaSolve).toHaveBeenCalledTimes(1);
+    expect(mocks.requestWorkerJobsApi).toHaveBeenCalledTimes(readCount);
+    module.bindLcaTaskCenterOwner(null);
+  });
+
   it('normalizes stored tasks, skips invalid entries, and applies request/timeline fallbacks', () => {
     storePersistedTasks(
       [

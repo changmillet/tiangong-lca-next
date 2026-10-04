@@ -1040,6 +1040,7 @@ async function runTask(
   request: LcaSolveRequest,
   generation: number,
 ): Promise<void> {
+  if (!isActiveGeneration(generation)) return;
   try {
     const submit = await submitLcaSolve(request);
     if (!isActiveGeneration(generation)) return;

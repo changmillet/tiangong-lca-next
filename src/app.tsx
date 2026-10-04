@@ -37,6 +37,7 @@ import {
   getTaskCenterIdentityGeneration,
   subscribeToTaskCenterAuthChanges,
 } from '@/services/auth/taskCenters';
+import { reloadBrowserPage } from '@/utils/browserNavigation';
 import styles from '@/style/custom.less';
 import { AntdAppApiRegistrar } from '@/contexts/AntdAppContext';
 import { AntdThemeSync, createAntdThemeConfig } from '@/contexts/AntdThemeSync';
@@ -60,7 +61,7 @@ const systemAccessByRole = new Map<string, Auth.CurrentUser['access']>([
   ['data_product_manager', 'data_product_manager'],
 ]);
 
-subscribeToTaskCenterAuthChanges();
+subscribeToTaskCenterAuthChanges(() => reloadBrowserPage(window.location));
 
 subscribeToPasswordRecovery(() => {
   history.replace(recoveryFormPath);
@@ -150,10 +151,9 @@ export async function getInitialState(): Promise<{
           history.push(LOGIN_PATH);
           return null;
         }
-        bindTaskCenterOwner(msg.userid, identityGeneration);
-        const admittedGeneration = getTaskCenterIdentityGeneration();
         const access = await getSystemAccess();
-        if (admittedGeneration !== getTaskCenterIdentityGeneration()) continue;
+        if (identityGeneration !== getTaskCenterIdentityGeneration()) continue;
+        if (!bindTaskCenterOwner(msg.userid, identityGeneration)) return null;
         return { ...msg, access };
       } catch (error) {
         if (identityGeneration !== getTaskCenterIdentityGeneration()) continue;

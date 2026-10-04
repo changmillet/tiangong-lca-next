@@ -118,6 +118,10 @@ jest.mock('@/services/roles/api', () => ({
   getSystemUserRoleApi: (...args: any[]) => mockGetSystemUserRoleApi(...args),
 }));
 
+const mockReloadBrowserPage = jest.fn();
+jest.mock('@/utils/browserNavigation', () => ({
+  reloadBrowserPage: (...args: any[]) => mockReloadBrowserPage(...args),
+}));
 let mockTaskAuthCallback: any;
 jest.mock('@/services/supabase', () => ({
   supabase: {
@@ -522,6 +526,47 @@ describe('app runtime config', () => {
     expect(state.currentUser).toBeNull();
     expect(mockQueryCurrentUser).toHaveBeenCalledTimes(2);
     expect(mockBindLcaTaskCenterOwner).not.toHaveBeenCalledWith('changing-owner');
+  });
+
+  it('reloads cross-tab signout through full app admission while keeping tasks ownerless', async () => {
+    jest.useFakeTimers();
+    const { getInitialState } = require('@/app');
+    mockQueryCurrentUser.mockResolvedValueOnce({ name: 'Previous', userid: 'owner-a' });
+    await getInitialState();
+    mockTaskAuthCallback('SIGNED_OUT', null);
+    expect(mockReloadBrowserPage).not.toHaveBeenCalled();
+    expect(mockBindLcaTaskCenterOwner).toHaveBeenLastCalledWith(null);
+    jest.runOnlyPendingTimers();
+    expect(mockReloadBrowserPage).toHaveBeenCalledWith(window.location);
+    jest.useRealTimers();
+  });
+
+  it('keeps foreign tasks unbound when same-document Login lookup waits for roles and cannot cancel reload', async () => {
+    jest.useFakeTimers();
+    const { getInitialState } = require('@/app');
+    mockQueryCurrentUser.mockResolvedValueOnce({ name: 'Previous', userid: 'owner-a' });
+    const current = await getInitialState();
+    let finish: (value: any) => void = () => undefined;
+    mockQueryCurrentUser.mockResolvedValueOnce({ name: 'New user', userid: 'owner-b' });
+    mockGetSystemUserRoleApi.mockReturnValueOnce(
+      new Promise((resolve) => {
+        finish = resolve;
+      }),
+    );
+    mockTaskAuthCallback('SIGNED_IN', { user: { id: 'owner-b' } });
+    const lookup = current.fetchUserInfo();
+    for (let i = 0; i < 12; i += 1) await Promise.resolve();
+    const boundWhileRolesPending = mockBindLcaTaskCenterOwner.mock.calls.at(-1)?.[0];
+    jest.runOnlyPendingTimers();
+    const reloadCount = mockReloadBrowserPage.mock.calls.length;
+    finish({ role: 'data_product_manager' });
+    const user = await lookup;
+    expect(boundWhileRolesPending).toBeNull();
+    expect(reloadCount).toBe(1);
+    expect(mockBindLcaTaskCenterOwner).toHaveBeenLastCalledWith(null);
+    expect(mockBindDataProductTaskCenterOwner).toHaveBeenLastCalledWith(null);
+    expect(user).toBeNull();
+    jest.useRealTimers();
   });
 
   it('getInitialState loads dashboard users so admin route access can gate the page', async () => {

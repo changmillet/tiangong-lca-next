@@ -44,8 +44,8 @@ checkPaths:
   - scripts/i18n/locale-delivery.mjs
   - .github/workflows/**
 lastReviewedAt: 2026-10-08
-lastReviewedCommit: f4bb5246c01397935657c6d28a2cbdb604aa0945
-lastReviewedNote: 'Reviewed Platform #1182 candidate-local frozen offline installation. Exact browser case closure, controlled environment, package versions and full-gate policy are preserved.'
+lastReviewedCommit: 931e07b386611dda725a0129da01a9e26f8b31a2
+lastReviewedNote: 'Reviewed Platform #1182 current membership RPC fixture and exact POST request proof; all 13 browser product assertions and full-gate policy remain unchanged.'
 related:
   - ../AGENTS.md
   - ../.docpact/config.yaml

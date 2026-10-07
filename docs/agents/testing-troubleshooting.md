@@ -40,8 +40,8 @@ checkPaths:
   - .github/workflows/release-gate.yml
   - .github/workflows/release-readiness.yml
 lastReviewedAt: 2026-10-08
-lastReviewedCommit: f4bb5246c01397935657c6d28a2cbdb604aa0945
-lastReviewedNote: 'Reviewed Platform #1182 candidate-local frozen offline installation. Exact browser case closure, controlled environment, package versions and full-gate policy are preserved.'
+lastReviewedCommit: 931e07b386611dda725a0129da01a9e26f8b31a2
+lastReviewedNote: 'Reviewed Platform #1182 current membership RPC fixture and exact POST request proof; all 13 browser product assertions and full-gate policy remain unchanged.'
 ---
 
 # Testing Troubleshooting
@@ -132,6 +132,7 @@ Canonical baseline and proof ownership stays with `DEV.md` and `docs/agents/repo
 | Playwright browser executable is missing | a direct host run lacks binaries, or the hermetic image is absent/mismatched | for `e2e:dev`, run `pnpm exec playwright install chromium firefox webkit`; for exact committed qualification, run `pnpm e2e:env:install` and do not repair browsers one by one on the host |
 | scope-closure qualification rejects the candidate or target before Playwright | the checkout is dirty, the commit is not exact, isolated-non-production confirmation is absent, a target is non-loopback, or an environment value has a production fingerprint | commit the intended candidate, supply only the documented confirmation and loopback backend target, and rerun the adapter; never weaken the guard or print the rejected value |
 | scope-closure candidate dependency installation fails | the pinned package store is incomplete, the frozen lock differs, or an unsafe shared modules root was supplied | bootstrap the exact candidate dependencies with the pinned pnpm, retain a real candidate-local modules directory, and rerun; never disable pnpm safety checks or manufacture a provider receipt |
+| scope-closure manager and all artifact cases fail while denied roles pass | a stale role-table mock may leave the current membership RPC without system-role context | compare the fixture with `getSystemUserRoleApi` and `qry_membership_get_mine`, preserve the current membership array/team/role contract, and assert real typed requests for denied and allowed personas; do not weaken authorization or product assertions |
 | scope-closure qualification browser assertions pass but provider evidence is rejected | the discovered test-title closure, canonical output, exact SHA/run ID, owned consumer leaves, or sensitive-field scan differs from the Worker schema | compare the adapter against the exact Worker `scope-closure-provider-owned-result.v1` schema and aggregator commit, restore the required browser case/title rather than hand-editing JSON, then run twice with the same run ID |
 | docs capture reports `missing-credentials` or `invalid-authentication` | the secret pointer/file/mode is invalid, identity does not match, or login/MFA/session did not complete | verify only that `DOCS_SCREENSHOT_ENV_FILE` points to the external absolute regular mode-`0600` file; never source or print it, and do not convert this failure into an access-denied Draft |
 | docs capture rejects `--base-url` before browser launch | the caller omitted the run-scoped origin or supplied credentials, a path, query, fragment, or non-HTTP(S) URL | rerun through the workspace runtime wrapper for a local candidate, or pass the explicitly approved production origin; never restore `DOCS_SCREENSHOT_BASE_URL` to the account file |

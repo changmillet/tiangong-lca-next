@@ -1,8 +1,8 @@
 version: 1
 layout: repo
-lastReviewedAt: "2026-10-04"
-lastReviewedCommit: "23962f4bf51ebd1ad6e166e041998b04dbd3a6a9"
-lastReviewedNote: 'Reviewed Platform #1177 final owner admission and native dispatch fences: foreign identities require fresh full application admission; task writes and TIDAS phases verify captured identity through native fetch. Calculation, authorization, environment and quality-gate policy remain unchanged.'
+lastReviewedAt: '2026-10-08'
+lastReviewedCommit: '931e07b386611dda725a0129da01a9e26f8b31a2'
+lastReviewedNote: 'Reviewed Platform #1182 current membership RPC fixture and exact POST request proof; all 13 browser product assertions and full-gate policy remain unchanged.'
 
 # Keep path-level ownership, routing intents, and governed-doc rules here.
 # AGENTS.md keeps the entry-level repo contract and minimal execution summary.

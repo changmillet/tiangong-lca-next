@@ -45,9 +45,9 @@ checkPaths:
   - .nvmrc
   - .husky/pre-push
   - .github/workflows/**
-lastReviewedAt: 2026-10-04
-lastReviewedCommit: 23962f4bf51ebd1ad6e166e041998b04dbd3a6a9
-lastReviewedNote: 'Reviewed Platform #1177 final owner admission and native dispatch fences: foreign identities require fresh full application admission; task writes and TIDAS phases verify captured identity through native fetch. Calculation, authorization, environment and quality-gate policy remain unchanged.'
+lastReviewedAt: 2026-10-08
+lastReviewedCommit: f4bb5246c01397935657c6d28a2cbdb604aa0945
+lastReviewedNote: 'Reviewed Platform #1182 candidate-local frozen offline installation; bootstrap, branch policy, full-gate and exact browser closure remain unchanged.'
 related:
   - .docpact/config.yaml
   - docs/agents/repo-validation.md

@@ -42,9 +42,9 @@ checkPaths:
   - scripts/typescript-native-parser.*
   - scripts/reference-data/**
   - .github/workflows/**
-lastReviewedAt: 2026-10-04
-lastReviewedCommit: 23962f4bf51ebd1ad6e166e041998b04dbd3a6a9
-lastReviewedNote: 'Reviewed Platform #1177: settled adaptive task discovery, verified auth-event ownership, startup epoch revalidation, owner snapshots and stale optimistic callback fences; calculation, authorization, environment and quality-gate policy remain aligned.'
+lastReviewedAt: 2026-10-08
+lastReviewedCommit: 931e07b386611dda725a0129da01a9e26f8b31a2
+lastReviewedNote: 'Reviewed Platform #1182 current membership RPC fixture and exact POST request proof; all 13 browser product assertions and full-gate policy remain unchanged.'
 ---
 
 # Pre-Push Gate Policy

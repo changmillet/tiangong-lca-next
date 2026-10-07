@@ -43,9 +43,9 @@ checkPaths:
   - pnpm-lock.yaml
   - pnpm-workspace.yaml
   - Dockerfile.app
-lastReviewedAt: 2026-10-04
-lastReviewedCommit: 23962f4bf51ebd1ad6e166e041998b04dbd3a6a9
-lastReviewedNote: 'Reviewed Platform #1177 qualification closure repair against the current route contract and browser inventory; v5 proof, strict negative cases and sanitized CI diagnostics preserve complete evidence requirements without changing product language or release authorization policy.'
+lastReviewedAt: 2026-10-08
+lastReviewedCommit: 931e07b386611dda725a0129da01a9e26f8b31a2
+lastReviewedNote: 'Reviewed Platform #1182 current membership RPC fixture and exact POST request proof; all 13 browser product assertions and full-gate policy remain unchanged.'
 ---
 
 # Testing Strategy

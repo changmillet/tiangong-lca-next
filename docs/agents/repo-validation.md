@@ -43,9 +43,9 @@ checkPaths:
   - scripts/typescript-native-parser.*
   - scripts/i18n/locale-delivery.mjs
   - .github/workflows/**
-lastReviewedAt: 2026-10-04
-lastReviewedCommit: 23962f4bf51ebd1ad6e166e041998b04dbd3a6a9
-lastReviewedNote: 'Reviewed Platform #1177 canonical proof-source repair: producer digest binding, strict v6 projection, real-report fixture replay and unchanged credential redaction. Test fixtures are not candidate qualification; a complete exact-commit run remains required.'
+lastReviewedAt: 2026-10-08
+lastReviewedCommit: 931e07b386611dda725a0129da01a9e26f8b31a2
+lastReviewedNote: 'Reviewed Platform #1182 current membership RPC fixture and exact POST request proof; all 13 browser product assertions and full-gate policy remain unchanged.'
 related:
   - ../AGENTS.md
   - ../.docpact/config.yaml

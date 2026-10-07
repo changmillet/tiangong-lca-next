@@ -42,9 +42,9 @@ checkPaths:
   - .github/workflows/build.yml
   - .github/workflows/release-gate.yml
   - .github/workflows/release-readiness.yml
-lastReviewedAt: 2026-10-04
-lastReviewedCommit: 23962f4bf51ebd1ad6e166e041998b04dbd3a6a9
-lastReviewedNote: 'Reviewed Platform #1177 qualification closure repair against the current route contract and browser inventory; v5 proof, strict negative cases and sanitized CI diagnostics preserve complete evidence requirements without changing product language or release authorization policy.'
+lastReviewedAt: 2026-10-08
+lastReviewedCommit: f4bb5246c01397935657c6d28a2cbdb604aa0945
+lastReviewedNote: 'Reviewed Platform #1182 candidate-local frozen offline installation. Exact browser case closure, controlled environment, package versions and full-gate policy are preserved.'
 ---
 
 # Testing Patterns Reference
@@ -207,6 +207,7 @@ Documentation capture profile pattern:
 Scope-closure provider qualification pattern:
 
 - run `scripts/qualification/scope-closure-next-qualification.mjs` only from a clean tracked commit and let it export that commit into a temporary detached worktree
+- install the detached candidate with `pnpm install --offline --frozen-lockfile` into its own real `node_modules`; warm the pinned dependency store first, preserve reviewed dependency lifecycle scripts, and suppress only the candidate root Husky installer so shared Git hook configuration is unchanged
 - require explicit isolated-non-production confirmation and loopback frontend/backend targets; reject production fingerprints before browser startup
 - exercise the real Data Processing browser route across every relevant authenticated role plus anonymous routing, and prove all four artifact states, direct document navigation, bounded format presentation, integrity/expiry metadata, and localized expired guidance
 - emit only the exact Worker-owned provider result schema and Next-owned consumer leaves; never include URLs, object locators, response payloads, credentials, cookies, or tokens

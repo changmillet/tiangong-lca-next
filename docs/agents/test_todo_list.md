@@ -40,9 +40,9 @@ checkPaths:
   - .github/workflows/build.yml
   - .github/workflows/release-gate.yml
   - .github/workflows/release-readiness.yml
-lastReviewedAt: 2026-10-04
-lastReviewedCommit: 23962f4bf51ebd1ad6e166e041998b04dbd3a6a9
-lastReviewedNote: 'Reviewed Platform #1177 canonical proof-source repair: producer digest binding, strict v6 projection, real-report fixture replay and unchanged credential redaction. Test fixtures are not candidate qualification; a complete exact-commit run remains required.'
+lastReviewedAt: 2026-10-08
+lastReviewedCommit: f4bb5246c01397935657c6d28a2cbdb604aa0945
+lastReviewedNote: 'Reviewed Platform #1182 candidate-local frozen offline installation. Exact browser case closure, controlled environment, package versions and full-gate policy are preserved.'
 ---
 
 # Testing Execution State
@@ -80,6 +80,7 @@ This is a checked-in reference, not a per-PR execution ledger. A delivery's post
 - deterministic release-command coverage proves JSON purity, non-mutating dry-run, static preflight before transport, rejection of unexpected untracked files, exact version fields, restricted checked-push profiles, idempotent PR reuse, immutable promotion identity, independent version-candidate and cumulative `main`-to-candidate Docpact preflight, bounded automatic review, and the invariant that the local release-to-dev command never runs browsers or writes tracked proof
 - Issue #845 closes the release proof-reuse publication gap: every tag, draft, web, Electron, and final-verification job overrides only the intentional skipped-ancestor propagation with `!cancelled()` while requiring each direct prerequisite to succeed. The deterministic release fixtures also accept the normal tree-identical two-parent promotion after `dev` advances and reject any changed promotion tree; this creates no open coverage queue.
 - Issue #693 moves profile validation, generic visual-plan, account-secret, run-scoped origin, output-containment, access classification, and capture compatibility proof to workspace tooling.
+- Issue #1182 gives each scope-closure detached candidate its own frozen offline dependency installation, preserving the exact 13-browser-case closure and rejecting installation failures before evidence emission.
 - Issue #748 adds a git-tracked scope-closure qualification adapter for the Next owner. Its isolated Chromium flow proves preparing, available, expired, and unavailable presentation; direct document navigation for bounded XLSX and machine-readable manifests; integrity/expiry metadata; localized 410 rerun guidance; and anonymous, standard-user, administrator, owner, and data-product-manager routing without production targets or mutation.
 - locale topology, message ownership, ICU placeholders, and dynamic families are additionally protected by `pnpm i18n:audit`
 - active German pins the accepted 2,737-message catalog/runtime state at `c26f306e82ac66f50a56aafe8f89ea96c0b0c67d`; post-baseline existing-message changes use the tracked automated correction overlay, while Issue #601/#602/#606 confirmations retain frozen-history semantics only

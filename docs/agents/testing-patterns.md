@@ -43,8 +43,8 @@ checkPaths:
   - .github/workflows/release-gate.yml
   - .github/workflows/release-readiness.yml
 lastReviewedAt: 2026-10-08
-lastReviewedCommit: 931e07b386611dda725a0129da01a9e26f8b31a2
-lastReviewedNote: 'Reviewed Platform #1182 current membership RPC fixture and exact POST request proof; all 13 browser product assertions and full-gate policy remain unchanged.'
+lastReviewedCommit: ab4f62a48c7672440569aaaf698f168ad284b5cb
+lastReviewedNote: 'Reviewed Platform #1186 exact-version public Climate change readback, zero/missing/error states, page/locale response fences and focused full coverage; bootstrap, branch and full-gate policy are unchanged.'
 ---
 
 # Testing Patterns Reference

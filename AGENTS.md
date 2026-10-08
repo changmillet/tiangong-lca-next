@@ -46,8 +46,8 @@ checkPaths:
   - .husky/pre-push
   - .github/workflows/**
 lastReviewedAt: 2026-10-08
-lastReviewedCommit: f4bb5246c01397935657c6d28a2cbdb604aa0945
-lastReviewedNote: 'Reviewed Platform #1182 candidate-local frozen offline installation; bootstrap, branch policy, full-gate and exact browser closure remain unchanged.'
+lastReviewedCommit: ab4f62a48c7672440569aaaf698f168ad284b5cb
+lastReviewedNote: 'Reviewed Platform #1186 exact-version public Climate change readback, zero/missing/error states, page/locale response fences and focused full coverage; bootstrap, branch and full-gate policy are unchanged.'
 related:
   - .docpact/config.yaml
   - docs/agents/repo-validation.md

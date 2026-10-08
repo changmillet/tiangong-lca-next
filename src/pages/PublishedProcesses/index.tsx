@@ -12,7 +12,7 @@ import { getProcessTableAll } from '@/services/processes/api';
 import type { ProcessTable } from '@/services/processes/data';
 import { dataListIndexColumn, responsiveDataListTableProps } from '@/components/ResponsiveDataList';
 import { PageContainer, ProTable, type ProColumns } from '@ant-design/pro-components';
-import { Space, Spin, Tooltip } from 'antd';
+import { Spin, Tooltip } from 'antd';
 import { useCallback, useEffect, useRef, useState, type FC } from 'react';
 import { FormattedMessage, useIntl } from 'umi';
 
@@ -107,7 +107,8 @@ const PublishedProcesses: FC = () => {
       title: (
         <FormattedMessage
           id='pages.process.published.table.calculationResult'
-          defaultMessage='Calculation result'
+          defaultMessage='Calculation result ({unit})'
+          values={{ unit: 'kg CO2 Equivalents' }}
         />
       ),
       width: '40%',
@@ -135,12 +136,7 @@ const PublishedProcesses: FC = () => {
             </Tooltip>
           );
         }
-        return (
-          <Space>
-            <AlignedNumber value={result.value} />
-            <span>{result.unit}</span>
-          </Space>
-        );
+        return <AlignedNumber value={result.value} />;
       },
     },
   ];

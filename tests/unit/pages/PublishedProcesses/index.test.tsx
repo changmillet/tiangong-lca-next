@@ -1,5 +1,5 @@
 import PublishedProcesses from '@/pages/PublishedProcesses';
-import { act, render, screen } from '@testing-library/react';
+import { act, render, screen, within } from '@testing-library/react';
 
 const mockGetProcessTableAll = jest.fn();
 const mockGetClimate = jest.fn();
@@ -38,7 +38,9 @@ jest.mock('@ant-design/pro-components', () => ({
   },
 }));
 jest.mock('umi', () => ({
-  FormattedMessage: ({ defaultMessage }: any) => <>{defaultMessage}</>,
+  FormattedMessage: ({ defaultMessage, values = {} }: any) => (
+    <>{defaultMessage.replace(/\{(\w+)\}/g, (_: string, key: string) => String(values[key]))}</>
+  ),
   useIntl: () => ({ locale: mockLocale }),
 }));
 const process = (version = '01.00.000', id = 'process-a') => ({
@@ -86,7 +88,7 @@ describe('PublishedProcesses', () => {
   it('preserves published-only pagination, visibility and revision-qualified keys', async () => {
     render(<PublishedProcesses />);
     expect(screen.getByText('Published processes')).toBeInTheDocument();
-    expect(screen.getByText('Calculation result')).toBeInTheDocument();
+    expect(screen.getByText('Calculation result (kg CO2 Equivalents)')).toBeInTheDocument();
     expect(proTableProps.className).toBe('responsive-data-list-table');
     expect(proTableProps.search).toBe(false);
     expect(proTableProps.options).toEqual({ fullScreen: true });
@@ -121,10 +123,20 @@ describe('PublishedProcesses', () => {
     expect(mockGetClimate).toHaveBeenCalledWith(rows.map(({ id, version }) => ({ id, version })));
     const result = values(rows);
     result.get('process-a:01.00.001')!.value = -0.125;
+    result.get('process-a:01.00.001')!.unit = 'unknown';
     result.set('process-a:02.00.000', { ...rows[2], status: 'missing', value: null, unit: '' });
     await act(async () => pending.resolve(result));
-    expect(screen.getByTestId('process-a:01.00.000')).toHaveTextContent('0kg CO2 Equivalents');
-    expect(screen.getByTestId('process-a:01.00.001')).toHaveTextContent('-0.125kg CO2 Equivalents');
+    expect(within(screen.getByTestId('process-a:01.00.000')).getByText('0')).toBeInTheDocument();
+    expect(
+      within(screen.getByTestId('process-a:01.00.001')).getByText('-0.125'),
+    ).toBeInTheDocument();
+    expect(screen.getAllByText('Calculation result (kg CO2 Equivalents)')).toHaveLength(1);
+    expect(screen.queryByText('unknown')).not.toBeInTheDocument();
+    for (const row of rows) {
+      expect(screen.getByTestId(`${row.id}:${row.version}`)).not.toHaveTextContent(
+        'kg CO2 Equivalents',
+      );
+    }
     expect(screen.getByTestId('process-a:02.00.000')).toHaveTextContent('—');
   });
   it('keeps the list on result failure without a retry button and recovers on standard refresh', async () => {

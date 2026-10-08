@@ -25,7 +25,7 @@ export default {
   'pages.process.list.loadError': 'Failed to load process list.',
   'pages.process.published.title': 'Published processes',
   'pages.process.published.table.processName': 'Process name',
-  'pages.process.published.table.calculationResult': 'Calculation result',
+  'pages.process.published.table.calculationResult': 'Calculation result ({unit})',
   'pages.process.referenceYear': 'Reference year',
   'pages.process.location': 'Location',
   'pages.process.lca.toolbar.tooltip': 'Run LCA',

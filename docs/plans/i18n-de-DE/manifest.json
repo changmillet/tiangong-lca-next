@@ -3,7 +3,7 @@
   "source": {
     "baseRef": "c26f306e82ac66f50a56aafe8f89ea96c0b0c67d",
     "baseCommit": "c26f306e82ac66f50a56aafe8f89ea96c0b0c67d",
-    "auditedInputDigest": "885737c6684c175a7c8a1e27efb194e204fbea5c9f42f8121e16779b95ea0622",
+    "auditedInputDigest": "8d7b4685812f3b12f42b305b34d4d223d982392abfc730f2496f7d3c32a920bd",
     "auditedInputDigestAlgorithm": "sha256(path\\0content\\0)",
     "repository": "tiangong-lca/platform"
   },
@@ -184762,7 +184762,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/PublishedProcesses/index.tsx",
-          "line": 118,
+          "line": 119,
           "column": 13,
           "symbol": "columns",
           "defaultMessage": "Failed to load",
@@ -184777,7 +184777,7 @@
           "locations": [
             {
               "path": "src/pages/PublishedProcesses/index.tsx",
-              "line": 118,
+              "line": 119,
               "column": 13,
               "kind": "FormattedMessage"
             }
@@ -184845,7 +184845,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/PublishedProcesses/index.tsx",
-          "line": 128,
+          "line": 129,
           "column": 17,
           "symbol": "columns",
           "defaultMessage": "No result for this version in the current publication",
@@ -184860,7 +184860,7 @@
           "locations": [
             {
               "path": "src/pages/PublishedProcesses/index.tsx",
-              "line": 128,
+              "line": 129,
               "column": 17,
               "kind": "FormattedMessage"
             }
@@ -184880,9 +184880,9 @@
       },
       "translations": {
         "en-US": {
-          "value": "Calculation result",
-          "argumentSignature": [],
-          "placeholders": [],
+          "value": "Calculation result ({unit})",
+          "argumentSignature": [{ "name": "unit", "type": "simple" }],
+          "placeholders": ["unit"],
           "source": {
             "path": "src/locales/en-US/pages_process.ts",
             "line": 28,
@@ -184891,9 +184891,9 @@
           }
         },
         "zh-CN": {
-          "value": "计算结果",
-          "argumentSignature": [],
-          "placeholders": [],
+          "value": "计算结果（{unit}）",
+          "argumentSignature": [{ "name": "unit", "type": "simple" }],
+          "placeholders": ["unit"],
           "source": {
             "path": "src/locales/zh-CN/pages_process.ts",
             "line": 28,
@@ -184902,9 +184902,9 @@
           }
         },
         "de-DE": {
-          "value": "Berechnungsergebnis",
-          "argumentSignature": [],
-          "placeholders": [],
+          "value": "Berechnungsergebnis ({unit})",
+          "argumentSignature": [{ "name": "unit", "type": "simple" }],
+          "placeholders": ["unit"],
           "source": {
             "path": "src/locales/de-DE/pages_process.ts",
             "line": 28,
@@ -184913,9 +184913,9 @@
           }
         },
         "fr-FR": {
-          "value": "Résultat du calcul",
-          "argumentSignature": [],
-          "placeholders": [],
+          "value": "Résultat du calcul ({unit})",
+          "argumentSignature": [{ "name": "unit", "type": "simple" }],
+          "placeholders": ["unit"],
           "source": {
             "path": "src/locales/fr-FR/pages_process.ts",
             "line": 28,
@@ -184931,15 +184931,15 @@
           "line": 108,
           "column": 9,
           "symbol": "columns",
-          "defaultMessage": "Calculation result",
+          "defaultMessage": "Calculation result ({unit})",
           "defaultMessageExpression": null
         }
       ],
       "defaultMessages": [
         {
-          "value": "Calculation result",
-          "argumentSignature": [],
-          "placeholders": [],
+          "value": "Calculation result ({unit})",
+          "argumentSignature": [{ "name": "unit", "type": "simple" }],
+          "placeholders": ["unit"],
           "locations": [
             {
               "path": "src/pages/PublishedProcesses/index.tsx",
@@ -185094,7 +185094,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/PublishedProcesses/index.tsx",
-          "line": 154,
+          "line": 150,
           "column": 11,
           "symbol": "PublishedProcesses",
           "defaultMessage": "Published processes",
@@ -185109,7 +185109,7 @@
           "locations": [
             {
               "path": "src/pages/PublishedProcesses/index.tsx",
-              "line": 154,
+              "line": 150,
               "column": 11,
               "kind": "FormattedMessage"
             }

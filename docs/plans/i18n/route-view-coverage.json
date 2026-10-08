@@ -1752,7 +1752,7 @@
       "targetCoverage": {
         "localeScope": "all-registry-locales",
         "ownership": "shared locale catalog",
-        "structureAudit": "exact topology, published-process table, pagination, and exact-version climate-result availability and failure cells",
+        "structureAudit": "exact topology, published-process table, pagination, and fixed Climate change unit in the calculation header, numeric-only exact-version result cells, availability and failure cells",
         "missingContent": 0
       },
       "proof": {

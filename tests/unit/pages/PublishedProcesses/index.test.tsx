@@ -1,59 +1,91 @@
 import PublishedProcesses from '@/pages/PublishedProcesses';
-import { act, render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 
 const mockGetProcessTableAll = jest.fn();
+const mockGetClimate = jest.fn();
+let mockLocale = 'zh-CN';
+let mockSetRows: (rows: any[]) => void;
 let proTableProps: any;
 
 jest.mock('@/services/processes/api', () => ({
   getProcessTableAll: (...args: any[]) => mockGetProcessTableAll(...args),
 }));
-
+jest.mock('@/services/dataProducts/publishedClimate', () => ({
+  getPublishedClimateResults: (...args: any[]) => mockGetClimate(...args),
+  publishedProcessKey: ({ id, version }: any) => `${id}:${version}`,
+}));
 jest.mock('@ant-design/pro-components', () => ({
-  PageContainer: ({ children, ...props }: any) => (
-    <main data-testid='page-container' {...props}>
-      {children}
-    </main>
-  ),
+  PageContainer: ({ children }: any) => <main>{children}</main>,
   ProTable: (props: any) => {
     proTableProps = props;
+    const [rows, setRows] = require('react').useState([]);
+    mockSetRows = setRows;
     return (
-      <section data-testid='published-processes-table'>
+      <section>
         {props.headerTitle}
         {props.columns.map((column: any) => (
           <span key={String(column.dataIndex ?? column.valueType)}>{column.title}</span>
+        ))}
+        {props.toolBarRender()}
+        {rows.map((row: any) => (
+          <article key={props.rowKey(row)} data-testid={props.rowKey(row)}>
+            <span>{row.name}</span>
+            {props.columns[2].render(null, row)}
+          </article>
         ))}
       </section>
     );
   },
 }));
-
-jest.mock('antd', () => ({
-  Typography: {
-    Text: ({ children }: any) => <span>{children}</span>,
-    Title: ({ children }: any) => <h2>{children}</h2>,
-  },
-}));
-
 jest.mock('umi', () => ({
-  FormattedMessage: ({ defaultMessage }: { defaultMessage: string }) => <>{defaultMessage}</>,
-  useIntl: () => ({ locale: 'zh-CN' }),
+  FormattedMessage: ({ defaultMessage }: any) => <>{defaultMessage}</>,
+  useIntl: () => ({ locale: mockLocale }),
 }));
+const process = (version = '01.00.000', id = 'process-a') => ({
+  id,
+  version,
+  name: `${id} ${version}`,
+});
+const values = (rows: any[], value: number | null = 0) =>
+  new Map(
+    rows.map((row) => [
+      `${row.id}:${row.version}`,
+      {
+        ...row,
+        status: value === null ? 'missing' : 'available',
+        value,
+        unit: 'kg CO2 Equivalents',
+      },
+    ]),
+  );
+function deferred<T>() {
+  let resolve!: (value: T) => void;
+  let reject!: (reason: Error) => void;
+  const promise = new Promise<T>((yes, no) => {
+    resolve = yes;
+    reject = no;
+  });
+  return { promise, resolve, reject };
+}
+async function page(rows: any[], current = 1, success = true) {
+  const result = { data: rows, success, total: rows.length };
+  mockGetProcessTableAll.mockResolvedValueOnce(result);
+  await act(async () => {
+    expect(await proTableProps.request({ current, pageSize: 10 })).toEqual(result);
+    mockSetRows(rows);
+  });
+}
 
 describe('PublishedProcesses', () => {
   beforeEach(() => {
     mockGetProcessTableAll.mockReset();
+    mockGetClimate.mockReset();
+    mockLocale = 'zh-CN';
     proTableProps = undefined;
   });
-
-  it('renders the URL-only published-process list without query controls', () => {
+  it('preserves published-only pagination, visibility and revision-qualified keys', async () => {
     render(<PublishedProcesses />);
-
     expect(screen.getByText('Published processes')).toBeInTheDocument();
-    expect(screen.queryByText('Open Data')).not.toBeInTheDocument();
-    expect(
-      screen.queryByText('View published processes and their calculation results'),
-    ).not.toBeInTheDocument();
-    expect(screen.getByText('Process name')).toBeInTheDocument();
     expect(screen.getByText('Calculation result')).toBeInTheDocument();
     expect(proTableProps.className).toBe('responsive-data-list-table');
     expect(proTableProps.search).toBe(false);
@@ -61,20 +93,8 @@ describe('PublishedProcesses', () => {
     expect(proTableProps.toolBarRender()).toEqual([]);
     expect(proTableProps.pagination).toEqual({ pageSize: 10, showSizeChanger: false });
     expect(proTableProps.columns[0].width).toBe(72);
-    expect(proTableProps.columns[2].render()).toBeNull();
-    expect(proTableProps.rowKey({ id: 'process-id', version: '01.00.000' })).toBe(
-      'process-id:01.00.000',
-    );
-  });
-
-  it('loads only published open-data processes', async () => {
-    const result = { data: [], success: true, total: 0 };
-    mockGetProcessTableAll.mockResolvedValue(result);
-    render(<PublishedProcesses />);
-
-    await expect(act(() => proTableProps.request({ current: 2, pageSize: 10 }))).resolves.toEqual(
-      result,
-    );
+    expect(proTableProps.rowKey(process())).toBe('process-a:01.00.000');
+    await page([], 2);
     expect(mockGetProcessTableAll).toHaveBeenCalledWith(
       { current: 2, pageSize: 10 },
       {},
@@ -85,5 +105,94 @@ describe('PublishedProcesses', () => {
       'all',
       { publicationFilter: 'published', sourceFilter: 'all' },
     );
+    expect(mockGetClimate).not.toHaveBeenCalled();
+  });
+  it('shows names while one batch is pending, then renders zero and another exact version independently', async () => {
+    const pending = deferred<Map<string, any>>();
+    mockGetClimate.mockReturnValueOnce(pending.promise);
+    render(<PublishedProcesses />);
+    const rows = [process(), process('01.00.001'), process('02.00.000')];
+    await page(rows);
+    expect(screen.getByText(rows[0].name)).toBeInTheDocument();
+    expect(
+      screen.getByTestId('process-a:01.00.000').querySelector('.ant-spin'),
+    ).toBeInTheDocument();
+    expect(mockGetClimate).toHaveBeenCalledTimes(1);
+    expect(mockGetClimate).toHaveBeenCalledWith(rows.map(({ id, version }) => ({ id, version })));
+    const result = values(rows);
+    result.get('process-a:01.00.001')!.value = -0.125;
+    result.set('process-a:02.00.000', { ...rows[2], status: 'missing', value: null, unit: '' });
+    await act(async () => pending.resolve(result));
+    expect(screen.getByTestId('process-a:01.00.000')).toHaveTextContent('0kg CO2 Equivalents');
+    expect(screen.getByTestId('process-a:01.00.001')).toHaveTextContent('-0.125kg CO2 Equivalents');
+    expect(screen.getByTestId('process-a:02.00.000')).toHaveTextContent('—');
+  });
+  it('keeps the list on query failure and retries only the result batch', async () => {
+    mockGetClimate.mockRejectedValueOnce(new Error('offline'));
+    render(<PublishedProcesses />);
+    const rows = [process()];
+    await page(rows);
+    expect(screen.getByText(rows[0].name)).toBeInTheDocument();
+    expect(screen.getByText('Failed to load')).toBeInTheDocument();
+    mockGetClimate.mockResolvedValueOnce(values(rows, 1.25));
+    fireEvent.click(screen.getByRole('button', { name: 'Retry results' }));
+    await waitFor(() => expect(screen.getByText('1.25')).toBeInTheDocument());
+    expect(mockGetProcessTableAll).toHaveBeenCalledTimes(1);
+    expect(mockGetClimate).toHaveBeenCalledTimes(2);
+  });
+  it.each(['resolve', 'reject'] as const)(
+    'ignores an old page batch that later %ss',
+    async (outcome) => {
+      const pending = deferred<Map<string, any>>();
+      mockGetClimate.mockReturnValueOnce(pending.promise);
+      render(<PublishedProcesses />);
+      await page([process()]);
+      const next = [process('01.00.001')];
+      mockGetClimate.mockResolvedValueOnce(values(next, 3));
+      await page(next, 2);
+      await act(async () => {
+        if (outcome === 'resolve') pending.resolve(values([process()], 99));
+        else pending.reject(new Error('late'));
+      });
+      expect(screen.getByText('3')).toBeInTheDocument();
+      expect(screen.queryByText('99')).not.toBeInTheDocument();
+      expect(screen.queryByText('Failed to load')).not.toBeInTheDocument();
+    },
+  );
+  it('does not launch a stale list response batch or failed-list batch', async () => {
+    const pending = deferred<any>();
+    mockGetProcessTableAll.mockReturnValueOnce(pending.promise);
+    render(<PublishedProcesses />);
+    let old!: Promise<any>;
+    act(() => {
+      old = proTableProps.request({ current: 1 });
+    });
+    mockGetClimate.mockResolvedValueOnce(values([process('01.00.001')], 2));
+    await page([process('01.00.001')], 2);
+    await act(async () => {
+      pending.resolve({ data: [process()], success: true });
+      await old;
+    });
+    expect(mockGetClimate).toHaveBeenCalledTimes(1);
+    await page([process()], 3, false);
+    expect(mockGetClimate).toHaveBeenCalledTimes(1);
+    expect(screen.getByText('—')).toBeInTheDocument();
+  });
+  it('ignores an old locale response and an unmounted response', async () => {
+    const pending = deferred<Map<string, any>>();
+    mockGetClimate.mockReturnValueOnce(pending.promise);
+    const view = render(<PublishedProcesses />);
+    await page([process()]);
+    mockLocale = 'en-US';
+    view.rerender(<PublishedProcesses />);
+    mockGetClimate.mockResolvedValueOnce(values([process()], 7));
+    await page([process()]);
+    await act(async () => pending.resolve(values([process()], 99)));
+    expect(screen.getByText('7')).toBeInTheDocument();
+    const unmounted = deferred<Map<string, any>>();
+    mockGetClimate.mockReturnValueOnce(unmounted.promise);
+    await page([process()], 2);
+    view.unmount();
+    await act(async () => unmounted.resolve(values([process()], 9)));
   });
 });

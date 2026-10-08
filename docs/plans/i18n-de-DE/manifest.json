@@ -3,7 +3,7 @@
   "source": {
     "baseRef": "c26f306e82ac66f50a56aafe8f89ea96c0b0c67d",
     "baseCommit": "c26f306e82ac66f50a56aafe8f89ea96c0b0c67d",
-    "auditedInputDigest": "320c2eb89edf5f1921199ddc0642515b2680ac129584993428640a41daa019f1",
+    "auditedInputDigest": "b5a11883f75d00a6a9823111037f913242ce6b78e8fca5cb0b7a38366a2e0ef9",
     "auditedInputDigestAlgorithm": "sha256(path\\0content\\0)",
     "repository": "tiangong-lca/platform"
   },
@@ -69,13 +69,13 @@
   "summary": {
     "localeCount": 4,
     "localeLeafModuleCounts": { "en-US": 31, "zh-CN": 31, "de-DE": 31, "fr-FR": 31 },
-    "localeUniqueKeyCounts": { "en-US": 3528, "zh-CN": 3528, "de-DE": 3528, "fr-FR": 3528 },
-    "canonicalCandidateKeyCount": 3528,
-    "activeStaticKeyCount": 2349,
+    "localeUniqueKeyCounts": { "en-US": 3531, "zh-CN": 3531, "de-DE": 3531, "fr-FR": 3531 },
+    "canonicalCandidateKeyCount": 3531,
+    "activeStaticKeyCount": 2352,
     "activeDynamicKeyCount": 321,
     "reservedKeyCount": 858,
-    "productionSourceFileCount": 490,
-    "literalReferenceCount": 4296,
+    "productionSourceFileCount": 491,
+    "literalReferenceCount": 4299,
     "dynamicCallsiteCount": 33,
     "dynamicCallsiteSummaryCount": 33,
     "registeredDynamicCallsiteCount": 33,
@@ -184703,6 +184703,255 @@
       ]
     },
     {
+      "id": "pages.process.published.climate.error",
+      "category": "active-static",
+      "dynamicFamilies": [],
+      "moduleOwnership": {
+        "en-US": ["pages_process"],
+        "zh-CN": ["pages_process"],
+        "de-DE": ["pages_process"],
+        "fr-FR": ["pages_process"]
+      },
+      "translations": {
+        "en-US": {
+          "value": "Failed to load",
+          "argumentSignature": [],
+          "placeholders": [],
+          "source": {
+            "path": "src/locales/en-US/pages_process.ts",
+            "line": 930,
+            "column": 3,
+            "module": "pages_process"
+          }
+        },
+        "zh-CN": {
+          "value": "读取失败",
+          "argumentSignature": [],
+          "placeholders": [],
+          "source": {
+            "path": "src/locales/zh-CN/pages_process.ts",
+            "line": 927,
+            "column": 3,
+            "module": "pages_process"
+          }
+        },
+        "de-DE": {
+          "value": "Laden fehlgeschlagen",
+          "argumentSignature": [],
+          "placeholders": [],
+          "source": {
+            "path": "src/locales/de-DE/pages_process.ts",
+            "line": 930,
+            "column": 3,
+            "module": "pages_process"
+          }
+        },
+        "fr-FR": {
+          "value": "Échec du chargement",
+          "argumentSignature": [],
+          "placeholders": [],
+          "source": {
+            "path": "src/locales/fr-FR/pages_process.ts",
+            "line": 929,
+            "column": 3,
+            "module": "pages_process"
+          }
+        }
+      },
+      "references": [
+        {
+          "kind": "FormattedMessage",
+          "path": "src/pages/PublishedProcesses/index.tsx",
+          "line": 122,
+          "column": 13,
+          "symbol": "columns",
+          "defaultMessage": "Failed to load",
+          "defaultMessageExpression": null
+        }
+      ],
+      "defaultMessages": [
+        {
+          "value": "Failed to load",
+          "argumentSignature": [],
+          "placeholders": [],
+          "locations": [
+            {
+              "path": "src/pages/PublishedProcesses/index.tsx",
+              "line": 122,
+              "column": 13,
+              "kind": "FormattedMessage"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pages.process.published.climate.missing",
+      "category": "active-static",
+      "dynamicFamilies": [],
+      "moduleOwnership": {
+        "en-US": ["pages_process"],
+        "zh-CN": ["pages_process"],
+        "de-DE": ["pages_process"],
+        "fr-FR": ["pages_process"]
+      },
+      "translations": {
+        "en-US": {
+          "value": "No result for this version in the current publication",
+          "argumentSignature": [],
+          "placeholders": [],
+          "source": {
+            "path": "src/locales/en-US/pages_process.ts",
+            "line": 931,
+            "column": 3,
+            "module": "pages_process"
+          }
+        },
+        "zh-CN": {
+          "value": "当前发布包中没有此版本的结果",
+          "argumentSignature": [],
+          "placeholders": [],
+          "source": {
+            "path": "src/locales/zh-CN/pages_process.ts",
+            "line": 928,
+            "column": 3,
+            "module": "pages_process"
+          }
+        },
+        "de-DE": {
+          "value": "Kein Ergebnis für diese Version in der aktuellen Veröffentlichung",
+          "argumentSignature": [],
+          "placeholders": [],
+          "source": {
+            "path": "src/locales/de-DE/pages_process.ts",
+            "line": 931,
+            "column": 3,
+            "module": "pages_process"
+          }
+        },
+        "fr-FR": {
+          "value": "Aucun résultat pour cette version dans la publication actuelle",
+          "argumentSignature": [],
+          "placeholders": [],
+          "source": {
+            "path": "src/locales/fr-FR/pages_process.ts",
+            "line": 930,
+            "column": 3,
+            "module": "pages_process"
+          }
+        }
+      },
+      "references": [
+        {
+          "kind": "FormattedMessage",
+          "path": "src/pages/PublishedProcesses/index.tsx",
+          "line": 132,
+          "column": 17,
+          "symbol": "columns",
+          "defaultMessage": "No result for this version in the current publication",
+          "defaultMessageExpression": null
+        }
+      ],
+      "defaultMessages": [
+        {
+          "value": "No result for this version in the current publication",
+          "argumentSignature": [],
+          "placeholders": [],
+          "locations": [
+            {
+              "path": "src/pages/PublishedProcesses/index.tsx",
+              "line": 132,
+              "column": 17,
+              "kind": "FormattedMessage"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pages.process.published.climate.retry",
+      "category": "active-static",
+      "dynamicFamilies": [],
+      "moduleOwnership": {
+        "en-US": ["pages_process"],
+        "zh-CN": ["pages_process"],
+        "de-DE": ["pages_process"],
+        "fr-FR": ["pages_process"]
+      },
+      "translations": {
+        "en-US": {
+          "value": "Retry results",
+          "argumentSignature": [],
+          "placeholders": [],
+          "source": {
+            "path": "src/locales/en-US/pages_process.ts",
+            "line": 932,
+            "column": 3,
+            "module": "pages_process"
+          }
+        },
+        "zh-CN": {
+          "value": "重试结果",
+          "argumentSignature": [],
+          "placeholders": [],
+          "source": {
+            "path": "src/locales/zh-CN/pages_process.ts",
+            "line": 929,
+            "column": 3,
+            "module": "pages_process"
+          }
+        },
+        "de-DE": {
+          "value": "Ergebnisse erneut laden",
+          "argumentSignature": [],
+          "placeholders": [],
+          "source": {
+            "path": "src/locales/de-DE/pages_process.ts",
+            "line": 932,
+            "column": 3,
+            "module": "pages_process"
+          }
+        },
+        "fr-FR": {
+          "value": "Réessayer les résultats",
+          "argumentSignature": [],
+          "placeholders": [],
+          "source": {
+            "path": "src/locales/fr-FR/pages_process.ts",
+            "line": 931,
+            "column": 3,
+            "module": "pages_process"
+          }
+        }
+      },
+      "references": [
+        {
+          "kind": "FormattedMessage",
+          "path": "src/pages/PublishedProcesses/index.tsx",
+          "line": 176,
+          "column": 19,
+          "symbol": "PublishedProcesses",
+          "defaultMessage": "Retry results",
+          "defaultMessageExpression": null
+        }
+      ],
+      "defaultMessages": [
+        {
+          "value": "Retry results",
+          "argumentSignature": [],
+          "placeholders": [],
+          "locations": [
+            {
+              "path": "src/pages/PublishedProcesses/index.tsx",
+              "line": 176,
+              "column": 19,
+              "kind": "FormattedMessage"
+            }
+          ]
+        }
+      ]
+    },
+    {
       "id": "pages.process.published.table.calculationResult",
       "category": "active-static",
       "dynamicFamilies": [],
@@ -184762,7 +185011,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/PublishedProcesses/index.tsx",
-          "line": 44,
+          "line": 112,
           "column": 9,
           "symbol": "columns",
           "defaultMessage": "Calculation result",
@@ -184777,7 +185026,7 @@
           "locations": [
             {
               "path": "src/pages/PublishedProcesses/index.tsx",
-              "line": 44,
+              "line": 112,
               "column": 9,
               "kind": "FormattedMessage"
             }
@@ -184845,7 +185094,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/PublishedProcesses/index.tsx",
-          "line": 34,
+          "line": 102,
           "column": 9,
           "symbol": "columns",
           "defaultMessage": "Process name",
@@ -184860,7 +185109,7 @@
           "locations": [
             {
               "path": "src/pages/PublishedProcesses/index.tsx",
-              "line": 34,
+              "line": 102,
               "column": 9,
               "kind": "FormattedMessage"
             }
@@ -184928,7 +185177,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/PublishedProcesses/index.tsx",
-          "line": 60,
+          "line": 158,
           "column": 11,
           "symbol": "PublishedProcesses",
           "defaultMessage": "Published processes",
@@ -184943,7 +185192,7 @@
           "locations": [
             {
               "path": "src/pages/PublishedProcesses/index.tsx",
-              "line": 60,
+              "line": 158,
               "column": 11,
               "kind": "FormattedMessage"
             }
@@ -259418,7 +259667,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/PublishedProcesses/index.tsx",
-          "line": 26,
+          "line": 94,
           "column": 14,
           "symbol": "columns",
           "defaultMessage": "Index",
@@ -259634,7 +259883,7 @@
             },
             {
               "path": "src/pages/PublishedProcesses/index.tsx",
-              "line": 26,
+              "line": 94,
               "column": 14,
               "kind": "FormattedMessage"
             },

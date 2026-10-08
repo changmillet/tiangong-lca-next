@@ -1735,9 +1735,12 @@
       "pageOwnedMessageIds": [
         "pages.process.published.title",
         "pages.process.published.table.processName",
-        "pages.process.published.table.calculationResult"
+        "pages.process.published.table.calculationResult",
+        "pages.process.published.climate.error",
+        "pages.process.published.climate.missing",
+        "pages.process.published.climate.retry"
       ],
-      "trigger": "Open the published-process list directly and review loading, ready, empty, error, and pagination states.",
+      "trigger": "Open the published-process list directly and review list and result loading, exact-version climate values, missing results, errors, retry, and pagination states.",
       "component": "src/pages/PublishedProcesses/index.tsx",
       "accessContext": "authenticated-session-required with open-data read permissions",
       "copySources": {
@@ -1746,11 +1749,11 @@
         "localeMessageIdPrefixes": [],
         "declaredFallbacks": []
       },
-      "visibleStates": ["default", "loading", "ready", "empty", "error", "pagination"],
+      "visibleStates": ["default", "loading", "ready", "empty", "error", "retry", "pagination"],
       "targetCoverage": {
         "localeScope": "all-registry-locales",
         "ownership": "shared locale catalog",
-        "structureAudit": "exact topology, published-process table, pagination, and blank calculation-result cells",
+        "structureAudit": "exact topology, published-process table, pagination, and exact-version climate-result availability/retry cells",
         "missingContent": 0
       },
       "proof": {

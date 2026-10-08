@@ -43,8 +43,8 @@ checkPaths:
   - .github/workflows/release-gate.yml
   - .github/workflows/release-readiness.yml
 lastReviewedAt: 2026-10-08
-lastReviewedCommit: ab4f62a48c7672440569aaaf698f168ad284b5cb
-lastReviewedNote: 'Reviewed Platform #1186 exact-version public Climate change readback, zero/missing/error states, page/locale response fences and focused full coverage; bootstrap, branch and full-gate policy are unchanged.'
+lastReviewedCommit: 517e1b40ad27e1107ab6bd4a26a54ca1ea299b54
+lastReviewedNote: 'Reviewed Platform #1186 removal of the dedicated result-retry toolbar action and unused locale messages; independent failure display, exact-revision climate reads and standard table refresh recovery remain covered. Existing bootstrap, branch and full-gate rules remain unchanged.'
 ---
 
 # Testing Patterns Reference

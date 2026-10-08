@@ -527,12 +527,12 @@ describe('ProcessesPage', () => {
     message.error.mockReset();
   });
 
-  it('falls back to the default browser locale when the runtime locale is unsupported', async () => {
+  it('falls back to the English browser locale when the runtime locale is unsupported', async () => {
     mockIntlLocale = 'unsupported-locale';
 
     renderWithProviders(<ProcessesPage />);
 
-    await waitFor(() => expect(mockGetLang).toHaveBeenCalledWith('zh-CN'));
+    await waitFor(() => expect(mockGetLang).toHaveBeenCalledWith('en-US'));
   });
 
   it('maps known process dataset types and falls back to dash for unknown ones', () => {

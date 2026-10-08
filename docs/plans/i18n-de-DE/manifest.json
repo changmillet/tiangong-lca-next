@@ -3,7 +3,7 @@
   "source": {
     "baseRef": "c26f306e82ac66f50a56aafe8f89ea96c0b0c67d",
     "baseCommit": "c26f306e82ac66f50a56aafe8f89ea96c0b0c67d",
-    "auditedInputDigest": "320c2eb89edf5f1921199ddc0642515b2680ac129584993428640a41daa019f1",
+    "auditedInputDigest": "795280d76451575bed8f84a7489c9a49c067391f957e8b1cef140ffed340c7d4",
     "auditedInputDigestAlgorithm": "sha256(path\\0content\\0)",
     "repository": "tiangong-lca/platform"
   },
@@ -69,13 +69,13 @@
   "summary": {
     "localeCount": 4,
     "localeLeafModuleCounts": { "en-US": 31, "zh-CN": 31, "de-DE": 31, "fr-FR": 31 },
-    "localeUniqueKeyCounts": { "en-US": 3528, "zh-CN": 3528, "de-DE": 3528, "fr-FR": 3528 },
-    "canonicalCandidateKeyCount": 3528,
-    "activeStaticKeyCount": 2349,
+    "localeUniqueKeyCounts": { "en-US": 3530, "zh-CN": 3530, "de-DE": 3530, "fr-FR": 3530 },
+    "canonicalCandidateKeyCount": 3530,
+    "activeStaticKeyCount": 2351,
     "activeDynamicKeyCount": 321,
     "reservedKeyCount": 858,
-    "productionSourceFileCount": 490,
-    "literalReferenceCount": 4296,
+    "productionSourceFileCount": 493,
+    "literalReferenceCount": 4298,
     "dynamicCallsiteCount": 33,
     "dynamicCallsiteSummaryCount": 33,
     "registeredDynamicCallsiteCount": 33,
@@ -1301,7 +1301,7 @@
         {
           "kind": "formatMessage",
           "path": "src/app.tsx",
-          "line": 265,
+          "line": 266,
           "column": 25,
           "symbol": "layout",
           "defaultMessage": "Navigation Mode",
@@ -1310,7 +1310,7 @@
         {
           "kind": "formatMessage",
           "path": "src/app.tsx",
-          "line": 467,
+          "line": 468,
           "column": 9,
           "symbol": "layout",
           "defaultMessage": "Navigation Mode",
@@ -1323,8 +1323,8 @@
           "argumentSignature": [],
           "placeholders": [],
           "locations": [
-            { "path": "src/app.tsx", "line": 265, "column": 25, "kind": "formatMessage" },
-            { "path": "src/app.tsx", "line": 467, "column": 9, "kind": "formatMessage" }
+            { "path": "src/app.tsx", "line": 266, "column": 25, "kind": "formatMessage" },
+            { "path": "src/app.tsx", "line": 468, "column": 9, "kind": "formatMessage" }
           ]
         }
       ]
@@ -1448,7 +1448,7 @@
         {
           "kind": "formatMessage",
           "path": "src/app.tsx",
-          "line": 407,
+          "line": 408,
           "column": 102,
           "symbol": "layout",
           "defaultMessage": "Page style setting",
@@ -1457,7 +1457,7 @@
         {
           "kind": "formatMessage",
           "path": "src/app.tsx",
-          "line": 410,
+          "line": 411,
           "column": 99,
           "symbol": "layout",
           "defaultMessage": "Page style setting",
@@ -1470,8 +1470,8 @@
           "argumentSignature": [],
           "placeholders": [],
           "locations": [
-            { "path": "src/app.tsx", "line": 407, "column": 102, "kind": "formatMessage" },
-            { "path": "src/app.tsx", "line": 410, "column": 99, "kind": "formatMessage" }
+            { "path": "src/app.tsx", "line": 408, "column": 102, "kind": "formatMessage" },
+            { "path": "src/app.tsx", "line": 411, "column": 99, "kind": "formatMessage" }
           ]
         }
       ]
@@ -3896,7 +3896,7 @@
         {
           "kind": "formatMessage",
           "path": "src/app.tsx",
-          "line": 407,
+          "line": 408,
           "column": 30,
           "symbol": "layout",
           "defaultMessage": "Close",
@@ -3909,7 +3909,7 @@
           "argumentSignature": [],
           "placeholders": [],
           "locations": [
-            { "path": "src/app.tsx", "line": 407, "column": 30, "kind": "formatMessage" }
+            { "path": "src/app.tsx", "line": 408, "column": 30, "kind": "formatMessage" }
           ]
         }
       ]
@@ -4564,7 +4564,7 @@
         {
           "kind": "formatMessage",
           "path": "src/app.tsx",
-          "line": 410,
+          "line": 411,
           "column": 29,
           "symbol": "layout",
           "defaultMessage": "Open",
@@ -4577,7 +4577,7 @@
           "argumentSignature": [],
           "placeholders": [],
           "locations": [
-            { "path": "src/app.tsx", "line": 410, "column": 29, "kind": "formatMessage" }
+            { "path": "src/app.tsx", "line": 411, "column": 29, "kind": "formatMessage" }
           ]
         }
       ]
@@ -13377,7 +13377,7 @@
         {
           "kind": "formatMessage",
           "path": "src/components/RightContent/index.tsx",
-          "line": 100,
+          "line": 105,
           "column": 21,
           "symbol": "helpLabel",
           "defaultMessage": null,
@@ -13514,7 +13514,7 @@
         {
           "kind": "formatMessage",
           "path": "src/components/RightContent/index.tsx",
-          "line": 100,
+          "line": 105,
           "column": 21,
           "symbol": "helpLabel",
           "defaultMessage": null,
@@ -13828,7 +13828,7 @@
         {
           "kind": "formatMessage",
           "path": "src/app.tsx",
-          "line": 370,
+          "line": 371,
           "column": 16,
           "symbol": "layout",
           "defaultMessage": "OpenAPI documentation",
@@ -13841,7 +13841,7 @@
           "argumentSignature": [],
           "placeholders": [],
           "locations": [
-            { "path": "src/app.tsx", "line": 370, "column": 16, "kind": "formatMessage" }
+            { "path": "src/app.tsx", "line": 371, "column": 16, "kind": "formatMessage" }
           ]
         }
       ]
@@ -25766,7 +25766,7 @@
         {
           "kind": "formatMessage",
           "path": "src/app.tsx",
-          "line": 339,
+          "line": 340,
           "column": 33,
           "symbol": "layout",
           "defaultMessage": "Account Center",
@@ -25779,7 +25779,7 @@
           "argumentSignature": [],
           "placeholders": [],
           "locations": [
-            { "path": "src/app.tsx", "line": 339, "column": 33, "kind": "formatMessage" }
+            { "path": "src/app.tsx", "line": 340, "column": 33, "kind": "formatMessage" }
           ]
         }
       ]
@@ -27189,7 +27189,7 @@
         {
           "kind": "formatMessage",
           "path": "src/app.tsx",
-          "line": 293,
+          "line": 294,
           "column": 25,
           "symbol": "layout",
           "defaultMessage": "Data Dashboard",
@@ -27198,7 +27198,7 @@
         {
           "kind": "formatMessage",
           "path": "src/app.tsx",
-          "line": 300,
+          "line": 301,
           "column": 20,
           "symbol": "layout",
           "defaultMessage": "Data Dashboard",
@@ -27211,8 +27211,8 @@
           "argumentSignature": [],
           "placeholders": [],
           "locations": [
-            { "path": "src/app.tsx", "line": 293, "column": 25, "kind": "formatMessage" },
-            { "path": "src/app.tsx", "line": 300, "column": 20, "kind": "formatMessage" }
+            { "path": "src/app.tsx", "line": 294, "column": 25, "kind": "formatMessage" },
+            { "path": "src/app.tsx", "line": 301, "column": 20, "kind": "formatMessage" }
           ]
         }
       ]
@@ -27336,7 +27336,7 @@
         {
           "kind": "formatMessage",
           "path": "src/app.tsx",
-          "line": 313,
+          "line": 314,
           "column": 25,
           "symbol": "layout",
           "defaultMessage": "Data Processing",
@@ -27345,7 +27345,7 @@
         {
           "kind": "formatMessage",
           "path": "src/app.tsx",
-          "line": 320,
+          "line": 321,
           "column": 20,
           "symbol": "layout",
           "defaultMessage": "Data Processing",
@@ -27358,8 +27358,8 @@
           "argumentSignature": [],
           "placeholders": [],
           "locations": [
-            { "path": "src/app.tsx", "line": 313, "column": 25, "kind": "formatMessage" },
-            { "path": "src/app.tsx", "line": 320, "column": 20, "kind": "formatMessage" }
+            { "path": "src/app.tsx", "line": 314, "column": 25, "kind": "formatMessage" },
+            { "path": "src/app.tsx", "line": 321, "column": 20, "kind": "formatMessage" }
           ]
         }
       ]
@@ -29700,7 +29700,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/User/Login/index.tsx",
-          "line": 248,
+          "line": 249,
           "column": 16,
           "symbol": "Login",
           "defaultMessage": "Login",
@@ -29715,7 +29715,7 @@
           "locations": [
             {
               "path": "src/pages/User/Login/index.tsx",
-              "line": 248,
+              "line": 249,
               "column": 16,
               "kind": "formatMessage"
             }
@@ -116852,7 +116852,7 @@
         {
           "kind": "formatMessage",
           "path": "src/components/RightContent/index.tsx",
-          "line": 66,
+          "line": 71,
           "column": 17,
           "symbol": "label",
           "defaultMessage": "Select a language",
@@ -116882,7 +116882,7 @@
             },
             {
               "path": "src/components/RightContent/index.tsx",
-              "line": 66,
+              "line": 71,
               "column": 17,
               "kind": "formatMessage"
             },
@@ -140991,7 +140991,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/User/Login/index.tsx",
-          "line": 517,
+          "line": 518,
           "column": 34,
           "symbol": "Login",
           "defaultMessage": "Confirm Password",
@@ -141006,7 +141006,7 @@
           "locations": [
             {
               "path": "src/pages/User/Login/index.tsx",
-              "line": 517,
+              "line": 518,
               "column": 34,
               "kind": "formatMessage"
             }
@@ -141074,7 +141074,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/User/Login/index.tsx",
-          "line": 525,
+          "line": 526,
           "column": 27,
           "symbol": "Login",
           "defaultMessage": "Please confirm your password!",
@@ -141098,7 +141098,7 @@
           "locations": [
             {
               "path": "src/pages/User/Login/index.tsx",
-              "line": 525,
+              "line": 526,
               "column": 27,
               "kind": "FormattedMessage"
             },
@@ -141231,7 +141231,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/User/Login/index.tsx",
-          "line": 327,
+          "line": 328,
           "column": 34,
           "symbol": "Login",
           "defaultMessage": "Email",
@@ -141240,7 +141240,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/User/Login/index.tsx",
-          "line": 405,
+          "line": 406,
           "column": 34,
           "symbol": "Login",
           "defaultMessage": "Email",
@@ -141273,13 +141273,13 @@
           "locations": [
             {
               "path": "src/pages/User/Login/index.tsx",
-              "line": 327,
+              "line": 328,
               "column": 34,
               "kind": "formatMessage"
             },
             {
               "path": "src/pages/User/Login/index.tsx",
-              "line": 405,
+              "line": 406,
               "column": 34,
               "kind": "formatMessage"
             },
@@ -141359,7 +141359,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/User/Login/index.tsx",
-          "line": 344,
+          "line": 345,
           "column": 27,
           "symbol": "Login",
           "defaultMessage": "Please input your email!",
@@ -141368,7 +141368,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/User/Login/index.tsx",
-          "line": 422,
+          "line": 423,
           "column": 27,
           "symbol": "Login",
           "defaultMessage": "Please input your email!",
@@ -141392,13 +141392,13 @@
           "locations": [
             {
               "path": "src/pages/User/Login/index.tsx",
-              "line": 344,
+              "line": 345,
               "column": 27,
               "kind": "FormattedMessage"
             },
             {
               "path": "src/pages/User/Login/index.tsx",
-              "line": 422,
+              "line": 423,
               "column": 27,
               "kind": "FormattedMessage"
             },
@@ -141614,7 +141614,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/User/Login/index.tsx",
-          "line": 335,
+          "line": 336,
           "column": 27,
           "symbol": "Login",
           "defaultMessage": "The email format is incorrect!",
@@ -141623,7 +141623,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/User/Login/index.tsx",
-          "line": 413,
+          "line": 414,
           "column": 27,
           "symbol": "Login",
           "defaultMessage": "The email format is incorrect!",
@@ -141647,13 +141647,13 @@
           "locations": [
             {
               "path": "src/pages/User/Login/index.tsx",
-              "line": 335,
+              "line": 336,
               "column": 27,
               "kind": "FormattedMessage"
             },
             {
               "path": "src/pages/User/Login/index.tsx",
-              "line": 413,
+              "line": 414,
               "column": 27,
               "kind": "FormattedMessage"
             },
@@ -141727,7 +141727,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/User/Login/index.tsx",
-          "line": 69,
+          "line": 70,
           "column": 14,
           "symbol": "getPasswordLoginErrorMessage",
           "defaultMessage": "Login failed, please try again!",
@@ -141736,7 +141736,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/User/Login/index.tsx",
-          "line": 158,
+          "line": 159,
           "column": 42,
           "symbol": "defaultLoginFailureMessage",
           "defaultMessage": "Login failed, please try again!",
@@ -141751,13 +141751,13 @@
           "locations": [
             {
               "path": "src/pages/User/Login/index.tsx",
-              "line": 69,
+              "line": 70,
               "column": 14,
               "kind": "formatMessage"
             },
             {
               "path": "src/pages/User/Login/index.tsx",
-              "line": 158,
+              "line": 159,
               "column": 42,
               "kind": "formatMessage"
             }
@@ -141825,7 +141825,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/User/Login/index.tsx",
-          "line": 389,
+          "line": 390,
           "column": 23,
           "symbol": "Login",
           "defaultMessage": "Forgot password?",
@@ -141840,7 +141840,7 @@
           "locations": [
             {
               "path": "src/pages/User/Login/index.tsx",
-              "line": 389,
+              "line": 390,
               "column": 23,
               "kind": "FormattedMessage"
             }
@@ -141908,7 +141908,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/User/Login/index.tsx",
-          "line": 291,
+          "line": 292,
           "column": 28,
           "symbol": "Login",
           "defaultMessage": "Login",
@@ -141923,7 +141923,7 @@
           "locations": [
             {
               "path": "src/pages/User/Login/index.tsx",
-              "line": 291,
+              "line": 292,
               "column": 28,
               "kind": "formatMessage"
             }
@@ -142216,7 +142216,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/User/Login/index.tsx",
-          "line": 538,
+          "line": 539,
           "column": 31,
           "symbol": "validator",
           "defaultMessage": "The two passwords do not match!",
@@ -142240,7 +142240,7 @@
           "locations": [
             {
               "path": "src/pages/User/Login/index.tsx",
-              "line": 538,
+              "line": 539,
               "column": 31,
               "kind": "formatMessage"
             },
@@ -142495,7 +142495,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/User/Login/index.tsx",
-          "line": 359,
+          "line": 360,
           "column": 34,
           "symbol": "Login",
           "defaultMessage": "Password",
@@ -142504,7 +142504,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/User/Login/index.tsx",
-          "line": 482,
+          "line": 483,
           "column": 34,
           "symbol": "Login",
           "defaultMessage": "Password",
@@ -142519,13 +142519,13 @@
           "locations": [
             {
               "path": "src/pages/User/Login/index.tsx",
-              "line": 359,
+              "line": 360,
               "column": 34,
               "kind": "formatMessage"
             },
             {
               "path": "src/pages/User/Login/index.tsx",
-              "line": 482,
+              "line": 483,
               "column": 34,
               "kind": "formatMessage"
             }
@@ -142593,7 +142593,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/User/Login/index.tsx",
-          "line": 367,
+          "line": 368,
           "column": 27,
           "symbol": "Login",
           "defaultMessage": "Please input your password!",
@@ -142602,7 +142602,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/User/Login/index.tsx",
-          "line": 490,
+          "line": 491,
           "column": 27,
           "symbol": "Login",
           "defaultMessage": "Please input your password!",
@@ -142626,13 +142626,13 @@
           "locations": [
             {
               "path": "src/pages/User/Login/index.tsx",
-              "line": 367,
+              "line": 368,
               "column": 27,
               "kind": "FormattedMessage"
             },
             {
               "path": "src/pages/User/Login/index.tsx",
-              "line": 490,
+              "line": 491,
               "column": 27,
               "kind": "FormattedMessage"
             },
@@ -142887,7 +142887,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/User/Login/index.tsx",
-          "line": 455,
+          "line": 456,
           "column": 31,
           "symbol": "Login",
           "defaultMessage": "Strength: Medium",
@@ -142911,7 +142911,7 @@
           "locations": [
             {
               "path": "src/pages/User/Login/index.tsx",
-              "line": 455,
+              "line": 456,
               "column": 31,
               "kind": "FormattedMessage"
             },
@@ -142985,7 +142985,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/User/Login/index.tsx",
-          "line": 465,
+          "line": 466,
           "column": 31,
           "symbol": "Login",
           "defaultMessage": "Strength: Strong",
@@ -143009,7 +143009,7 @@
           "locations": [
             {
               "path": "src/pages/User/Login/index.tsx",
-              "line": 465,
+              "line": 466,
               "column": 31,
               "kind": "FormattedMessage"
             },
@@ -143083,7 +143083,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/User/Login/index.tsx",
-          "line": 436,
+          "line": 437,
           "column": 25,
           "symbol": "Login",
           "defaultMessage": "Password must contain at least 8 characters, including lowercase and uppercase letters, digits, and symbols.",
@@ -143107,7 +143107,7 @@
           "locations": [
             {
               "path": "src/pages/User/Login/index.tsx",
-              "line": 436,
+              "line": 437,
               "column": 25,
               "kind": "FormattedMessage"
             },
@@ -143181,7 +143181,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/User/Login/index.tsx",
-          "line": 474,
+          "line": 475,
           "column": 29,
           "symbol": "Login",
           "defaultMessage": "Strength: Weak",
@@ -143205,7 +143205,7 @@
           "locations": [
             {
               "path": "src/pages/User/Login/index.tsx",
-              "line": 474,
+              "line": 475,
               "column": 29,
               "kind": "FormattedMessage"
             },
@@ -143279,7 +143279,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/User/Login/index.tsx",
-          "line": 500,
+          "line": 501,
           "column": 27,
           "symbol": "Login",
           "defaultMessage": "Password is invalid!",
@@ -143303,7 +143303,7 @@
           "locations": [
             {
               "path": "src/pages/User/Login/index.tsx",
-              "line": 500,
+              "line": 501,
               "column": 27,
               "kind": "FormattedMessage"
             },
@@ -143460,7 +143460,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/User/Login/index.tsx",
-          "line": 59,
+          "line": 60,
           "column": 14,
           "symbol": "getPasswordLoginErrorMessage",
           "defaultMessage": "Confirm your email before signing in.",
@@ -143475,7 +143475,7 @@
           "locations": [
             {
               "path": "src/pages/User/Login/index.tsx",
-              "line": 59,
+              "line": 60,
               "column": 14,
               "kind": "formatMessage"
             }
@@ -143543,7 +143543,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/User/Login/index.tsx",
-          "line": 54,
+          "line": 55,
           "column": 14,
           "symbol": "getPasswordLoginErrorMessage",
           "defaultMessage": "Incorrect username/password",
@@ -143558,7 +143558,7 @@
           "locations": [
             {
               "path": "src/pages/User/Login/index.tsx",
-              "line": 54,
+              "line": 55,
               "column": 14,
               "kind": "formatMessage"
             }
@@ -143626,7 +143626,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/User/Login/index.tsx",
-          "line": 64,
+          "line": 65,
           "column": 14,
           "symbol": "getPasswordLoginErrorMessage",
           "defaultMessage": "Too many login attempts. Wait a moment and try again.",
@@ -143641,7 +143641,7 @@
           "locations": [
             {
               "path": "src/pages/User/Login/index.tsx",
-              "line": 64,
+              "line": 65,
               "column": 14,
               "kind": "formatMessage"
             }
@@ -144478,7 +144478,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/User/Login/index.tsx",
-          "line": 206,
+          "line": 207,
           "column": 30,
           "symbol": "privacyPolicyLabel",
           "defaultMessage": null,
@@ -144547,7 +144547,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/User/Login/index.tsx",
-          "line": 206,
+          "line": 207,
           "column": 30,
           "symbol": "privacyPolicyLabel",
           "defaultMessage": null,
@@ -144616,7 +144616,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/User/Login/index.tsx",
-          "line": 580,
+          "line": 581,
           "column": 23,
           "symbol": "Login",
           "defaultMessage": "Sign Up",
@@ -144631,7 +144631,7 @@
           "locations": [
             {
               "path": "src/pages/User/Login/index.tsx",
-              "line": 580,
+              "line": 581,
               "column": 23,
               "kind": "FormattedMessage"
             }
@@ -144699,7 +144699,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/User/Login/index.tsx",
-          "line": 298,
+          "line": 299,
           "column": 28,
           "symbol": "Login",
           "defaultMessage": "Sign Up",
@@ -144714,7 +144714,7 @@
           "locations": [
             {
               "path": "src/pages/User/Login/index.tsx",
-              "line": 298,
+              "line": 299,
               "column": 28,
               "kind": "formatMessage"
             }
@@ -144841,7 +144841,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/User/Login/index.tsx",
-          "line": 381,
+          "line": 382,
           "column": 23,
           "symbol": "Login",
           "defaultMessage": "Remember me",
@@ -144856,7 +144856,7 @@
           "locations": [
             {
               "path": "src/pages/User/Login/index.tsx",
-              "line": 381,
+              "line": 382,
               "column": 23,
               "kind": "FormattedMessage"
             }
@@ -144924,7 +144924,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/User/Login/index.tsx",
-          "line": 312,
+          "line": 313,
           "column": 28,
           "symbol": "Login",
           "defaultMessage": "Validation email failed to send.",
@@ -144939,7 +144939,7 @@
           "locations": [
             {
               "path": "src/pages/User/Login/index.tsx",
-              "line": 312,
+              "line": 313,
               "column": 28,
               "kind": "formatMessage"
             }
@@ -145007,7 +145007,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/User/Login/index.tsx",
-          "line": 125,
+          "line": 126,
           "column": 47,
           "symbol": "defaultSignUpExistedMessage",
           "defaultMessage": "This email is already registered. Try Login, or Forgot Password?",
@@ -145022,7 +145022,7 @@
           "locations": [
             {
               "path": "src/pages/User/Login/index.tsx",
-              "line": 125,
+              "line": 126,
               "column": 47,
               "kind": "formatMessage"
             }
@@ -145090,7 +145090,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/User/Login/index.tsx",
-          "line": 111,
+          "line": 112,
           "column": 47,
           "symbol": "defaultSignUpSuccessMessage",
           "defaultMessage": "Validation email has been sent successfully. Please check your inbox and follow the link to complete the process.",
@@ -145105,7 +145105,7 @@
           "locations": [
             {
               "path": "src/pages/User/Login/index.tsx",
-              "line": 111,
+              "line": 112,
               "column": 47,
               "kind": "formatMessage"
             }
@@ -145173,7 +145173,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/User/Login/index.tsx",
-          "line": 196,
+          "line": 197,
           "column": 5,
           "symbol": "loginSubtitle",
           "defaultMessage": null,
@@ -145260,7 +145260,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/User/Login/index.tsx",
-          "line": 144,
+          "line": 145,
           "column": 46,
           "symbol": "defaultLoginSuccessMessage",
           "defaultMessage": "Login successful!",
@@ -145275,7 +145275,7 @@
           "locations": [
             {
               "path": "src/pages/User/Login/index.tsx",
-              "line": 144,
+              "line": 145,
               "column": 46,
               "kind": "formatMessage"
             }
@@ -145355,7 +145355,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/User/Login/index.tsx",
-          "line": 555,
+          "line": 556,
           "column": 21,
           "symbol": "Login",
           "defaultMessage": "By signing up, you agree to our {termsOfService} and {privacyPolicy}",
@@ -145373,7 +145373,7 @@
           "locations": [
             {
               "path": "src/pages/User/Login/index.tsx",
-              "line": 555,
+              "line": 556,
               "column": 21,
               "kind": "FormattedMessage"
             }
@@ -145441,7 +145441,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/User/Login/index.tsx",
-          "line": 200,
+          "line": 201,
           "column": 31,
           "symbol": "termsOfServiceLabel",
           "defaultMessage": null,
@@ -145510,7 +145510,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/User/Login/index.tsx",
-          "line": 200,
+          "line": 201,
           "column": 31,
           "symbol": "termsOfServiceLabel",
           "defaultMessage": null,
@@ -145819,7 +145819,7 @@
         {
           "kind": "formatMessage",
           "path": "src/app.tsx",
-          "line": 213,
+          "line": 214,
           "column": 5,
           "symbol": "appTitle",
           "defaultMessage": null,
@@ -145837,7 +145837,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/User/Login/index.tsx",
-          "line": 193,
+          "line": 194,
           "column": 5,
           "symbol": "appTitle",
           "defaultMessage": null,
@@ -184703,6 +184703,172 @@
       ]
     },
     {
+      "id": "pages.process.published.climate.error",
+      "category": "active-static",
+      "dynamicFamilies": [],
+      "moduleOwnership": {
+        "en-US": ["pages_process"],
+        "zh-CN": ["pages_process"],
+        "de-DE": ["pages_process"],
+        "fr-FR": ["pages_process"]
+      },
+      "translations": {
+        "en-US": {
+          "value": "Failed to load",
+          "argumentSignature": [],
+          "placeholders": [],
+          "source": {
+            "path": "src/locales/en-US/pages_process.ts",
+            "line": 930,
+            "column": 3,
+            "module": "pages_process"
+          }
+        },
+        "zh-CN": {
+          "value": "读取失败",
+          "argumentSignature": [],
+          "placeholders": [],
+          "source": {
+            "path": "src/locales/zh-CN/pages_process.ts",
+            "line": 927,
+            "column": 3,
+            "module": "pages_process"
+          }
+        },
+        "de-DE": {
+          "value": "Laden fehlgeschlagen",
+          "argumentSignature": [],
+          "placeholders": [],
+          "source": {
+            "path": "src/locales/de-DE/pages_process.ts",
+            "line": 930,
+            "column": 3,
+            "module": "pages_process"
+          }
+        },
+        "fr-FR": {
+          "value": "Échec du chargement",
+          "argumentSignature": [],
+          "placeholders": [],
+          "source": {
+            "path": "src/locales/fr-FR/pages_process.ts",
+            "line": 929,
+            "column": 3,
+            "module": "pages_process"
+          }
+        }
+      },
+      "references": [
+        {
+          "kind": "FormattedMessage",
+          "path": "src/pages/PublishedProcesses/index.tsx",
+          "line": 119,
+          "column": 13,
+          "symbol": "columns",
+          "defaultMessage": "Failed to load",
+          "defaultMessageExpression": null
+        }
+      ],
+      "defaultMessages": [
+        {
+          "value": "Failed to load",
+          "argumentSignature": [],
+          "placeholders": [],
+          "locations": [
+            {
+              "path": "src/pages/PublishedProcesses/index.tsx",
+              "line": 119,
+              "column": 13,
+              "kind": "FormattedMessage"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pages.process.published.climate.missing",
+      "category": "active-static",
+      "dynamicFamilies": [],
+      "moduleOwnership": {
+        "en-US": ["pages_process"],
+        "zh-CN": ["pages_process"],
+        "de-DE": ["pages_process"],
+        "fr-FR": ["pages_process"]
+      },
+      "translations": {
+        "en-US": {
+          "value": "No result for this version in the current publication",
+          "argumentSignature": [],
+          "placeholders": [],
+          "source": {
+            "path": "src/locales/en-US/pages_process.ts",
+            "line": 931,
+            "column": 3,
+            "module": "pages_process"
+          }
+        },
+        "zh-CN": {
+          "value": "当前发布包中没有此版本的结果",
+          "argumentSignature": [],
+          "placeholders": [],
+          "source": {
+            "path": "src/locales/zh-CN/pages_process.ts",
+            "line": 928,
+            "column": 3,
+            "module": "pages_process"
+          }
+        },
+        "de-DE": {
+          "value": "Kein Ergebnis für diese Version in der aktuellen Veröffentlichung",
+          "argumentSignature": [],
+          "placeholders": [],
+          "source": {
+            "path": "src/locales/de-DE/pages_process.ts",
+            "line": 931,
+            "column": 3,
+            "module": "pages_process"
+          }
+        },
+        "fr-FR": {
+          "value": "Aucun résultat pour cette version dans la publication actuelle",
+          "argumentSignature": [],
+          "placeholders": [],
+          "source": {
+            "path": "src/locales/fr-FR/pages_process.ts",
+            "line": 930,
+            "column": 3,
+            "module": "pages_process"
+          }
+        }
+      },
+      "references": [
+        {
+          "kind": "FormattedMessage",
+          "path": "src/pages/PublishedProcesses/index.tsx",
+          "line": 129,
+          "column": 17,
+          "symbol": "columns",
+          "defaultMessage": "No result for this version in the current publication",
+          "defaultMessageExpression": null
+        }
+      ],
+      "defaultMessages": [
+        {
+          "value": "No result for this version in the current publication",
+          "argumentSignature": [],
+          "placeholders": [],
+          "locations": [
+            {
+              "path": "src/pages/PublishedProcesses/index.tsx",
+              "line": 129,
+              "column": 17,
+              "kind": "FormattedMessage"
+            }
+          ]
+        }
+      ]
+    },
+    {
       "id": "pages.process.published.table.calculationResult",
       "category": "active-static",
       "dynamicFamilies": [],
@@ -184714,9 +184880,9 @@
       },
       "translations": {
         "en-US": {
-          "value": "Calculation result",
-          "argumentSignature": [],
-          "placeholders": [],
+          "value": "Calculation result ({unit})",
+          "argumentSignature": [{ "name": "unit", "type": "simple" }],
+          "placeholders": ["unit"],
           "source": {
             "path": "src/locales/en-US/pages_process.ts",
             "line": 28,
@@ -184725,9 +184891,9 @@
           }
         },
         "zh-CN": {
-          "value": "计算结果",
-          "argumentSignature": [],
-          "placeholders": [],
+          "value": "计算结果（{unit}）",
+          "argumentSignature": [{ "name": "unit", "type": "simple" }],
+          "placeholders": ["unit"],
           "source": {
             "path": "src/locales/zh-CN/pages_process.ts",
             "line": 28,
@@ -184736,9 +184902,9 @@
           }
         },
         "de-DE": {
-          "value": "Berechnungsergebnis",
-          "argumentSignature": [],
-          "placeholders": [],
+          "value": "Berechnungsergebnis ({unit})",
+          "argumentSignature": [{ "name": "unit", "type": "simple" }],
+          "placeholders": ["unit"],
           "source": {
             "path": "src/locales/de-DE/pages_process.ts",
             "line": 28,
@@ -184747,9 +184913,9 @@
           }
         },
         "fr-FR": {
-          "value": "Résultat du calcul",
-          "argumentSignature": [],
-          "placeholders": [],
+          "value": "Résultat du calcul ({unit})",
+          "argumentSignature": [{ "name": "unit", "type": "simple" }],
+          "placeholders": ["unit"],
           "source": {
             "path": "src/locales/fr-FR/pages_process.ts",
             "line": 28,
@@ -184762,22 +184928,22 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/PublishedProcesses/index.tsx",
-          "line": 44,
+          "line": 108,
           "column": 9,
           "symbol": "columns",
-          "defaultMessage": "Calculation result",
+          "defaultMessage": "Calculation result ({unit})",
           "defaultMessageExpression": null
         }
       ],
       "defaultMessages": [
         {
-          "value": "Calculation result",
-          "argumentSignature": [],
-          "placeholders": [],
+          "value": "Calculation result ({unit})",
+          "argumentSignature": [{ "name": "unit", "type": "simple" }],
+          "placeholders": ["unit"],
           "locations": [
             {
               "path": "src/pages/PublishedProcesses/index.tsx",
-              "line": 44,
+              "line": 108,
               "column": 9,
               "kind": "FormattedMessage"
             }
@@ -184845,7 +185011,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/PublishedProcesses/index.tsx",
-          "line": 34,
+          "line": 98,
           "column": 9,
           "symbol": "columns",
           "defaultMessage": "Process name",
@@ -184860,7 +185026,7 @@
           "locations": [
             {
               "path": "src/pages/PublishedProcesses/index.tsx",
-              "line": 34,
+              "line": 98,
               "column": 9,
               "kind": "FormattedMessage"
             }
@@ -184928,7 +185094,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/PublishedProcesses/index.tsx",
-          "line": 60,
+          "line": 150,
           "column": 11,
           "symbol": "PublishedProcesses",
           "defaultMessage": "Published processes",
@@ -184943,7 +185109,7 @@
           "locations": [
             {
               "path": "src/pages/PublishedProcesses/index.tsx",
-              "line": 60,
+              "line": 150,
               "column": 11,
               "kind": "FormattedMessage"
             }
@@ -259418,7 +259584,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/PublishedProcesses/index.tsx",
-          "line": 26,
+          "line": 90,
           "column": 14,
           "symbol": "columns",
           "defaultMessage": "Index",
@@ -259634,7 +259800,7 @@
             },
             {
               "path": "src/pages/PublishedProcesses/index.tsx",
-              "line": 26,
+              "line": 90,
               "column": 14,
               "kind": "FormattedMessage"
             },
@@ -263557,7 +263723,7 @@
         {
           "kind": "formatMessage",
           "path": "src/components/RightContent/index.tsx",
-          "line": 133,
+          "line": 138,
           "column": 23,
           "symbol": "toggleLabel",
           "defaultMessage": "Toggle dark mode",
@@ -263572,7 +263738,7 @@
           "locations": [
             {
               "path": "src/components/RightContent/index.tsx",
-              "line": 133,
+              "line": 138,
               "column": 23,
               "kind": "formatMessage"
             }

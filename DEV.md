@@ -43,8 +43,8 @@ checkPaths:
   - .github/workflows/build.yml
   - .nvmrc
 lastReviewedAt: 2026-10-08
-lastReviewedCommit: f4bb5246c01397935657c6d28a2cbdb604aa0945
-lastReviewedNote: 'Reviewed Platform #1182 candidate-local frozen offline installation; bootstrap, branch policy, full-gate and exact browser closure remain unchanged.'
+lastReviewedCommit: 17c9ba51fecfbd4d27d98260f42326d2953fa4f5
+lastReviewedNote: 'Reviewed Platform #1189 browser preference order, English default, manual-only persistence, legacy compatibility and the denied-storage Umi bridge. Dependency, backend, authorization and full-gate boundaries remain unchanged.'
 ---
 
 # Development Bootstrap

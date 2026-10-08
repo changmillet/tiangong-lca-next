@@ -25,9 +25,9 @@ checkPaths:
   - playwright.config.ts
   - config/docs-capture/**
   - tests/e2e/i18n/**
-lastReviewedAt: 2026-10-04
-lastReviewedCommit: 529b5ef9dc4b263e1a934747efae9c54963e184f
-lastReviewedNote: 'Reviewed Platform #1177 final owner admission and native dispatch fences: foreign identities require fresh full application admission; task writes and TIDAS phases verify captured identity through native fetch. Calculation, authorization, environment and quality-gate policy remain unchanged.'
+lastReviewedAt: 2026-10-08
+lastReviewedCommit: e428f3b0d8313df61c584e5c7921a82937db0e0b
+lastReviewedNote: 'Reviewed Platform #1189 browser preference order, English default, manual-only persistence, legacy compatibility and the denied-storage Umi bridge. Dependency, backend, authorization and full-gate boundaries remain unchanged.'
 related:
   - ../AGENTS.md
   - ../.docpact/config.yaml
@@ -74,6 +74,8 @@ Use this default read path:
 
 `route -> page/component -> service -> backend or static resource`
 
+`/tgdata/published-processes` keeps the published Open Data catalog pagination and independently loads one Climate change batch for each visible page through `src/services/dataProducts/publishedClimate.ts`. The service uses the opt-in `data_product_results` mode `processes_one_impact_exact`, validates the current publication/package plus complete unique Process ID/version rows, and preserves true zero separately from missing/null. Calculation cells use the shared numeric renderer without per-row units; the localized calculation-column header carries the fixed Climate change unit `kg CO2 Equivalents`; localized missing and failure states never invoke Solver or fall back to stored Process JSON. The standard table refresh reloads the list and its result batch. Page/locale changes and unmount invalidate outstanding responses. The compatible Edge reader must deploy before the frontend release.
+
 Rules:
 
 - route and page components orchestrate
@@ -90,6 +92,8 @@ Rules:
 - UI copy changes must update every supported locale and the deterministic canonical-message audit; one message key owns one concept and one UI role
 - a new locale may land reviewed leaf modules before activation, but it must not gain a top-level `src/locales/<locale>.ts` entry until manifest parity and the locale-specific review gate are complete
 - language behavior is split across typed owners: `localeRegistry.ts` owns UI locale/adapters, `contentLanguageRegistry.ts` owns TIDAS/ILCD reading and authoring plus service-query resolution, `referenceResources/manifest.ts` owns classification/location availability and provenance, and `localeCapabilities.ts` is the derived joined view. The current canonical UI keys are `zh-CN`, `en-US`, `de-DE`, and `fr-FR`; business consumers and parameterized capability tests discover them from the registries. A fixed locale array may appear only in an explicitly labeled fail-closed product-contract test whose purpose is to force deliberate review when that snapshot changes
+- neutral browser entry resolves the current document's manual choice, then `localStorage.tiangong_manual_locale`, an existing valid legacy `umi_locale`, ordered `navigator.languages` and `navigator.language`, then English. Region aliases normalize through the locale registry. Only menu selection creates a new persisted preference; automatic detection never writes either key. Legacy values have unknown provenance and remain a separate compatibility input without becoming manual preferences. Storage denial keeps a manual choice in memory for the current document; reopening without usable storage follows browser preferences again
+- `src/services/general/browserLocaleBridge.ts` is the sole adapter to Umi's private generated `setIntl` and locale-provider event. Umi `4.7.9`'s public `setLocale` reads the storage getter even with persistence disabled; the bridge retains the native provider, flag menu and same-document refresh while avoiding that failure. Its installed-template contract and semantic browser scenarios must pass on any Umi upgrade. `src/services/general/browserStorage.ts` protects the host/Login theme preference accesses so denied storage cannot prevent language entry or switching
 - app locale, content language, service-query language, and reference-resource language are separate boundaries. Content reading priorities, backend-query fallbacks, and reference-resource delivery states are declared independently; a native reference overlay exists only after its exact structure/evidence gate passes. Documentation, legal, and public-doc surfaces keep their separately disclosed fallbacks
 - Process and Flow AI校验 keeps the existing `AISuggestion` diff/field-acceptance UI, while `src/services/general/aiSuggestion.ts` owns the asynchronous transport. It submits the current TIDAS JSON to authenticated Edge `ai_suggest`, polls the returned requester-scoped job with a bounded progressive interval, accepts only `ai.tidas_suggestion.result.v1` `complete`/`partial` results, and fails closed on malformed, failed, cancelled, blocked, aborted, or timed-out jobs. Next never reads `worker_jobs` directly and does not receive queue payloads, leases, diagnostics, or model credentials.
 - anonymous SPA entry is limited to login/recovery plus `/oauth/consent`. The consent page is not anonymous product access: it accepts exactly one bounded RFC3986-unreserved opaque `authorization_id` without normalization, rejects delimiter/control/duplicate/oversized and dot-only path-segment input, verifies the current session through `getClaims()`, and preserves only a same-origin relative consent path across login before retrieving or deciding authorization. Root/Welcome, every other configured application route, case variants, and unmatched paths require the ordinary session guard. Authenticated unmatched paths may render the localized 404. Role gates defer missing-session decisions to that global redirect, then enforce their role only after a user exists. Localization route/view coverage records this access context but never broadens it

@@ -3,7 +3,7 @@
   "locale": "fr-FR",
   "source": {
     "baselineSha": "c26f306e82ac66f50a56aafe8f89ea96c0b0c67d",
-    "sourceManifestDigest": "f1e45ec9ac1b87f4b6c3929e353703103ae76fdbd53b8b84e80632bb43a32b97"
+    "sourceManifestDigest": "6b86bb5973d1bb7c8871b2ed9cf7af04e3d7954d9654c190ce047890d6ae3477"
   },
   "registry": {
     "canonicalLocale": "fr-FR",
@@ -19,7 +19,7 @@
       "titleKey": "APP_TITLE_FR_FR",
       "loginSubtitleKey": "APP_LOGIN_SUBTITLE_FR_FR"
     },
-    "registryDigest": "c04e58fec60280fbdd8e486235da694223573cef72ac9bb855ebbbfa5d190460"
+    "registryDigest": "8e6aed3f617d3cb021e73676296a5d2eb7846e35c8515d34766aaa86fabf77fb"
   },
   "languagePlatform": {
     "capability": {
@@ -78,8 +78,8 @@
     "hardcodingAllowlistDigest": "ccf0ec3cf64830f8608ac996bc503237f08628e1acd987eb786cdd24f7394a5a"
   },
   "evidence": {
-    "contextDigest": "b7d4e95dc8fccf43e1adc5ef7e089c9fc6877ed02ca6107c924e2b1d2b754f3c",
-    "qualityDigest": "90ad9f8216f96818981893f24dcec2c303a614e3e9795adae1f0b0a24f289b4d",
+    "contextDigest": "a062640b87f2b4e867afe114db559954162737de9b32bf5fab3229f097f01c7a",
+    "qualityDigest": "5a13ffbb0e451930fd3bba594b80d5427e1107c026211e38d8bed7d7644fd6dd",
     "correctionLedgerDigest": "0116c494387613a132f6cea85d8841edca9d5aba28d66ae61a40743370b040ba",
     "routeViewCoverageDigest": "312eb38960cc0d5de9a7104d6ea7126cd1ee8f044aa368af8a4938d66c8e5d80",
     "fallbackContractDigest": "94c88648a2bc4fa2b3e3dd2b1db476db5a182e8a5dd9dce2140f6faf2cceabe5",
@@ -125,5 +125,5 @@
       "ownerIssue": "#867"
     }
   ],
-  "activationDigest": "894adab3269a0adb20d9fc6cfa16594abdd2bdafcb8f2820dbd5b4bfde60aeb7"
+  "activationDigest": "f2b105a3cb86c5a92b035cdf839cbc8b8fb07b3f198bfdf77058eddf1d0bb724"
 }

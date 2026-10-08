@@ -44,8 +44,8 @@ checkPaths:
   - scripts/i18n/locale-delivery.mjs
   - .github/workflows/**
 lastReviewedAt: 2026-10-08
-lastReviewedCommit: 517e1b40ad27e1107ab6bd4a26a54ca1ea299b54
-lastReviewedNote: 'Reviewed Platform #1186 removal of the dedicated result-retry toolbar action and unused locale messages; independent failure display, exact-revision climate reads and standard table refresh recovery remain covered. Existing bootstrap, branch and full-gate rules remain unchanged.'
+lastReviewedCommit: a021e80ac77ce8d1d797ab892b538b646447658d
+lastReviewedNote: 'Reviewed Platform #1186 header-only Climate change unit display and four-locale calculation labels; numeric-only cells, zero/negative/missing/error and standard refresh behavior remain covered. Bootstrap, branch and full-gate policy remain unchanged.'
 related:
   - ../AGENTS.md
   - ../.docpact/config.yaml

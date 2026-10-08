@@ -22,9 +22,9 @@ checkPaths:
   - scripts/e2e/**
   - playwright.config.ts
   - tests/e2e/i18n/**
-lastReviewedAt: 2026-10-04
-lastReviewedCommit: 529b5ef9dc4b263e1a934747efae9c54963e184f
-lastReviewedNote: 'Reviewed Platform #1177 final owner admission and native dispatch fences: foreign identities require fresh full application admission; task writes and TIDAS phases verify captured identity through native fetch. Calculation, authorization, environment and quality-gate policy remain unchanged.'
+lastReviewedAt: 2026-10-08
+lastReviewedCommit: ab4f62a48c7672440569aaaf698f168ad284b5cb
+lastReviewedNote: 'Reviewed Platform #1186 exact-version public Climate change readback, zero/missing/error states, page/locale response fences and focused full coverage; bootstrap, branch and full-gate policy are unchanged.'
 ---
 
 # Supabase Environment And Database Workflow

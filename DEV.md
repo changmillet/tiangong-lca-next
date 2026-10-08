@@ -43,8 +43,8 @@ checkPaths:
   - .github/workflows/build.yml
   - .nvmrc
 lastReviewedAt: 2026-10-08
-lastReviewedCommit: f4bb5246c01397935657c6d28a2cbdb604aa0945
-lastReviewedNote: 'Reviewed Platform #1182 candidate-local frozen offline installation; bootstrap, branch policy, full-gate and exact browser closure remain unchanged.'
+lastReviewedCommit: a021e80ac77ce8d1d797ab892b538b646447658d
+lastReviewedNote: 'Reviewed Platform #1186 header-only Climate change unit display and four-locale calculation labels; numeric-only cells, zero/negative/missing/error and standard refresh behavior remain covered. Bootstrap, branch and full-gate policy remain unchanged.'
 ---
 
 # Development Bootstrap

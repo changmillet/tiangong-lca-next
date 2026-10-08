@@ -25,9 +25,9 @@ checkPaths:
   - playwright.config.ts
   - config/docs-capture/**
   - tests/e2e/i18n/**
-lastReviewedAt: 2026-10-04
-lastReviewedCommit: 529b5ef9dc4b263e1a934747efae9c54963e184f
-lastReviewedNote: 'Reviewed Platform #1177 final owner admission and native dispatch fences: foreign identities require fresh full application admission; task writes and TIDAS phases verify captured identity through native fetch. Calculation, authorization, environment and quality-gate policy remain unchanged.'
+lastReviewedAt: 2026-10-08
+lastReviewedCommit: a021e80ac77ce8d1d797ab892b538b646447658d
+lastReviewedNote: 'Reviewed Platform #1186 header-only Climate change unit display and four-locale calculation labels; numeric-only cells, zero/negative/missing/error and standard refresh behavior remain covered. Bootstrap, branch and full-gate policy remain unchanged.'
 related:
   - ../AGENTS.md
   - ../.docpact/config.yaml
@@ -73,6 +73,8 @@ This repo is a Umi `4.7.9` React 19 SPA on one native Ant Design `6.6.2` / ProCo
 Use this default read path:
 
 `route -> page/component -> service -> backend or static resource`
+
+`/tgdata/published-processes` keeps the published Open Data catalog pagination and independently loads one Climate change batch for each visible page through `src/services/dataProducts/publishedClimate.ts`. The service uses the opt-in `data_product_results` mode `processes_one_impact_exact`, validates the current publication/package plus complete unique Process ID/version rows, and preserves true zero separately from missing/null. Calculation cells use the shared numeric renderer without per-row units; the localized calculation-column header carries the fixed Climate change unit `kg CO2 Equivalents`; localized missing and failure states never invoke Solver or fall back to stored Process JSON. The standard table refresh reloads the list and its result batch. Page/locale changes and unmount invalidate outstanding responses. The compatible Edge reader must deploy before the frontend release.
 
 Rules:
 

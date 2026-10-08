@@ -41,8 +41,8 @@ checkPaths:
   - .github/workflows/release-gate.yml
   - .github/workflows/release-readiness.yml
 lastReviewedAt: 2026-10-08
-lastReviewedCommit: 931e07b386611dda725a0129da01a9e26f8b31a2
-lastReviewedNote: 'Reviewed Platform #1182 current membership RPC fixture and exact POST request proof; all 13 browser product assertions and full-gate policy remain unchanged.'
+lastReviewedCommit: a021e80ac77ce8d1d797ab892b538b646447658d
+lastReviewedNote: 'Reviewed Platform #1186 header-only Climate change unit display and four-locale calculation labels; numeric-only cells, zero/negative/missing/error and standard refresh behavior remain covered. Bootstrap, branch and full-gate policy remain unchanged.'
 ---
 
 # Testing Execution State

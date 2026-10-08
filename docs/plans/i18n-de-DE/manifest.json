@@ -3,7 +3,7 @@
   "source": {
     "baseRef": "c26f306e82ac66f50a56aafe8f89ea96c0b0c67d",
     "baseCommit": "c26f306e82ac66f50a56aafe8f89ea96c0b0c67d",
-    "auditedInputDigest": "b5a11883f75d00a6a9823111037f913242ce6b78e8fca5cb0b7a38366a2e0ef9",
+    "auditedInputDigest": "885737c6684c175a7c8a1e27efb194e204fbea5c9f42f8121e16779b95ea0622",
     "auditedInputDigestAlgorithm": "sha256(path\\0content\\0)",
     "repository": "tiangong-lca/platform"
   },
@@ -69,13 +69,13 @@
   "summary": {
     "localeCount": 4,
     "localeLeafModuleCounts": { "en-US": 31, "zh-CN": 31, "de-DE": 31, "fr-FR": 31 },
-    "localeUniqueKeyCounts": { "en-US": 3531, "zh-CN": 3531, "de-DE": 3531, "fr-FR": 3531 },
-    "canonicalCandidateKeyCount": 3531,
-    "activeStaticKeyCount": 2352,
+    "localeUniqueKeyCounts": { "en-US": 3530, "zh-CN": 3530, "de-DE": 3530, "fr-FR": 3530 },
+    "canonicalCandidateKeyCount": 3530,
+    "activeStaticKeyCount": 2351,
     "activeDynamicKeyCount": 321,
     "reservedKeyCount": 858,
     "productionSourceFileCount": 491,
-    "literalReferenceCount": 4299,
+    "literalReferenceCount": 4298,
     "dynamicCallsiteCount": 33,
     "dynamicCallsiteSummaryCount": 33,
     "registeredDynamicCallsiteCount": 33,
@@ -184762,7 +184762,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/PublishedProcesses/index.tsx",
-          "line": 122,
+          "line": 118,
           "column": 13,
           "symbol": "columns",
           "defaultMessage": "Failed to load",
@@ -184777,7 +184777,7 @@
           "locations": [
             {
               "path": "src/pages/PublishedProcesses/index.tsx",
-              "line": 122,
+              "line": 118,
               "column": 13,
               "kind": "FormattedMessage"
             }
@@ -184845,7 +184845,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/PublishedProcesses/index.tsx",
-          "line": 132,
+          "line": 128,
           "column": 17,
           "symbol": "columns",
           "defaultMessage": "No result for this version in the current publication",
@@ -184860,91 +184860,8 @@
           "locations": [
             {
               "path": "src/pages/PublishedProcesses/index.tsx",
-              "line": 132,
+              "line": 128,
               "column": 17,
-              "kind": "FormattedMessage"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": "pages.process.published.climate.retry",
-      "category": "active-static",
-      "dynamicFamilies": [],
-      "moduleOwnership": {
-        "en-US": ["pages_process"],
-        "zh-CN": ["pages_process"],
-        "de-DE": ["pages_process"],
-        "fr-FR": ["pages_process"]
-      },
-      "translations": {
-        "en-US": {
-          "value": "Retry results",
-          "argumentSignature": [],
-          "placeholders": [],
-          "source": {
-            "path": "src/locales/en-US/pages_process.ts",
-            "line": 932,
-            "column": 3,
-            "module": "pages_process"
-          }
-        },
-        "zh-CN": {
-          "value": "重试结果",
-          "argumentSignature": [],
-          "placeholders": [],
-          "source": {
-            "path": "src/locales/zh-CN/pages_process.ts",
-            "line": 929,
-            "column": 3,
-            "module": "pages_process"
-          }
-        },
-        "de-DE": {
-          "value": "Ergebnisse erneut laden",
-          "argumentSignature": [],
-          "placeholders": [],
-          "source": {
-            "path": "src/locales/de-DE/pages_process.ts",
-            "line": 932,
-            "column": 3,
-            "module": "pages_process"
-          }
-        },
-        "fr-FR": {
-          "value": "Réessayer les résultats",
-          "argumentSignature": [],
-          "placeholders": [],
-          "source": {
-            "path": "src/locales/fr-FR/pages_process.ts",
-            "line": 931,
-            "column": 3,
-            "module": "pages_process"
-          }
-        }
-      },
-      "references": [
-        {
-          "kind": "FormattedMessage",
-          "path": "src/pages/PublishedProcesses/index.tsx",
-          "line": 176,
-          "column": 19,
-          "symbol": "PublishedProcesses",
-          "defaultMessage": "Retry results",
-          "defaultMessageExpression": null
-        }
-      ],
-      "defaultMessages": [
-        {
-          "value": "Retry results",
-          "argumentSignature": [],
-          "placeholders": [],
-          "locations": [
-            {
-              "path": "src/pages/PublishedProcesses/index.tsx",
-              "line": 176,
-              "column": 19,
               "kind": "FormattedMessage"
             }
           ]
@@ -185011,7 +184928,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/PublishedProcesses/index.tsx",
-          "line": 112,
+          "line": 108,
           "column": 9,
           "symbol": "columns",
           "defaultMessage": "Calculation result",
@@ -185026,7 +184943,7 @@
           "locations": [
             {
               "path": "src/pages/PublishedProcesses/index.tsx",
-              "line": 112,
+              "line": 108,
               "column": 9,
               "kind": "FormattedMessage"
             }
@@ -185094,7 +185011,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/PublishedProcesses/index.tsx",
-          "line": 102,
+          "line": 98,
           "column": 9,
           "symbol": "columns",
           "defaultMessage": "Process name",
@@ -185109,7 +185026,7 @@
           "locations": [
             {
               "path": "src/pages/PublishedProcesses/index.tsx",
-              "line": 102,
+              "line": 98,
               "column": 9,
               "kind": "FormattedMessage"
             }
@@ -185177,7 +185094,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/PublishedProcesses/index.tsx",
-          "line": 158,
+          "line": 154,
           "column": 11,
           "symbol": "PublishedProcesses",
           "defaultMessage": "Published processes",
@@ -185192,7 +185109,7 @@
           "locations": [
             {
               "path": "src/pages/PublishedProcesses/index.tsx",
-              "line": 158,
+              "line": 154,
               "column": 11,
               "kind": "FormattedMessage"
             }
@@ -259667,7 +259584,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/PublishedProcesses/index.tsx",
-          "line": 94,
+          "line": 90,
           "column": 14,
           "symbol": "columns",
           "defaultMessage": "Index",
@@ -259883,7 +259800,7 @@
             },
             {
               "path": "src/pages/PublishedProcesses/index.tsx",
-              "line": 94,
+              "line": 90,
               "column": 14,
               "kind": "FormattedMessage"
             },

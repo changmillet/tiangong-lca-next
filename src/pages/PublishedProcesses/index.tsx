@@ -12,7 +12,7 @@ import { getProcessTableAll } from '@/services/processes/api';
 import type { ProcessTable } from '@/services/processes/data';
 import { dataListIndexColumn, responsiveDataListTableProps } from '@/components/ResponsiveDataList';
 import { PageContainer, ProTable, type ProColumns } from '@ant-design/pro-components';
-import { Button, Space, Spin, Tooltip } from 'antd';
+import { Space, Spin, Tooltip } from 'antd';
 import { useCallback, useEffect, useRef, useState, type FC } from 'react';
 import { FormattedMessage, useIntl } from 'umi';
 
@@ -30,7 +30,6 @@ const PublishedProcesses: FC = () => {
   const lang = getLang(intl.locale);
   const epoch = useRef(0);
   const mounted = useRef(true);
-  const visibleProcesses = useRef<PublishedLciaProcessSelection[]>([]);
   const [resultState, setResultState] = useState<{
     status: 'idle' | 'loading' | 'ready' | 'error';
     values: Map<string, PublishedLciaExactValue>;
@@ -41,7 +40,6 @@ const PublishedProcesses: FC = () => {
     return () => {
       mounted.current = false;
       epoch.current += 1;
-      visibleProcesses.current = [];
     };
   }, [intl.locale]);
 
@@ -63,7 +61,6 @@ const PublishedProcesses: FC = () => {
   const requestProcesses = useCallback(
     async (params: { current?: number; pageSize?: number }) => {
       const token = ++epoch.current;
-      visibleProcesses.current = [];
       setResultState({ status: 'loading', values: new Map() });
       const result = await getProcessTableAll(
         params,
@@ -79,7 +76,6 @@ const PublishedProcesses: FC = () => {
         const processes = result.success
           ? result.data.map(({ id, version }) => ({ id, version }))
           : [];
-        visibleProcesses.current = processes;
         void loadResults(processes, token);
       }
       return result;
@@ -166,21 +162,6 @@ const PublishedProcesses: FC = () => {
         request={requestProcesses}
         rowKey={(record) => `${record.id}:${record.version}`}
         search={false}
-        toolBarRender={() =>
-          resultState.status === 'error'
-            ? [
-                <Button
-                  key='retry-climate'
-                  onClick={() => void loadResults(visibleProcesses.current, ++epoch.current)}
-                >
-                  <FormattedMessage
-                    id='pages.process.published.climate.retry'
-                    defaultMessage='Retry results'
-                  />
-                </Button>,
-              ]
-            : []
-        }
       />
     </PageContainer>
   );

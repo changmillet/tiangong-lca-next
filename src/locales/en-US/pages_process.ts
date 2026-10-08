@@ -929,5 +929,4 @@ export default {
   'pages.process.lca.evidence.reason.unknown': 'The evidence did not pass validation.',
   'pages.process.published.climate.error': 'Failed to load',
   'pages.process.published.climate.missing': 'No result for this version in the current publication',
-  'pages.process.published.climate.retry': 'Retry results',
 };

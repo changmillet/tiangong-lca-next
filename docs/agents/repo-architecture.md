@@ -74,7 +74,7 @@ Use this default read path:
 
 `route -> page/component -> service -> backend or static resource`
 
-`/tgdata/published-processes` keeps the published Open Data catalog pagination and independently loads one Climate change batch for each visible page through `src/services/dataProducts/publishedClimate.ts`. The service uses the opt-in `data_product_results` mode `processes_one_impact_exact`, validates the current publication/package plus complete unique Process ID/version rows, and preserves true zero separately from missing/null. Calculation cells use the shared numeric renderer and returned unit; localized missing and failure/retry states never invoke Solver or fall back to stored Process JSON. Page/locale changes and unmount invalidate outstanding responses. The compatible Edge reader must deploy before the frontend release.
+`/tgdata/published-processes` keeps the published Open Data catalog pagination and independently loads one Climate change batch for each visible page through `src/services/dataProducts/publishedClimate.ts`. The service uses the opt-in `data_product_results` mode `processes_one_impact_exact`, validates the current publication/package plus complete unique Process ID/version rows, and preserves true zero separately from missing/null. Calculation cells use the shared numeric renderer and returned unit; localized missing and failure states never invoke Solver or fall back to stored Process JSON. The standard table refresh reloads the list and its result batch. Page/locale changes and unmount invalidate outstanding responses. The compatible Edge reader must deploy before the frontend release.
 
 Rules:
 

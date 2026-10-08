@@ -929,5 +929,4 @@ export default {
   'pages.process.lca.evidence.reason.unknown': 'Der Berechnungsnachweis wurde nicht erfolgreich validiert.',
   'pages.process.published.climate.error': 'Laden fehlgeschlagen',
   'pages.process.published.climate.missing': 'Kein Ergebnis für diese Version in der aktuellen Veröffentlichung',
-  'pages.process.published.climate.retry': 'Ergebnisse erneut laden',
 };

@@ -5,12 +5,12 @@
     "repository": "tiangong-lca/platform",
     "baselineSha": "c26f306e82ac66f50a56aafe8f89ea96c0b0c67d",
     "sourceManifestPath": "docs/plans/i18n-de-DE/manifest.json",
-    "sourceManifestDigest": "fb3de93b78a33bc63d38be73e36653b875f70643b9dcd4f99ef36b01d274e1d2",
-    "auditedInputDigest": "b5a11883f75d00a6a9823111037f913242ce6b78e8fca5cb0b7a38366a2e0ef9"
+    "sourceManifestDigest": "70ef8a435b905019ca57d3c656992023812d3e37cbeab767e653f7526f18bd80",
+    "auditedInputDigest": "885737c6684c175a7c8a1e27efb194e204fbea5c9f42f8121e16779b95ea0622"
   },
   "inventory": {
-    "sourceMessageCount": 3531,
-    "localeMessageCount": 3531,
+    "sourceMessageCount": 3530,
+    "localeMessageCount": 3530,
     "leafModuleCount": 31,
     "dynamicFamilyCount": 16,
     "dynamicCallsiteCount": 33,
@@ -44,11 +44,11 @@
       "preserved tokens and layout/RTL/dark risks",
       "candidate/rationale/risk/validation"
     ],
-    "messageCount": 3531,
-    "completeCount": 3531,
+    "messageCount": 3530,
+    "completeCount": 3530,
     "blockedCount": 0,
-    "dossierDigest": "8f6084ef3b08c478ee455092e4480b67643ff743cdcb6568b6e79b55935614f9",
-    "catalogDigest": "6ceba606b37db30630cb1a4eb48f29bc7e3e8159f0c19da25bc7fda5c246c4e6",
+    "dossierDigest": "c17ee0b5804e26dfc1365d386aaf98fafd2d1b1e0da4067f4197155fb735e2ba",
+    "catalogDigest": "f5500ff243124464b6562aef3861b9a7ce8511c9a9750b95682ec359365e1393",
     "moduleCount": 32,
     "moduleDigest": "3b4f2df2201d552cc6e09b75bcebf64a30ac3511d401d79c50d4eb6e806195d3",
     "roleCounts": {
@@ -61,19 +61,19 @@
       "status-or-empty-state": 124,
       "success-notification": 195,
       "title-or-heading": 257,
-      "user-action": 360
+      "user-action": 359
     },
     "stateCounts": {
       "destructive-or-rejecting-action": 64,
       "failure-or-invalid-input": 404,
-      "interactive-ready": 581,
+      "interactive-ready": 580,
       "retained-not-currently-reachable": 455,
       "successful-completion": 195,
       "visible": 1832
     },
-    "riskCounts": { "high": 1658, "low": 1705, "medium": 168 },
-    "highRiskMessageCount": 1658,
-    "highRiskMessageDigest": "c99499623217677f8e0535ef6b4648551c69f918182cf0500c9e77581f7b39ec"
+    "riskCounts": { "high": 1657, "low": 1705, "medium": 168 },
+    "highRiskMessageCount": 1657,
+    "highRiskMessageDigest": "4493b0b0f16aa65dd97cbed6791a6ef4c7249ebc6b5ba7d88be192dd17d87eaa"
   },
   "typedContentDossiers": {
     "sourcePath": "src/components/ImportTidasPackage/reportContent.ts",
@@ -94,14 +94,14 @@
   },
   "usageIndex": {
     "source": "docs/plans/i18n-de-DE/manifest.json messages[*].references/moduleOwnership/dynamicFamilies",
-    "literalReferenceCount": 4299,
+    "literalReferenceCount": 4298,
     "dynamicCallsiteCount": 33,
     "glossaryRuleScope": "full target catalog at the automated quality gate",
     "onDemandCommand": "pnpm i18n:context:dossier --locale zh-CN --message <MESSAGE_ID>"
   },
   "routeViewCoverage": {
     "path": "docs/plans/i18n/route-view-coverage.json",
-    "digest": "e6d28baaf6623b9ebe091bbc5ca68d26c9420c857e012edc2dfa4174511b6ceb",
+    "digest": "08d9cc1c734b6516a20a77cf2332783876868120ca577b97df35cc06590a525c",
     "requiredRouteViews": ["/", "/welcome", "/welcome?view=carbon-footprint"],
     "derivedEvidence": {
       "schemaVersion": "tiangong.i18n-route-view-derived-evidence.v2",
@@ -117,7 +117,7 @@
         "evidenceSchemaVersion": "tiangong.i18n-semantic-e2e-evidence.v2",
         "proofStorage": "ignored-local-or-github-actions-artifact",
         "requiredAt": "dev-release-candidate-gate",
-        "routeCoverageContractDigest": "6ad1de407fa13fa5c269925bf049d2837f0e8b48bf18b6d7c212473ea95d65fb",
+        "routeCoverageContractDigest": "c93570070194390be27c5f0440b77374428d1d372167eabbdff5b2ef8387eb2e",
         "requiredAssertionCount": 59,
         "executionEvidence": null,
         "contractReady": true,
@@ -144,7 +144,7 @@
         "focusedVariantCount": 8
       },
       "sourceFileCount": 38,
-      "sourceEvidenceDigest": "ea29e64e94072673d51f925f333a37539ad085e13e4c502b8c558ef275c702c3",
+      "sourceEvidenceDigest": "3b49178d1db8472f02537ae49cb85689610ea89121d00e342ad081193930d0ba",
       "rowEvidence": [
         {
           "executableAssertionId": "rv.root.redirect-to-welcome",
@@ -681,13 +681,13 @@
           "route": "/tgdata/published-processes",
           "viewState": "published-process-list",
           "requiredEvidenceScope": "internal-localization",
-          "sourceDigest": "78c4321ffcb71553960c33566f207ea2f1516b5a2b9655f754cefcdc06a76de8",
-          "focusedTestDigest": "1164347234366250f99d7b4eff7ab19afe6c9a3926253a53818ab1a47b3c219a",
+          "sourceDigest": "d64e1897cf1acb2ca8ef6497634afa84563f79d02fe6f632e50ba15d611cd78c",
+          "focusedTestDigest": "5dd26cc4c66dfdbeed0370bc72421a0f363e7a4dfd23a167eeda2595b2acacbb",
           "plannedBrowserAssertionCount": 1,
           "plannedBrowserAssertionDigest": "e3ce33ab041a1cc1adce0f94edee34ffdcf1cd53385cbbe219676cccd9d5d064",
-          "derivedMessageCount": 7,
-          "derivedMessageDigest": "3dc21ec944977edbef238f8d6a9f53e7225e6c5db0ae200e7a72c2e15e75f8ab",
-          "stateSignals": ["error", "retry", "unavailable"],
+          "derivedMessageCount": 6,
+          "derivedMessageDigest": "6290b45741d37b9bf8f9149296c50ff154c5765fbc4acc723af48142650abc5b",
+          "stateSignals": ["error", "unavailable"],
           "queryParameters": [],
           "navigationTargets": [],
           "interactionKinds": ["spin", "tooltip"],
@@ -1294,7 +1294,7 @@
           "unownedVisibleLiteralCount": 0
         }
       ],
-      "rowEvidenceDigest": "7df67a6d661318cc285120df87cf57956e57afbf660b313d1525044a128c2750",
+      "rowEvidenceDigest": "79e13ad0ef1b7fefc654e847f52d6c5afa166535c78ee9cb727ffb01111b792b",
       "blockedDerivedStateCount": 0,
       "unownedVisibleLiteralCount": 0
     }
@@ -1312,11 +1312,11 @@
     "scripts/i18n/language-hardcoding-allowlist.json": "ccf0ec3cf64830f8608ac996bc503237f08628e1acd987eb786cdd24f7394a5a",
     "src/components/ImportTidasPackage/reportContent.ts": "3b08a703edbbfd6312f863c6b70aae4289fe411d077d1d37b576b37eeb856c3c",
     "docs/plans/i18n-de-DE/dynamic-families.json": "8da13950cd8e73e12c4e4570640c5a2e19c55d190fa36c6ce3a59900f64e0bbb",
-    "docs/plans/i18n/route-view-coverage.json": "e6d28baaf6623b9ebe091bbc5ca68d26c9420c857e012edc2dfa4174511b6ceb",
+    "docs/plans/i18n/route-view-coverage.json": "08d9cc1c734b6516a20a77cf2332783876868120ca577b97df35cc06590a525c",
     "docs/plans/i18n/fallback-contract.json": "94c88648a2bc4fa2b3e3dd2b1db476db5a182e8a5dd9dce2140f6faf2cceabe5",
     "docs/plans/i18n-zh-CN/glossary.json": "c891add0ee4bd6d24c0213d0c839474e145d85867426df796763b8e038053d9b",
     "docs/plans/i18n-zh-CN/style-guide.md": "8da9e9fe011c1f93e682c7d22bfc580945de0e4cfd785115c5b5d2ed6585acfb"
   },
   "blockedContext": [],
-  "contextDigest": "0d054c50fdea904463f4f12851c1f135c079926f34cd044f85d16bf884c592f7"
+  "contextDigest": "5798f2719d058b95b1fb98bdedadec65cea8f51e9418c63c8dfddb36dda707d7"
 }

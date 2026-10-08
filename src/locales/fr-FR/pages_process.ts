@@ -928,5 +928,4 @@ export default {
   'pages.process.lca.evidence.reason.unknown': 'Les preuves n’ont pas passé la validation.',
   'pages.process.published.climate.error': 'Échec du chargement',
   'pages.process.published.climate.missing': 'Aucun résultat pour cette version dans la publication actuelle',
-  'pages.process.published.climate.retry': 'Réessayer les résultats',
 };

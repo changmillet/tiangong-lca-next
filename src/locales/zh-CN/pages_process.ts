@@ -926,5 +926,4 @@ export default {
   'pages.process.lca.evidence.reason.unknown': '该证据未通过校验。',
   'pages.process.published.climate.error': '读取失败',
   'pages.process.published.climate.missing': '当前发布包中没有此版本的结果',
-  'pages.process.published.climate.retry': '重试结果',
 };

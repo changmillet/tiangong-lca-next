@@ -46,7 +46,7 @@ checkPaths:
   - .husky/pre-push
   - .github/workflows/**
 lastReviewedAt: 2026-10-08
-lastReviewedCommit: e428f3b0d8313df61c584e5c7921a82937db0e0b
+lastReviewedCommit: 17c9ba51fecfbd4d27d98260f42326d2953fa4f5
 lastReviewedNote: 'Reviewed Platform #1189 browser preference order, English default, manual-only persistence, legacy compatibility and the denied-storage Umi bridge. Dependency, backend, authorization and full-gate boundaries remain unchanged.'
 related:
   - .docpact/config.yaml

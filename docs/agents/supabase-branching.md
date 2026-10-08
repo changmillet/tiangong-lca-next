@@ -23,8 +23,8 @@ checkPaths:
   - playwright.config.ts
   - tests/e2e/i18n/**
 lastReviewedAt: 2026-10-08
-lastReviewedCommit: ab4f62a48c7672440569aaaf698f168ad284b5cb
-lastReviewedNote: 'Reviewed Platform #1186 exact-version public Climate change readback, zero/missing/error states, page/locale response fences and focused full coverage; bootstrap, branch and full-gate policy are unchanged.'
+lastReviewedCommit: e428f3b0d8313df61c584e5c7921a82937db0e0b
+lastReviewedNote: 'Reviewed Platform #1189 browser preference order, English default, manual-only persistence, legacy compatibility and the denied-storage Umi bridge. Dependency, backend, authorization and full-gate boundaries remain unchanged.'
 ---
 
 # Supabase Environment And Database Workflow

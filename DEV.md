@@ -43,8 +43,8 @@ checkPaths:
   - .github/workflows/build.yml
   - .nvmrc
 lastReviewedAt: 2026-10-08
-lastReviewedCommit: a021e80ac77ce8d1d797ab892b538b646447658d
-lastReviewedNote: 'Reviewed Platform #1186 header-only Climate change unit display and four-locale calculation labels; numeric-only cells, zero/negative/missing/error and standard refresh behavior remain covered. Bootstrap, branch and full-gate policy remain unchanged.'
+lastReviewedCommit: e428f3b0d8313df61c584e5c7921a82937db0e0b
+lastReviewedNote: 'Reviewed Platform #1189 browser preference order, English default, manual-only persistence, legacy compatibility and the denied-storage Umi bridge. Dependency, backend, authorization and full-gate boundaries remain unchanged.'
 ---
 
 # Development Bootstrap

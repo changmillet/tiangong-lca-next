@@ -44,8 +44,8 @@ checkPaths:
   - scripts/i18n/locale-delivery.mjs
   - .github/workflows/**
 lastReviewedAt: 2026-10-09
-lastReviewedCommit: 27a01c03c85638b266b3384fd21a7df72d3ff007
-lastReviewedNote: 'Reviewed product-demand calculation, standard provider projection and bundle persistence for Platform #1196; schema/SDK, branch, test and release boundaries are preserved.'
+lastReviewedCommit: fb056d4155b63b5845955458256c65df94c6e534
+lastReviewedNote: 'Reviewed sparse-zero regressions, installed SDK validation and isolated PostgreSQL product-provider save qualification; runtime semantics and schema/SDK remain unchanged.'
 related:
   - ../AGENTS.md
   - ../.docpact/config.yaml
@@ -218,3 +218,15 @@ All new package import helpers must enqueue `root_closure_v2` and reject unavail
 ### Process allocation qualification
 
 For Platform #1136, prove multi-target object/array round trips and zero shares in the Process utility suite, exact Flow-revision product checks in `allocationTargets.test.ts`, and real Ant Design Form/Select/Table interactions in `Exchange/allocation.test.tsx`. Matrix fixtures must verify independent electricity/raw/emission splits, preservation of an unconnected reference product's burden, equivalent-scale reuse, and existing cycles/treatment/legacy behavior. Process create/edit tests must reject new or changed invalid vectors without injecting untargeted default shares into generated results, preserve unchanged inherited problems only as unverified repair drafts, and block validation/review fallback. Protect stable exchange IDs, referenced-product deletion, located diagnostics and strict Model source validation. The hermetic `process-allocation.spec.ts` exercises the actual Process drawer against in-memory reserved-origin records; it is frontend workflow evidence, not deployed Worker import/export or production persistence evidence. Existing full gate and browser-proof boundaries are unchanged.
+
+### Model product-provider persistence qualification
+
+`tests/unit/services/lifeCycleModels/standardAllocationPersistence.test.ts` protects exchange-local sparse-zero semantics, explicit-zero equivalence and rejection of absent or non-closing allocation declarations. `productSystemPersistence.test.ts` loads the installed SDK core by physical entry path and checks that an empty strict Process fails validation before validating generated providers. Jest's package-name mapper must not substitute the SDK shim for this proof.
+
+Run the database contract explicitly against a disposable local Supabase project named `model1196-qualification`, rebuilt from Database migration head `20261009113000` with the repository-pinned Supabase CLI `2.117.0`:
+
+```bash
+pnpm exec jest --runInBand --testMatch '**/tests/qualification/model-product-demand.test.ts'
+```
+
+The contract uses the real matrix calculation, provider projection, serializer, language normalizer, installed SDK and save-plan builder, then calls the actual database bundle function and reloads its stored rows. It verifies create, update with identity reuse, allocated new versions, provider retirement scoped to one version, source provenance and recalculated amounts `110 → 220 → 220 → 200`. The entire fixture transaction rolls back. Like the owning database pgTAP tests, it disables unrelated user triggers inside that transaction while retaining JSON sync; asynchronous derivatives, Edge authentication, reference-aware remote validation, editor interaction and package-service export/import require their own proof. The local contract stays outside the default credential-free Jest inventory.

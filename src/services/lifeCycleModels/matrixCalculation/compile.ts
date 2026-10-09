@@ -607,6 +607,8 @@ export const compileModel = (payload: {
       instanceViews[0];
     if (primary) primaryViewIdByInstance.set(instance.instanceIndex, primary.id);
     for (const view of instanceViews) {
+      // Standard vectors are exchange-local: a product omitted from a closed
+      // vector receives zero, even when omitted from every declared vector.
       if (
         (instance.allocationShape === 'single' &&
           view.pivotExchangeId !== instance.refExchangeId) ||

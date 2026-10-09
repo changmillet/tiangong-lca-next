@@ -18,8 +18,8 @@ checkPaths:
   - src/services/processes/allocation.ts
   - src/pages/LifeCycleModels/**
 lastReviewedAt: 2026-10-09
-lastReviewedCommit: 27a01c03c85638b266b3384fd21a7df72d3ff007
-lastReviewedNote: 'Reviewed product-demand calculation, standard provider projection and bundle persistence for Platform #1196; schema/SDK, branch, test and release boundaries are preserved.'
+lastReviewedCommit: fb056d4155b63b5845955458256c65df94c6e534
+lastReviewedNote: 'Reviewed sparse-zero regressions, installed SDK validation and isolated PostgreSQL product-provider save qualification; runtime semantics and schema/SDK remain unchanged.'
 related:
   - ./util_calculate.md
   - ../plans/model-product-demand.md
@@ -106,6 +106,10 @@ Model 用过程和连接描述产品的供应链，以功能单位确定研究�
 ```
 
 比例使用小数表示，例如 80% 对应 0.8。对采用完整分配的交换，各产品的分配比例合计为 1。
+
+标准目标分配按每项交换分别解释。已经声明的分配向量必须合计为 100%；向量中未列出的产品份额为 0。例如某项排放只列出 P=100%，Q 对这项排放承担的份额为 0，与显式写出 P=100%、Q=0% 相同。Q 可以在另一项交换中承担非零份额。
+
+在采用标准目标分配的过程中，完全没有分配声明的交换整体归属于过程的定量参考产品，其他产品对该交换的份额为 0。若整个过程没有分配声明，则计算清单只支持其定量参考；连接非参考联产品需要由过程数据给出分配解释。
 
 每份分配后的产品清单以该产品为参考产出，包含归属于它的投入、排放和处理义务。联产品的参考产出分别进入各自的产品清单。已经具有确定产品归属的清单，按其现有交换量参与需求计算。
 

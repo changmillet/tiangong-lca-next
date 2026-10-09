@@ -3,7 +3,7 @@
   "source": {
     "baseRef": "c26f306e82ac66f50a56aafe8f89ea96c0b0c67d",
     "baseCommit": "c26f306e82ac66f50a56aafe8f89ea96c0b0c67d",
-    "auditedInputDigest": "5bcfe812eeae5ad8a2bd228eda16e8a0b0dcdf61183e4e5e267208298b8bb292",
+    "auditedInputDigest": "8c43e0213424b55fc340748920e6f747606707122a0f6fc9e90106ee35b03319",
     "auditedInputDigestAlgorithm": "sha256(path\\0content\\0)",
     "repository": "tiangong-lca/platform"
   },

@@ -21,8 +21,8 @@ checkPaths:
   - src/pages/Processes/Analysis/**
   - src/components/LcaTaskCenter/**
 lastReviewedAt: 2026-10-09
-lastReviewedCommit: 27a01c03c85638b266b3384fd21a7df72d3ff007
-lastReviewedNote: 'Reviewed product-demand calculation, standard provider projection and bundle persistence for Platform #1196; schema/SDK, branch, test and release boundaries are preserved.'
+lastReviewedCommit: fb056d4155b63b5845955458256c65df94c6e534
+lastReviewedNote: 'Reviewed sparse-zero regressions, installed SDK validation and isolated PostgreSQL product-provider save qualification; runtime semantics and schema/SDK remain unchanged.'
 ---
 
 # Contribution Path Analysis Design

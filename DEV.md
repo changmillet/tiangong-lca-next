@@ -43,8 +43,8 @@ checkPaths:
   - .github/workflows/build.yml
   - .nvmrc
 lastReviewedAt: 2026-10-09
-lastReviewedCommit: 27a01c03c85638b266b3384fd21a7df72d3ff007
-lastReviewedNote: 'Reviewed Platform #1196 modeling explanation, implementation plan, documentation ownership and maintenance routing.'
+lastReviewedCommit: fb056d4155b63b5845955458256c65df94c6e534
+lastReviewedNote: 'Reviewed local qualification entrypoint and preserved bootstrap, credentials and checked-push boundaries.'
 ---
 
 # Development Bootstrap

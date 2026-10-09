@@ -1,5 +1,10 @@
 import { createRequire } from 'node:module';
-import { readFileSync } from 'node:fs';
+import {
+  productDemandFixture,
+  ref,
+  uuid,
+  version,
+} from '../../../helpers/lifeCycleModelProductDemand';
 import { runMatrixCalculation } from '@/services/lifeCycleModels/matrixCalculation/matrixWorker';
 import { materializeProductSystem } from '@/services/lifeCycleModels/productSystemPersistence';
 import { genProcessJsonOrdered } from '@/services/processes/util';
@@ -8,128 +13,14 @@ import { jsonToList } from '@/services/general/util';
 
 // Bypass Jest SDK shims: this contract uses the installed release in the lockfile.
 const installedRequire = createRequire(`${process.cwd()}/package.json`);
-const { createProcess } = installedRequire('@tiangong-lca/tidas-sdk/core');
+const { createProcess } = installedRequire(
+  `${process.cwd()}/node_modules/@tiangong-lca/tidas-sdk/dist/core/index.js`,
+);
 const { ProcessSchema, LifeCycleModelSchema } = installedRequire('@tiangong-lca/tidas-sdk/schemas');
-const version = '01.00.000';
-const uuid = (n: number) => `00000000-0000-4000-8000-${String(n).padStart(12, '0')}`;
-const ref = (n: number, type = 'flow data set') => ({
-  '@type': type,
-  '@refObjectId': uuid(n),
-  '@version': version,
-  '@uri': `../datasets/${uuid(n)}.xml`,
-  'common:shortDescription': { '@xml:lang': 'en', '#text': `Item ${n}` },
-});
-const exchange = (
-  id: string,
-  n: number,
-  amount: number,
-  direction: 'INPUT' | 'OUTPUT',
-  fraction?: number,
-) => ({
-  internalId: id,
-  flowId: uuid(n),
-  amount,
-  direction,
-  allocations:
-    fraction === undefined ? undefined : { allocation: { '@allocatedFraction': String(fraction) } },
-  raw: {
-    '@dataSetInternalID': id,
-    referenceToFlowDataSet: ref(n),
-    exchangeDirection: direction === 'INPUT' ? 'Input' : 'Output',
-    resultingAmount: String(amount),
-    meanAmount: String(amount),
-    referenceToVariable: 'sourceFormula',
-  },
-});
-
 it('persists independent providers, reuses identities and recalculates the standard graph without double allocation', () => {
-  const original = JSON.parse(
-    readFileSync(
-      'tests/data-workflows/fixtures/data/processes/002_check_data_success.json',
-      'utf8',
-    ),
-  ).jsonOrdered.processDataSet;
-  original.modellingAndValidation.dataSourcesTreatmentAndRepresentativeness.annualSupplyOrProductionVolume =
-    { '@xml:lang': 'en', '#text': '1 kg' };
-  original.modellingAndValidation.complianceDeclarations = {
-    compliance: {
-      'common:referenceToComplianceSystem': ref(30, 'source data set'),
-      'common:approvalOfOverallCompliance': 'Fully compliant',
-    },
-  };
-  const model = {
-    lifeCycleModelDataSet: {
-      administrativeInformation: {
-        ...original.administrativeInformation,
-        publicationAndOwnership: {
-          ...original.administrativeInformation.publicationAndOwnership,
-          'common:dataSetVersion': version,
-        },
-      },
-      lifeCycleModelInformation: {
-        dataSetInformation: {},
-        quantitativeReference: { referenceToReferenceProcess: 0 },
-        technology: {
-          processes: {
-            processInstance: [
-              { '@dataSetInternalID': '0', referenceToProcess: ref(1, 'process data set') },
-              {
-                '@dataSetInternalID': '1',
-                referenceToProcess: ref(2, 'process data set'),
-                groups: { memberOf: { '@groupId': '0' } },
-              },
-            ],
-          },
-        },
-      },
-    },
-  };
-  const payload = {
-    refInstanceIndex: '0',
-    targetAmount: 1,
-    instances: [
-      {
-        instanceIndex: '0',
-        processId: uuid(1),
-        processVersion: version,
-        connections: [],
-        process: {
-          id: uuid(1),
-          version,
-          refExchangeInternalId: '1',
-          exchanges: [
-            exchange('1', 10, 1, 'OUTPUT'),
-            exchange('2', 11, 100, 'INPUT'),
-            exchange('3', 12, 30, 'INPUT'),
-          ],
-        },
-      },
-      {
-        instanceIndex: '1',
-        processId: uuid(2),
-        processVersion: version,
-        connections: [11, 12].map((n) => ({
-          upstreamIndex: '1',
-          downstreamIndex: '0',
-          inputFlowId: uuid(n),
-          outputFlowId: uuid(n),
-          inputFlowVersion: version,
-          outputFlowVersion: version,
-          edgeId: String(n),
-        })),
-        process: {
-          id: uuid(2),
-          version,
-          refExchangeInternalId: '1',
-          exchanges: [
-            exchange('1', 11, 100, 'OUTPUT', 80),
-            exchange('2', 12, 20, 'OUTPUT', 20),
-            exchange('3', 13, 100, 'OUTPUT'),
-          ],
-        },
-      },
-    ],
-  };
+  expect(jest.isMockFunction(createProcess)).toBe(false);
+  expect(createProcess({}, { mode: 'strict' }).validateEnhanced().success).toBe(false);
+  const { original, model, payload } = productDemandFixture();
   const outcome = runMatrixCalculation({ type: 'calculate', runId: 'persist', payload });
   expect(outcome.ok).toBe(true);
   if (!outcome.ok) throw new Error(outcome.error.code);

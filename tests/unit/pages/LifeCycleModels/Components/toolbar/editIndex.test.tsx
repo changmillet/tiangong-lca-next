@@ -3979,4 +3979,37 @@ describe('ToolbarEdit', () => {
       ),
     );
   });
+  it.each([
+    ['MISSING_PRODUCT_ALLOCATION', 'missingProductAllocation'],
+    ['MISSING_REFERENCE_ALLOCATION', 'missingReferenceAllocation'],
+  ])(
+    'shows repair guidance and locates the affected product for %s',
+    async (allocationReason, suffix) => {
+      const modal = jest.requireMock('antd').modal;
+      const destroy = jest.fn();
+      modal.error.mockReset().mockReturnValue({ destroy });
+      mockUpdateLifeCycleModel.mockResolvedValueOnce({
+        ok: false,
+        code: 'INVALID_ALLOCATION',
+        calculationIssues: [
+          { code: 'INVALID_ALLOCATION', allocationReason, instanceIndex: 'pi-1', nodeId: 'node-1' },
+        ],
+      });
+      render(<ToolbarEdit {...baseProps} drawerVisible={true} />);
+      await userEvent.click(screen.getByRole('button', { name: 'save-icon' }));
+      await waitFor(() => expect(modal.error).toHaveBeenCalled());
+      render(modal.error.mock.calls[0][0].content);
+      expect(
+        screen.getByText(`pages.lifecyclemodel.calculation.repair.${suffix}`),
+      ).toBeInTheDocument();
+      expect(
+        screen.getByText('pages.lifecyclemodel.calculation.status.resultNotUpdated'),
+      ).toBeInTheDocument();
+      await userEvent.click(
+        screen.getByRole('button', { name: 'pages.lifecyclemodel.calculation.action.locate' }),
+      );
+      expect(mockUpdateNode).toHaveBeenCalledWith('node-1', { selected: true });
+      expect(destroy).toHaveBeenCalled();
+    },
+  );
 });

@@ -54,3 +54,39 @@ it('does not infer a missing remainder when legacy shares do not close', () => {
     }),
   );
 });
+
+it.each(['MISSING_PRODUCT_ALLOCATION', 'MISSING_REFERENCE_ALLOCATION'] as const)(
+  'locates %s and recalculates after explicit source allocation repair',
+  (allocationReason) => {
+    const { payload } = legacyProductDemandFixture();
+    const supplier = payload.instances[1];
+    supplier.process.exchanges.forEach((entry) => {
+      entry.allocations = undefined;
+    });
+    if (allocationReason === 'MISSING_REFERENCE_ALLOCATION') {
+      supplier.process.exchanges[1].allocations = { allocation: { '@allocatedFraction': '100' } };
+    }
+    const failed = runMatrixCalculation({ type: 'calculate', runId: 'needs-repair', payload });
+    expect(failed).toMatchObject({
+      ok: false,
+      error: {
+        code: 'INVALID_ALLOCATION',
+        issues: expect.arrayContaining([
+          expect.objectContaining({
+            allocationReason,
+            instanceIndex: '1',
+            exchangeInternalId: allocationReason === 'MISSING_REFERENCE_ALLOCATION' ? '1' : '2',
+          }),
+        ]),
+      },
+    });
+    supplier.process.exchanges[0].allocations = { allocation: { '@allocatedFraction': '50' } };
+    supplier.process.exchanges[1].allocations = { allocation: { '@allocatedFraction': '50' } };
+    const repaired = runMatrixCalculation({ type: 'calculate', runId: 'repaired', payload });
+    expect(repaired.ok).toBe(true);
+    if (!repaired.ok) throw new Error(repaired.error.code);
+    expect(
+      repaired.result.groups[0].exchanges.find((entry) => entry.flowId === uuid(13))?.amount,
+    ).toBeCloseTo(125, 9);
+  },
+);

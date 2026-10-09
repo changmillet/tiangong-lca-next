@@ -22,8 +22,8 @@ checkPaths:
   - src/components/LcaTaskCenter/**
   - src/pages/Processes/Analysis/**
 lastReviewedAt: 2026-10-09
-lastReviewedCommit: 8111e149381a37c76f8df7a890ea1da689576da3
-lastReviewedNote: 'Reviewed closed legacy non-reference zero-share compatibility and stored-model migration qualification; reference ambiguity, source versions and environment proof boundaries remain explicit.'
+lastReviewedCommit: d10b0b1fb8fe4797deeb72681f926ec565837d99
+lastReviewedNote: 'Reviewed allocation repair reasons, localized node guidance, preservation of saved results, and paired deployment qualification boundaries.'
 ---
 
 # Lifecycle Model Calculation Reference
@@ -140,3 +140,9 @@ Update this document when any of these change:
 - multiplier mapping or submodel grouping rules
 - worker/client binding, cancellation, or fallback behavior
 - LCIA load or cache behavior (see also `docs/agents/lcia-calculation-evidence.md`)
+
+### Allocation repair diagnostics
+
+`INVALID_ALLOCATION` carries the internal `allocationReason` for two product-interpretation cases: `MISSING_PRODUCT_ALLOCATION` identifies a non-reference product without allocation; `MISSING_REFERENCE_ALLOCATION` identifies an output reference without a share in a legacy allocated process. The worker and mutation service preserve the reason and instance/exchange location. The editor resolves localized repair instructions and the existing locate action. These metadata are runtime-only and do not change persisted schemas.
+
+The source process defines product allocation. Repair requires a complete allocation or an already allocated source inventory; legacy product shares include an explicit reference share and total 100%. The model must reference the corrected source version before recalculation. A failed calculation returns before bundle persistence, preserving saved results. Successful recalculation and save replace the result according to the corrected inputs.

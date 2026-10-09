@@ -39,6 +39,7 @@ import { getSharedMatrixCalculationClient } from '@/services/lifeCycleModels/mat
 import { CalculationOperation } from '@/services/lifeCycleModels/matrixCalculation/types';
 import type { CalculationIssue } from '@/services/lifeCycleModels/matrixCalculation/types';
 import {
+  getAllocationRepairMessageId,
   isCalculationErrorCode,
   resolveCalculationIssues,
   type ResolvedCalculationIssue,
@@ -1055,6 +1056,11 @@ const ToolbarEdit: FC<Props> = ({
                           id: 'pages.lifecyclemodel.calculation.action.locate',
                         })}
                       </Button>
+                    ) : null}
+                    {getAllocationRepairMessageId(item.issue) ? (
+                      <div style={{ width: '100%' }}>
+                        {intl.formatMessage({ id: getAllocationRepairMessageId(item.issue) })}
+                      </div>
                     ) : null}
                   </div>
                 ))}

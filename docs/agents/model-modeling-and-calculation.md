@@ -18,8 +18,8 @@ checkPaths:
   - src/services/processes/allocation.ts
   - src/pages/LifeCycleModels/**
 lastReviewedAt: 2026-10-09
-lastReviewedCommit: 8111e149381a37c76f8df7a890ea1da689576da3
-lastReviewedNote: 'Reviewed closed legacy non-reference zero-share compatibility and stored-model migration qualification; reference ambiguity, source versions and environment proof boundaries remain explicit.'
+lastReviewedCommit: d10b0b1fb8fe4797deeb72681f926ec565837d99
+lastReviewedNote: 'Reviewed allocation repair reasons, localized node guidance, preservation of saved results, and paired deployment qualification boundaries.'
 related:
   - ./util_calculate.md
   - ../plans/model-product-demand.md
@@ -222,6 +222,10 @@ Model 的数据有三种相互关联的表达：
 以 1 kg 产品为基准的清单，供应 100 kg 时倍率为 100；以 100 kg 产品为基准的清单，供应 100 kg 时倍率为 1。两种表达对应相同的实际交换量。
 
 平台的 `json_tg.xflow` 承载编辑图。生命周期模型数据集承载标准计算图，结果 Process 承载汇总清单。数据包包含计算实例引用的过程及其依赖，接收方据此恢复供应关系和计算数量。
+
+保存结果表示上一次成功计算的清单。重新计算需要明确当前所引用过程的产品归属。若非参考产品缺少分配，需在源过程中补全分配或选用已分配的产品过程；若旧式统一分配仅声明其他产品的份额，需明确参考产品的份额（可以为 0），并使所有产品份额合计为 100%。模型节点引用修复后的过程版本，再进行计算。
+
+计算诊断显示涉及的过程与产品，并提供节点定位和对应的处理说明。计算失败时保持已保存的模型与结果；成功计算并保存后，结果才反映新的过程版本、需求和分配依据。
 
 ## 10. 计算流程
 

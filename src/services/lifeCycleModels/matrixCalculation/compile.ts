@@ -620,6 +620,10 @@ export const compileModel = (payload: {
       ) {
         issues.push({
           code: 'INVALID_ALLOCATION',
+          allocationReason:
+            instance.allocationShape === 'single'
+              ? 'MISSING_PRODUCT_ALLOCATION'
+              : 'MISSING_REFERENCE_ALLOCATION',
           instanceIndex: instance.instanceIndex,
           nodeId: instance.nodeId,
           flowId: view.pivotFlowId,

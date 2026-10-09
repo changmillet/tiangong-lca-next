@@ -44,8 +44,8 @@ checkPaths:
   - pnpm-workspace.yaml
   - Dockerfile.app
 lastReviewedAt: 2026-10-09
-lastReviewedCommit: 8111e149381a37c76f8df7a890ea1da689576da3
-lastReviewedNote: 'Reviewed closed legacy non-reference zero-share compatibility and stored-model migration qualification; reference ambiguity, source versions and environment proof boundaries remain explicit.'
+lastReviewedCommit: d10b0b1fb8fe4797deeb72681f926ec565837d99
+lastReviewedNote: 'Reviewed allocation repair reasons, localized node guidance, preservation of saved results, and paired deployment qualification boundaries.'
 ---
 
 # Testing Strategy

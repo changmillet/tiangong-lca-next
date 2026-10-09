@@ -44,8 +44,8 @@ checkPaths:
   - scripts/i18n/locale-delivery.mjs
   - .github/workflows/**
 lastReviewedAt: 2026-10-09
-lastReviewedCommit: 8111e149381a37c76f8df7a890ea1da689576da3
-lastReviewedNote: 'Reviewed closed legacy non-reference zero-share compatibility and stored-model migration qualification; reference ambiguity, source versions and environment proof boundaries remain explicit.'
+lastReviewedCommit: d10b0b1fb8fe4797deeb72681f926ec565837d99
+lastReviewedNote: 'Reviewed allocation repair reasons, localized node guidance, preservation of saved results, and paired deployment qualification boundaries.'
 related:
   - ../AGENTS.md
   - ../.docpact/config.yaml
@@ -230,3 +230,5 @@ pnpm exec jest --runInBand --testMatch '**/tests/qualification/model-product-dem
 ```
 
 The contract uses the real matrix calculation, provider projection, serializer, language normalizer, installed SDK and save-plan builder, then calls the actual database bundle function and reloads its stored rows. It verifies create, update with identity reuse, allocated new versions, provider retirement scoped to one version, source provenance and recalculated amounts `110 → 220 → 220 → 200`. The create/update/version/retirement fixture transaction rolls back. Stored-legacy qualification also covers explicit and null `model_version`: it seeds an original two-process graph and an existing primary result, reads those rows, edits a fixture source draft, then calculates and saves the product-provider graph. The original baseline is 100; edited, upgraded and versioned inventories are 125. Editor graph, primary identity, exact source provenance, provider identities and historical rows are asserted. Those migration fixtures commit locally to exercise separate read/save sessions and are removed by owner-scoped cleanup in `finally`, with no remaining owned Process rows. Like the owning database pgTAP tests, it disables unrelated user triggers inside that transaction while retaining JSON sync; asynchronous derivatives, Edge authentication, reference-aware remote validation, editor interaction and package-service export/import require their own proof. The local contract stays outside the default credential-free Jest inventory.
+
+Allocation-repair regressions cover both missing non-reference allocation and an undeclared legacy reference share. Matrix tests assert reason/location propagation and hand-calculated inventory after explicit repair; mutation-service tests assert failed recalculation never invokes the save function or RPC and leaves prior result metadata intact. Editor component tests render each repair instruction, preserve the result-not-updated notice, and exercise node location. These component tests do not constitute authenticated browser save/reopen qualification.

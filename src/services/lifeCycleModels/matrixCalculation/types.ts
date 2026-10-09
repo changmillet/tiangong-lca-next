@@ -38,6 +38,8 @@ export type CalculationErrorCode =
  */
 export interface CalculationIssue {
   code: CalculationErrorCode;
+  /** Why the product needs an explicit allocation before recalculation. */
+  allocationReason?: 'MISSING_PRODUCT_ALLOCATION' | 'MISSING_REFERENCE_ALLOCATION';
   /** zh-CN: 过程实例内部 ID（@dataSetInternalID）。en-US: Process instance internal ID. */
   instanceIndex?: string;
   /** zh-CN: 画布节点 ID（运行期绑定，用于定位）。en-US: Canvas node id (run-bound, for locating). */

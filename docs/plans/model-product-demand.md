@@ -15,8 +15,8 @@ checkPaths:
   - docs/agents/model-modeling-and-calculation.md
   - src/services/lifeCycleModels/**
 lastReviewedAt: 2026-10-09
-lastReviewedCommit: 8111e149381a37c76f8df7a890ea1da689576da3
-lastReviewedNote: 'Reviewed product-demand calculation, standard provider projection and bundle persistence for Platform #1196; schema/SDK, branch, test and release boundaries are preserved.'
+lastReviewedCommit: d10b0b1fb8fe4797deeb72681f926ec565837d99
+lastReviewedNote: 'Reviewed allocation repair reasons, localized node guidance, preservation of saved results, and paired deployment qualification boundaries.'
 related:
   - ../agents/model-modeling-and-calculation.md
   - ../agents/util_calculate.md
@@ -145,3 +145,9 @@ related:
 `docs/agents/model-modeling-and-calculation.md` 负责概念、公式、示例与数据关系；`docs/agents/util_calculate.md` 负责运行代码的入口、模块和执行契约。本方案负责实施范围和验收设计，Issue/PR 负责进度与验证证据。
 
 计算语义和保存映射的代码变更通过 Docpact 路由到讲解文档。文档采用完整叙述更新相应章节，代码实现完成时核对讲解内容与实际运行行为。
+
+## 9. 输入修复与配套启用
+
+缺少分配的非参考产品，以及旧式分配中未声明份额的参考输出，在修复前停止重新计算。已保存结果保留。诊断提供产品、节点和具体处理步骤：补充完整分配或采用已分配过程，明确参考产品份额并确保总份额为 100%，然后引用修复后的过程版本重算。验收覆盖错误原因从 Worker 到服务再到编辑器的传递、失败时不调用保存、节点定位以及修复后的数值结果。
+
+配套验证使用部署了 Database #804 保存函数的非生产环境。先确认目标环境具备同一保存包内新建 Process 引用的版本重写行为，再启用 Platform 产品过程保存能力。在该环境验证编辑器保存与重开，以及标准包导出、导入和重算，核对产品过程的精确版本引用和数值。数据库 Preview 的成功只证明该 Preview，目标部署环境需单独核对。具体环境与执行证据记录在 Issue/PR。

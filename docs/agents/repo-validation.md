@@ -44,7 +44,7 @@ checkPaths:
   - scripts/i18n/locale-delivery.mjs
   - .github/workflows/**
 lastReviewedAt: 2026-10-09
-lastReviewedCommit: d10b0b1fb8fe4797deeb72681f926ec565837d99
+lastReviewedCommit: 238c664901139be2d897fc98ec31199a670633cc
 lastReviewedNote: 'Reviewed allocation repair reasons, localized node guidance, preservation of saved results, and paired deployment qualification boundaries.'
 related:
   - ../AGENTS.md

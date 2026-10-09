@@ -40,6 +40,7 @@ export function productDemandFixture() {
       'utf8',
     ),
   ).jsonOrdered.processDataSet;
+  original.administrativeInformation.publicationAndOwnership['common:dataSetVersion'] = version;
   original.modellingAndValidation.dataSourcesTreatmentAndRepresentativeness.annualSupplyOrProductionVolume =
     { '@xml:lang': 'en', '#text': '1 kg' };
   original.modellingAndValidation.complianceDeclarations = {
@@ -122,4 +123,21 @@ export function productDemandFixture() {
     ],
   };
   return { original, model, payload };
+}
+
+/** Legacy P/Q shares close at 100%; connected non-reference R has an implicit zero share. */
+export function legacyProductDemandFixture(explicitZero = false) {
+  const fixture = productDemandFixture();
+  const supplier = fixture.payload.instances[1];
+  supplier.process.exchanges[0].allocations = { allocation: { '@allocatedFraction': '50' } };
+  supplier.process.exchanges[1].allocations = { allocation: { '@allocatedFraction': '50' } };
+  supplier.process.exchanges.push(exchange('4', 14, 10, 'OUTPUT', explicitZero ? 0 : undefined));
+  fixture.payload.instances[0].process.exchanges.push(exchange('4', 14, 40, 'INPUT'));
+  supplier.connections.push({
+    ...supplier.connections[0],
+    inputFlowId: uuid(14),
+    outputFlowId: uuid(14),
+    edgeId: '14',
+  });
+  return fixture;
 }

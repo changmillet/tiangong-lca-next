@@ -43,8 +43,8 @@ checkPaths:
   - .github/workflows/build.yml
   - .nvmrc
 lastReviewedAt: 2026-10-09
-lastReviewedCommit: fb056d4155b63b5845955458256c65df94c6e534
-lastReviewedNote: 'Reviewed local qualification entrypoint and preserved bootstrap, credentials and checked-push boundaries.'
+lastReviewedCommit: 8111e149381a37c76f8df7a890ea1da689576da3
+lastReviewedNote: 'Reviewed closed legacy non-reference zero-share compatibility and stored-model migration qualification; reference ambiguity, source versions and environment proof boundaries remain explicit.'
 ---
 
 # Development Bootstrap

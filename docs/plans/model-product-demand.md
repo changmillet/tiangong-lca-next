@@ -15,7 +15,7 @@ checkPaths:
   - docs/agents/model-modeling-and-calculation.md
   - src/services/lifeCycleModels/**
 lastReviewedAt: 2026-10-09
-lastReviewedCommit: 27a01c03c85638b266b3384fd21a7df72d3ff007
+lastReviewedCommit: 8111e149381a37c76f8df7a890ea1da689576da3
 lastReviewedNote: 'Reviewed product-demand calculation, standard provider projection and bundle persistence for Platform #1196; schema/SDK, branch, test and release boundaries are preserved.'
 related:
   - ../agents/model-modeling-and-calculation.md
@@ -124,6 +124,8 @@ related:
 | 参考产量 100，下游需求 10000 | 上游倍率为 100，整份清单同比缩放 |
 | 产品产量 100/20，统一分配 80%/20%，原始排放 100；需求 100/10、100/20、100/30 | 排放分别为 90、100、110 |
 | 相同案例采用逐交换的不同份额 | 各交换符合自己的分配公式 |
+| 旧式 P/Q 份额合计 100%，非参考 R 未声明或显式为 0 | 两种写法等价，R 可独立满足需求且归属负荷为 0 |
+| 已保存旧图与主结果，model_version 为显式版本或空值 | 升级保存和新版本保留编辑图、主结果身份、原始引用及历史数据 |
 | 所有产品需求等于原始参考产量 | 分配后的适用交换贡献合计重构原始清单 |
 | 同一产品供应多个下游 | 供应需求等于各消费者需求之和 |
 | 循环 `x = 0.2x + 1` | 活动量 1.25，内部消耗 0.25，最终交付 1 |

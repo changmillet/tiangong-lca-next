@@ -252,8 +252,9 @@ export const resolveFraction = (
   if (instance.allocationShape === 'legacy') {
     const pivotExchange = instance.exchangeById.get(view.pivotExchangeId);
     if (pivotExchange?.allocation.kind === 'legacyShare') return pivotExchange.allocation.fraction!;
+    // Closed legacy shares give an undeclared non-reference product zero burden.
     // Input quantitative references represent the treatment service itself.
-    return 1;
+    return view.pivotExchangeId === instance.refExchangeId ? 1 : 0;
   }
   // standard：按目标产品选择该交换的分配项；未声明分配的交换整体归属于
   // 实例自己的定量参考视图（与 Worker 合同一致），其余视图为稀疏零。
@@ -614,6 +615,7 @@ export const compileModel = (payload: {
           view.pivotExchangeId !== instance.refExchangeId) ||
         (instance.allocationShape === 'legacy' &&
           view.pivotDirection === 'OUTPUT' &&
+          view.pivotExchangeId === instance.refExchangeId &&
           !instance.allocationTargetIds.has(view.pivotExchangeId))
       ) {
         issues.push({

@@ -1263,55 +1263,56 @@ describe('compileModel remaining edge paths', () => {
     ).toThrow(expect.objectContaining({ code: 'INVALID_ALLOCATION' }));
   });
 
-  it('rejects an undeclared connected coproduct in a legacy instance', () => {
-    // 已声明份额闭合（50/50），第三个连通产品仍需要明确分配。
-    expect(() =>
-      compile({
-        refInstanceIndex: 'n0',
-        targetAmount: 1,
-        instances: [
-          baseInstance({
-            process: {
-              id: 'p0',
-              version: '1',
-              refExchangeInternalId: 'e0',
-              exchanges: [
-                exchange('e0', 'OUTPUT', 'flow-F0', 1, {
-                  allocations: { allocation: { '@allocatedFraction': '50%' } },
-                }),
-                exchange('e1', 'OUTPUT', 'flow-F1', 1, {
-                  allocations: { allocation: { '@allocatedFraction': '50%' } },
-                }),
-                exchange('e2', 'OUTPUT', 'flow-F2', 2),
-              ],
-            },
-            connections: [
-              {
-                upstreamIndex: 'n0',
-                downstreamIndex: 'n1',
-                outputFlowId: 'flow-F2',
-                inputFlowId: 'flow-F2',
-                edgeId: 'n0->n1:flow-F2',
-              },
+  it('accepts an undeclared non-reference coproduct in a closed legacy allocation', () => {
+    // 已声明份额闭合（50/50），第三个连通产品的隐含份额为零。
+    const compilation = compile({
+      refInstanceIndex: 'n0',
+      targetAmount: 1,
+      instances: [
+        baseInstance({
+          process: {
+            id: 'p0',
+            version: '1',
+            refExchangeInternalId: 'e0',
+            exchanges: [
+              exchange('e0', 'OUTPUT', 'flow-F0', 1, {
+                allocations: { allocation: { '@allocatedFraction': '50%' } },
+              }),
+              exchange('e1', 'OUTPUT', 'flow-F1', 1, {
+                allocations: { allocation: { '@allocatedFraction': '50%' } },
+              }),
+              exchange('e2', 'OUTPUT', 'flow-F2', 2),
             ],
-          }),
-          baseInstance({
-            instanceIndex: 'n1',
-            processId: 'p1',
-            process: {
-              id: 'p1',
-              version: '1',
-              refExchangeInternalId: 'r0',
-              exchanges: [
-                exchange('r0', 'OUTPUT', 'flow-R', 1),
-                exchange('i0', 'INPUT', 'flow-F2', 1),
-              ],
+          },
+          connections: [
+            {
+              upstreamIndex: 'n0',
+              downstreamIndex: 'n1',
+              outputFlowId: 'flow-F2',
+              inputFlowId: 'flow-F2',
+              edgeId: 'n0->n1:flow-F2',
             },
-            connections: [],
-          }),
-        ],
-      }),
-    ).toThrow(expect.objectContaining({ code: 'INVALID_ALLOCATION' }));
+          ],
+        }),
+        baseInstance({
+          instanceIndex: 'n1',
+          processId: 'p1',
+          process: {
+            id: 'p1',
+            version: '1',
+            refExchangeInternalId: 'r0',
+            exchanges: [
+              exchange('r0', 'OUTPUT', 'flow-R', 1),
+              exchange('i0', 'INPUT', 'flow-F2', 1),
+            ],
+          },
+          connections: [],
+        }),
+      ],
+    });
+    const view = compilation.views.find((entry) => entry.pivotExchangeId === 'e2')!;
+    expect(view.rowKind).toBe('production');
+    expect(compilation.fractionsByView.get(view.id)?.get('e0')).toBe(0);
   });
 
   it('skips edges whose upstream output exchange is missing and reports INVALID_CONNECTION', () => {

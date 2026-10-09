@@ -44,8 +44,8 @@ checkPaths:
   - pnpm-workspace.yaml
   - Dockerfile.app
 lastReviewedAt: 2026-10-09
-lastReviewedCommit: fb056d4155b63b5845955458256c65df94c6e534
-lastReviewedNote: 'Reviewed sparse-zero regressions, installed SDK validation and isolated PostgreSQL product-provider save qualification; runtime semantics and schema/SDK remain unchanged.'
+lastReviewedCommit: 8111e149381a37c76f8df7a890ea1da689576da3
+lastReviewedNote: 'Reviewed closed legacy non-reference zero-share compatibility and stored-model migration qualification; reference ambiguity, source versions and environment proof boundaries remain explicit.'
 ---
 
 # Testing Strategy

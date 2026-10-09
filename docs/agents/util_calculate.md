@@ -22,8 +22,8 @@ checkPaths:
   - src/components/LcaTaskCenter/**
   - src/pages/Processes/Analysis/**
 lastReviewedAt: 2026-10-09
-lastReviewedCommit: fb056d4155b63b5845955458256c65df94c6e534
-lastReviewedNote: 'Reviewed sparse-zero regressions, installed SDK validation and isolated PostgreSQL product-provider save qualification; runtime semantics and schema/SDK remain unchanged.'
+lastReviewedCommit: 8111e149381a37c76f8df7a890ea1da689576da3
+lastReviewedNote: 'Reviewed closed legacy non-reference zero-share compatibility and stored-model migration qualification; reference ambiguity, source versions and environment proof boundaries remain explicit.'
 ---
 
 # Lifecycle Model Calculation Reference
@@ -91,7 +91,7 @@ Failures throw `CalculationError` (typed `code` plus locatable `issues`) or `Cal
 - A **view** (matrix variable) exists for: the reference process's quantitative-reference exchange, every connected output exchange of every instance, every output exchange that carries an allocation declaration (connected or not, so allocated coproducts keep independent results), and the reference exchange of dead-end instances (connected inputs, no connected outputs, not the reference).
 - Each view's pivot is normalized to +1 per unit activity. Every other exchange is attributed with its allocation fraction divided by the pivot amount. Attribution shapes:
   - **single**: undeclared exchanges belong to the reference product or treatment service. Ordinary emissions and waste exchanges retain their full quantities. A connected non-reference product requires an explicit allocation interpretation.
-  - **legacy uniform share**: declared product outputs carry shares summing to 100%; each product inventory attributes applicable exchanges by that product's share. A used coproduct without its own declaration produces `INVALID_ALLOCATION`.
+  - **legacy uniform share**: declared product outputs carry shares summing to 100%; each product inventory attributes applicable exchanges by that product's share. An undeclared non-reference product has zero share once the declared vector closes. An output quantitative reference without its own share remains ambiguous and produces `INVALID_ALLOCATION`; input-reference treatment retains its service interpretation.
   - **standard exchange-target allocation**: each exchange selects the share targeting the product. A declared vector sums to 100%; omitted targets in that vector have zero share. An undeclared exchange belongs to the source reference product.
 - Each product has a demand row: `x_product = sum(consumer activity × allocated input coefficient) + final demand`. The Model reference receives its target as final demand. Product views of one source may have different activity scales.
 - LU residuals and product-demand balances verify the numerical result. Singular systems produce `MODEL_NOT_SOLVABLE`; invalid numerical results produce `NUMERIC_RESULT_INVALID`.

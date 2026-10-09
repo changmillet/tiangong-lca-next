@@ -43,9 +43,9 @@ checkPaths:
   - scripts/typescript-native-parser.*
   - scripts/i18n/locale-delivery.mjs
   - .github/workflows/**
-lastReviewedAt: 2026-10-08
-lastReviewedCommit: 17c9ba51fecfbd4d27d98260f42326d2953fa4f5
-lastReviewedNote: 'Reviewed Platform #1189 browser preference order, English default, manual-only persistence, legacy compatibility and the denied-storage Umi bridge. Dependency, backend, authorization and full-gate boundaries remain unchanged.'
+lastReviewedAt: 2026-10-09
+lastReviewedCommit: 1f2b78e87ecb3044ad5f766b84957bea0a6c950c
+lastReviewedNote: 'Reviewed Platform #1196 modeling explanation, implementation plan, documentation ownership and maintenance routing.'
 related:
   - ../AGENTS.md
   - ../.docpact/config.yaml

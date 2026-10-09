@@ -21,9 +21,9 @@ checkPaths:
   - src/services/lciaMethods/**
   - src/components/LcaTaskCenter/**
   - src/pages/Processes/Analysis/**
-lastReviewedAt: 2026-10-04
-lastReviewedCommit: 529b5ef9dc4b263e1a934747efae9c54963e184f
-lastReviewedNote: 'Reviewed Platform #1177 final owner admission and native dispatch fences: foreign identities require fresh full application admission; task writes and TIDAS phases verify captured identity through native fetch. Calculation, authorization, environment and quality-gate policy remain unchanged.'
+lastReviewedAt: 2026-10-09
+lastReviewedCommit: 1f2b78e87ecb3044ad5f766b84957bea0a6c950c
+lastReviewedNote: 'Reviewed Platform #1196 modeling explanation, implementation plan, documentation ownership and maintenance routing.'
 ---
 
 # Lifecycle Model Calculation Reference
@@ -42,6 +42,11 @@ lastReviewedNote: 'Reviewed Platform #1177 final owner admission and native disp
 - branch or validation policy
 - solver internals of the backend Worker (read-only semantic reference)
 - dataset-validation adapter changes that only affect save-time normalization
+
+## Related Reading
+
+- [Model 建模与计算说明](./model-modeling-and-calculation.md) — product-demand concepts and mathematical semantics.
+- [Model 产品需求计算修改方案](../plans/model-product-demand.md) — proposed implementation and dataset mapping.
 
 ## Source Of Truth
 

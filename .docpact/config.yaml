@@ -1,8 +1,8 @@
 version: 1
 layout: repo
-lastReviewedAt: "2026-10-08"
-lastReviewedCommit: "17c9ba51fecfbd4d27d98260f42326d2953fa4f5"
-lastReviewedNote: 'Reviewed Platform #1189 browser preference order, English default, manual-only persistence, legacy compatibility and the denied-storage Umi bridge. Dependency, backend, authorization and full-gate boundaries remain unchanged.'
+lastReviewedAt: "2026-10-09"
+lastReviewedCommit: "1f2b78e87ecb3044ad5f766b84957bea0a6c950c"
+lastReviewedNote: 'Reviewed Platform #1196 modeling explanation, implementation plan, documentation ownership and maintenance routing.'
 
 # Keep path-level ownership, routing intents, and governed-doc rules here.
 # AGENTS.md keeps the entry-level repo contract and minimal execution summary.
@@ -40,6 +40,7 @@ ownership:
           - README_CN.md
           - .docpact/**
           - docs/agents/**
+          - docs/plans/model-product-demand.md
           - docs/plans/i18n/**
           - docs/plans/i18n-*/**
           - docs/plans/i18n/semantic-e2e-evidence.schema.json
@@ -106,6 +107,8 @@ coverage:
     - docs/agents/lca-analysis-visualization-plan.md
     - docs/agents/public-classifications-gz-usage.md
     - docs/agents/util_calculate.md
+    - docs/agents/model-modeling-and-calculation.md
+    - docs/plans/model-product-demand.md
     - docs/agents/lcia-calculation-evidence.md
     - docs/agents/team_management.md
     - docs/agents/data_audit_instruction.md
@@ -277,6 +280,8 @@ routing:
         - docs/agents/lca-analysis-visualization-plan.md
         - docs/agents/public-classifications-gz-usage.md
         - docs/agents/util_calculate.md
+        - docs/agents/model-modeling-and-calculation.md
+        - docs/plans/model-product-demand.md
         - docs/agents/lcia-calculation-evidence.md
         - docs/agents/team_management.md
         - docs/agents/data_audit_instruction.md
@@ -400,6 +405,8 @@ docInventory:
     - docs/agents/lca-analysis-visualization-plan.md
     - docs/agents/public-classifications-gz-usage.md
     - docs/agents/util_calculate.md
+    - docs/agents/model-modeling-and-calculation.md
+    - docs/plans/model-product-demand.md
     - docs/agents/lcia-calculation-evidence.md
     - docs/agents/team_management.md
     - docs/agents/data_audit_instruction.md
@@ -926,6 +933,10 @@ rules:
         kind: domain-ui
       - path: docs/agents/util_calculate.md
         kind: domain-doc
+      - path: docs/agents/model-modeling-and-calculation.md
+        kind: domain-doc
+      - path: docs/plans/model-product-demand.md
+        kind: design-reference
       - path: docs/agents/contribution-path-analysis-design.md
         kind: design-reference
       - path: docs/agents/lca-analysis-visualization-plan.md
@@ -938,6 +949,8 @@ rules:
       - path: docs/agents/repo-architecture.md
         mode: review_or_update
       - path: docs/agents/util_calculate.md
+        mode: review_or_update
+      - path: docs/agents/model-modeling-and-calculation.md
         mode: review_or_update
       - path: docs/agents/contribution-path-analysis-design.md
         mode: review_or_update

@@ -203,6 +203,8 @@ export interface SolvedView {
   pivotFlowId: string;
   /** zh-CN: 求解活动量（枢轴流数量单位）。en-US: Solved activity in pivot-flow amount units. */
   activity: number;
+  /** Product-specific source-inventory scale; not a common physical run count. */
+  multiplier: number;
   /** zh-CN: 是否为参考视图。en-US: Whether this is the reference view. */
   isReference: boolean;
 }
@@ -241,6 +243,7 @@ export interface MatrixResultGroup {
  * en-US: Calculation result (the main thread builds submodels, writes back multipliers and edge amounts).
  */
 export interface MatrixCalculationResult {
+  productSystem: import('./productSystem').ProductSystem;
   views: SolvedView[];
   /** zh-CN: 实例倍率（原始过程清单倍率）；仅包含有活动的实例。en-US: Instance multipliers (raw process inventory factors); only active instances. */
   instanceMultipliers: Record<string, number>;

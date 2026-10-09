@@ -297,8 +297,11 @@ jest.mock('@/pages/LifeCycleModels/Components/edit', () => ({
 
 jest.mock('@/pages/LifeCycleModels/Components/modelResult', () => ({
   __esModule: true,
-  default: ({ modelId, modelVersion, actionType }: any) => (
-    <div>{`model-result:${modelId}:${modelVersion}:${actionType}`}</div>
+  default: ({ modelId, modelVersion, actionType, submodels }: any) => (
+    <div
+      data-testid='model-result'
+      data-submodels={JSON.stringify(submodels)}
+    >{`model-result:${modelId}:${modelVersion}:${actionType}`}</div>
   ),
 }));
 
@@ -2687,7 +2690,7 @@ describe('ToolbarEdit', () => {
               },
             ],
           },
-          submodels: [{ id: 'submodel-1' }],
+          submodels: [{ id: 'submodel-1' }, { id: 'provider-1', type: 'allocated' }],
         },
       },
     });
@@ -2720,6 +2723,9 @@ describe('ToolbarEdit', () => {
     expect(screen.getByText('toolbar-edit-info:edit:9.9.9')).toBeInTheDocument();
     expect(screen.getByText('life-cycle-model-edit:child-model:1.0')).toBeInTheDocument();
     expect(screen.getByText('model-result:model-1:1.0:edit')).toBeInTheDocument();
+    expect(JSON.parse(screen.getByTestId('model-result').getAttribute('data-submodels')!)).toEqual([
+      { id: 'submodel-1', version: '1.0' },
+    ]);
   });
 
   it('loads sparse existing models and falls back to empty editor payloads', async () => {

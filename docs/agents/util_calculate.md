@@ -22,8 +22,8 @@ checkPaths:
   - src/components/LcaTaskCenter/**
   - src/pages/Processes/Analysis/**
 lastReviewedAt: 2026-10-09
-lastReviewedCommit: 1f2b78e87ecb3044ad5f766b84957bea0a6c950c
-lastReviewedNote: 'Reviewed Platform #1196 modeling explanation, implementation plan, documentation ownership and maintenance routing.'
+lastReviewedCommit: 27a01c03c85638b266b3384fd21a7df72d3ff007
+lastReviewedNote: 'Reviewed product-demand calculation, standard provider projection and bundle persistence for Platform #1196; schema/SDK, branch, test and release boundaries are preserved.'
 ---
 
 # Lifecycle Model Calculation Reference
@@ -81,8 +81,8 @@ Failures throw `CalculationError` (typed `code` plus locatable `issues`) or `Cal
 | 2 | `validation.ts` | structure, target, reference exchange, connection, flow-version, single-provider validation |
 | 3 | `compile.ts` | allocation shapes, product views, M = I - A entries, demand vector |
 | 4 | `solve.ts` | LU solve of (I-A)x=y, residual / non-finite / non-negative checks |
-| 5 | `assemble.ts` | port-balance verification, instance multipliers, edge amounts, primary/secondary groups |
-| 6 | `util_calculate.ts` | submodel records (existing shape), LCIA via existing evidence path, multiplier write-back |
+| 5 | `assemble.ts` | product-demand balance verification, projected process graph, edge amounts, primary/secondary groups |
+| 6 | `util_calculate.ts` | allocated provider records, independent result records, LCIA via existing evidence path, standard instance projection |
 | 7 | `api.ts` | persistence plan, bundle save (unchanged schema), save-status mapping: authoritative rejection → `SAVE_REJECTED`; transport failures or unparseable response bodies → `SAVE_STATUS_UNKNOWN` (never a definite rejection without evidence) |
 
 ## Calculation Semantics
@@ -90,15 +90,17 @@ Failures throw `CalculationError` (typed `code` plus locatable `issues`) or `Cal
 - The system is demand-driven: the ★ reference target is the final demand `y` of the reference view; every other view is driven by connected consumers. Cycles enter the equations fully; nothing breaks edges.
 - A **view** (matrix variable) exists for: the reference process's quantitative-reference exchange, every connected output exchange of every instance, every output exchange that carries an allocation declaration (connected or not, so allocated coproducts keep independent results), and the reference exchange of dead-end instances (connected inputs, no connected outputs, not the reference).
 - Each view's pivot is normalized to +1 per unit activity. Every other exchange is attributed with its allocation fraction divided by the pivot amount. Attribution shapes:
-  - **single** (one output, or several outputs without allocation declarations): undeclared exchanges belong entirely to the instance reference view; non-reference product views receive no share of those exchanges. Ordinary emissions and wastes remain part of the reference inventory. If another output drives production while the reference output is unconnected, keep the reference view as a boundary result so its attributed inventory is not lost.
-  - **legacy uniform share**: only _declared_ outputs (`@allocatedFraction`, a trailing `%` is tolerated) are allocation targets; each declares its own share; a view attributes all exchanges at its pivot's share; the declared shares must close to 100%. Undeclared outputs keep an implicit share (1 − declared sum) and are attributed at that implicit share.
-  - **standard exchange-target allocation**: per exchange, the allocation item targeting the view product is selected; undeclared exchanges fully attribute to the instance's own reference view; each declared vector must close to 100%.
-- Missing/invalid/ambiguous allocation data raises `INVALID_ALLOCATION`; the calculation never normalizes or splits shares on its own.
-- Row assignment: reference view → anchor row (y = target); an instance's primary view → production row. The primary is the instance's reference-exchange view when it is the global reference (demand-anchored even if unconnected) or when it is connected; when a non-reference instance's reference product is only an unconnected boundary view, the first connected output view takes the production row so real consumer demand drives the instance (an unconnected boundary primary would force the instance to zero); its other views → joint-production linkage rows (x_v = (q_v/q_primary)·x_primary, keeping one physical run count per instance); dead-end views → pass-through rows driven by the supplier's leftover after demand-driven consumption.
-- Balances not encoded in the square system (extra dead-end pipes, linkage conflicts) are verified post-solve together with M·x-y residuals; failures map to `MODEL_NOT_SOLVABLE` or `NUMERIC_RESULT_INVALID` — never a silent surplus or a fallback.
-- Solved activities keep their full precision: small positive values are never zeroed (a tiny activity can carry a material load, e.g. 1e-13 activity × 1e13 raw intensity = 1); only within-tolerance negative noise is clamped to zero. Display rounding happens solely at the boundary-exchange filter in inventory assembly.
-- Instance `@multiplicationFactor` = primary-view activity / |reference amount|; all views of one instance agree through the linkage rows.
-- **Attributed scenarios**: each submodel group is assembled from its own attributed activity levels, not the global solution. Within a group the root is anchored at its global activity (the scenario's physical scale) and non-root members are driven by in-group consumers only, so shared upstream inventory is attributed per scenario (raw demand splits correctly) and internal flows cancel inside the group. Secondary results are created for every eligible allocated boundary product — dead-end views and unconnected allocated coproducts alike — so each allocated product keeps an independent result without an artificial downstream node.
+  - **single**: undeclared exchanges belong to the reference product or treatment service. Ordinary emissions and waste exchanges retain their full quantities. A connected non-reference product requires an explicit allocation interpretation.
+  - **legacy uniform share**: declared product outputs carry shares summing to 100%; each product inventory attributes applicable exchanges by that product's share. A used coproduct without its own declaration produces `INVALID_ALLOCATION`.
+  - **standard exchange-target allocation**: each exchange selects the share targeting the product. A declared vector sums to 100%; omitted targets in that vector have zero share. An undeclared exchange belongs to the source reference product.
+- Each product has a demand row: `x_product = sum(consumer activity × allocated input coefficient) + final demand`. The Model reference receives its target as final demand. Product views of one source may have different activity scales.
+- LU residuals and product-demand balances verify the numerical result. Singular systems produce `MODEL_NOT_SOLVABLE`; invalid numerical results produce `NUMERIC_RESULT_INVALID`.
+- Solved activities retain small positive values. Within-tolerance negative numerical noise is clamped to zero; inventory aggregation omits only exact-zero exchanges.
+- `productSystem.ts` projects each allocated view as a unit-reference Process provider. Its instance multiplier is the product activity. Unallocated single-reference inventories retain the source Process and multiplier `activity / reference amount`. Zero-demand instances retain multiplier zero.
+- Each result scenario solves its own final-demand vector, including all connected upstream suppliers and cycles. The primary scenario uses the Model target; a secondary boundary-product or terminal-process scenario uses its source reference quantity. The net reference exchange records that scenario's functional unit.
+- `productSystemPersistence.ts` materializes evaluated provider exchanges with `dataDerivationTypeStatus = Calculated`, removes executable allocation/formula fields, preserves source inventory metadata, and clears inherited review claims. Provider identity combines source instance, exact source Process version and product exchange. Existing provider IDs are reused for matching identities.
+- `json_tg.xflow` keeps source nodes and links; standard `processInstance` references the projected providers and supplies the scalar for each complete referenced inventory. Allocated provider records are saved in the same bundle and tracked separately from primary/secondary result records. Result selectors and `referenceToResultingProcess` include only result records.
+- Bundle version creation assigns one parent version to its created Processes. The database save function rewrites exact same-bundle Process references in standard instances and included-process provenance; external reference versions remain pinned.
 
 ## Hard Rules
 

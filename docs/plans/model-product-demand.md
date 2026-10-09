@@ -15,8 +15,8 @@ checkPaths:
   - docs/agents/model-modeling-and-calculation.md
   - src/services/lifeCycleModels/**
 lastReviewedAt: 2026-10-09
-lastReviewedCommit: 1f2b78e87ecb3044ad5f766b84957bea0a6c950c
-lastReviewedNote: Reviewed proposed calculation and persistence work against the immutable schema and SDK constraint.
+lastReviewedCommit: 27a01c03c85638b266b3384fd21a7df72d3ff007
+lastReviewedNote: 'Reviewed product-demand calculation, standard provider projection and bundle persistence for Platform #1196; schema/SDK, branch, test and release boundaries are preserved.'
 related:
   - ../agents/model-modeling-and-calculation.md
   - ../agents/util_calculate.md
@@ -30,7 +30,7 @@ related:
 
 实施属于 `platform`，目标分支为 `dev`，工作记录为 [Platform #1196](https://github.com/tiangong-lca/platform/issues/1196)。本文件定义待实现方案，[Model 建模与计算说明](../agents/model-modeling-and-calculation.md)解释目标语义；现有运行行为由[计算代码参考](../agents/util_calculate.md)及源码描述。实现、验证和交付状态在 Issue 与 PR 中维护。
 
-边界：TIDAS schema、SDK 和数据库 schema 保持不变。实现使用现有 Process、LifeCycleModel、过程实例、连接和结果结构。代码实施保持暂停，本次交付为方案与讲解文档。
+边界：TIDAS schema、SDK 和数据库 schema 保持不变。实现使用现有 Process、LifeCycleModel、过程实例、连接和结果结构。数据库现有保存函数负责同一批次创建过程的版本引用重写；表、列和接口数据结构保持不变。
 
 ## 1. 计算问题与修改位置
 
@@ -81,7 +81,7 @@ related:
 
 消费者也展开为多个产品实例时，原始输入连接分别映射到具有正归属需求的消费实例。每个消费实例保持明确供应者，画布边显示这些计算连接的交付量合计。
 
-计算图包括本次需求闭包中的实例及连接。独立产品结果通过各自的功能单位组织结果清单。完整编辑图保存在 `json_tg.xflow`，保留原始节点、过程引用及用户连接。
+计算图保留产品实例及有效供应连接，本次功能单位没有需求的实例记录零倍率。独立产品结果通过各自的功能单位组织结果清单。完整编辑图保存在 `json_tg.xflow`，保留原始节点、过程引用及用户连接。
 
 ### 标识、版本与生命周期
 

@@ -40,9 +40,9 @@ checkPaths:
   - .github/workflows/build.yml
   - .github/workflows/release-gate.yml
   - .github/workflows/release-readiness.yml
-lastReviewedAt: 2026-10-08
-lastReviewedCommit: 17c9ba51fecfbd4d27d98260f42326d2953fa4f5
-lastReviewedNote: 'Reviewed Platform #1189 browser preference order, English default, manual-only persistence, legacy compatibility and the denied-storage Umi bridge. Dependency, backend, authorization and full-gate boundaries remain unchanged.'
+lastReviewedAt: 2026-10-09
+lastReviewedCommit: 27a01c03c85638b266b3384fd21a7df72d3ff007
+lastReviewedNote: 'Reviewed product-demand calculation, standard provider projection and bundle persistence for Platform #1196; schema/SDK, branch, test and release boundaries are preserved.'
 ---
 
 # Testing Execution State

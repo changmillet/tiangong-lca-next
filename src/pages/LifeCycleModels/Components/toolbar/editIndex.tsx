@@ -2312,10 +2312,12 @@ const ToolbarEdit: FC<Props> = ({
         disabled={false}
       /> */}
         <ModelResult
-          submodels={(jsonTg?.submodels ?? []).map((submodel) => ({
-            id: submodel.id,
-            version: submodel.version ?? thisVersion,
-          }))}
+          submodels={(jsonTg?.submodels ?? [])
+            .filter((submodel) => submodel.type !== 'allocated')
+            .map((submodel) => ({
+              id: submodel.id,
+              version: submodel.version ?? thisVersion,
+            }))}
           modelId={thisId}
           modelVersion={thisVersion}
           lang={lang}

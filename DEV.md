@@ -43,7 +43,7 @@ checkPaths:
   - .github/workflows/build.yml
   - .nvmrc
 lastReviewedAt: 2026-10-09
-lastReviewedCommit: 1f2b78e87ecb3044ad5f766b84957bea0a6c950c
+lastReviewedCommit: 27a01c03c85638b266b3384fd21a7df72d3ff007
 lastReviewedNote: 'Reviewed Platform #1196 modeling explanation, implementation plan, documentation ownership and maintenance routing.'
 ---
 

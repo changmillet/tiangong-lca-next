@@ -44,8 +44,8 @@ checkPaths:
   - scripts/i18n/locale-delivery.mjs
   - .github/workflows/**
 lastReviewedAt: 2026-10-09
-lastReviewedCommit: 1f2b78e87ecb3044ad5f766b84957bea0a6c950c
-lastReviewedNote: 'Reviewed Platform #1196 modeling explanation, implementation plan, documentation ownership and maintenance routing.'
+lastReviewedCommit: 27a01c03c85638b266b3384fd21a7df72d3ff007
+lastReviewedNote: 'Reviewed product-demand calculation, standard provider projection and bundle persistence for Platform #1196; schema/SDK, branch, test and release boundaries are preserved.'
 related:
   - ../AGENTS.md
   - ../.docpact/config.yaml

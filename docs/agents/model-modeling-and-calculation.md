@@ -2,7 +2,7 @@
 title: Model 建模与计算说明
 docType: reference
 scope: repo
-status: draft
+status: active
 authoritative: false
 owner: next
 language: zh-CN
@@ -18,8 +18,8 @@ checkPaths:
   - src/services/processes/allocation.ts
   - src/pages/LifeCycleModels/**
 lastReviewedAt: 2026-10-09
-lastReviewedCommit: 1f2b78e87ecb3044ad5f766b84957bea0a6c950c
-lastReviewedNote: Reviewed product-demand semantics, dimensional examples and existing dataset representation.
+lastReviewedCommit: 27a01c03c85638b266b3384fd21a7df72d3ff007
+lastReviewedNote: 'Reviewed product-demand calculation, standard provider projection and bundle persistence for Platform #1196; schema/SDK, branch, test and release boundaries are preserved.'
 related:
   - ./util_calculate.md
   - ../plans/model-product-demand.md
@@ -156,7 +156,7 @@ x = A x + y
 (I − A) x = y
 ```
 
-`A` 的每一列描述一个活动的供应需求，`y` 描述功能单位，`x` 是求解得到的活动量。单位和流属性换算在构造系数时完成；连接使用同一计量基准下的数量。
+`A` 的每一列描述一个活动的供应需求，`y` 描述功能单位，`x` 是求解得到的活动量。连接两端使用相同流版本下的计量基准，交换数量在构造系数时按产品参考量归一化。
 
 对于包含循环的模型，循环中的活动一起求解。例如，每生产 1 单位产品需要回用 0.2 单位同类产品，最终需求为 1，则：
 
@@ -189,7 +189,7 @@ h = C g
 
 ## 8. 主结果与产品结果
 
-主结果对应 Model 选定的功能单位。其他产品的结果分别具有自己的参考产品和目标数量，每份结果使用自己的需求向量求解。
+主结果对应 Model 选定的功能单位。其他产品的结果以该产品在来源清单中的参考数量为目标，每份结果使用自己的需求向量求解。
 
 多份结果可以引用同一上游过程。每份结果中的上游贡献，由该结果自身的产品需求决定。比较或汇总结果时，使用与研究目标一致的功能单位和系统边界。
 

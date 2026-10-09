@@ -42,9 +42,9 @@ checkPaths:
   - scripts/typescript-native-parser.*
   - scripts/reference-data/**
   - .github/workflows/**
-lastReviewedAt: 2026-10-08
-lastReviewedCommit: 17c9ba51fecfbd4d27d98260f42326d2953fa4f5
-lastReviewedNote: 'Reviewed Platform #1189 browser preference order, English default, manual-only persistence, legacy compatibility and the denied-storage Umi bridge. Dependency, backend, authorization and full-gate boundaries remain unchanged.'
+lastReviewedAt: 2026-10-09
+lastReviewedCommit: 238c664901139be2d897fc98ec31199a670633cc
+lastReviewedNote: 'Reviewed allocation repair reasons, localized node guidance, preservation of saved results, and paired deployment qualification boundaries.'
 ---
 
 # Pre-Push Gate Policy

@@ -511,6 +511,17 @@
         "pages.lifecyclemodel.calculation.error.NUMERIC_RESULT_INVALID",
         "pages.lifecyclemodel.calculation.error.SOURCE_UNAVAILABLE"
       ]
+    },
+    "lifecycleModelAllocationRepair": {
+      "proof": "The calculation modal renders repair guidance only for the two recognized allocation reasons returned by getAllocationRepairMessageId. Other issues retain the localized error title and result-not-updated status.",
+      "unknownHandling": {
+        "kind": "closedWorld",
+        "proof": "Only MISSING_PRODUCT_ALLOCATION and MISSING_REFERENCE_ALLOCATION resolve to message IDs; unknown reasons resolve to undefined and the optional guidance is omitted."
+      },
+      "keys": [
+        "pages.lifecyclemodel.calculation.repair.missingProductAllocation",
+        "pages.lifecyclemodel.calculation.repair.missingReferenceAllocation"
+      ]
     }
   },
   "callsites": [
@@ -744,6 +755,13 @@
       "file": "src/pages/LifeCycleModels/Components/toolbar/editIndex.tsx",
       "expression": "CALCULATION_ERROR_MESSAGE_IDS[result.code] ?? CALCULATION_ERROR_MESSAGE_IDS.CALCULATION_FAILED",
       "family": "lifecycleModelCalculationErrors"
+    },
+    {
+      "api": "formatMessage",
+      "count": 1,
+      "file": "src/pages/LifeCycleModels/Components/toolbar/editIndex.tsx",
+      "expression": "getAllocationRepairMessageId(item.issue)",
+      "family": "lifecycleModelAllocationRepair"
     }
   ]
 }

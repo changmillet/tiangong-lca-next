@@ -45,9 +45,9 @@ checkPaths:
   - .nvmrc
   - .husky/pre-push
   - .github/workflows/**
-lastReviewedAt: 2026-10-08
-lastReviewedCommit: 17c9ba51fecfbd4d27d98260f42326d2953fa4f5
-lastReviewedNote: 'Reviewed Platform #1189 browser preference order, English default, manual-only persistence, legacy compatibility and the denied-storage Umi bridge. Dependency, backend, authorization and full-gate boundaries remain unchanged.'
+lastReviewedAt: 2026-10-09
+lastReviewedCommit: 238c664901139be2d897fc98ec31199a670633cc
+lastReviewedNote: 'Reviewed allocation repair reasons, localized node guidance, preservation of saved results, and paired deployment qualification boundaries.'
 related:
   - .docpact/config.yaml
   - docs/agents/repo-validation.md
@@ -90,6 +90,8 @@ Required principles:
 | `docs/agents/test_todo_list.md` | current testing execution state | long-term testing strategy |
 | `docs/agents/supabase-branching.md` | frontend environment selection and database ownership workflow | schema truth |
 | `docs/agents/public-classifications-gz-usage.md` | classification asset read path and file mapping | repo-wide workflow rules |
+| [Model 建模与计算说明](docs/agents/model-modeling-and-calculation.md) | product-demand modeling semantics, functional units, allocation, quantities and dataset relationships | implementation progress and runtime module contracts |
+| [Model 产品需求计算修改方案](docs/plans/model-product-demand.md) | proposed product-demand implementation, persistence mapping and acceptance cases | live delivery status |
 | `docs/agents/lcia-calculation-evidence.md` | reviewed LCIA bundle, cache trust, factor coverage, and calculation-evidence contract | Worker or Edge implementation truth |
 | `docs/agents/util_calculate.md`, `docs/agents/team_management.md`, `docs/agents/data_audit_instruction.md` | narrow business or domain references | repo contract or bootstrap workflow |
 

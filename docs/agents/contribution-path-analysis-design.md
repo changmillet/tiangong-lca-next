@@ -20,9 +20,9 @@ checkPaths:
   - docs/agents/util_calculate.md
   - src/pages/Processes/Analysis/**
   - src/components/LcaTaskCenter/**
-lastReviewedAt: 2026-10-04
-lastReviewedCommit: 529b5ef9dc4b263e1a934747efae9c54963e184f
-lastReviewedNote: 'Reviewed Platform #1177 final owner admission and native dispatch fences: foreign identities require fresh full application admission; task writes and TIDAS phases verify captured identity through native fetch. Calculation, authorization, environment and quality-gate policy remain unchanged.'
+lastReviewedAt: 2026-10-09
+lastReviewedCommit: d10b0b1fb8fe4797deeb72681f926ec565837d99
+lastReviewedNote: 'Reviewed allocation repair reasons, localized node guidance, preservation of saved results, and paired deployment qualification boundaries.'
 ---
 
 # Contribution Path Analysis Design

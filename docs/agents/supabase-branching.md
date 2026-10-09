@@ -22,9 +22,9 @@ checkPaths:
   - scripts/e2e/**
   - playwright.config.ts
   - tests/e2e/i18n/**
-lastReviewedAt: 2026-10-08
-lastReviewedCommit: e428f3b0d8313df61c584e5c7921a82937db0e0b
-lastReviewedNote: 'Reviewed Platform #1189 browser preference order, English default, manual-only persistence, legacy compatibility and the denied-storage Umi bridge. Dependency, backend, authorization and full-gate boundaries remain unchanged.'
+lastReviewedAt: 2026-10-09
+lastReviewedCommit: d10b0b1fb8fe4797deeb72681f926ec565837d99
+lastReviewedNote: 'Reviewed allocation repair reasons, localized node guidance, preservation of saved results, and paired deployment qualification boundaries.'
 ---
 
 # Supabase Environment And Database Workflow

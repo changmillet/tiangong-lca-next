@@ -17,9 +17,9 @@ checkPaths:
   - src/services/lifeCycleModels/**
   - src/services/processes/allocation.ts
   - src/pages/LifeCycleModels/**
-lastReviewedAt: 2026-10-15
-lastReviewedCommit: 4f8dcb384dcb3d994db5d0f94dfbccb87926e5e8
-lastReviewedNote: 'Reviewed for Platform #1258: remove the seven Open Data source controls and frontend filter state while retaining explicit catalog routing with fixed all/all protocol values. Selector, analysis, authorization, model calculation and persistence semantics remain unchanged. Existing focused service/page, locale, synthetic browser and full-gate requirements apply; execution results belong to the tracked Issue/PR.'
+lastReviewedAt: 2026-10-25
+lastReviewedCommit: afc871b576616cfb4cd83455ba6a48d1fbede548
+lastReviewedNote: 'Worker #340: reviewed exact Flow classification, source-bound regional/generic CF selection, retained LCI and unavailable-versus-zero interpretation. Product-demand, allocation and matrix rules remain unchanged.'
 related:
   - ./util_calculate.md
   - ../plans/model-product-demand.md
@@ -192,6 +192,10 @@ h = C g
 ```
 
 例如，某基本流排放为 20 kg，某影响类别的表征因子为每 kg 排放 3 单位影响，则该交换贡献 60 单位影响。评价结果同时记录方法版本、单位和因子覆盖情况，供结果解释使用。
+
+表征前应按明确版本的流数据识别基本流。产品流和废物流保留在生命周期清单中；不能凭表征因子缺失就把未知的流当成产品并排除。因子的选择同时保留方法版本、流版本、方向和来源依据，优先选择适用地区的因子，再使用来源明确支持的通用因子。地区备选值不能相加。
+
+某个影响类别无法确定适用因子时，该类别标记为不可计算并保留原因，生命周期清单和其他可计算类别仍可保留。未知值不代表零，也不能用于依赖全部类别齐全的综合评分或完整性声明。明确的零值，以及已确认没有基本流负荷的清单，才可按相应依据表达为零。具体实现边界见[来源与适用性合同](./lcia-supported-source-policy.md)和[结果证据合同](./lcia-calculation-evidence.md)。
 
 ## 8. 主结果与产品结果
 

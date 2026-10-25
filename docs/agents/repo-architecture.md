@@ -27,9 +27,9 @@ checkPaths:
   - config/docs-capture/**
   - tests/e2e/i18n/**
   - tests/e2e/dataset-lists/**
-lastReviewedAt: 2026-10-23
-lastReviewedCommit: a5302dbf337c8177844f285e3e21fc0c396f1981
-lastReviewedNote: 'Platform #1328 / PR #1329: reviewed conflict resolution against dev a5302dbf. Retained incoming navigation, review, dependency and qualification contracts plus the v6 latest-current draft reporting dependency and validation scope. Regenerated four-locale artifacts; 31 dashboard tests pass. Final checked-push evidence belongs on the PR.'
+lastReviewedAt: 2026-10-25
+lastReviewedCommit: afc871b576616cfb4cd83455ba6a48d1fbede548
+lastReviewedNote: 'Worker #340: reviewed additive source-companion and exact inventory-classification paths, frozen category readers and available-only TIDAS persistence. Existing authentication, schema, release and publication ownership is retained.'
 related:
   - ../AGENTS.md
   - ../.docpact/config.yaml
@@ -58,6 +58,7 @@ This repo is a Umi `4.7.24` React 19 SPA on one native Ant Design `6.6.6` / ProC
 | `src/services/general/tidasScalarStorage.ts` | canonical TIDAS year/percentage scalar normalization and the Process/Flow save-boundary issue format |
 | `src/services/general/aiSuggestion.ts` | authenticated AI suggestion enqueue, bounded polling, terminal validation, and versioned result decoding |
 | `src/services/dataProducts/**` | authenticated data-product commands, closure-check projections, result-package requests, and the curated `task-summary.v2` feed consumed by the global task center |
+| `src/services/lciaMethods/**`, `public/lcia-source-policy-v1/**` | pinned additive applicability companion, exact Flow-type classification, source-bound factor selection, availability receipts and view-to-TIDAS result mapping; source basis is owned by `lcia-supported-source-policy.md` |
 | `src/locales/**` | UI strings; every supported locale follows one canonical message manifest, with leaf topology, key ownership, placeholders, and dynamic families kept aligned |
 | `src/global.less`, `src/style/**`, `src/manifest.json`, `src/service-worker.js`, `src/utils/appUrl.ts`, `src/utils/browserNavigation.ts`, `src/utils/ruleVerification.ts`, `src/typings.d.ts` | browser shell support, global styling, explicit navigation side-effect boundaries, and support utilities |
 | `public/**` | generated or reviewed static resource bundles consumed by the app, including the EdgeOne OAuth path rewrite and no-store hash-history consent bridge |
@@ -129,6 +130,8 @@ Rules:
 - anonymous SPA entry is limited to login/recovery plus `/oauth/consent`. The consent page is not anonymous product access: it accepts exactly one bounded RFC3986-unreserved opaque `authorization_id` without normalization, rejects delimiter/control/duplicate/oversized and dot-only path-segment input, verifies the current session through `getClaims()`, and preserves only a same-origin relative consent path across login before retrieving or deciding authorization. Root/Welcome, every other configured application route, case variants, and unmatched paths require the ordinary session guard. Authenticated unmatched paths may render the localized 404. Role gates defer missing-session decisions to that global redirect, then enforce their role only after a user exists. Localization route/view coverage records this access context but never broadens it
 - query-, hash-, path-, loading-, empty-, error-, and retry-driven visible states belong to the locale catalog just like the default page view; pages and reusable components must not hide service failures behind a successful empty state
 - LCIA result transport state and calculation-evidence trust state are separate: a failed or pending result query renders its own state and cannot be reinterpreted as missing or mismatched evidence; only a successfully returned numerical result enters the fail-closed evidence validator
+- `src/services/lca/categoryAvailability.ts` owns the strict frozen availability decoder shared by service and bundle readers. Available zero remains numeric; unavailable or missing values remain unknown, and incomplete categories do not enter ranking, comparison or complete-result aggregates. Historical reads remain distinct from current numerical admission.
+- Browser Model assembly retains the complete LCI, resolves exact Flow metadata once across result groups, and characterizes only confirmed elementary exchanges through `src/services/lciaMethods/**`. Source/inventory failures retain explicit evidence without creating numeric LCIA rows. Nullable view rows cross into scientific TIDAS results only through the available-result persistence adapter; the full category receipt stays in `common:other`. Detailed source and consumer semantics live in the two LCIA contracts.
 - Contact, FlowProperty, Source, and UnitGroup keyword searches use `src/services/general/hybridSearch.ts` and their four allowlisted Hybrid Edge Functions. UUID-mention and empty-keyword list paths remain on their existing RPCs. The shared service forwards the current user JWT plus query/filter/paging and optional state/team context, returns Team Data as a genuine empty result when no team is selected, and preserves transport/auth/mapping failures as `success: false` instead of presenting them as empty data
 - Process keyword searches use the indexed `search_processes` RPC and pass explicit escaped query terms without app-side field filtering. The `public_plus_owner_draft` calculation picker enables the database-owned actor-draft mode for its personal branch, requiring owner `state_code=0` rows regardless of team/review workflow metadata, then merges that result with public state-100 rows. Database migrations own the `search_text` lexical source and its PGroonga index
 - Process list rows carry nullable `model_version` alongside `model_id`. LifecycleModel actions resolve the exact owner version as `model_version ?? process.version`; null remains the legacy same-version fallback, while an explicit version must never be replaced with the latest LifecycleModel revision. LifecycleModel result submodels are queried with each submodel reference's own Process version rather than the parent Model version
@@ -255,7 +258,7 @@ The public release read path is:
 
 `src/pages/DataProcessing/index.tsx -> src/components/LcaReleaseReadPanel/index.tsx -> src/services/lcaReleases/api.ts -> public current-release projection`
 
-Data Processing uses the paginated result list as the entry to an exact process/version result drawer. `src/services/lcaReleases/presentation.ts` enriches names through existing exact-version reads and resolves method names/units from the reviewed catalog; missing metadata leaves identifiers and values intact. The drawer defaults to LCIA and shows the dataset reference quantity, with LCI and collapsed technical evidence alongside it. Incomplete characterization coverage alone has no warning banner; genuine query, calculation and provenance failures retain their existing states.
+Data Processing uses the paginated result list as the entry to an exact process/version result drawer. `src/services/lcaReleases/presentation.ts` enriches names through existing exact-version reads and resolves method names/units from the reviewed catalog; missing metadata leaves identifiers and values intact. The drawer defaults to LCIA and shows the dataset reference quantity, with LCI and collapsed technical evidence alongside it. Mere coverage gaps retain their existing evidence behavior; an explicit partial/unavailable category receipt has localized availability presentation and nullable rows while LCI remains accessible. Genuine query, calculation and provenance failures retain their existing states.
 
 Next owns read orchestration, release dataset identity display, directional LCI/LCIA rendering, integrity checks before parsing preview shards or saving downloads, and fresh signed-download requests. The product download surface groups LCIA XLSX/CSV as result files, LCI Parquet/CSV as advanced data, and the manifest plus whole-bundle ZIP as audit evidence. Canonical `.ndjson.gz` shards remain available to the preview reader but are not enumerated as ordinary downloads. Verified downloads are saved through a local Blob instead of a cross-origin download anchor. The Calculation Bundle read requires the current user session. A public release projection may be anonymous only after Database and Edge expose it as the current published release. Next never approves or publishes a release, receives a service-role credential, or treats a private storage locator as public data.
 
@@ -265,7 +268,7 @@ Next owns read orchestration, release dataset identity display, directional LCI/
 - dataset validation, localized field guidance, and review jump targets: `src/pages/*/sdkValidation.ts`, `src/pages/Utils/validation/**`, `src/pages/Processes/sdkValidationUi.ts`, `src/pages/Processes/Components/**`, `src/components/ValidationIssueModal/index.tsx`, `src/components/LangTextItem/form.tsx`, `src/pages/Utils/review.tsx`
 - review, team, and system-management flows: `src/pages/Review/**`, `src/pages/ManageSystem/**`, `src/pages/Teams/**`
 - governed reference sources and outputs: `src/services/referenceResources/**`, `scripts/reference-data/**`, `public/classifications/**`, `public/locations/**`
-- other cache-backed static resources: `public/lciamethods/**`, `public/maps/**`
+- other cache-backed static resources: unchanged `public/lciamethods/**`, additive `public/lcia-source-policy-v1/**`, and `public/maps/**`
 
 ## Cross-Repo Boundaries
 

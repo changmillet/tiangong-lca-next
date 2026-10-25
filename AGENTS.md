@@ -48,9 +48,9 @@ checkPaths:
   - .nvmrc
   - .husky/pre-push
   - .github/workflows/**
-lastReviewedAt: 2026-10-23
-lastReviewedCommit: a5302dbf337c8177844f285e3e21fc0c396f1981
-lastReviewedNote: 'Platform #1328 / PR #1329: reviewed conflict resolution against dev a5302dbf. Retained incoming navigation, review, dependency and qualification contracts plus the v6 latest-current draft reporting dependency and validation scope. Regenerated four-locale artifacts; 31 dashboard tests pass. Final checked-push evidence belongs on the PR.'
+lastReviewedAt: 2026-10-25
+lastReviewedCommit: afc871b576616cfb4cd83455ba6a48d1fbede548
+lastReviewedNote: 'Worker #340 paired LCIA consumer: reviewed source-policy and partial-category contract pointers against afc871b57. Existing branch, runtime ownership, dependency approval and delivery gates are retained.'
 related:
   - .docpact/config.yaml
   - docs/agents/repo-validation.md
@@ -96,6 +96,7 @@ Required principles:
 | [Model 建模与计算说明](docs/agents/model-modeling-and-calculation.md) | product-demand modeling semantics, functional units, allocation, quantities and dataset relationships | implementation progress and runtime module contracts |
 | [Model 产品需求计算修改方案](docs/plans/model-product-demand.md) | proposed product-demand implementation, persistence mapping and acceptance cases | live delivery status |
 | `docs/agents/lcia-calculation-evidence.md` | reviewed LCIA bundle, cache trust, factor coverage, and calculation-evidence contract | Worker or Edge implementation truth |
+| `docs/agents/lcia-supported-source-policy.md` | additive source-policy companion, source-backed default selection and exact Flow inventory classification | Worker implementation, deployed-runtime acceptance or publication authority |
 | `docs/agents/util_calculate.md`, `docs/agents/team_management.md`, `docs/agents/data_audit_instruction.md` | narrow business or domain references | repo contract or bootstrap workflow |
 
 Additional governed source docs, not part of the default first-load surface:
@@ -142,6 +143,7 @@ Do not start from additional governed source docs, proposal docs, or README-leve
 - the shared Header keeps Umi `SelectLang` mounted with `reload={false}` so locale changes refresh the current document in place; browser proof must cover same-document identity plus stale-reference-response race rejection
 - browser language preference and legacy-cache compatibility follow `docs/agents/repo-architecture.md`; the product-owned browser locale bridge is the sole private Umi locale-provider adapter and requires its installed-template compatibility proof on upgrades
 - the unified-German historical review record lives in `docs/plans/i18n-de-DE/README.md`; Pilot/catalog/delta confirmations validate only their frozen snapshots, while current `de-DE` copy is governed by the tracked baseline and automated correction overlay in `docs/plans/i18n/corrections.json` plus the shared context/quality/activation gate
+- static LCIA source/default or inventory-classification changes load `docs/agents/lcia-supported-source-policy.md`; partial-category display, cache and persistence consumers load `docs/agents/lcia-calculation-evidence.md`
 - repo-local documentation maintenance is enforced locally by the pre-push docpact gate; `.github/workflows/ai-doc-lint.yml` is manual-dispatch fallback
 - dataset-validation adapters live in `src/pages/*/sdkValidation.ts`; shared localized validation helpers live in `src/pages/Utils/validation/**`
 - `tests/package-contracts/installedTidasSdk.contract.test.mjs` resolves the real installed `@tiangong-lca/tidas-sdk` `0.5.0` package outside Jest's SDK mapper and protects all seven dataset factories, the normalized `validateEnhanced` error envelope, singleton/ordered Process review acceptance, and required Process general-comment validation

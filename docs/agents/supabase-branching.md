@@ -24,9 +24,9 @@ checkPaths:
   - playwright.dataset-lists.config.ts
   - tests/e2e/i18n/**
   - tests/e2e/dataset-lists/**
-lastReviewedAt: 2026-10-23
-lastReviewedCommit: a5302dbf337c8177844f285e3e21fc0c396f1981
-lastReviewedNote: 'Platform #1328 / PR #1329: reviewed conflict resolution against dev a5302dbf. Retained incoming navigation, review, dependency and qualification contracts plus the v6 latest-current draft reporting dependency and validation scope. Regenerated four-locale artifacts; 31 dashboard tests pass. Final checked-push evidence belongs on the PR.'
+lastReviewedAt: 2026-10-25
+lastReviewedCommit: afc871b576616cfb4cd83455ba6a48d1fbede548
+lastReviewedNote: 'Worker #340: reviewed paired source/result reader compatibility and existing exact Flow service reads. Environment selection, permissions, schema ownership, branch and deployment authority remain unchanged.'
 ---
 
 # Supabase Environment And Database Workflow
@@ -91,6 +91,10 @@ Rules:
 - the authenticated production-backed semantic localization E2E is an explicit test-only exception to the shipped `src/services/**` placement rule: direct development mode serves the worktree with `pnpm start:main`, while release mode builds and serves the archived clean commit inside its isolated container; both verify the selected Supabase origin against tracked `main`, authenticate as the runtime test user, never use a service-role key, and may create/delete only the exact UUID/version `codex-e2e` process recorded in the primary plus externally mounted recovery ledger. Closed qualification is a separate credential-free simulator and never reads tracked `main` environment configuration
 - production-backed browser proof classifies only the exact reviewed `list_task_feed` and `list_publications` payloads as read-only data-product commands; the shared function path or a POST method alone never establishes a read-only boundary
 - ordinary PR and `dev` browser jobs receive no production credentials and perform no writes; the production-backed closure is manual-only, requires `E2E_ALLOW_PRODUCTION_DATA=true`, and must finish with `created=cleaned` and `leaked=0`
+
+## LCIA Source And Availability Pairing
+
+Qualify the paired Worker source-policy/result contracts, Edge projections and frontend availability decoder in the same selected non-production environment before relying on current partial-result behavior. Exact Flow-type reads reuse the existing service-owned `flows` boundary and must verify the returned revision; no new browser client, relation permission or writer is introduced. Source/default receipts and nullable category views do not grant publication or deployment authority. The [source-policy](./lcia-supported-source-policy.md) and [result-evidence](./lcia-calculation-evidence.md) contracts own the detailed compatibility rules; existing branch, auth, schema and release requirements remain in force.
 
 ## Dataset list contract deployment dependencies
 

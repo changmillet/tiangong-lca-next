@@ -20,9 +20,9 @@ checkPaths:
   - docs/agents/util_calculate.md
   - src/pages/Processes/Analysis/**
   - src/components/LcaTaskCenter/**
-lastReviewedAt: 2026-10-15
-lastReviewedCommit: 4f8dcb384dcb3d994db5d0f94dfbccb87926e5e8
-lastReviewedNote: 'Reviewed for Platform #1258: remove the seven Open Data source controls and frontend filter state while retaining explicit catalog routing with fixed all/all protocol values. Selector, analysis, authorization, model calculation and persistence semantics remain unchanged. Existing focused service/page, locale, synthetic browser and full-gate requirements apply; execution results belong to the tracked Issue/PR.'
+lastReviewedAt: 2026-10-25
+lastReviewedCommit: afc871b576616cfb4cd83455ba6a48d1fbede548
+lastReviewedNote: 'Worker #340: reviewed exact available-category admission and unknown-versus-zero compatibility. The dedicated contribution-path pipeline remains a proposal with unchanged Worker/Edge responsibilities.'
 ---
 
 # Contribution Path Analysis Design
@@ -53,6 +53,7 @@ V1 needs to answer, for one process and one impact:
 - current snapshot index metadata is too thin for rich path display
 - process-editor validation and report-navigation changes do not alter this proposed async path-analysis contract
 - the current cross-dataset SDK validation refactor does not change this proposal's worker/result boundary
+- selected-impact queries require an available exact method/version; an unavailable category supplies reasons rather than a numeric path result. Known zero and missing data remain distinct under the [current result-evidence contract](./lcia-calculation-evidence.md). This compatibility boundary does not implement the proposed async path-analysis pipeline.
 
 ## Design Decisions
 

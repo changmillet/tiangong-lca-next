@@ -46,9 +46,9 @@ checkPaths:
   - scripts/typescript-native-parser.*
   - scripts/i18n/locale-delivery.mjs
   - .github/workflows/**
-lastReviewedAt: 2026-10-23
-lastReviewedCommit: a5302dbf337c8177844f285e3e21fc0c396f1981
-lastReviewedNote: 'Platform #1328 / PR #1329: reviewed conflict resolution against dev a5302dbf. Retained incoming navigation, review, dependency and qualification contracts plus the v6 latest-current draft reporting dependency and validation scope. Regenerated four-locale artifacts; 31 dashboard tests pass. Final checked-push evidence belongs on the PR.'
+lastReviewedAt: 2026-10-25
+lastReviewedCommit: afc871b576616cfb4cd83455ba6a48d1fbede548
+lastReviewedNote: 'Worker #340: reviewed source-backed selector, generated-Process caller, empty-inventory and partial-consumer proof requirements against afc871b57. Baseline and protected-branch gates remain; exact execution and native qualification evidence stays in the delivery record.'
 related:
   - ../AGENTS.md
   - ../.docpact/config.yaml
@@ -85,6 +85,14 @@ pnpm docpact:gate
 ```bash
 pnpm prepush:gate
 ```
+
+## Source-Bound LCIA And Partial Categories
+
+Changes to the static selector, Flow inventory classification or partial-result consumers include focused `lciaMethods/inventory`, `supportedSourcePolicy`, `calculationEvidence`, cache utility and generated-Process integration tests, plus the category-availability/API and affected profile, hotspot, comparison and Calculation Bundle component suites. Preserve the default baseline and final delivery gate below.
+
+Source proof verifies all supported numeric bindings against the unchanged reviewed bundle and byte-identical paired companion. Exercise missing-location climate, reviewed generic versus exact regional selection, exact Flow versions/directions, explicit zero and source/hash tamper. The business-caller fixture must include the product reference, valid elementary emissions, Product/Waste inputs and outputs, unknown classification and wrong-revision reader fallback. Verify the complete LCI is preserved, only confirmed elementary inventory reaches characterization, and classification metadata is deduplicated and reused.
+
+Consumer proof distinguishes available zero, unavailable/null, a valid historical value and an untrusted/missing value. Test classification-qualified empty-inventory zero and static-report round-trip while legacy malformed empty matrices stay rejected. Generated Process persistence retains the full availability report but emits no nullable or stale unavailable scientific `LCIAResult` row. Paired Worker/Edge/Database compatibility and immutable native qualification remain separate evidence from mocked frontend tests. Source/default decisions and acceptance limits are owned by [the source-policy contract](./lcia-supported-source-policy.md); exact execution results belong to the task/PR evidence.
 
 ## Ordinary dependency PR validation
 

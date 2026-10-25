@@ -1,8 +1,8 @@
 version: 1
 layout: repo
-lastReviewedAt: '2026-10-23'
-lastReviewedCommit: 'a5302dbf337c8177844f285e3e21fc0c396f1981'
-lastReviewedNote: 'Platform #1328 / PR #1329: reviewed conflict resolution against dev a5302dbf. Retained incoming navigation, review, dependency and qualification contracts plus the v6 latest-current draft reporting dependency and validation scope. Regenerated four-locale artifacts; 31 dashboard tests pass. Final checked-push evidence belongs on the PR.'
+lastReviewedAt: '2026-10-25'
+lastReviewedCommit: 'afc871b576616cfb4cd83455ba6a48d1fbede548'
+lastReviewedNote: 'Worker #340 paired LCIA consumer: extended the existing static-bundle rule, routing and document inventory to additive source-policy assets and the source contract. Existing public ownership and all gate modes remain; no exclusion or waiver.'
 
 # Keep path-level ownership, routing intents, and governed-doc rules here.
 # AGENTS.md keeps the entry-level repo contract and minimal execution summary.
@@ -114,6 +114,7 @@ coverage:
     - docs/agents/model-modeling-and-calculation.md
     - docs/plans/model-product-demand.md
     - docs/agents/lcia-calculation-evidence.md
+    - docs/agents/lcia-supported-source-policy.md
     - docs/agents/team_management.md
     - docs/agents/data_audit_instruction.md
     - docs/plans/i18n/**
@@ -297,6 +298,7 @@ routing:
         - docs/agents/model-modeling-and-calculation.md
         - docs/plans/model-product-demand.md
         - docs/agents/lcia-calculation-evidence.md
+        - docs/agents/lcia-supported-source-policy.md
         - docs/agents/team_management.md
         - docs/agents/data_audit_instruction.md
         - docs/plans/i18n/**
@@ -369,6 +371,7 @@ routing:
         - src/components/LcaReleaseReadPanel/**
         - src/pages/DataProcessing/CalculationBundlePanel.tsx
         - docs/agents/lcia-calculation-evidence.md
+        - docs/agents/lcia-supported-source-policy.md
     team-and-review-management:
       paths:
         - src/pages/Review/**
@@ -387,6 +390,7 @@ routing:
         - public/classifications/**
         - public/locations/**
         - public/lciamethods/**
+        - public/lcia-source-policy-v1/**
     public-map-assets:
       paths:
         - public/maps/**
@@ -425,6 +429,7 @@ docInventory:
     - docs/agents/model-modeling-and-calculation.md
     - docs/plans/model-product-demand.md
     - docs/agents/lcia-calculation-evidence.md
+    - docs/agents/lcia-supported-source-policy.md
     - docs/agents/team_management.md
     - docs/agents/data_audit_instruction.md
     - .github/PULL_REQUEST_TEMPLATE/feature-to-dev.md
@@ -920,9 +925,15 @@ rules:
     triggers:
       - path: public/lciamethods/**
         kind: static-resource
+      - path: public/lcia-source-policy-v1/**
+        kind: source-applicability-companion
+      - path: src/services/lciaMethods/**
+        kind: static-calculation-service
       - path: scripts/validate-lcia-cache.cjs
         kind: test-gate
       - path: docs/agents/lcia-calculation-evidence.md
+        kind: domain-doc
+      - path: docs/agents/lcia-supported-source-policy.md
         kind: domain-doc
     requiredDocs:
       - path: .docpact/config.yaml
@@ -933,7 +944,9 @@ rules:
         mode: review_or_update
       - path: docs/agents/lcia-calculation-evidence.md
         mode: review_or_update
-    reason: The reviewed LCIA bundle, validator, cache trust, and calculation-evidence contract must change together.
+      - path: docs/agents/lcia-supported-source-policy.md
+        mode: review_or_update
+    reason: The reviewed LCIA bundle, additive source-applicability companion, exact inventory classification, cache trust, and category-result contracts must be reviewed together.
   - id: next-calculation-release-read-contract
     scope: repo
     repo: next

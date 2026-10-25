@@ -20,9 +20,9 @@ checkPaths:
   - docs/agents/util_calculate.md
   - src/pages/Processes/Analysis/**
   - src/components/LcaTaskCenter/**
-lastReviewedAt: 2026-10-15
-lastReviewedCommit: 4f8dcb384dcb3d994db5d0f94dfbccb87926e5e8
-lastReviewedNote: 'Reviewed for Platform #1258: remove the seven Open Data source controls and frontend filter state while retaining explicit catalog routing with fixed all/all protocol values. Selector, analysis, authorization, model calculation and persistence semantics remain unchanged. Existing focused service/page, locale, synthetic browser and full-gate requirements apply; execution results belong to the tracked Issue/PR.'
+lastReviewedAt: 2026-10-25
+lastReviewedCommit: afc871b576616cfb4cd83455ba6a48d1fbede548
+lastReviewedNote: 'Worker #340: reviewed partial-category chart inputs and aggregate limits. Proposed phase scope, source traceability, normalization and chart-dependency approval requirements remain unchanged.'
 ---
 
 # LCA Analysis And Visualization Plan
@@ -55,6 +55,7 @@ The repo already exposes solver-backed LCIA results, but it still needs a stable
 - preserve existing page rhythm before adding a heavyweight dashboard
 - prefer robust analytical charts over decorative charts
 - make normalization explicit whenever values across categories are compared on one canvas
+- consume the frozen category-availability contract before charting: unavailable/missing values stay explicit and are excluded from numeric rankings, comparisons and complete-category aggregates; a confirmed zero remains numeric. Refer to the [result-evidence contract](./lcia-calculation-evidence.md) for runtime validation rather than inferring availability from a blank cell.
 - editor-side validation and correction affordances should not mutate the analysis result contract; keep those concerns outside the analysis surfaces
 - dataset-validation UX refactors may change editor affordances, but they should not change the analysis page data contract without an explicit plan update
 

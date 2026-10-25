@@ -27,9 +27,9 @@ checkPaths:
   - src/services/processes/api.ts
   - .github/workflows/ci.yml
   - .github/workflows/build.yml
-lastReviewedAt: 2026-10-18
-lastReviewedCommit: 18e81718ed5750cdeca5ebbd7650257315559fc1
-lastReviewedNote: 'Platform #1302: reviewed frontend result presentation, exact-version metadata reads, removal of coverage-only warnings and focused browser/unit proof. Backend semantics, authorization, dependencies and full delivery gates remain unchanged; validation outcomes are recorded in the Issue and PR.'
+lastReviewedAt: 2026-10-25
+lastReviewedCommit: afc871b576616cfb4cd83455ba6a48d1fbede548
+lastReviewedNote: 'Worker #340: reviewed current source-policy, nullable category availability, strict service/bundle decoding and available-only Process persistence against afc871b57. Historical display, source integrity, authentication and publication limits remain explicit.'
 ---
 
 # LCIA Method Bundle and Calculation Evidence Contract

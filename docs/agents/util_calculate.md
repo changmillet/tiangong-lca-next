@@ -21,9 +21,9 @@ checkPaths:
   - src/services/lciaMethods/**
   - src/components/LcaTaskCenter/**
   - src/pages/Processes/Analysis/**
-lastReviewedAt: 2026-10-15
-lastReviewedCommit: 4f8dcb384dcb3d994db5d0f94dfbccb87926e5e8
-lastReviewedNote: 'Reviewed for Platform #1258: remove the seven Open Data source controls and frontend filter state while retaining explicit catalog routing with fixed all/all protocol values. Selector, analysis, authorization, model calculation and persistence semantics remain unchanged. Existing focused service/page, locale, synthetic browser and full-gate requirements apply; execution results belong to the tracked Issue/PR.'
+lastReviewedAt: 2026-10-25
+lastReviewedCommit: afc871b576616cfb4cd83455ba6a48d1fbede548
+lastReviewedNote: 'Worker #340: reviewed deduplicated exact Flow metadata reuse, independent LCIA availability and available-only scientific result persistence. Numerical matrix, allocation, cancellation and save-acknowledgement contracts are retained.'
 ---
 
 # Lifecycle Model Calculation Reference
@@ -60,8 +60,8 @@ lastReviewedNote: 'Reviewed for Platform #1258: remove the seven Open Data sourc
   - `matrixWorker.ts` — Web Worker entry (pure compute)
   - `workerClient.ts` — run binding, cancellation, sync fallback
 - submodel records: `src/services/lifeCycleModels/submodelRecord.ts`
-- LCIA helper: `src/services/lciaMethods/util.ts` (unchanged path)
-- LCIA bundle/evidence contract: `docs/agents/lcia-calculation-evidence.md`
+- LCIA orchestration: `src/services/lciaMethods/util.ts`; exact Flow metadata resolution and elementary-inventory classification: `src/services/lciaMethods/inventory.ts`
+- LCIA bundle/evidence contract: `docs/agents/lcia-calculation-evidence.md`; source-policy and classification contract: `docs/agents/lcia-supported-source-policy.md`
 
 ## Entry Function
 
@@ -71,7 +71,7 @@ lastReviewedNote: 'Reviewed for Platform #1258: remove the seven Open Data sourc
 | primary output | `{ lifeCycleModelProcesses, up2DownEdges, lciaIncomplete }` |
 | side effects | writes `@multiplicationFactor` per `processInstance[*]` into `lifeCycleModelJsonOrdered` |
 
-Failures throw `CalculationError` (typed `code` plus locatable `issues`) or `CalculationCancelledError`; the save shell maps them to mutation results. Failures never mutate saved results.
+Numerical or cancellation failures throw `CalculationError` (typed `code` plus locatable `issues`) or `CalculationCancelledError`; the save shell maps them to mutation results and preserves saved results. LCIA applicability/classification failure is a separate result state: a successful inventory solve can retain its LCI and independent available categories with explicit LCIA evidence.
 
 ## Pipeline Summary
 
@@ -101,6 +101,12 @@ Failures throw `CalculationError` (typed `code` plus locatable `issues`) or `Cal
 - `productSystemPersistence.ts` materializes evaluated provider exchanges with `dataDerivationTypeStatus = Calculated`, removes executable allocation/formula fields, preserves source inventory metadata, and clears inherited review claims. Provider identity combines source instance, exact source Process version and product exchange. Existing provider IDs are reused for matching identities.
 - `json_tg.xflow` keeps source nodes and links; standard `processInstance` references the projected providers and supplies the scalar for each complete referenced inventory. Allocated provider records are saved in the same bundle and tracked separately from primary/secondary result records. Result selectors and `referenceToResultingProcess` include only result records.
 - Bundle version creation assigns one parent version to its created Processes. The database save function rewrites exact same-bundle Process references in standard instances and included-process provenance; external reference versions remain pinned.
+
+## LCIA Assembly And Persistence
+
+After solving and group assembly, `util_calculate.ts` resolves the distinct exact Flow UUID/version metadata once and shares it with each group's existing LCIA adapter. That adapter excludes only confirmed Product/Waste flows; unknown classification becomes explicit LCIA failure. All original group exchanges, including the product reference, remain in the generated Process inventory.
+
+The calculation returns category view rows and an availability receipt. `persistableStaticLciaResults` admits only available, finite results for the receipt's exact method/version and strips view-only status/reasons before building TIDAS `LCIAResult` records. Unavailable nullable or stale numeric rows are omitted, while `LCIAResults/common:other` retains the complete report for UI reconstruction. Source/default selection and the narrowly qualified empty-inventory zero case are defined in [the source-policy contract](./lcia-supported-source-policy.md); result/display trust is defined in [the evidence contract](./lcia-calculation-evidence.md).
 
 ## Hard Rules
 

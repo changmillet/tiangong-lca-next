@@ -43,9 +43,9 @@ checkPaths:
   - .github/workflows/build.yml
   - .github/workflows/release-gate.yml
   - .github/workflows/release-readiness.yml
-lastReviewedAt: 2026-10-23
-lastReviewedCommit: a5302dbf337c8177844f285e3e21fc0c396f1981
-lastReviewedNote: 'Platform #1328 / PR #1329: reviewed conflict resolution against dev a5302dbf. Retained incoming navigation, review, dependency and qualification contracts plus the v6 latest-current draft reporting dependency and validation scope. Regenerated four-locale artifacts; 31 dashboard tests pass. Final checked-push evidence belongs on the PR.'
+lastReviewedAt: 2026-10-25
+lastReviewedCommit: afc871b576616cfb4cd83455ba6a48d1fbede548
+lastReviewedNote: 'Worker #340: reviewed the focused LCIA regression scope and delivery-evidence boundary. The checked-in full-coverage reference and closed-queue policy are preserved; candidate-wide results are recorded separately.'
 ---
 
 # Testing Execution State
@@ -68,6 +68,7 @@ This is a checked-in reference, not a per-PR execution ledger. A delivery's post
 - repo is in full-closure maintenance mode
 - there is no active ordered coverage queue right now
 - touched code must stay at full closure
+- Worker #340's paired frontend LCIA work uses source-backed selector, exact Flow classification, generated-Process persistence and partial-category consumer regressions. Candidate-wide gate/build results remain in its delivery evidence; this review does not advance the checked-in full-coverage reference or change the closed-queue policy.
 - Issue #914 implements one TypeScript `7.0.2` compiler/API track, the repository-owned native parser adapter, and Oxlint in place of ESLint plus the standalone deprecated-API scanner. A small repo-local Oxlint plugin retains the legacy `no-invalid-this` contract that native Oxlint does not yet support. No TypeScript 6 alias or `tsc6` path is part of the candidate; Prettier remains formatting-only and no longer organizes imports.
 - Issue #938 exact-pins Node `24.19.0`, pnpm `11.23.0`, TypeScript `7.0.2`, and released `@tiangong-lca/tidas-sdk` `0.2.0`; the frozen graph contains no TypeScript below 7, `ts-to-zod`, or `@typescript/vfs`. A child Node package contract bypasses the Jest SDK mapper and proves all seven dataset factories plus the normalized validation error envelope without reopening a coverage queue.
 - Issue #1111 advances the exact installed `@tiangong-lca/tidas-sdk` dependency to `0.3.1`; the mapper-independent package contract additionally proves singleton and ordered non-empty Process review acceptance, while the coverage queue remains closed.

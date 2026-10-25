@@ -45,9 +45,9 @@ checkPaths:
   - .github/workflows/build.yml
   - .github/workflows/release-gate.yml
   - .github/workflows/release-readiness.yml
-lastReviewedAt: 2026-10-23
-lastReviewedCommit: a5302dbf337c8177844f285e3e21fc0c396f1981
-lastReviewedNote: 'Platform #1328 / PR #1329: reviewed conflict resolution against dev a5302dbf. Retained incoming navigation, review, dependency and qualification contracts plus the v6 latest-current draft reporting dependency and validation scope. Regenerated four-locale artifacts; 31 dashboard tests pass. Final checked-push evidence belongs on the PR.'
+lastReviewedAt: 2026-10-25
+lastReviewedCommit: afc871b576616cfb4cd83455ba6a48d1fbede548
+lastReviewedNote: 'Worker #340: reviewed source-bound negatives and complete generated-Process inventory fixtures, including persistence. Existing semantic assertions, service mocks, isolated fixtures and serial Umi proof requirements remain.'
 ---
 
 # Testing Patterns Reference
@@ -61,6 +61,10 @@ lastReviewedNote: 'Platform #1328 / PR #1329: reviewed conflict resolution again
 | unit               | logic lives mostly in one function, utility, or service module        |
 | component          | UI behavior depends on render state, props, or local interactions     |
 | integration        | behavior crosses page, service, auth, routing, or provider boundaries |
+
+## Source-Backed LCIA Regression Pattern
+
+Pair selector tests with the real business caller and persistence adapter. A selector-only fixture containing elementary observations cannot prove that generated Process product/waste exchanges were classified correctly. Keep the complete source inventory in the integration fixture and assert its exact references remain unchanged. Integrity negatives alter the bound source or metadata dimension; partial-result tests assert both the preserved LCI/available values and the absence of stale unavailable numeric output. Detailed cases and required checks remain in [repo validation](./repo-validation.md) and the [source-policy contract](./lcia-supported-source-policy.md).
 
 ## Global Rules
 

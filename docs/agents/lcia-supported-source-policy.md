@@ -17,9 +17,9 @@ checkPaths:
   - src/services/lciaMethods/calculation.ts
   - public/lcia-source-policy-v1/**
   - tests/unit/services/lciaMethods/supportedSourcePolicy.test.ts
-lastReviewedAt: '2026-10-25'
-lastReviewedCommit: f9b51626bf8fac8609be6416cd6b345764f075db
-lastReviewedNote: 'Paired Worker #339 / PR #340 candidate: inspected exact public sources, additive companion, bounded generic defaults and partial category persistence. Native candidate scientific acceptance and coordinated delivery remain separate gates.'
+lastReviewedAt: 2026-10-25
+lastReviewedCommit: afc871b576616cfb4cd83455ba6a48d1fbede548
+lastReviewedNote: 'Worker #340: reviewed paired immutable companions, source basis, exact Flow classification, conditional generic selection and partial persistence against afc871b57. The 227 unresolved regional default families and separate native/Root acceptance remain explicit.'
 ---
 
 # Supported source policy

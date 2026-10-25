@@ -18,8 +18,8 @@ checkPaths:
   - public/lcia-source-policy-v2/**
   - tests/unit/services/lciaMethods/supportedSourcePolicy.test.ts
 lastReviewedAt: 2026-10-25
-lastReviewedCommit: afc871b576616cfb4cd83455ba6a48d1fbede548
-lastReviewedNote: 'Worker #340: reviewed paired immutable companions, source basis, exact Flow classification, conditional generic selection and partial persistence against afc871b57. The 227 unresolved regional default families and separate native/Root acceptance remain explicit.'
+lastReviewedCommit: 72c452b7162ee6038605f07637abee70f99e73d8
+lastReviewedNote: 'Worker #340 v3: reviewed exact source geographic admission and partial-result consumers against 72c452b71. Global qualified defaults and literal RER admission are distinct; no proxy or Process-geography inheritance is adopted. Existing source, persistence and ownership boundaries remain; final native/Root qualification is separate.'
 ---
 
 # Supported source policy

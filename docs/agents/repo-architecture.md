@@ -28,8 +28,8 @@ checkPaths:
   - tests/e2e/i18n/**
   - tests/e2e/dataset-lists/**
 lastReviewedAt: 2026-10-25
-lastReviewedCommit: afc871b576616cfb4cd83455ba6a48d1fbede548
-lastReviewedNote: 'Worker #340: reviewed additive source-companion and exact inventory-classification paths, frozen category readers and available-only TIDAS persistence. Existing authentication, schema, release and publication ownership is retained.'
+lastReviewedCommit: 72c452b7162ee6038605f07637abee70f99e73d8
+lastReviewedNote: 'Worker #340 v3: reviewed exact source geographic admission and partial-result consumers against 72c452b71. Global qualified defaults and literal RER admission are distinct; no proxy or Process-geography inheritance is adopted. Existing source, persistence and ownership boundaries remain; final native/Root qualification is separate.'
 related:
   - ../AGENTS.md
   - ../.docpact/config.yaml

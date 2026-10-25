@@ -44,8 +44,8 @@ checkPaths:
   - .github/workflows/release-gate.yml
   - .github/workflows/release-readiness.yml
 lastReviewedAt: 2026-10-25
-lastReviewedCommit: afc871b576616cfb4cd83455ba6a48d1fbede548
-lastReviewedNote: 'Worker #340: reviewed the focused LCIA regression scope and delivery-evidence boundary. The checked-in full-coverage reference and closed-queue policy are preserved; candidate-wide results are recorded separately.'
+lastReviewedCommit: 72c452b7162ee6038605f07637abee70f99e73d8
+lastReviewedNote: 'Worker #340 v3: reviewed the affected source/consumer change against 72c452b71 and the existing documentation, bootstrap, analysis, branch and validation contracts. Existing proposal status, authentication, dependencies, gate thresholds and delivery authority remain unchanged; execution evidence belongs to the task/PR.'
 ---
 
 # Testing Execution State

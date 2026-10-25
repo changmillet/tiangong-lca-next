@@ -18,8 +18,8 @@ checkPaths:
   - src/services/processes/allocation.ts
   - src/pages/LifeCycleModels/**
 lastReviewedAt: 2026-10-25
-lastReviewedCommit: afc871b576616cfb4cd83455ba6a48d1fbede548
-lastReviewedNote: 'Worker #340: reviewed exact Flow classification, source-bound regional/generic CF selection, retained LCI and unavailable-versus-zero interpretation. Product-demand, allocation and matrix rules remain unchanged.'
+lastReviewedCommit: 72c452b7162ee6038605f07637abee70f99e73d8
+lastReviewedNote: 'Worker #340 v3: reviewed exact source geographic admission and partial-result consumers against 72c452b71. Global qualified defaults and literal RER admission are distinct; no proxy or Process-geography inheritance is adopted. Existing source, persistence and ownership boundaries remain; final native/Root qualification is separate.'
 related:
   - ./util_calculate.md
   - ../plans/model-product-demand.md

@@ -22,8 +22,8 @@ checkPaths:
   - src/components/LcaTaskCenter/**
   - src/pages/Processes/Analysis/**
 lastReviewedAt: 2026-10-25
-lastReviewedCommit: afc871b576616cfb4cd83455ba6a48d1fbede548
-lastReviewedNote: 'Worker #340: reviewed deduplicated exact Flow metadata reuse, independent LCIA availability and available-only scientific result persistence. Numerical matrix, allocation, cancellation and save-acknowledgement contracts are retained.'
+lastReviewedCommit: 72c452b7162ee6038605f07637abee70f99e73d8
+lastReviewedNote: 'Worker #340 v3: reviewed exact source geographic admission and partial-result consumers against 72c452b71. Global qualified defaults and literal RER admission are distinct; no proxy or Process-geography inheritance is adopted. Existing source, persistence and ownership boundaries remain; final native/Root qualification is separate.'
 ---
 
 # Lifecycle Model Calculation Reference

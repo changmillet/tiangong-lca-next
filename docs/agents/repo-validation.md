@@ -47,8 +47,8 @@ checkPaths:
   - scripts/i18n/locale-delivery.mjs
   - .github/workflows/**
 lastReviewedAt: 2026-10-25
-lastReviewedCommit: afc871b576616cfb4cd83455ba6a48d1fbede548
-lastReviewedNote: 'Worker #340: reviewed source-backed selector, generated-Process caller, empty-inventory and partial-consumer proof requirements against afc871b57. Baseline and protected-branch gates remain; exact execution and native qualification evidence stays in the delivery record.'
+lastReviewedCommit: 72c452b7162ee6038605f07637abee70f99e73d8
+lastReviewedNote: 'Worker #340 v3: reviewed exact source geographic admission and partial-result consumers against 72c452b71. Global qualified defaults and literal RER admission are distinct; no proxy or Process-geography inheritance is adopted. Existing source, persistence and ownership boundaries remain; final native/Root qualification is separate.'
 related:
   - ../AGENTS.md
   - ../.docpact/config.yaml
@@ -91,6 +91,8 @@ pnpm prepush:gate
 Changes to the static selector, Flow inventory classification or partial-result consumers include focused `lciaMethods/inventory`, `supportedSourcePolicy`, `calculationEvidence`, cache utility and generated-Process integration tests, plus the category-availability/API and affected profile, hotspot, comparison and Calculation Bundle component suites. Preserve the default baseline and final delivery gate below.
 
 Source proof verifies all supported numeric bindings against the unchanged reviewed bundle and byte-identical paired companion. Exercise missing-location climate, reviewed generic versus exact regional selection, exact Flow versions/directions, explicit zero and source/hash tamper. The business-caller fixture must include the product reference, valid elementary emissions, Product/Waste inputs and outputs, unknown classification and wrong-revision reader fallback. Verify the complete LCI is preserved, only confirmed elementary inventory reaches characterization, and classification metadata is deduplicated and reused.
+
+Geographic admission proof is separate from generic-record identity. Compare native/static/browser decisions for the five RER-scoped sources: missing/blank/unknown, BR/CN and unreviewed tokens remain unavailable; literal RER may select the reviewed generic and an exact DE factor stays first. Preserve qualified global Climate factors for missing/CN contexts, reject geography/hash declaration drift, and prove an existing nonspatial proof cannot broaden a known restricted source. Current-policy admission retires v2 numerical artifacts rather than reusing results computed under the old unrestricted generic rule.
 
 Consumer proof distinguishes available zero, unavailable/null, a valid historical value and an untrusted/missing value. Test classification-qualified empty-inventory zero and static-report round-trip while legacy malformed empty matrices stay rejected. Generated Process persistence retains the full availability report but emits no nullable or stale unavailable scientific `LCIAResult` row. Paired Worker/Edge/Database compatibility and immutable native qualification remain separate evidence from mocked frontend tests. Source/default decisions and acceptance limits are owned by [the source-policy contract](./lcia-supported-source-policy.md); exact execution results belong to the task/PR evidence.
 

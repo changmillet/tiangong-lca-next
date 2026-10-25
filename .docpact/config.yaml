@@ -1,8 +1,8 @@
 version: 1
 layout: repo
 lastReviewedAt: '2026-10-25'
-lastReviewedCommit: 'afc871b576616cfb4cd83455ba6a48d1fbede548'
-lastReviewedNote: 'Worker #340 paired LCIA consumer: extended the existing static-bundle rule, routing and document inventory to additive source-policy assets and the source contract. Existing public ownership and all gate modes remain; no exclusion or waiver.'
+lastReviewedCommit: '72c452b7162ee6038605f07637abee70f99e73d8'
+lastReviewedNote: 'Worker #340 v3: reviewed the affected source/consumer change against 72c452b71 and the existing documentation, bootstrap, analysis, branch and validation contracts. Existing proposal status, authentication, dependencies, gate thresholds and delivery authority remain unchanged; execution evidence belongs to the task/PR.'
 
 # Keep path-level ownership, routing intents, and governed-doc rules here.
 # AGENTS.md keeps the entry-level repo contract and minimal execution summary.

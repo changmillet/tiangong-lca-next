@@ -39,6 +39,7 @@ export type LciaFlowFactorEntry = {
 };
 
 export type LciaFlowFactorGroup = {
+  '@version'?: string;
   factor?: LciaFlowFactorEntry[];
 };
 

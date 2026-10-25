@@ -1161,6 +1161,7 @@ describe('LCIA Methods Utility Functions', () => {
       });
       setCachedMethod('flow_factors.json.gz', {
         'flow-1:OUTPUT': {
+          '@version': '01.00.000',
           factor: [
             { key: 'method-1', value: '2' },
             { key: 'method-1', value: '1.5' },
@@ -1194,9 +1195,7 @@ describe('LCIA Methods Utility Functions', () => {
         ],
       });
       setCachedMethod('flow_factors.json.gz', {
-        'flow-1:INPUT': {
-          factor: [{ key: 'method-1', value: '0.5' }],
-        },
+        'flow-1:INPUT': { '@version': '01.00.000', factor: [{ key: 'method-1', value: '0.5' }] },
       });
 
       const result = await LCIAResultCalculation([
@@ -1283,9 +1282,7 @@ describe('LCIA Methods Utility Functions', () => {
         files: [{ id: 'method-1', version: '01.00.000', description: [] }],
       });
       setCachedMethod('flow_factors.json.gz', {
-        'flow-1:OUTPUT': {
-          factor: [{ key: 'method-1', value: '1' }],
-        },
+        'flow-1:OUTPUT': { '@version': '01.00.000', factor: [{ key: 'method-1', value: '1' }] },
       });
 
       global.fetch = jest.fn().mockResolvedValue({
@@ -1343,9 +1340,7 @@ describe('LCIA Methods Utility Functions', () => {
         constructor(_body?: any, _init?: any) {}
         async text() {
           return JSON.stringify({
-            'flow-1:OUTPUT': {
-              factor: [{ key: 'method-1', value: '2' }],
-            },
+            'flow-1:OUTPUT': { '@version': '01.00.000', factor: [{ key: 'method-1', value: '2' }] },
           });
         }
       } as any;
@@ -1381,6 +1376,7 @@ describe('LCIA Methods Utility Functions', () => {
       });
       setCachedMethod('flow_factors.json.gz', {
         'flow-1:OUTPUT': {
+          '@version': '01.00.000',
           factor: [{ key: 'method-unknown', value: '2' }],
         },
       });
@@ -1412,9 +1408,7 @@ describe('LCIA Methods Utility Functions', () => {
         },
       });
       setCachedMethod('flow_factors.json.gz', {
-        'flow-1:OUTPUT': {
-          factor: [{ key: 'method-1', value: '2' }],
-        },
+        'flow-1:OUTPUT': { '@version': '01.00.000', factor: [{ key: 'method-1', value: '2' }] },
       });
 
       const result = await LCIAResultCalculation([
@@ -1443,9 +1437,7 @@ describe('LCIA Methods Utility Functions', () => {
         ],
       });
       setCachedMethod('flow_factors.json.gz', {
-        'flow-1:OUTPUT': {
-          factor: [{ key: 'method-1', value: '2' }],
-        },
+        'flow-1:OUTPUT': { '@version': '01.00.000', factor: [{ key: 'method-1', value: '2' }] },
       });
 
       const result = await LCIAResultCalculation([

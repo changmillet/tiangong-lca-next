@@ -15,6 +15,7 @@ import type {
   LciaUncharacterizedReason,
 } from './data';
 import { computeLciaSha256, STATIC_LCIA_CACHE_MANIFEST } from './evidence';
+import { selectNonregionalFactors } from './nonregional';
 
 type StaticCalculationInput = {
   exchanges: ProcessExchangeData[];
@@ -261,7 +262,11 @@ export async function calculateStaticLcia(
     }
 
     const group = factors[`${flowId}:${direction}`];
-    const factorEntries = Array.isArray(group?.factor) ? group.factor : [];
+    const flowVersion = String(flowRef?.['@version'] ?? '').trim();
+    const factorEntries =
+      flowVersion && group?.['@version'] === flowVersion && Array.isArray(group.factor)
+        ? group.factor
+        : [];
     const entriesByMethod = new Map<string, typeof factorEntries>();
     for (const factor of factorEntries) {
       const factorMethodId = String(factor?.key ?? '').trim();
@@ -274,7 +279,19 @@ export async function calculateStaticLcia(
 
     for (const method of STATIC_LCIA_CACHE_MANIFEST.methods) {
       const methodRow = methodRowById.get(method.method_id)!;
-      const methodFactors = entriesByMethod.get(method.method_id) ?? [];
+      const methodFactors = selectNonregionalFactors(
+        method.method_id,
+        flowId,
+        flowVersion,
+        direction,
+        entriesByMethod.get(method.method_id) ?? [],
+      );
+      if (methodFactors === null) {
+        sourceDriftReasons.push(
+          `nonregional_default_source_mismatch:${method.method_id}:${flowId}:${flowVersion}:${direction}`,
+        );
+        continue;
+      }
       if (methodFactors.length === 0) {
         methodRow.counts.unmatched += 1;
         gaps.push(buildGap(method, exchange, exchangeIndex, 'missing_factor'));

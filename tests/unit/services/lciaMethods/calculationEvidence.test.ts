@@ -289,16 +289,14 @@ describe('reviewed LCIA calculation and evidence', () => {
     expect(normalizeLcaCalculationEvidence({ schema_version: 'unknown' })).toBeNull();
   });
 
-  it('preserves valid duplicate aggregation, emits explicit zero, and maps locator aliases', async () => {
+  it('emits explicit zero and maps locator aliases', async () => {
     const result = await calculateStaticLcia({
       exchanges: [exchange(), exchange({ '@dataSetInternalID': 'exchange-2', meanAmount: '4' })],
       listData,
       factors: {
         'flow-1:OUTPUT': {
-          factor: [
-            { key: primary.method_id, value: '2' },
-            { key: primary.method_id, value: '-2' },
-          ],
+          '@version': '01.00.000',
+          factor: [{ key: primary.method_id, value: '0' }],
         },
       },
       ...sourceProof,
@@ -319,31 +317,40 @@ describe('reviewed LCIA calculation and evidence', () => {
     expect(result.report.method_factor_coverage.counts.unmatched).toBe((methods.length - 1) * 2);
   });
 
-  it('keeps valid duplicate values but reports an invalid duplicate instead of substituting zero', async () => {
+  it('reports a non-finite unique coefficient without publishing a numeric result', async () => {
     const result = await calculateStaticLcia({
       exchanges: [exchange()],
       listData,
       factors: {
         'flow-1:OUTPUT': {
+          '@version': '01.00.000',
+          factor: [{ key: primary.method_id, value: 'NaN' }],
+        },
+      },
+      ...sourceProof,
+    });
+    expect(result.results).toEqual([]);
+    expect(result.report.method_factor_coverage.by_method[0].counts.invalid).toBe(1);
+  });
+
+  it('rejects unbound duplicate factors instead of summing or deduplicating them', async () => {
+    const result = await calculateStaticLcia({
+      exchanges: [exchange()],
+      listData,
+      factors: {
+        'flow-1:OUTPUT': {
+          '@version': '01.00.000',
           factor: [
             { key: primary.method_id, value: '2' },
-            { key: primary.method_id, value: 'not-a-number' },
+            { key: primary.method_id, value: '2' },
           ],
         },
       },
       ...sourceProof,
     });
-
-    expect(result.results[0].meanAmount).toBe('6');
-    expect(result.report.method_factor_coverage.by_method[0].counts).toEqual({
-      matched: 0,
-      unmatched: 0,
-      invalid: 1,
-      unsupported_direction: 0,
-    });
-    expect(result.report.method_factor_coverage.uncharacterized_exchanges).toEqual(
-      expect.arrayContaining([expect.objectContaining({ reason: 'invalid_factor' })]),
-    );
+    expect(result.results).toEqual([]);
+    expect(result.report.calculation_status).toBe('method_source_drift');
+    expect(result.report.failure_reason).toContain('nonregional_default_source_mismatch');
   });
 
   it.each([
@@ -367,7 +374,10 @@ describe('reviewed LCIA calculation and evidence', () => {
       exchanges: [exchange()],
       listData,
       factors: {
-        'flow-1:OUTPUT': { factor: [{ key: primary.method_id, value: '2' }] },
+        'flow-1:OUTPUT': {
+          '@version': '01.00.000',
+          factor: [{ key: primary.method_id, value: '2' }],
+        },
       },
       observedListSha256: '0'.repeat(64),
       observedFactorSha256: manifest.files.factors.sha256,
@@ -469,6 +479,7 @@ describe('reviewed LCIA calculation and evidence', () => {
       listData,
       factors: {
         'flow-1:OUTPUT': {
+          '@version': '01.00.000',
           factor: methods.map((method) => ({ key: method.method_id, value: '1' })),
         },
       },
@@ -500,6 +511,7 @@ describe('reviewed LCIA calculation and evidence', () => {
       listData,
       factors: {
         'flow-1:OUTPUT': {
+          '@version': '01.00.000',
           factor: methods.map((method) => ({ key: method.method_id, value: '1' })),
         },
       },
@@ -698,6 +710,7 @@ describe('reviewed LCIA calculation and evidence', () => {
       listData,
       factors: {
         'flow-1:OUTPUT': {
+          '@version': '01.00.000',
           factor: methods.map((method) => ({ key: method.method_id, value: '1' })),
         },
       },
@@ -737,7 +750,10 @@ describe('reviewed LCIA calculation and evidence', () => {
         ),
       } as any,
       factors: {
-        'flow-1:INPUT': { factor: [{ key: primary.method_id, value: '2' }] },
+        'flow-1:INPUT': {
+          '@version': '01.00.000',
+          factor: [{ key: primary.method_id, value: '2' }],
+        },
       },
       ...sourceProof,
     });
@@ -762,7 +778,7 @@ describe('reviewed LCIA calculation and evidence', () => {
       const drift = await calculateStaticLcia({
         exchanges: [exchange()],
         listData,
-        factors: { 'flow-1:OUTPUT': { factor: [{ key, value: '1' }] } },
+        factors: { 'flow-1:OUTPUT': { '@version': '01.00.000', factor: [{ key, value: '1' }] } },
         ...sourceProof,
       });
       expect(drift.results).toEqual([]);
@@ -789,7 +805,7 @@ describe('reviewed LCIA calculation and evidence', () => {
     const noFactorArray = await calculateStaticLcia({
       exchanges: [exchange()],
       listData,
-      factors: { 'flow-1:OUTPUT': { factor: null as any } },
+      factors: { 'flow-1:OUTPUT': { '@version': '01.00.000', factor: null as any } },
       ...sourceProof,
     });
     expect(noFactorArray.report.method_factor_coverage.counts.unmatched).toBe(methods.length);
@@ -797,7 +813,9 @@ describe('reviewed LCIA calculation and evidence', () => {
     const nullFactorKey = await calculateStaticLcia({
       exchanges: [exchange()],
       listData,
-      factors: { 'flow-1:OUTPUT': { factor: [{ key: null as any, value: '1' }] } },
+      factors: {
+        'flow-1:OUTPUT': { '@version': '01.00.000', factor: [{ key: null as any, value: '1' }] },
+      },
       ...sourceProof,
     });
     expect(nullFactorKey.report.failure_reason).toContain('unknown_factor_method_id:<empty>');

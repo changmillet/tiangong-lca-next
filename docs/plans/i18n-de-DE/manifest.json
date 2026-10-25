@@ -3,7 +3,7 @@
   "source": {
     "baseRef": "c26f306e82ac66f50a56aafe8f89ea96c0b0c67d",
     "baseCommit": "c26f306e82ac66f50a56aafe8f89ea96c0b0c67d",
-    "auditedInputDigest": "322ca784bd6d1c84740c00ebec10aea5cc5edb1f95eb42f6adc6dc7c01b28656",
+    "auditedInputDigest": "bfba748579a639dd50bd24739fc806256d520ef1ee02fb7c1724e6ba7830855d",
     "auditedInputDigestAlgorithm": "sha256(path\\0content\\0)",
     "repository": "tiangong-lca/platform"
   },
@@ -74,7 +74,7 @@
     "activeStaticKeyCount": 2414,
     "activeDynamicKeyCount": 323,
     "reservedKeyCount": 877,
-    "productionSourceFileCount": 514,
+    "productionSourceFileCount": 515,
     "literalReferenceCount": 4444,
     "dynamicCallsiteCount": 38,
     "dynamicCallsiteSummaryCount": 38,

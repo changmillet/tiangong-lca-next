@@ -291,6 +291,28 @@ function main() {
   const manifest = JSON.parse(manifestBytes.toString('utf8'));
   assertEqual(errors, 'cache_manifest', manifest, expectedManifest);
   const manifestSha256 = sha256(manifestBytes);
+  // This prepared mapping is the exact Worker #344 source-verified artifact.
+  const defaultsBytes = fs.readFileSync(path.join(bundleDir, 'nonregional_defaults.json'));
+  assertEqual(
+    errors,
+    'nonregional_defaults_sha256',
+    sha256(defaultsBytes),
+    'd5ed7b76d96aa6640371fdba12076e129240e01f11e360d374b65fb89f9c3373',
+  );
+  const defaults = JSON.parse(defaultsBytes);
+  assertEqual(
+    errors,
+    'nonregional_source_bundle',
+    defaults.static_bundle_manifest_sha256,
+    manifestSha256,
+  );
+  assertEqual(
+    errors,
+    'nonregional_source_factors',
+    defaults.static_factor_manifest_sha256,
+    manifest.factor_manifest_sha256,
+  );
+
   const evidenceSource = fs.readFileSync(evidenceSourcePath, 'utf8');
   const manifestLockMatch = evidenceSource.match(
     /STATIC_LCIA_CACHE_MANIFEST_SHA256\s*=\s*['"]([0-9a-f]{64})['"]/,

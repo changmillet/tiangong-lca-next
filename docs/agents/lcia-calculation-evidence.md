@@ -27,8 +27,8 @@ checkPaths:
   - src/services/processes/api.ts
   - .github/workflows/ci.yml
   - .github/workflows/build.yml
-lastReviewedAt: 2026-10-18
-lastReviewedCommit: 18e81718ed5750cdeca5ebbd7650257315559fc1
+lastReviewedAt: 2026-10-25
+lastReviewedCommit: f9b51626bf8fac8609be6416cd6b345764f075db
 lastReviewedNote: 'Platform #1302: reviewed frontend result presentation, exact-version metadata reads, removal of coverage-only warnings and focused browser/unit proof. Backend semantics, authorization, dependencies and full delivery gates remain unchanged; validation outcomes are recorded in the Issue and PR.'
 ---
 
@@ -54,12 +54,13 @@ Calculations and evidence use the canonical method ID. Artifact URLs use the loc
 
 ## Calculation semantics
 
-Coverage is counted per exchange × LCIA method using the key dimensions `method_id`, `method_version`, `flow_uuid`, and `direction`.
+Coverage is counted per exchange × LCIA method using the key dimensions `method_id`, `method_version`, `flow_uuid`, exact Flow version, and `direction`. The existing evidence matrix retains its compatibility shape.
 
 - The calculation amount is `meanAmount`; `resultingAmount` is retained only as evidence.
 - A missing factor is incomplete coverage, never an implicit zero.
 - An explicit finite zero factor remains a valid numeric result.
-- Valid duplicate factors retain the historical additive behavior. Duplicate counts remain visible in the bundle manifest. An invalid duplicate is reported as invalid and is never replaced by zero.
+- Nonregional calculation selects exactly one source default per exact method/Flow version/direction. `public/lciamethods/nonregional_defaults.json` is the byte-identical prepared mapping from Worker #344 (`d5ed7b76d96aa6640371fdba12076e129240e01f11e360d374b65fb89f9c3373`), bound to this immutable bundle and Data commit `367642d7994e0e75188e7e241fb2a4b85ffff62f`. Worker owns its XML verification/generator. Regional alternatives are never added together; unexplained duplicate families fail source integrity.
+- Exchange location is optional and does not select regional factors in this nonregional profile. Missing exact-version factors do not clear other method totals or block calculation. Source quality and scientific eligibility remain separate concerns.
 - Non-finite exchange amounts and factors are invalid evidence.
 - A list/factor hash mismatch, unknown method identity, or unavailable SHA-256 implementation returns no trusted numeric result.
 

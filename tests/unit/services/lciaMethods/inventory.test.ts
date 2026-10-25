@@ -149,6 +149,39 @@ it('reuses exact metadata and bounds deduplicated reads to four batches of at mo
   expect(maximum).toBeLessThanOrEqual(4);
 });
 
+it('refuses contradictory cached Flow classifications and accepts a singleton reference without mutation', async () => {
+  const row = exchange(product);
+  row.referenceToFlowDataSet = [row.referenceToFlowDataSet] as any;
+  const classified = await classifyLciaInventory(
+    [row],
+    [
+      { id: product, version: '03.00.004', typeOfDataSet: 'Product flow' },
+      { id: product, version: '03.00.004', typeOfDataSet: 'Elementary flow' },
+    ],
+  );
+  expect(classified.receipt.unresolved_exchange_count).toBe(1);
+  expect(classified.exchanges).toEqual([]);
+  expect(mockGetFlowProperties).not.toHaveBeenCalled();
+  const unrelated = await classifyLciaInventory(
+    [exchange(product)],
+    [
+      { id: product, version: '03.00.004', typeOfDataSet: 'Product flow' },
+      { id: waste, version: '03.00.004', typeOfDataSet: 'Waste flow' },
+    ],
+  );
+  expect(unrelated.receipt.non_elementary_exchange_count).toBe(1);
+  for (const response of [
+    { success: false, data: [] },
+    { success: true, error: { message: 'denied' }, data: [] },
+    { success: true, data: {} },
+  ]) {
+    mockGetFlowProperties.mockResolvedValue(response);
+    expect(
+      (await classifyLciaInventory([exchange(elementary)])).receipt.unresolved_exchange_count,
+    ).toBe(1);
+  }
+});
+
 it('recognizes a genuinely known empty elementary inventory but refuses malformed receipts', async () => {
   const classified = await classifyLciaInventory(
     [exchange(product)],

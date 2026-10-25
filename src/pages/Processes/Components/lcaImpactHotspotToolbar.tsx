@@ -407,7 +407,19 @@ const LcaImpactHotspotToolbar: FC<{
         };
       }
 
-      if (data?.kind !== 'ranked_processes') {
+      if (
+        data?.kind !== 'ranked_processes' ||
+        !Array.isArray(data.values) ||
+        data.values.some(
+          (item) =>
+            typeof item?.process_id !== 'string' ||
+            !item.process_id.trim() ||
+            typeof item?.process_version !== 'string' ||
+            !item.process_version.trim() ||
+            finiteLciaValue(item.value) === null ||
+            finiteLciaValue(item.absolute_value) === null,
+        )
+      ) {
         throw new Error(
           intl.formatMessage({
             id: 'pages.process.lca.hotspots.message.invalidPayload',
@@ -416,21 +428,13 @@ const LcaImpactHotspotToolbar: FC<{
         );
       }
 
-      const rankedValues = Array.isArray(data.values)
-        ? (data.values as RankedProcessValue[])
-            .filter(
-              (item) =>
-                finiteLciaValue(item?.value) !== null &&
-                finiteLciaValue(item?.absolute_value) !== null,
-            )
-            .map((item) => ({
-              process_id: String(item?.process_id ?? '').trim(),
-              process_version: String(item?.process_version ?? '').trim(),
-              process_index: Number(item?.process_index ?? -1),
-              value: normalizeNumber(item?.value),
-              absolute_value: normalizeNumber(item?.absolute_value),
-            }))
-        : [];
+      const rankedValues = (data.values as RankedProcessValue[]).map((item) => ({
+        process_id: item.process_id.trim(),
+        process_version: item.process_version.trim(),
+        process_index: Number(item.process_index ?? -1),
+        value: normalizeNumber(item.value),
+        absolute_value: normalizeNumber(item.absolute_value),
+      }));
 
       let processNameLookup = new Map<string, string>();
       try {

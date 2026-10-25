@@ -204,7 +204,7 @@ describe('CalculationBundlePanel', () => {
     const method = STATIC_LCIA_CACHE_MANIFEST.methods[0];
     const availability = {
       schema_version: 'lcia.category-availability.v1',
-      policy_version: 'lcia.applicability.source-bound.v2',
+      policy_version: 'lcia.applicability.source-bound.v3',
       completeness: 'unavailable',
       categories: [
         {
@@ -252,7 +252,7 @@ describe('CalculationBundlePanel', () => {
         schemaVersion: 'tiangong.calculation-bundle.v3',
         lciaAvailability: {
           schema_version: 'lcia.category-availability.v1',
-          policy_version: 'lcia.applicability.source-bound.v2',
+          policy_version: 'lcia.applicability.source-bound.v3',
           completeness: 'unavailable',
           categories: [
             {

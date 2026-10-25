@@ -58,7 +58,7 @@ This repo is a Umi `4.7.24` React 19 SPA on one native Ant Design `6.6.6` / ProC
 | `src/services/general/tidasScalarStorage.ts` | canonical TIDAS year/percentage scalar normalization and the Process/Flow save-boundary issue format |
 | `src/services/general/aiSuggestion.ts` | authenticated AI suggestion enqueue, bounded polling, terminal validation, and versioned result decoding |
 | `src/services/dataProducts/**` | authenticated data-product commands, closure-check projections, result-package requests, and the curated `task-summary.v2` feed consumed by the global task center |
-| `src/services/lciaMethods/**`, `public/lcia-source-policy-v1/**` | pinned additive applicability companion, exact Flow-type classification, source-bound factor selection, availability receipts and view-to-TIDAS result mapping; source basis is owned by `lcia-supported-source-policy.md` |
+| `src/services/lciaMethods/**`, `public/lcia-source-policy-v2/**` | pinned additive applicability companion, exact Flow-type classification, source-bound factor selection, availability receipts and view-to-TIDAS result mapping; source basis is owned by `lcia-supported-source-policy.md` |
 | `src/locales/**` | UI strings; every supported locale follows one canonical message manifest, with leaf topology, key ownership, placeholders, and dynamic families kept aligned |
 | `src/global.less`, `src/style/**`, `src/manifest.json`, `src/service-worker.js`, `src/utils/appUrl.ts`, `src/utils/browserNavigation.ts`, `src/utils/ruleVerification.ts`, `src/typings.d.ts` | browser shell support, global styling, explicit navigation side-effect boundaries, and support utilities |
 | `public/**` | generated or reviewed static resource bundles consumed by the app, including the EdgeOne OAuth path rewrite and no-store hash-history consent bridge |
@@ -268,7 +268,7 @@ Next owns read orchestration, release dataset identity display, directional LCI/
 - dataset validation, localized field guidance, and review jump targets: `src/pages/*/sdkValidation.ts`, `src/pages/Utils/validation/**`, `src/pages/Processes/sdkValidationUi.ts`, `src/pages/Processes/Components/**`, `src/components/ValidationIssueModal/index.tsx`, `src/components/LangTextItem/form.tsx`, `src/pages/Utils/review.tsx`
 - review, team, and system-management flows: `src/pages/Review/**`, `src/pages/ManageSystem/**`, `src/pages/Teams/**`
 - governed reference sources and outputs: `src/services/referenceResources/**`, `scripts/reference-data/**`, `public/classifications/**`, `public/locations/**`
-- other cache-backed static resources: unchanged `public/lciamethods/**`, additive `public/lcia-source-policy-v1/**`, and `public/maps/**`
+- other cache-backed static resources: unchanged `public/lciamethods/**`, additive `public/lcia-source-policy-v2/**`, and `public/maps/**`
 
 ## Cross-Repo Boundaries
 

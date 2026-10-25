@@ -2096,6 +2096,57 @@ describe('LcaAnalysisPage', () => {
     ).toBeInTheDocument();
   });
 
+  it('explains an unavailable category and retains an exact revision in the next valid profile', async () => {
+    const originalIntl = umiMocks.useIntl();
+    umiMocks.useIntl.mockReturnValue({
+      ...originalIntl,
+      formatMessage: (descriptor, values) => {
+        const messages: Record<string, string> = {
+          'pages.process.lca.availability.unavailable': 'Unavailable',
+          'pages.process.lca.availability.reason.location':
+            'The source does not cover this location.',
+        };
+        return messages[descriptor.id ?? ''] ?? originalIntl.formatMessage(descriptor, values);
+      },
+    });
+    isLcaFunctionInvokeError.mockImplementation(
+      (error: { code?: string } | undefined) => error?.code === 'lcia_category_unavailable',
+    );
+    queryLcaResults.mockRejectedValueOnce({
+      code: 'lcia_category_unavailable',
+      body: { reasons: ['lcia_generic_location_not_admitted'] },
+    });
+    render(<LcaAnalysisPage />);
+    fireEvent.click(await waitForAnalysisInitialization());
+    expect(
+      await screen.findByText('Unavailable: The source does not cover this location.'),
+    ).toBeInTheDocument();
+    queryLcaResults.mockResolvedValueOnce({
+      snapshot_id: 'snapshot-exact-revision',
+      result_id: 'result-exact-revision',
+      source: 'all_unit',
+      mode: 'process_all_impacts',
+      data: {
+        values: [
+          {
+            impact_id: 'impact-1',
+            impact_index: 0,
+            impact_name: 'Climate change',
+            impact_version: '01.00.000',
+            unit: 'kg CO2-eq',
+            value: 1,
+          },
+        ],
+      },
+      meta: { computed_at: '2026-10-25T00:00:00Z' },
+    });
+    fireEvent.click(await waitForAnalysisInitialization());
+    expect(await screen.findByText('snapshot-exact-revision')).toBeInTheDocument();
+    expect(
+      screen.queryByText('Unavailable: The source does not cover this location.'),
+    ).not.toBeInTheDocument();
+  });
+
   it('renders stale-snapshot and generic fallback errors for analysis actions', async () => {
     const staleError = { code: 'snapshot_stale_rebuild_required' };
 

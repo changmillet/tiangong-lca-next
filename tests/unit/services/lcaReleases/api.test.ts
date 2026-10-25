@@ -231,6 +231,64 @@ describe('lcaReleases api', () => {
     expect(download).toMatchObject({ data: { artifactId: 'artifact-1' }, status: 200 });
   });
 
+  it('binds private bundle schema and method count to its category availability', async () => {
+    const availability = {
+      schema_version: 'lcia.category-availability.v1',
+      policy_version: 'lcia.applicability.source-bound.v3',
+      completeness: 'unavailable',
+      categories: [
+        {
+          impact_index: 0,
+          method_id: '11111111-1111-4111-8111-111111111111',
+          method_version: '01.00.000',
+          status: 'unavailable',
+          reasons: ['lcia_generic_location_not_admitted'],
+        },
+      ],
+    };
+    const partial = {
+      schemaVersion: 'tiangong.calculation-bundle.v3',
+      snapshot: { impactCount: 1 },
+      lciaAvailability: availability,
+    };
+    mockFunctionsInvoke.mockResolvedValueOnce({
+      data: { ok: true, data: { calculationBundle: { manifest: partial } } },
+      error: null,
+    });
+    await expect(getCalculationBundle('package-1')).resolves.toMatchObject({
+      data: { calculationBundle: { manifest: partial } },
+    });
+    for (const manifest of [
+      { ...partial, lciaAvailability: undefined },
+      {
+        ...partial,
+        lciaAvailability: {
+          ...availability,
+          completeness: 'complete',
+          categories: [{ ...availability.categories[0], status: 'available', reasons: [] }],
+        },
+      },
+    ]) {
+      mockFunctionsInvoke.mockResolvedValueOnce({
+        data: { ok: true, data: { calculationBundle: { manifest } } },
+        error: null,
+      });
+      await expect(getCalculationBundle('package-1')).rejects.toThrow(
+        'partial_bundle_availability_invalid',
+      );
+    }
+    mockFunctionsInvoke.mockResolvedValueOnce({
+      data: {
+        ok: true,
+        data: { calculationBundle: { manifest: { ...partial, snapshot: { impactCount: 2 } } } },
+      },
+      error: null,
+    });
+    await expect(getCalculationBundle('package-1')).rejects.toThrow(
+      'lcia_availability_axis_invalid',
+    );
+  });
+
   it('allows anonymous public release reads but rejects private bundle reads without a session', async () => {
     mockAuthGetSession.mockResolvedValue({ data: { session: null } });
     mockFunctionsInvoke.mockResolvedValueOnce({ data: { releaseRunId: 'public' }, error: null });

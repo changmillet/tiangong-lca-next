@@ -38,7 +38,7 @@ export function LciaUnavailableValue({ reasons = [] }: { reasons?: string[] }) {
   const intl = useIntl();
   const detail = formatLciaUnavailableReasons(reasons, intl);
   return (
-    <Tooltip title={detail || undefined}>
+    <Tooltip title={detail}>
       <Typography.Text type='secondary'>
         <FormattedMessage
           id='pages.process.lca.availability.unavailable'

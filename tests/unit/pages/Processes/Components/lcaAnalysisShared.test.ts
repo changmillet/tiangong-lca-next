@@ -614,6 +614,75 @@ describe('lcaAnalysisShared', () => {
       },
     });
   });
+  it('preserves matching frozen labels during metadata loss and replaces labels across revisions', () => {
+    const base = {
+      key: 'frozen-row',
+      meanAmount: 99,
+      referenceQuantityDesc: { '#text': 'frozen unit' },
+      referenceToLCIAMethodDataSet: {
+        '@refObjectId': 'unreviewed-method',
+        '@version': '01.00.000',
+        'common:shortDescription': { '#text': 'Frozen label' },
+      },
+    } as any;
+    for (const impactVersion of [undefined, '01.00.000']) {
+      const [row] = buildMergedLcaRows(
+        [base],
+        [
+          {
+            impact_id: 'unreviewed-method',
+            impact_version: impactVersion,
+            impact_name: 'Fallback label',
+            unit: 'fallback unit',
+            value: 0,
+          },
+        ],
+        new Map(),
+      );
+      expect(row.meanAmount).toBe(0);
+      expect(row.referenceQuantityDesc).toEqual({ '#text': 'frozen unit' });
+      expect(row.referenceToLCIAMethodDataSet['common:shortDescription']).toEqual({
+        '#text': 'Frozen label',
+      });
+      expect(row.referenceToLCIAMethodDataSet['@version']).toBe('01.00.000');
+    }
+    const [newRevision] = buildMergedLcaRows(
+      [base],
+      [
+        {
+          impact_id: 'unreviewed-method',
+          impact_version: '02.00.000',
+          impact_name: 'New source label',
+          unit: 'new unit',
+          value: 1,
+        },
+      ],
+      new Map(),
+    );
+    expect(newRevision.referenceQuantityDesc).toEqual({ '@xml:lang': 'en', '#text': 'new unit' });
+    expect(newRevision.referenceToLCIAMethodDataSet['common:shortDescription']).toEqual({
+      '@xml:lang': 'en',
+      '#text': 'New source label',
+    });
+    const [unavailable] = buildMergedLcaRows(
+      [base],
+      [
+        {
+          impact_id: 'unreviewed-method',
+          impact_version: '01.00.000',
+          impact_name: 'Frozen label',
+          unit: 'frozen unit',
+          value: 999,
+          status: 'unavailable',
+          reasons: ['lcia_generic_location_not_admitted'],
+        },
+      ],
+      new Map(),
+    );
+    expect(unavailable.meanAmount).toBeNull();
+    expect(unavailable.status).toBe('unavailable');
+  });
+
   it('reconstructs omitted unavailable saved rows without restoring stale or different-version values', () => {
     const ids = [
       '11111111-1111-4111-8111-111111111111',
@@ -622,7 +691,7 @@ describe('lcaAnalysisShared', () => {
     ];
     const receipt: import('@/services/lca/categoryAvailability').LciaAvailability = {
       schema_version: 'lcia.category-availability.v1',
-      policy_version: 'lcia.applicability.source-bound.v2',
+      policy_version: 'lcia.applicability.source-bound.v3',
       completeness: 'partial',
       categories: ids.map((id, index) => ({
         impact_index: index,

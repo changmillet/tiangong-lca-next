@@ -231,7 +231,6 @@ export async function calculateStaticLcia(
     (Array.isArray(listData.files) ? listData.files : []).map((method) => [method.id, method]),
   );
   const totals = new Map<string, BigNumber>();
-  const methodsWithNumericFactors = new Set<string>();
   const gaps: LciaUncharacterizedExchange[] = [];
   const sourceDriftReasons: string[] = [];
 
@@ -266,7 +265,6 @@ export async function calculateStaticLcia(
   }
   if (exchanges.length === 0) {
     for (const method of STATIC_LCIA_CACHE_MANIFEST.methods) {
-      methodsWithNumericFactors.add(method.method_id);
       totals.set(method.method_id, toBigNumberOrZero(0));
     }
   }
@@ -327,7 +325,6 @@ export async function calculateStaticLcia(
       if (amount.isZero()) {
         for (const method of STATIC_LCIA_CACHE_MANIFEST.methods) {
           methodRowById.get(method.method_id)!.counts.matched += 1;
-          methodsWithNumericFactors.add(method.method_id);
           if (!totals.has(method.method_id)) totals.set(method.method_id, toBigNumberOrZero(0));
         }
         continue;
@@ -366,7 +363,9 @@ export async function calculateStaticLcia(
           );
           if (decision.status !== 'selected') {
             reason = decision.reason;
-            if (decision.status === 'unmatched') bucket = 'unmatched';
+            // This fixed producer retains one unnamed source record per exact family.
+            // Missing method/Flow/direction membership is already counted above; a
+            // present source can reject applicability but cannot imply a zero/gap.
           } else {
             const axis = `${method.method_id}:${flowId}:${flowVersion}`;
             const record = `${decision.source_record_index}:${decision.source_record_sha256}`;
@@ -378,7 +377,6 @@ export async function calculateStaticLcia(
               const value = toBigNumberOrNaN(decision.value);
               if (value.isNaN() || !value.isFinite())
                 throw new Error('lcia_supported_policy_static_record_invalid');
-              methodsWithNumericFactors.add(method.method_id);
               totals.set(
                 method.method_id,
                 (totals.get(method.method_id) ?? toBigNumberOrZero(0)).plus(amount.times(value)),
@@ -428,8 +426,6 @@ export async function calculateStaticLcia(
   const categories: LciaAvailability['categories'] = STATIC_LCIA_CACHE_MANIFEST.methods.map(
     (method, impactIndex) => {
       const reasons: string[] = [...reasonsByMethod.get(method.method_id)!].sort();
-      if (!methodsWithNumericFactors.has(method.method_id) && reasons.length === 0)
-        reasons.push('no_inventory_observations');
       return {
         impact_index: impactIndex,
         method_id: method.method_id,

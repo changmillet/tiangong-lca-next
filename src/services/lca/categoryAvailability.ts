@@ -9,7 +9,7 @@ export type LciaCategoryAvailability = {
 
 export type LciaAvailability = {
   schema_version: 'lcia.category-availability.v1';
-  policy_version: 'lcia.applicability.source-bound.v2';
+  policy_version: 'lcia.applicability.source-bound.v3';
   completeness: 'complete' | 'partial' | 'unavailable';
   categories: LciaCategoryAvailability[];
 };
@@ -32,7 +32,7 @@ export function parseLciaAvailability(value: unknown): LciaAvailability | null {
     Object.keys(value).sort().join(',') !==
       'categories,completeness,policy_version,schema_version' ||
     value.schema_version !== 'lcia.category-availability.v1' ||
-    value.policy_version !== 'lcia.applicability.source-bound.v2' ||
+    value.policy_version !== 'lcia.applicability.source-bound.v3' ||
     !Array.isArray(value.categories) ||
     value.categories.length === 0 ||
     value.categories.length > 256

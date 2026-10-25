@@ -157,6 +157,7 @@ export type LciaUncharacterizedReason =
   | 'lcia_inventory_flow_version_invalid'
   | 'lcia_factor_flow_version_mismatch'
   | 'lcia_factor_location_semantics_unresolved'
+  | 'lcia_generic_location_not_admitted'
   | 'lcia_factor_qualifier_unsupported'
   | 'lcia_factor_applicability_ambiguous'
   | 'no_lcia_factor_for_exact_location_direction'

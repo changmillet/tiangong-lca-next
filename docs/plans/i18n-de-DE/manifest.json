@@ -3,7 +3,7 @@
   "source": {
     "baseRef": "c26f306e82ac66f50a56aafe8f89ea96c0b0c67d",
     "baseCommit": "c26f306e82ac66f50a56aafe8f89ea96c0b0c67d",
-    "auditedInputDigest": "86cc8b307cbb8e8da6ed2b2dd06656f1658b92ea54198fab5a2fd40d23644bad",
+    "auditedInputDigest": "bc0faa5fa5655250dbf0e8fc0f6c14dd98c855129bd9aa7008eca8b9f4a50237",
     "auditedInputDigestAlgorithm": "sha256(path\\0content\\0)",
     "repository": "tiangong-lca/platform"
   },
@@ -160715,7 +160715,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Processes/Components/lcaImpactHotspotToolbar.tsx",
-          "line": 482,
+          "line": 486,
           "column": 15,
           "symbol": "runAnalysis",
           "defaultMessage": "Snapshot build is still running. Wait for it to finish, then rerun the analysis.",
@@ -160748,7 +160748,7 @@
             },
             {
               "path": "src/pages/Processes/Components/lcaImpactHotspotToolbar.tsx",
-              "line": 482,
+              "line": 486,
               "column": 15,
               "kind": "formatMessage"
             }
@@ -160843,7 +160843,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Processes/Components/lcaImpactHotspotToolbar.tsx",
-          "line": 474,
+          "line": 478,
           "column": 15,
           "symbol": "runAnalysis",
           "defaultMessage": "Snapshot build job {jobId} is still running. Wait for it to finish, then rerun the analysis.",
@@ -160876,7 +160876,7 @@
             },
             {
               "path": "src/pages/Processes/Components/lcaImpactHotspotToolbar.tsx",
-              "line": 474,
+              "line": 478,
               "column": 15,
               "kind": "formatMessage"
             }
@@ -161117,7 +161117,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Components/lcaImpactHotspotToolbar.tsx",
-          "line": 679,
+          "line": 683,
           "column": 17,
           "symbol": "LcaImpactHotspotToolbar",
           "defaultMessage": "Impact category",
@@ -161126,7 +161126,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Processes/Components/lcaImpactHotspotToolbar.tsx",
-          "line": 686,
+          "line": 690,
           "column": 29,
           "symbol": "LcaImpactHotspotToolbar",
           "defaultMessage": "Impact category",
@@ -161135,7 +161135,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Components/lcaImpactHotspotToolbar.tsx",
-          "line": 759,
+          "line": 763,
           "column": 29,
           "symbol": "LcaImpactHotspotToolbar",
           "defaultMessage": "Impact category",
@@ -161219,19 +161219,19 @@
             },
             {
               "path": "src/pages/Processes/Components/lcaImpactHotspotToolbar.tsx",
-              "line": 679,
+              "line": 683,
               "column": 17,
               "kind": "FormattedMessage"
             },
             {
               "path": "src/pages/Processes/Components/lcaImpactHotspotToolbar.tsx",
-              "line": 686,
+              "line": 690,
               "column": 29,
               "kind": "formatMessage"
             },
             {
               "path": "src/pages/Processes/Components/lcaImpactHotspotToolbar.tsx",
-              "line": 759,
+              "line": 763,
               "column": 29,
               "kind": "FormattedMessage"
             },
@@ -161534,7 +161534,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Components/lcaImpactHotspotToolbar.tsx",
-          "line": 804,
+          "line": 808,
           "column": 29,
           "symbol": "LcaImpactHotspotToolbar",
           "defaultMessage": "Computed at",
@@ -161561,7 +161561,7 @@
             },
             {
               "path": "src/pages/Processes/Components/lcaImpactHotspotToolbar.tsx",
-              "line": 804,
+              "line": 808,
               "column": 29,
               "kind": "FormattedMessage"
             }
@@ -161647,7 +161647,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Components/lcaImpactHotspotToolbar.tsx",
-          "line": 795,
+          "line": 799,
           "column": 29,
           "symbol": "LcaImpactHotspotToolbar",
           "defaultMessage": "Result source",
@@ -161674,7 +161674,7 @@
             },
             {
               "path": "src/pages/Processes/Components/lcaImpactHotspotToolbar.tsx",
-              "line": 795,
+              "line": 799,
               "column": 29,
               "kind": "FormattedMessage"
             }
@@ -161751,7 +161751,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Processes/Components/lcaImpactHotspotToolbar.tsx",
-          "line": 690,
+          "line": 694,
           "column": 30,
           "symbol": "LcaImpactHotspotToolbar",
           "defaultMessage": "Select one impact category",
@@ -161772,7 +161772,7 @@
             },
             {
               "path": "src/pages/Processes/Components/lcaImpactHotspotToolbar.tsx",
-              "line": 690,
+              "line": 694,
               "column": 30,
               "kind": "formatMessage"
             }
@@ -161947,7 +161947,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Components/lcaImpactHotspotToolbar.tsx",
-          "line": 666,
+          "line": 670,
           "column": 17,
           "symbol": "LcaImpactHotspotToolbar",
           "defaultMessage": "Controls",
@@ -161968,7 +161968,7 @@
             },
             {
               "path": "src/pages/Processes/Components/lcaImpactHotspotToolbar.tsx",
-              "line": 666,
+              "line": 670,
               "column": 17,
               "kind": "FormattedMessage"
             }
@@ -162164,7 +162164,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Components/lcaImpactHotspotToolbar.tsx",
-          "line": 735,
+          "line": 739,
           "column": 17,
           "symbol": "LcaImpactHotspotToolbar",
           "defaultMessage": "Results",
@@ -162209,7 +162209,7 @@
             },
             {
               "path": "src/pages/Processes/Components/lcaImpactHotspotToolbar.tsx",
-              "line": 735,
+              "line": 739,
               "column": 17,
               "kind": "FormattedMessage"
             }
@@ -162491,7 +162491,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Components/lcaImpactHotspotToolbar.tsx",
-          "line": 840,
+          "line": 844,
           "column": 29,
           "symbol": "LcaImpactHotspotToolbar",
           "defaultMessage": "Top contributor",
@@ -162518,7 +162518,7 @@
             },
             {
               "path": "src/pages/Processes/Components/lcaImpactHotspotToolbar.tsx",
-              "line": 840,
+              "line": 844,
               "column": 29,
               "kind": "FormattedMessage"
             }
@@ -162711,7 +162711,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Components/lcaImpactHotspotToolbar.tsx",
-          "line": 615,
+          "line": 619,
           "column": 9,
           "symbol": "hotspotColumns",
           "defaultMessage": "Cumulative share",
@@ -162744,7 +162744,7 @@
             },
             {
               "path": "src/pages/Processes/Components/lcaImpactHotspotToolbar.tsx",
-              "line": 615,
+              "line": 619,
               "column": 9,
               "kind": "FormattedMessage"
             }
@@ -162821,7 +162821,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Components/lcaImpactHotspotToolbar.tsx",
-          "line": 589,
+          "line": 593,
           "column": 9,
           "symbol": "hotspotColumns",
           "defaultMessage": "Relative magnitude",
@@ -162851,7 +162851,7 @@
             },
             {
               "path": "src/pages/Processes/Components/lcaImpactHotspotToolbar.tsx",
-              "line": 589,
+              "line": 593,
               "column": 9,
               "kind": "FormattedMessage"
             },
@@ -162979,7 +162979,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Components/lcaImpactHotspotToolbar.tsx",
-          "line": 605,
+          "line": 609,
           "column": 9,
           "symbol": "hotspotColumns",
           "defaultMessage": "Absolute share",
@@ -163030,7 +163030,7 @@
             },
             {
               "path": "src/pages/Processes/Components/lcaImpactHotspotToolbar.tsx",
-              "line": 605,
+              "line": 609,
               "column": 9,
               "kind": "FormattedMessage"
             }
@@ -163116,7 +163116,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Components/lcaImpactHotspotToolbar.tsx",
-          "line": 574,
+          "line": 578,
           "column": 9,
           "symbol": "hotspotColumns",
           "defaultMessage": "Impact value",
@@ -163152,7 +163152,7 @@
             },
             {
               "path": "src/pages/Processes/Components/lcaImpactHotspotToolbar.tsx",
-              "line": 574,
+              "line": 578,
               "column": 9,
               "kind": "FormattedMessage"
             },
@@ -167179,7 +167179,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Components/lcaImpactHotspotToolbar.tsx",
-          "line": 896,
+          "line": 900,
           "column": 25,
           "symbol": "LcaImpactHotspotToolbar",
           "defaultMessage": "Next page",
@@ -167194,7 +167194,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Components/lcaImpactHotspotToolbar.tsx",
-              "line": 896,
+              "line": 900,
               "column": 25,
               "kind": "FormattedMessage"
             }
@@ -167262,7 +167262,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Components/lcaImpactHotspotToolbar.tsx",
-          "line": 885,
+          "line": 889,
           "column": 25,
           "symbol": "LcaImpactHotspotToolbar",
           "defaultMessage": "Previous page",
@@ -167277,7 +167277,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Components/lcaImpactHotspotToolbar.tsx",
-              "line": 885,
+              "line": 889,
               "column": 25,
               "kind": "FormattedMessage"
             }
@@ -167345,7 +167345,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Components/lcaImpactHotspotToolbar.tsx",
-          "line": 654,
+          "line": 658,
           "column": 15,
           "symbol": "LcaImpactHotspotToolbar",
           "defaultMessage": "Run ranking",
@@ -167360,7 +167360,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Components/lcaImpactHotspotToolbar.tsx",
-              "line": 654,
+              "line": 658,
               "column": 15,
               "kind": "FormattedMessage"
             }
@@ -167428,7 +167428,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Components/lcaImpactHotspotToolbar.tsx",
-          "line": 672,
+          "line": 676,
           "column": 17,
           "symbol": "LcaImpactHotspotToolbar",
           "defaultMessage": "Rank all processes in the available snapshot by absolute impact contribution for a selected impact category.",
@@ -167443,7 +167443,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Components/lcaImpactHotspotToolbar.tsx",
-              "line": 672,
+              "line": 676,
               "column": 17,
               "kind": "FormattedMessage"
             }
@@ -167511,7 +167511,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Processes/Components/lcaImpactHotspotToolbar.tsx",
-          "line": 639,
+          "line": 643,
           "column": 16,
           "symbol": "LcaImpactHotspotToolbar",
           "defaultMessage": "LCA impact hotspot ranking",
@@ -167526,7 +167526,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Components/lcaImpactHotspotToolbar.tsx",
-              "line": 639,
+              "line": 643,
               "column": 16,
               "kind": "formatMessage"
             }
@@ -167594,7 +167594,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Components/lcaImpactHotspotToolbar.tsx",
-          "line": 743,
+          "line": 747,
           "column": 19,
           "symbol": "LcaImpactHotspotToolbar",
           "defaultMessage": "Select one impact category, then run the hotspot ranking.",
@@ -167609,7 +167609,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Components/lcaImpactHotspotToolbar.tsx",
-              "line": 743,
+              "line": 747,
               "column": 19,
               "kind": "FormattedMessage"
             }
@@ -167677,7 +167677,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Processes/Components/lcaImpactHotspotToolbar.tsx",
-          "line": 490,
+          "line": 494,
           "column": 11,
           "symbol": "runAnalysis",
           "defaultMessage": "Hotspot analysis is unavailable. Contact an administrator for assistance.",
@@ -167692,7 +167692,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Components/lcaImpactHotspotToolbar.tsx",
-              "line": 490,
+              "line": 494,
               "column": 11,
               "kind": "formatMessage"
             }
@@ -167760,7 +167760,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Components/lcaImpactHotspotToolbar.tsx",
-          "line": 708,
+          "line": 712,
           "column": 17,
           "symbol": "LcaImpactHotspotToolbar",
           "defaultMessage": "Results per page",
@@ -167769,7 +167769,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Processes/Components/lcaImpactHotspotToolbar.tsx",
-          "line": 715,
+          "line": 719,
           "column": 29,
           "symbol": "LcaImpactHotspotToolbar",
           "defaultMessage": "Results per page",
@@ -167784,13 +167784,13 @@
           "locations": [
             {
               "path": "src/pages/Processes/Components/lcaImpactHotspotToolbar.tsx",
-              "line": 708,
+              "line": 712,
               "column": 17,
               "kind": "FormattedMessage"
             },
             {
               "path": "src/pages/Processes/Components/lcaImpactHotspotToolbar.tsx",
-              "line": 715,
+              "line": 719,
               "column": 29,
               "kind": "formatMessage"
             }
@@ -167858,7 +167858,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Processes/Components/lcaImpactHotspotToolbar.tsx",
-          "line": 412,
+          "line": 424,
           "column": 11,
           "symbol": "runAnalysis",
           "defaultMessage": "Unexpected hotspot payload returned from the query API.",
@@ -167873,7 +167873,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Components/lcaImpactHotspotToolbar.tsx",
-              "line": 412,
+              "line": 424,
               "column": 11,
               "kind": "formatMessage"
             }
@@ -167941,7 +167941,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Processes/Components/lcaImpactHotspotToolbar.tsx",
-          "line": 500,
+          "line": 504,
           "column": 15,
           "symbol": "runAnalysis",
           "defaultMessage": "Failed to run hotspot analysis.",
@@ -167956,7 +167956,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Components/lcaImpactHotspotToolbar.tsx",
-              "line": 500,
+              "line": 504,
               "column": 15,
               "kind": "formatMessage"
             }
@@ -168107,7 +168107,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Components/lcaImpactHotspotToolbar.tsx",
-          "line": 870,
+          "line": 874,
           "column": 23,
           "symbol": "LcaImpactHotspotToolbar",
           "defaultMessage": "Shares use the full snapshot absolute total, so each slice shows its true contribution to the whole result.",
@@ -168122,7 +168122,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Components/lcaImpactHotspotToolbar.tsx",
-              "line": 870,
+              "line": 874,
               "column": 23,
               "kind": "FormattedMessage"
             }
@@ -168190,7 +168190,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Components/lcaImpactHotspotToolbar.tsx",
-          "line": 829,
+          "line": 833,
           "column": 29,
           "symbol": "LcaImpactHotspotToolbar",
           "defaultMessage": "Displayed coverage",
@@ -168205,7 +168205,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Components/lcaImpactHotspotToolbar.tsx",
-              "line": 829,
+              "line": 833,
               "column": 29,
               "kind": "FormattedMessage"
             }
@@ -168332,7 +168332,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Components/lcaImpactHotspotToolbar.tsx",
-          "line": 818,
+          "line": 822,
           "column": 29,
           "symbol": "LcaImpactHotspotToolbar",
           "defaultMessage": "Displayed ranks",
@@ -168347,7 +168347,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Components/lcaImpactHotspotToolbar.tsx",
-              "line": 818,
+              "line": 822,
               "column": 29,
               "kind": "FormattedMessage"
             }
@@ -168474,7 +168474,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Components/lcaImpactHotspotToolbar.tsx",
-          "line": 851,
+          "line": 855,
           "column": 29,
           "symbol": "LcaImpactHotspotToolbar",
           "defaultMessage": "Snapshot absolute total",
@@ -168489,7 +168489,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Components/lcaImpactHotspotToolbar.tsx",
-              "line": 851,
+              "line": 855,
               "column": 29,
               "kind": "FormattedMessage"
             }
@@ -168557,7 +168557,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Components/lcaImpactHotspotToolbar.tsx",
-          "line": 541,
+          "line": 545,
           "column": 9,
           "symbol": "hotspotColumns",
           "defaultMessage": "Global rank",
@@ -168572,7 +168572,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Components/lcaImpactHotspotToolbar.tsx",
-              "line": 541,
+              "line": 545,
               "column": 9,
               "kind": "FormattedMessage"
             }
@@ -168640,7 +168640,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Components/lcaImpactHotspotToolbar.tsx",
-          "line": 563,
+          "line": 567,
           "column": 9,
           "symbol": "hotspotColumns",
           "defaultMessage": "Matrix index",
@@ -168655,7 +168655,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Components/lcaImpactHotspotToolbar.tsx",
-              "line": 563,
+              "line": 567,
               "column": 9,
               "kind": "FormattedMessage"
             }
@@ -168723,7 +168723,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Processes/Components/lcaImpactHotspotToolbar.tsx",
-          "line": 629,
+          "line": 633,
           "column": 18,
           "symbol": "LcaImpactHotspotToolbar",
           "defaultMessage": "Impact hotspot ranking",
@@ -168738,7 +168738,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Components/lcaImpactHotspotToolbar.tsx",
-              "line": 629,
+              "line": 633,
               "column": 18,
               "kind": "formatMessage"
             }
@@ -169465,7 +169465,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Components/lcaImpactHotspotToolbar.tsx",
-          "line": 646,
+          "line": 650,
           "column": 15,
           "symbol": "LcaImpactHotspotToolbar",
           "defaultMessage": "Close",
@@ -169495,7 +169495,7 @@
             },
             {
               "path": "src/pages/Processes/Components/lcaImpactHotspotToolbar.tsx",
-              "line": 646,
+              "line": 650,
               "column": 15,
               "kind": "FormattedMessage"
             },
@@ -181334,7 +181334,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Components/lcaImpactHotspotToolbar.tsx",
-          "line": 786,
+          "line": 790,
           "column": 29,
           "symbol": "LcaImpactHotspotToolbar",
           "defaultMessage": "Result ID",
@@ -181367,7 +181367,7 @@
             },
             {
               "path": "src/pages/Processes/Components/lcaImpactHotspotToolbar.tsx",
-              "line": 786,
+              "line": 790,
               "column": 29,
               "kind": "FormattedMessage"
             }
@@ -181604,7 +181604,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Components/lcaImpactHotspotToolbar.tsx",
-          "line": 777,
+          "line": 781,
           "column": 29,
           "symbol": "LcaImpactHotspotToolbar",
           "defaultMessage": "Snapshot ID",
@@ -181637,7 +181637,7 @@
             },
             {
               "path": "src/pages/Processes/Components/lcaImpactHotspotToolbar.tsx",
-              "line": 777,
+              "line": 781,
               "column": 29,
               "kind": "FormattedMessage"
             }
@@ -217218,7 +217218,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Components/lcaImpactHotspotToolbar.tsx",
-          "line": 768,
+          "line": 772,
           "column": 29,
           "symbol": "LcaImpactHotspotToolbar",
           "defaultMessage": "Unit",
@@ -217248,7 +217248,7 @@
             },
             {
               "path": "src/pages/Processes/Components/lcaImpactHotspotToolbar.tsx",
-              "line": 768,
+              "line": 772,
               "column": 29,
               "kind": "FormattedMessage"
             },
@@ -268119,7 +268119,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Components/lcaImpactHotspotToolbar.tsx",
-          "line": 551,
+          "line": 555,
           "column": 14,
           "symbol": "hotspotColumns",
           "defaultMessage": "Name",
@@ -268314,7 +268314,7 @@
             },
             {
               "path": "src/pages/Processes/Components/lcaImpactHotspotToolbar.tsx",
-              "line": 551,
+              "line": 555,
               "column": 14,
               "kind": "FormattedMessage"
             },
@@ -269331,7 +269331,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Components/lcaImpactHotspotToolbar.tsx",
-          "line": 556,
+          "line": 560,
           "column": 14,
           "symbol": "hotspotColumns",
           "defaultMessage": "Version",
@@ -269529,7 +269529,7 @@
             },
             {
               "path": "src/pages/Processes/Components/lcaImpactHotspotToolbar.tsx",
-              "line": 556,
+              "line": 560,
               "column": 14,
               "kind": "FormattedMessage"
             },

@@ -3,7 +3,7 @@ import LcaImpactHotspotToolbar, {
   buildSelectedProcessHotspotModel,
 } from '@/pages/Processes/Components/lcaImpactHotspotToolbar';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { resetUmiMocks, setUmiIntl, setUmiLocation } from '../../../../mocks/umi';
+import { resetUmiMocks, setUmiIntl, setUmiLocation, umiMocks } from '../../../../mocks/umi';
 
 type ReactNode = import('react').ReactNode;
 
@@ -563,6 +563,115 @@ describe('lcaImpactHotspotToolbar', () => {
     );
   });
 
+  it('explains unavailable ranking categories and retains selected labels for historical payloads', async () => {
+    const originalIntl = umiMocks.useIntl();
+    setUmiIntl({
+      ...originalIntl,
+      formatMessage: (descriptor, values) => {
+        const messages: Record<string, string> = {
+          'pages.process.lca.availability.unavailable': 'Unavailable',
+          'pages.process.lca.availability.reason.location':
+            'The source does not cover this location.',
+        };
+        return messages[descriptor.id ?? ''] ?? originalIntl.formatMessage(descriptor, values);
+      },
+    });
+    isLcaFunctionInvokeError.mockImplementation(
+      (error: { code?: string } | undefined) => error?.code === 'lcia_category_unavailable',
+    );
+    queryLcaResults.mockReset().mockRejectedValueOnce({
+      code: 'lcia_category_unavailable',
+      body: { reasons: ['lcia_generic_location_not_admitted'] },
+    });
+    renderToolbar();
+    fireEvent.click(screen.getByTestId('impact-hotspot-trigger'));
+    await selectImpact();
+    fireEvent.click(screen.getByRole('button', { name: 'Run ranking' }));
+    expect(await screen.findByRole('alert')).toHaveTextContent(
+      'Unavailable: The source does not cover this location.',
+    );
+    queryLcaResults.mockResolvedValueOnce({
+      snapshot_id: 'historical-snapshot',
+      result_id: 'historical-result',
+      source: 'all_unit',
+      mode: 'processes_one_impact',
+      data: {
+        kind: 'ranked_processes',
+        offset: 0,
+        limit: 10,
+        returned_count: 1,
+        total_process_count: 1,
+        total_absolute_value: 2,
+        values: [
+          {
+            process_id: 'process-1',
+            process_version: '01.00.000',
+            process_index: 0,
+            value: 2,
+            absolute_value: 2,
+          },
+        ],
+      },
+      meta: { query_artifact_format: 'all-unit-query:v2', computed_at: '2026-10-25T00:00:00Z' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Run ranking' }));
+    expect(await screen.findByText('historical-snapshot')).toBeInTheDocument();
+    expect(
+      screen.queryByText('Unavailable: The source does not cover this location.'),
+    ).not.toBeInTheDocument();
+    expect(screen.getAllByText('Climate change').length).toBeGreaterThan(0);
+    expect(getProcessesByIdAndVersion).toHaveBeenCalledWith(
+      [{ id: 'process-1', version: '01.00.000' }],
+      'en',
+    );
+  });
+
+  it('rejects missing or invalid legacy ranked identities and values before metadata lookup', async () => {
+    queryLcaResults.mockReset();
+    renderToolbar();
+    fireEvent.click(screen.getByTestId('impact-hotspot-trigger'));
+    await selectImpact();
+    const valid = {
+      process_id: 'process-1',
+      process_version: '01.00.000',
+      process_index: 0,
+      value: 2,
+      absolute_value: 2,
+    };
+    const invalidValues = [
+      undefined,
+      {},
+      [{ ...valid, process_id: undefined }],
+      [{ ...valid, process_id: ' ' }],
+      [{ ...valid, process_version: undefined }],
+      [{ ...valid, process_version: ' ' }],
+      [{ ...valid, value: null }],
+      [{ ...valid, absolute_value: Infinity }],
+    ];
+    for (const values of invalidValues) {
+      getProcessesByIdAndVersion.mockClear();
+      queryLcaResults.mockResolvedValueOnce({
+        snapshot_id: 'invalid-legacy-snapshot',
+        result_id: 'invalid-legacy-result',
+        source: 'all_unit',
+        mode: 'processes_one_impact',
+        data: { kind: 'ranked_processes', impact_id: 'impact-1', values },
+        meta: { query_artifact_format: 'all-unit-query:v2' },
+      });
+      const previousCalls = queryLcaResults.mock.calls.length;
+      const button = screen.getByRole('button', { name: 'Run ranking' });
+      await waitFor(() => expect(button).not.toBeDisabled());
+      fireEvent.click(button);
+      await waitFor(() => expect(queryLcaResults).toHaveBeenCalledTimes(previousCalls + 1));
+      await waitFor(() => expect(button).not.toBeDisabled());
+      expect(await screen.findByRole('alert')).toHaveTextContent(
+        'Unexpected hotspot payload returned from the query API.',
+      );
+      expect(getProcessesByIdAndVersion).not.toHaveBeenCalled();
+      expect(screen.queryByText('invalid-legacy-snapshot')).not.toBeInTheDocument();
+    }
+  });
+
   it('shows a backend upgrade hint when hotspot ranking hits the legacy query function', async () => {
     queryLcaResults.mockReset();
     isLcaFunctionInvokeError.mockReturnValue(true);
@@ -789,7 +898,7 @@ describe('lcaImpactHotspotToolbar', () => {
     expect(await screen.findByText('snapshot-page-1')).toBeInTheDocument();
   });
 
-  it('normalizes malformed ranking payloads and ignores invalid lookup rows', async () => {
+  it('normalizes legacy ranking page metadata and ignores invalid lookup rows', async () => {
     queryLcaResults.mockReset();
     getProcessesByIdAndVersion.mockResolvedValueOnce({
       data: [
@@ -827,7 +936,6 @@ describe('lcaImpactHotspotToolbar', () => {
             value: 0,
             absolute_value: 0,
           },
-          {},
         ],
       },
       meta: {
@@ -851,7 +959,7 @@ describe('lcaImpactHotspotToolbar', () => {
     expect(screen.getAllByText('-1').length).toBeGreaterThanOrEqual(1);
   });
 
-  it('treats omitted hotspot metadata and values as an empty first slice', async () => {
+  it('uses descriptive metadata fallbacks for an explicit empty first slice', async () => {
     queryLcaResults.mockReset();
     queryLcaResults.mockResolvedValueOnce({
       snapshot_id: 'snapshot-metadata-fallback',
@@ -861,6 +969,7 @@ describe('lcaImpactHotspotToolbar', () => {
       data: {
         kind: 'ranked_processes',
         impact_id: 'impact-1',
+        values: [],
       },
       meta: {
         cache_hit: false,

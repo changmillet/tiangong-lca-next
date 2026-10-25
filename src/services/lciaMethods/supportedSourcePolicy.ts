@@ -15,7 +15,7 @@ export {
   LCIA_APPLICABILITY_POLICY_VERSION,
   SUPPORTED_SOURCE_POLICY_MANIFEST_SHA256,
 } from './supportedSourcePolicyConstants';
-const SOURCE_POLICY_PATH = '/lcia-source-policy-v1';
+const SOURCE_POLICY_PATH = '/lcia-source-policy-v2';
 const MAX_MANIFEST_BYTES = 4 * 1024 * 1024;
 const MAX_METHOD_BYTES = 16 * 1024 * 1024;
 
@@ -23,6 +23,10 @@ type FactorLocation =
   { kind: 'missing' | 'blank' | 'unknown' | 'invalid' } | { kind: 'code'; value: string };
 
 type PolicyBasis = { id: string; uri: string; locator: string; scope: string };
+
+type GenericGeographicAdmission =
+  | { kind: 'global'; source_geography_sha256: string }
+  | { kind: 'exact_source_tokens'; source_geography_sha256: string; tokens: string[] };
 
 type MethodManifest = {
   method_id: string;
@@ -33,6 +37,7 @@ type MethodManifest = {
   method_document_sha256: string;
   numeric_binding_sha256: string;
   metadata_sha256: string;
+  generic_geographic_admission: GenericGeographicAdmission;
   basis: PolicyBasis[];
   regional_default_unresolved_family_count: number;
   asset: string;
@@ -45,7 +50,7 @@ type MethodManifest = {
 };
 
 type PolicyManifest = {
-  schema_version: 'lcia.supported-source-policy.v1';
+  schema_version: 'lcia.supported-source-policy.v2';
   policy_version: typeof LCIA_APPLICABILITY_POLICY_VERSION;
   source_repository: string;
   source_commit: string;
@@ -65,6 +70,7 @@ type MethodCompanion = {
   method_document_sha256: string;
   numeric_binding_sha256: string;
   metadata_sha256: string;
+  generic_geographic_admission: GenericGeographicAdmission;
   source_scope: Record<string, unknown>;
   basis: PolicyBasis[];
   regional_default_unresolved_family_count: number;
@@ -121,6 +127,8 @@ export function exchangeFactorLocation(value: unknown): FactorLocation {
 }
 
 function floatBits(value: string | number): string {
+  if (typeof value === 'string' && !/^[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?$/.test(value))
+    throw new Error('lcia_supported_policy_static_record_invalid');
   const number = Number(value);
   if (!Number.isFinite(number)) throw new Error('lcia_supported_policy_static_record_invalid');
   const bytes = new DataView(new ArrayBuffer(8));
@@ -156,12 +164,56 @@ function unsupportedQualifiers(
   });
 }
 
+async function geographicBindingMatchesSource(
+  admission: GenericGeographicAdmission,
+  sourceScope: Record<string, unknown>,
+): Promise<boolean> {
+  const information = sourceScope?.information;
+  const geography = object(information) ? information.geography : undefined;
+  if (
+    !object(admission) ||
+    !object(geography) ||
+    !/^[0-9a-f]{64}$/.test(admission.source_geography_sha256) ||
+    (admission.kind === 'global'
+      ? Object.keys(admission).length !== 2
+      : admission.kind !== 'exact_source_tokens' || Object.keys(admission).length !== 3)
+  )
+    return false;
+  const sourceHash = await computeLciaSha256(canonicalJson(geography));
+  if (admission.source_geography_sha256 !== sourceHash) return false;
+  if (admission.kind === 'global') return geography.interventionLocation === 'GLO';
+  return (
+    admission.kind === 'exact_source_tokens' &&
+    Array.isArray(admission.tokens) &&
+    admission.tokens.length === 1 &&
+    typeof admission.tokens[0] === 'string' &&
+    admission.tokens[0].trim() !== '' &&
+    admission.tokens[0].length <= 256 &&
+    admission.tokens[0] === geography.interventionLocation
+  );
+}
+
+function geographicAdmissionAllows(
+  admission: GenericGeographicAdmission,
+  location: FactorLocation,
+): boolean {
+  if (admission.kind === 'global')
+    return (
+      location.kind === 'missing' ||
+      location.kind === 'blank' ||
+      location.kind === 'unknown' ||
+      exactLocation(location)
+    );
+  return location.kind === 'code' && admission.tokens.includes(location.value);
+}
+
 /** A validated source-bound selector; receipt JSON cannot construct one. */
 class SupportedMethodFactors {
   private constructor(
     private readonly byFlow: Map<string, BoundFactor[]>,
     private readonly generic: ReadonlySet<number>,
     private readonly sourceXmlSha256: string,
+    private readonly genericGeographicAdmission: GenericGeographicAdmission,
   ) {}
 
   static async fromCompanion(
@@ -225,6 +277,7 @@ class SupportedMethodFactors {
       byFlow,
       new Set(companion.generic_records),
       entry.source_xml_sha256,
+      companion.generic_geographic_admission,
     );
   }
 
@@ -250,6 +303,12 @@ class SupportedMethodFactors {
         factor.location.value === location.value,
     );
     const generic = directional.filter((factor) => this.generic.has(factor.recordIndex));
+    if (
+      regional.length === 0 &&
+      generic.length > 0 &&
+      !geographicAdmissionAllows(this.genericGeographicAdmission, location)
+    )
+      return failure('lcia_generic_location_not_admitted');
     const chosen = regional.length > 0 ? regional : generic;
     if (chosen.length > 1) return failure('lcia_factor_applicability_ambiguous');
     if (chosen.length === 0) {
@@ -307,7 +366,7 @@ async function loadManifest(): Promise<PolicyManifest> {
       );
       const manifest = JSON.parse(new TextDecoder().decode(bytes)) as PolicyManifest;
       if (
-        manifest.schema_version !== 'lcia.supported-source-policy.v1' ||
+        manifest.schema_version !== 'lcia.supported-source-policy.v2' ||
         manifest.policy_version !== LCIA_APPLICABILITY_POLICY_VERSION ||
         manifest.static_bundle_manifest_sha256 !== STATIC_LCIA_CACHE_MANIFEST_SHA256 ||
         manifest.static_factor_manifest_sha256 !==
@@ -357,6 +416,14 @@ async function loadCompanion(entry: MethodManifest): Promise<MethodCompanion> {
     companion.numeric_binding_sha256 !== entry.numeric_binding_sha256 ||
     companion.metadata_sha256 !== entry.metadata_sha256 ||
     (await computeLciaSha256(canonicalJson(companion.source_scope))) !== entry.metadata_sha256 ||
+    !object(companion.generic_geographic_admission) ||
+    !object(entry.generic_geographic_admission) ||
+    canonicalJson(companion.generic_geographic_admission) !==
+      canonicalJson(entry.generic_geographic_admission) ||
+    !(await geographicBindingMatchesSource(
+      companion.generic_geographic_admission,
+      companion.source_scope,
+    )) ||
     canonicalJson(companion.basis) !== canonicalJson(entry.basis) ||
     companion.regional_default_unresolved_family_count !==
       entry.regional_default_unresolved_family_count ||

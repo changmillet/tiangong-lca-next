@@ -1,10 +1,18 @@
 // @ts-nocheck
 import ProcessLciaResultsPanel from '@/pages/Processes/Components/processLciaResultsPanel';
 import { act, render, screen, waitFor } from '@testing-library/react';
+import { calculateStaticLcia } from '@/services/lciaMethods/calculation';
+import {
+  parseStaticLciaReport,
+  serializeStaticLciaReport,
+  STATIC_LCIA_CACHE_MANIFEST,
+} from '@/services/lciaMethods/evidence';
+import { webcrypto } from 'node:crypto';
 
 const mockGetDataSource = jest.fn();
 const mockGetLangText = jest.fn();
 const mockGetReferenceQuantityFromMethod = jest.fn();
+const mockGetVerifiedDecompressedMethodEntry = jest.fn();
 const mockQueryLcaResults = jest.fn();
 const mockIsLcaFunctionInvokeError = jest.fn();
 const mockGetPublishedLciaResultPackage = jest.fn();
@@ -48,7 +56,51 @@ jest.mock('@/services/lciaMethods/util', () => ({
   cacheAndDecompressMethod: jest.fn(),
   getDecompressedMethod: jest.fn(),
   getReferenceQuantityFromMethod: (...args: any[]) => mockGetReferenceQuantityFromMethod(...args),
+  getVerifiedDecompressedMethodEntry: (...args: any[]) =>
+    mockGetVerifiedDecompressedMethodEntry(...args),
 }));
+
+const currentMethodList = {
+  files: STATIC_LCIA_CACHE_MANIFEST.methods.map((method) => ({
+    id: method.artifact_locator_id,
+    filename: method.artifact_filename,
+    version: method.method_version,
+    description: [{ '@xml:lang': 'en', '#text': `Current method ${method.method_id}` }],
+    referenceQuantity: { 'common:shortDescription': [{ '@xml:lang': 'en', '#text': 'kg' }] },
+  })),
+};
+
+async function unavailableStaticEvidence() {
+  const descriptor = Object.getOwnPropertyDescriptor(globalThis, 'crypto');
+  Object.defineProperty(globalThis, 'crypto', { configurable: true, value: webcrypto });
+  try {
+    // An elementary flow without a compatible CF remains unavailable; this uses the actual
+    // report writer/parser so view tests exercise a valid current receipt rather than a mock.
+    const calculated = await calculateStaticLcia({
+      exchanges: [
+        {
+          '@dataSetInternalID': 'synthetic-elementary',
+          referenceToFlowDataSet: {
+            '@refObjectId': 'ffffffff-ffff-4fff-8fff-ffffffffffff',
+            '@version': '01.00.000',
+          },
+          exchangeDirection: 'Output',
+          meanAmount: '1',
+        },
+      ],
+      listData: currentMethodList,
+      factors: {},
+      observedListSha256: STATIC_LCIA_CACHE_MANIFEST.files.list.sha256,
+      observedFactorSha256: STATIC_LCIA_CACHE_MANIFEST.files.factors.sha256,
+    });
+    const evidence = serializeStaticLciaReport(calculated.report);
+    expect(parseStaticLciaReport(evidence)?.lcia_availability?.completeness).toBe('unavailable');
+    return evidence;
+  } finally {
+    if (descriptor) Object.defineProperty(globalThis, 'crypto', descriptor);
+    else Reflect.deleteProperty(globalThis, 'crypto');
+  }
+}
 
 jest.mock('@/services/lca', () => ({
   __esModule: true,
@@ -69,7 +121,11 @@ jest.mock('@/components/AlignedNumber', () => ({
 jest.mock('@/pages/Processes/Components/lcaProfileSummary', () => ({
   __esModule: true,
   default: ({ headerExtra, loading, notice, rows }: any) => (
-    <div data-testid='lca-profile-summary' data-loading={String(loading)}>
+    <div
+      data-testid='lca-profile-summary'
+      data-loading={String(loading)}
+      data-method-version={rows[0]?.referenceToLCIAMethodDataSet?.['@version']}
+    >
       <div data-testid='lca-profile-header-extra'>{headerExtra}</div>
       <div data-testid='lca-profile-notice'>{notice}</div>
       {rows.length}
@@ -137,6 +193,7 @@ jest.mock('antd', () => {
   return {
     __esModule: true,
     Button,
+    Alert: ({ title }: any) => <div role='alert'>{title}</div>,
     Space,
     Tooltip,
     Typography,
@@ -153,6 +210,7 @@ describe('ProcessLciaResultsPanel', () => {
       return '';
     });
     mockGetReferenceQuantityFromMethod.mockResolvedValue(undefined);
+    mockGetVerifiedDecompressedMethodEntry.mockResolvedValue({ data: currentMethodList });
     mockIsLcaFunctionInvokeError.mockReturnValue(false);
     mockQueryLcaResults.mockResolvedValue({
       snapshot_id: 'snapshot-1',
@@ -653,13 +711,26 @@ describe('ProcessLciaResultsPanel', () => {
         computed_at: '2026-04-29T00:00:00Z',
         calculation_evidence: calculationEvidence,
       },
-      data: { values: [] },
+      data: {
+        values: [
+          {
+            impact_id: 'impact-1',
+            impact_version: '01.00.000',
+            impact_index: 0,
+            value: 0,
+          },
+        ],
+      },
     });
 
     render(<ProcessLciaResultsPanel baseRows={[]} lang='en' processId='process-1' />);
 
     await screen.findByTestId('lcia-evidence-notice');
     expect(mockLcaCalculationEvidenceNotice).toHaveBeenLastCalledWith({ calculationEvidence });
+    expect(screen.getByTestId('lca-profile-summary')).toHaveAttribute(
+      'data-method-version',
+      '01.00.000',
+    );
   });
 
   it('keeps successful solver responses without evidence fail closed', async () => {
@@ -673,22 +744,26 @@ describe('ProcessLciaResultsPanel', () => {
 
   it.each([
     '{broken',
+    { schema_version: 'lcia.frontend_calculation_report.v1' },
     JSON.stringify({
       schema_version: 'lcia.frontend_calculation_report.v1',
       source: {
-        applicability_policy_version: 'lcia.applicability.source-bound.v2',
+        applicability_policy_version: 'lcia.applicability.source-bound.v3',
         source_policy_manifest_sha256: 'drifted',
       },
     }),
   ])(
     'suppresses saved numbers and profile when declared static evidence is invalid: %s',
     async (text) => {
-      const invalidEvidence = {
-        'tg:lciaCalculationEvidence': {
-          '@schemaVersion': 'lcia.frontend_calculation_report.v1',
-          '#text': text,
-        },
-      };
+      const invalidEvidence =
+        typeof text === 'string'
+          ? {
+              'tg:lciaCalculationEvidence': {
+                '@schemaVersion': 'lcia.frontend_calculation_report.v1',
+                '#text': text,
+              },
+            }
+          : text;
       render(
         <ProcessLciaResultsPanel
           baseCalculationEvidence={invalidEvidence}
@@ -736,6 +811,79 @@ describe('ProcessLciaResultsPanel', () => {
     );
     await screen.findByTestId('pro-row-legacy-method');
     expect(screen.getByText('99')).toBeInTheDocument();
+  });
+
+  it('keeps an opaque row key for an explicitly historical record without a method reference', async () => {
+    render(
+      <ProcessLciaResultsPanel
+        baseRows={[
+          {
+            key: 'historical-opaque-key',
+            meanAmount: 0,
+            referenceToLCIAMethodDataSet: { '@version': '01.00.000' },
+          },
+        ]}
+        enableSolverRefresh={false}
+        lang='en'
+      />,
+    );
+    const row = await screen.findByTestId('pro-row-historical-opaque-key');
+    expect(row).toHaveTextContent('0');
+    expect(mockQueryLcaResults).not.toHaveBeenCalled();
+  });
+
+  it('reconstructs current unavailable rows from a valid receipt instead of saved numbers', async () => {
+    const evidence = await unavailableStaticEvidence();
+    const method = STATIC_LCIA_CACHE_MANIFEST.methods[0];
+    render(
+      <ProcessLciaResultsPanel
+        baseCalculationEvidence={evidence}
+        baseRows={[
+          {
+            key: method.method_id,
+            meanAmount: 999,
+            referenceToLCIAMethodDataSet: {
+              '@refObjectId': method.method_id,
+              '@version': method.method_version,
+              'common:shortDescription': { '#text': 'Old saved number' },
+            },
+          },
+        ]}
+        enableSolverRefresh={false}
+        lang='en'
+      />,
+    );
+    await screen.findByTestId(`pro-row-${method.method_id}`);
+    expect(screen.queryByText('999')).not.toBeInTheDocument();
+    expect(screen.getAllByText('Unavailable')).toHaveLength(
+      STATIC_LCIA_CACHE_MANIFEST.methods.length,
+    );
+    expect(mockGetVerifiedDecompressedMethodEntry).toHaveBeenCalledWith('list.json');
+    expect(mockQueryLcaResults).not.toHaveBeenCalled();
+  });
+
+  it('discards static metadata that arrives after the panel is unmounted', async () => {
+    const evidence = await unavailableStaticEvidence();
+    let completeMetadata: (value: unknown) => void = () => {};
+    mockGetVerifiedDecompressedMethodEntry.mockImplementationOnce(
+      () =>
+        new Promise((resolve) => {
+          completeMetadata = resolve;
+        }),
+    );
+    const { unmount } = render(
+      <ProcessLciaResultsPanel
+        baseCalculationEvidence={evidence}
+        baseRows={[]}
+        enableSolverRefresh={false}
+        lang='en'
+      />,
+    );
+    await waitFor(() => expect(mockGetVerifiedDecompressedMethodEntry).toHaveBeenCalledTimes(1));
+    unmount();
+    await act(async () => completeMetadata({ data: currentMethodList }));
+    expect(screen.queryByTestId('pro-table')).not.toBeInTheDocument();
+    expect(mockQueryLcaResults).not.toHaveBeenCalled();
   });
 
   it('still validates static evidence when solver querying is disabled', async () => {

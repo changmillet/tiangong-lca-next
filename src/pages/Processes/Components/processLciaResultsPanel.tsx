@@ -1,3 +1,5 @@
+import LciaAvailabilityNotice, { LciaUnavailableValue } from '@/components/LciaAvailabilityNotice';
+import { normalizeLciaValueRow, type LciaAvailability } from '@/services/lca/categoryAvailability';
 import AlignedNumber from '@/components/AlignedNumber';
 import {
   getPublishedLciaResultPackage,
@@ -9,6 +11,10 @@ import { isLcaFunctionInvokeError, queryLcaResults } from '@/services/lca';
 import type { LcaScope } from '@/services/lca/scope';
 import type { LCIAResultTable } from '@/services/lciaMethods/data';
 import { getReferenceQuantityFromMethod } from '@/services/lciaMethods/util';
+import {
+  parseStaticLciaReport,
+  LCIA_EVIDENCE_EXTENSION_KEY,
+} from '@/services/lciaMethods/evidence';
 import { InfoCircleOutlined, WarningOutlined } from '@ant-design/icons';
 import { ProColumns, ProTable } from '@ant-design/pro-components';
 import { Button, Space, Tooltip, Typography } from 'antd';
@@ -17,6 +23,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { FormattedMessage, useIntl, useLocation } from 'umi';
 import {
   buildMergedLcaRows,
+  applyLciaAvailabilityToRows,
   getDefaultLcaDataScopeForPath,
   getLcaMethodMetaMap,
   LCA_SCOPE,
@@ -97,7 +104,7 @@ const ProcessLciaResultsPanel: FC<Props> = ({
   const shouldUsePublishedPackage = shouldPreferPublishedPackage && !!processVersion;
   const canQuerySolver = enableSolverRefresh && !!processId && !shouldPreferPublishedPackage;
   const [normalizedBaseRows, setNormalizedBaseRows] = useState<LCIAResultTable[]>([]);
-  const [rows, setRows] = useState<LCIAResultTable[]>([]);
+  const [storedRows, setRows] = useState<LCIAResultTable[]>([]);
   const [baseRowsReady, setBaseRowsReady] = useState(false);
   const [solverLciaLoading, setSolverLciaLoading] = useState(false);
   const [solverLciaLoaded, setSolverLciaLoaded] = useState(false);
@@ -108,6 +115,7 @@ const ProcessLciaResultsPanel: FC<Props> = ({
     source: string;
     computedAt: string;
     calculationEvidence?: unknown;
+    lciaAvailability?: LciaAvailability;
   } | null>(null);
   const [solverLciaPendingJob, setSolverLciaPendingJob] = useState<SolverLciaPendingJob | null>(
     null,
@@ -118,6 +126,25 @@ const ProcessLciaResultsPanel: FC<Props> = ({
   const [publishedLciaMeta, setPublishedLciaMeta] = useState<PublishedLciaMeta | null>(null);
   const [publishedLciaEmpty, setPublishedLciaEmpty] = useState(false);
   const lciaLoading = solverLciaLoading || publishedLciaLoading;
+  const staticReportState = useMemo(() => {
+    const report = parseStaticLciaReport(baseCalculationEvidence);
+    const declared = Boolean(
+      baseCalculationEvidence &&
+      typeof baseCalculationEvidence === 'object' &&
+      (Object.prototype.hasOwnProperty.call(baseCalculationEvidence, LCIA_EVIDENCE_EXTENSION_KEY) ||
+        (baseCalculationEvidence as { schema_version?: unknown }).schema_version ===
+          'lcia.frontend_calculation_report.v1'),
+    );
+    return {
+      availability: report?.lcia_availability,
+      invalid:
+        declared &&
+        (!report || !['complete', 'incomplete_coverage'].includes(report.calculation_status)),
+    };
+  }, [baseCalculationEvidence]);
+  const staticAvailability = staticReportState.availability;
+  const rows =
+    staticReportState.invalid && !canQuerySolver && !shouldUsePublishedPackage ? [] : storedRows;
 
   const lciaDiagnostics = useMemo(() => {
     if (shouldUsePublishedPackage && publishedLciaMeta) {
@@ -245,7 +272,13 @@ const ProcessLciaResultsPanel: FC<Props> = ({
         dataIndex: 'meanAmount',
         search: false,
         render: (_, row) => {
-          return [<AlignedNumber key={0} value={row.meanAmount} />];
+          return [
+            row.status === 'unavailable' || row.meanAmount === null ? (
+              <LciaUnavailableValue key={0} reasons={row.reasons} />
+            ) : (
+              <AlignedNumber key={0} value={row.meanAmount} />
+            ),
+          ];
         },
       },
       {
@@ -292,7 +325,9 @@ const ProcessLciaResultsPanel: FC<Props> = ({
     setPublishedLciaEmpty(false);
 
     const syncBaseRows = async () => {
-      const sourceRows = JSON.parse(JSON.stringify(baseRows ?? [])) as LCIAResultTable[];
+      const sourceRows = staticReportState.invalid
+        ? []
+        : (JSON.parse(JSON.stringify(baseRows ?? [])) as LCIAResultTable[]);
       try {
         await getReferenceQuantityFromMethod(sourceRows);
       } catch {
@@ -303,8 +338,16 @@ const ProcessLciaResultsPanel: FC<Props> = ({
         return;
       }
 
-      setNormalizedBaseRows(sourceRows);
-      setRows(sourceRows);
+      let displayRows = sourceRows;
+      if (staticAvailability) {
+        const methodMetadata = await getLcaMethodMetaMap(
+          staticAvailability.categories.map((category) => category.method_id),
+        );
+        if (cancelled) return;
+        displayRows = applyLciaAvailabilityToRows(sourceRows, staticAvailability, methodMetadata);
+      }
+      setNormalizedBaseRows(displayRows);
+      setRows(canQuerySolver || shouldUsePublishedPackage ? [] : displayRows);
       setBaseRowsReady(true);
     };
 
@@ -313,7 +356,13 @@ const ProcessLciaResultsPanel: FC<Props> = ({
     return () => {
       cancelled = true;
     };
-  }, [baseRows]);
+  }, [
+    baseRows,
+    canQuerySolver,
+    shouldUsePublishedPackage,
+    staticAvailability,
+    staticReportState.invalid,
+  ]);
 
   const loadPublishedLciaResults = useCallback(
     async (forceReload: boolean) => {
@@ -400,17 +449,26 @@ const ProcessLciaResultsPanel: FC<Props> = ({
             const row = item as {
               impact_id?: unknown;
               impact_index?: unknown;
+              impact_version?: unknown;
               impact_name?: unknown;
               unit?: unknown;
               value?: unknown;
+              status?: unknown;
+              reasons?: unknown;
             };
 
             return {
               impact_id: String(row.impact_id ?? ''),
               impact_index: Number(row.impact_index ?? 0),
+              impact_version:
+                typeof row.impact_version === 'string' ? row.impact_version : undefined,
               impact_name: String(row.impact_name ?? ''),
               unit: String(row.unit ?? ''),
-              value: Number(row.value ?? 0),
+              ...normalizeLciaValueRow({
+                value: row.value,
+                status: row.status,
+                reasons: row.reasons,
+              }),
             } as SolverLcaImpactValueRow;
           })
           .filter((row) => row.impact_id.length > 0)
@@ -418,7 +476,7 @@ const ProcessLciaResultsPanel: FC<Props> = ({
         const methodMetaById = await getLcaMethodMetaMap(
           solverRows.map((solverRow) => solverRow.impact_id),
         );
-        const mergedRows = buildMergedLcaRows(normalizedBaseRows, solverRows, methodMetaById);
+        const mergedRows = buildMergedLcaRows([], solverRows, methodMetaById);
 
         setRows(mergedRows);
         setSolverLciaMeta({
@@ -427,6 +485,7 @@ const ProcessLciaResultsPanel: FC<Props> = ({
           source: queried.source,
           computedAt: queried.meta.computed_at,
           calculationEvidence: queried.meta.calculation_evidence,
+          lciaAvailability: queried.meta.lcia_availability,
         });
         setSolverLciaPendingJob(null);
         setSolverLciaLoaded(true);
@@ -477,14 +536,14 @@ const ProcessLciaResultsPanel: FC<Props> = ({
 
           setSolverLciaError('LCIA result calculation is queued. Please retry in a moment.');
           setSolverLciaPendingJob(null);
-          setRows(normalizedBaseRows);
+          setRows([]);
           setSolverLciaMeta(null);
           setSolverLciaLoaded(true);
           return;
         }
 
         setSolverLciaPendingJob(null);
-        setRows(normalizedBaseRows);
+        setRows([]);
         setSolverLciaMeta(null);
         setSolverLciaError(error instanceof Error ? error.message : String(error));
         setSolverLciaLoaded(true);
@@ -577,6 +636,9 @@ const ProcessLciaResultsPanel: FC<Props> = ({
       {!shouldUsePublishedPackage && canQuerySolver && solverLciaMeta && (
         <LcaCalculationEvidenceNotice calculationEvidence={solverLciaMeta.calculationEvidence} />
       )}
+      <LciaAvailabilityNotice
+        availability={canQuerySolver ? solverLciaMeta?.lciaAvailability : staticAvailability}
+      />
       <LcaProfileSummary
         rows={rows}
         lang={lang}

@@ -297,9 +297,20 @@ describe('buildGroupedResultModel', () => {
       totalAbsoluteValue: 0,
       processCount: 0,
       groupCount: 0,
+      unavailableCount: 0,
       topItem: undefined,
       topPositiveItem: undefined,
       topNegativeItem: undefined,
     });
+  });
+  it('does not rank or total a group containing an unavailable member', () => {
+    const model = buildGroupedResultModel(
+      processes,
+      { 'process-1': 10, 'process-2': null, 'process-3': 0 },
+      { groupBy: 'location' },
+    );
+    expect(model.items.map((item) => item.groupLabel)).toEqual(['DE']);
+    expect(model.unavailableCount).toBe(2);
+    expect(model.items[0].value).toBe(0);
   });
 });

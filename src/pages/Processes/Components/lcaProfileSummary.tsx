@@ -1,3 +1,4 @@
+import { finiteLciaValue, lciaValueIsUnavailable } from '@/services/lca/categoryAvailability';
 import AlignedNumber from '@/components/AlignedNumber';
 import type { LCIAResultTable } from '@/services/lciaMethods/data';
 import { Card, Col, Descriptions, Progress, Row, Space, Statistic, Table, Typography } from 'antd';
@@ -5,7 +6,6 @@ import type { ColumnsType } from 'antd/es/table';
 import type { FC, ReactNode } from 'react';
 import { FormattedMessage } from 'umi';
 import {
-  normalizeNumber,
   resolveLangText,
   toProgressPercent,
   toProgressStatus,
@@ -28,6 +28,7 @@ export type LcaProfileModel = {
   items: LcaProfileItem[];
   topItems: LcaProfileItem[];
   totalCount: number;
+  unavailableCount: number;
   nonZeroCount: number;
   topAbsoluteItem?: LcaProfileItem;
   topPositiveItem?: LcaProfileItem;
@@ -59,6 +60,7 @@ export function buildLcaProfileModel(
   limit = DEFAULT_LCA_PROFILE_LIMIT,
 ): LcaProfileModel {
   const baseItems = rows
+    .filter((row) => !lciaValueIsUnavailable(row))
     .map((row) => {
       const key = String(row.referenceToLCIAMethodDataSet?.['@refObjectId'] ?? row.key ?? '');
       const title =
@@ -66,7 +68,7 @@ export function buildLcaProfileModel(
         key ||
         '-';
       const unit = resolveLangText(row.referenceQuantityDesc, lang) || '-';
-      const value = normalizeNumber(row.meanAmount);
+      const value = finiteLciaValue(row.meanAmount)!;
       const absoluteValue = Math.abs(value);
 
       return {
@@ -97,7 +99,8 @@ export function buildLcaProfileModel(
   return {
     items,
     topItems: nonZeroItems.slice(0, Math.max(1, limit)),
-    totalCount: items.length,
+    totalCount: rows.length,
+    unavailableCount: rows.length - items.length,
     nonZeroCount: nonZeroItems.length,
     topAbsoluteItem: items[0],
     topPositiveItem: items.find((item) => item.direction === 'positive'),
@@ -198,6 +201,14 @@ const LcaProfileSummary: FC<Props> = ({
             />
           </Typography.Paragraph>
           {notice}
+          {model.unavailableCount > 0 && (
+            <Typography.Paragraph type='warning'>
+              <FormattedMessage
+                id='pages.process.lca.availability.partial'
+                defaultMessage='Some impact categories are unavailable. Available categories and inventory remain readable; incomplete results cannot be used as a complete assessment.'
+              />
+            </Typography.Paragraph>
+          )}
         </div>
 
         <Row gutter={[16, 16]}>

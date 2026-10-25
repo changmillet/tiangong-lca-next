@@ -14,7 +14,9 @@ export type LCIAResultTable = {
       },
     ];
   };
-  meanAmount: string | number;
+  meanAmount: string | number | null;
+  status?: 'available' | 'unavailable';
+  reasons?: string[];
   referenceQuantityDesc?: string;
   'common:other'?: Record<string, unknown>;
 };
@@ -39,6 +41,9 @@ export type LciaFlowFactorEntry = {
 };
 
 export type LciaFlowFactorGroup = {
+  '@refObjectId'?: string;
+  '@version'?: string;
+  exchangeDirection?: string;
   factor?: LciaFlowFactorEntry[];
 };
 
@@ -148,7 +153,17 @@ export type LciaUncharacterizedReason =
   | 'missing_factor'
   | 'invalid_factor'
   | 'calculation_failure'
-  | 'method_source_drift';
+  | 'method_source_drift'
+  | 'lcia_inventory_flow_version_invalid'
+  | 'lcia_factor_flow_version_mismatch'
+  | 'lcia_factor_location_semantics_unresolved'
+  | 'lcia_factor_qualifier_unsupported'
+  | 'lcia_factor_applicability_ambiguous'
+  | 'no_lcia_factor_for_exact_location_direction'
+  | 'no_lcia_factor_for_flow_direction'
+  | 'ambiguous_elementary_flow_direction_axis'
+  | 'ambiguous_flow_reference'
+  | 'lcia_mixed_location_axis_unsupported';
 
 export type LciaUncharacterizedExchange = {
   method_id: string;
@@ -191,6 +206,8 @@ export type LciaMethodFactorCoverageMatrix<
 
 export type LciaStaticCalculationReport = {
   schema_version: 'lcia.frontend_calculation_report.v1';
+  lcia_availability?: import('@/services/lca/categoryAvailability').LciaAvailability;
+  inventory_classification?: import('./inventoryClassification').LciaInventoryClassification;
   calculation_status: LciaCalculationStatus;
   source: {
     schema_version: 'lcia.method_factor_source.static_cache_bundle.v1';
@@ -202,6 +219,8 @@ export type LciaStaticCalculationReport = {
     factor_manifest_sha256: string;
     observed_list_sha256: string | null;
     observed_factor_sha256: string | null;
+    applicability_policy_version?: string;
+    source_policy_manifest_sha256?: string;
   };
   method_factor_coverage: LciaMethodFactorCoverageMatrix;
   failure_reason: string | null;

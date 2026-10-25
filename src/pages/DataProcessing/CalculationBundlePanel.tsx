@@ -1,3 +1,5 @@
+import { validateBundleLciaRows } from '@/services/lca/categoryAvailability';
+import LciaAvailabilityNotice, { LciaUnavailableValue } from '@/components/LciaAvailabilityNotice';
 import { resolveContentLanguage } from '@/services/general/contentLanguageRegistry';
 import {
   createResultMetadataReader,
@@ -258,6 +260,13 @@ const CalculationBundlePanel = ({
         ]);
         if (cancelled) return;
         setLciRows(nextLciRows.filter((row) => row.processIndex === selectedProcessIndex));
+        validateBundleLciaRows(nextLciaRows, bundle.calculationBundle.manifest.lciaAvailability, {
+          firstProcessIndex: lciaArtifact.firstProcessIndex,
+          lastProcessIndex: lciaArtifact.lastProcessIndex,
+          recordCount: lciaArtifact.recordCount,
+          selectedProcessIndex,
+          processCount: bundle.calculationBundle.manifest.snapshot.processCount,
+        });
         setLciaRows(nextLciaRows.filter((row) => row.processIndex === selectedProcessIndex));
       } catch (error) {
         if (!cancelled) setRecordsIssue(error instanceof Error ? error.message : String(error));
@@ -437,7 +446,12 @@ const CalculationBundlePanel = ({
       {
         title: t('pages.dataProcessing.preview.value', 'Value'),
         dataIndex: 'meanAmount',
-        render: (value: number) => formatBundleNumber(value),
+        render: (value: number | null, row: CalculationBundleLciaRecord) =>
+          value === null || row.status === 'unavailable' ? (
+            <LciaUnavailableValue reasons={row.reasons} />
+          ) : (
+            formatBundleNumber(value)
+          ),
       },
       {
         title: t('pages.dataProcessing.bundle.unit', 'Unit'),
@@ -567,6 +581,7 @@ const CalculationBundlePanel = ({
       }
     >
       <Space orientation='vertical' size='middle' className={styles.previewDetails}>
+        <LciaAvailabilityNotice availability={manifest.lciaAvailability} />
         {view !== 'exports' ? processControl : null}
         {metadataUnavailable && view !== 'exports' ? (
           <Space>

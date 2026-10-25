@@ -929,4 +929,12 @@ export default {
   'pages.process.lca.evidence.reason.unknown': 'Der Berechnungsnachweis wurde nicht erfolgreich validiert.',
   'pages.process.published.climate.error': 'Laden fehlgeschlagen',
   'pages.process.published.climate.missing': 'Kein Ergebnis für diese Version in der aktuellen Veröffentlichung',
+  'pages.process.lca.availability.partial': 'Einige Wirkungskategorien können nicht berechnet werden. Berechnete Kategorien und die Sachbilanz bleiben einsehbar; unvollständige Ergebnisse gelten nicht als vollständige Wirkungsabschätzung.',
+  'pages.process.lca.availability.unavailable': 'Nicht berechenbar',
+  'pages.process.lca.availability.reason.version': 'Die exakt referenzierte Version ist nicht verfügbar.',
+  'pages.process.lca.availability.reason.location': 'Der zutreffende Standort oder die regionale Regel ist ungeklärt.',
+  'pages.process.lca.availability.reason.condition': 'Die Anwendungsbedingungen des Faktors müssen geprüft werden.',
+  'pages.process.lca.availability.reason.source': 'Die Quellennachweise zur Anwendbarkeit fehlen.',
+  'pages.process.lca.availability.reason.factor': 'Ein anwendbarer Charakterisierungsfaktor kann nicht bestimmt werden.',
+  'pages.process.lca.availability.none': 'Die Wirkungsabschätzung ist nicht verfügbar. Die Sachbilanz bleibt einsehbar; eine vollständige Bewertung oder Gesamtpunktzahl ist nicht verfügbar.',
 };

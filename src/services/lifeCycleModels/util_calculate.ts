@@ -2,8 +2,10 @@ import { verifyAllocationProductProblems } from '../processes/allocationTargets'
 import { v4 } from 'uuid';
 import { CONTENT_LANGUAGE_REGISTRY } from '../general/contentLanguageRegistry';
 import { jsonToList, mergeLangArrays, removeEmptyObjects } from '../general/util';
+import { persistableStaticLciaResults } from '../lciaMethods/calculation';
 import { serializeStaticLciaReport } from '../lciaMethods/evidence';
 import { LCIAResultCalculationWithEvidence } from '../lciaMethods/util';
+import { resolveLciaFlowMetadata } from '../lciaMethods/inventory';
 import { publicEntity } from '../supabase/public';
 import type { Up2DownEdge } from './data';
 import type {
@@ -345,6 +347,10 @@ export async function genLifeCycleModelProcesses(
   };
 
   const lciaIncompleteFlags: boolean[] = [];
+  const lciaFlowMetadata = await resolveLciaFlowMetadata(
+    groups.flatMap((group) => group.exchanges.map((entry) => entry.template.raw as any)),
+  );
+  assertNotCancelled();
 
   const lifeCycleModelProcesses = await Promise.all(
     groups.map(async (group) => {
@@ -368,7 +374,9 @@ export async function genLifeCycleModelProcesses(
       }));
 
       assertNotCancelled();
-      const lciaCalculation = await LCIAResultCalculationWithEvidence(newExchanges);
+      const lciaCalculation = await LCIAResultCalculationWithEvidence(newExchanges, {
+        flowMetadata: lciaFlowMetadata,
+      });
       assertNotCancelled();
       lciaIncompleteFlags.push(
         (lciaCalculation.report as any)?.method_factor_coverage?.coverage_status ===
@@ -428,7 +436,7 @@ export async function genLifeCycleModelProcesses(
         finalId,
         baseName,
         newExchanges,
-        lciaResults: lciaCalculation.results,
+        lciaResults: persistableStaticLciaResults(lciaCalculation),
         lciaReport: serializeStaticLciaReport(lciaCalculation.report),
         lifeCycleModelJsonOrdered,
         refProcesses,

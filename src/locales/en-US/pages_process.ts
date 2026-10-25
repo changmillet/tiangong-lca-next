@@ -929,4 +929,12 @@ export default {
   'pages.process.lca.evidence.reason.unknown': 'The evidence did not pass validation.',
   'pages.process.published.climate.error': 'Failed to load',
   'pages.process.published.climate.missing': 'No result for this version in the current publication',
+  'pages.process.lca.availability.partial': 'Some impact categories are unavailable. Available categories and inventory remain readable; incomplete results cannot be used as a complete assessment.',
+  'pages.process.lca.availability.unavailable': 'Unavailable',
+  'pages.process.lca.availability.reason.version': 'The exact referenced version is unavailable.',
+  'pages.process.lca.availability.reason.location': 'Applicable location or regional rules are unresolved.',
+  'pages.process.lca.availability.reason.condition': 'Factor conditions require review.',
+  'pages.process.lca.availability.reason.source': 'Source applicability evidence is unavailable.',
+  'pages.process.lca.availability.reason.factor': 'An applicable characterization factor cannot be determined.',
+  'pages.process.lca.availability.none': 'Impact assessment is unavailable. Inventory remains readable; no complete assessment or aggregate score is available.',
 };

@@ -926,4 +926,12 @@ export default {
   'pages.process.lca.evidence.reason.unknown': '该证据未通过校验。',
   'pages.process.published.climate.error': '读取失败',
   'pages.process.published.climate.missing': '当前发布包中没有此版本的结果',
+  'pages.process.lca.availability.partial': '部分影响类别不可计算。已计算类别和清单仍可查看；不完整结果不能作为完整影响评价使用。',
+  'pages.process.lca.availability.unavailable': '不可计算',
+  'pages.process.lca.availability.reason.version': '无法取得精确引用版本。',
+  'pages.process.lca.availability.reason.location': '适用地区或地区规则尚未确定。',
+  'pages.process.lca.availability.reason.condition': '因子适用条件需要审核。',
+  'pages.process.lca.availability.reason.source': '缺少来源适用性依据。',
+  'pages.process.lca.availability.reason.factor': '无法确定适用的表征因子。',
+  'pages.process.lca.availability.none': '影响评价暂不可计算。清单仍可查看；无法提供完整影响评价或综合评分。',
 };

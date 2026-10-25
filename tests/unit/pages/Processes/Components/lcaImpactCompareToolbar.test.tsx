@@ -620,7 +620,43 @@ describe('lcaImpactCompareToolbar', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Run analysis' }));
 
     expect(await screen.findByText('snapshot-empty-values')).toBeInTheDocument();
-    expect(screen.getAllByText('0.0%').length).toBeGreaterThan(0);
+    expect(screen.queryByText('0.0%')).not.toBeInTheDocument();
+    expect(screen.getByText(/Some impact categories are unavailable/)).toBeInTheDocument();
+  });
+
+  it('shows a localized unavailable-category reason without creating comparison values', async () => {
+    setUmiIntl({
+      locale: 'en-US',
+      formatMessage: ({ id, defaultMessage }: any) =>
+        (
+          ({
+            'pages.process.lca.availability.unavailable': 'Unavailable',
+            'pages.process.lca.availability.reason.location':
+              'Applicable location or regional rules are unresolved.',
+          }) as Record<string, string>
+        )[id as string] ??
+        defaultMessage ??
+        id,
+    });
+    isLcaFunctionInvokeError.mockImplementation(
+      (error: any) => error?.code === 'lcia_category_unavailable',
+    );
+    queryLcaResults.mockRejectedValueOnce({
+      code: 'lcia_category_unavailable',
+      body: {
+        error: 'lcia_category_unavailable',
+        detail: 'lcia_factor_location_semantics_unresolved',
+      },
+    });
+    renderToolbar([buildProcess('process-1', 'Solar', '01.00.000')]);
+    fireEvent.click(screen.getByTestId('impact-compare-trigger'));
+    await selectImpact();
+    fireEvent.click(screen.getByRole('button', { name: 'Run analysis' }));
+    expect(
+      await screen.findByText('Unavailable: Applicable location or regional rules are unresolved.'),
+    ).toBeInTheDocument();
+    expect(screen.queryByText('lcia_factor_location_semantics_unresolved')).not.toBeInTheDocument();
+    expect(screen.queryByText('0.0%')).not.toBeInTheDocument();
   });
 
   it('shows a queued snapshot build error with the trimmed job id', async () => {

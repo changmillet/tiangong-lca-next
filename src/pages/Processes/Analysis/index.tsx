@@ -1,3 +1,7 @@
+import LciaAvailabilityNotice, {
+  formatLciaUnavailableQueryError,
+} from '@/components/LciaAvailabilityNotice';
+import { normalizeLciaValueRow, type LciaAvailability } from '@/services/lca/categoryAvailability';
 import DatasetClassificationFilter from '@/components/DatasetClassificationFilter';
 import { dataListPagination, dataListSearchStyle } from '@/components/ResponsiveDataList';
 import type { DatasetClassificationFilterValue } from '@/services/general/datasetClassification';
@@ -150,9 +154,12 @@ type AntdThemeToken = ReturnType<typeof theme.useToken>['token'];
 type ProcessAllImpactsValue = {
   impact_id?: unknown;
   impact_index?: unknown;
+  impact_version?: unknown;
   impact_name?: unknown;
   unit?: unknown;
   value?: unknown;
+  status?: unknown;
+  reasons?: unknown;
 };
 
 type QueryMeta = {
@@ -161,6 +168,7 @@ type QueryMeta = {
   source: string;
   computedAt: string;
   calculationEvidence?: unknown;
+  lciaAvailability?: LciaAvailability;
 };
 
 type SankeyGraphNodeDatum = {
@@ -211,8 +219,9 @@ function normalizeProcessAllImpactRows(values: unknown): SolverLcaImpactValueRow
       impact_id: String(row.impact_id ?? '').trim(),
       impact_name: String(row.impact_name ?? '').trim(),
       unit: String(row.unit ?? '').trim(),
-      value: normalizeNumber(row.value),
+      ...normalizeLciaValueRow({ value: row.value, status: row.status, reasons: row.reasons }),
       impact_index: Number(row.impact_index ?? 0),
+      impact_version: typeof row.impact_version === 'string' ? row.impact_version : undefined,
     }))
     .filter((row) => row.impact_id.length > 0)
     .sort((left, right) => left.impact_index - right.impact_index);
@@ -358,6 +367,7 @@ function QueryMetaCard({ meta }: { meta: QueryMeta }) {
           },
         ]}
       />
+      <LciaAvailabilityNotice availability={meta.lciaAvailability} />
       {meta.calculationEvidence !== undefined ? (
         <LcaCalculationEvidenceNotice calculationEvidence={meta.calculationEvidence} />
       ) : null}
@@ -370,6 +380,8 @@ function resolveQueuedSnapshotMessage(
   intl: ReturnType<typeof useIntl>,
   fallbackMessage: string,
 ): string {
+  if (isLcaFunctionInvokeError(error) && error.code === 'lcia_category_unavailable')
+    return formatLciaUnavailableQueryError(error.body, intl);
   if (isLcaFunctionInvokeError(error) && error.code === 'snapshot_build_queued') {
     const buildJobId =
       typeof error.body?.build_job_id === 'string' ? error.body.build_job_id.trim() : '';
@@ -1107,6 +1119,7 @@ const LcaAnalysisPage = () => {
           source: queried.source,
           computedAt: queried.meta.computed_at,
           calculationEvidence: queried.meta.calculation_evidence,
+          lciaAvailability: queried.meta.lcia_availability,
         };
       }
       const methodMetaById = await getLcaMethodMetaMap(solverRows.map((row) => row.impact_id));
@@ -1117,8 +1130,11 @@ const LcaAnalysisPage = () => {
             ({
               impact_id: row.impact_id,
               impact_name: row.impact_name,
+              impact_version: row.impact_version,
               unit: row.unit,
               value: row.value,
+              status: row.status,
+              reasons: row.reasons,
             }) satisfies SolverLcaImpactValueRow,
         ),
         methodMetaById,
@@ -1194,6 +1210,7 @@ const LcaAnalysisPage = () => {
           source: queried.source,
           computedAt: queried.meta.computed_at,
           calculationEvidence: queried.meta.calculation_evidence,
+          lciaAvailability: queried.meta.lcia_availability,
         };
       }
       const selectedImpact = impactOptions.find((item) => item.value === selectedCompareImpactId);
@@ -1270,6 +1287,7 @@ const LcaAnalysisPage = () => {
           source: queried.source,
           computedAt: queried.meta.computed_at,
           calculationEvidence: queried.meta.calculation_evidence,
+          lciaAvailability: queried.meta.lcia_availability,
         };
       }
       const selectedImpact = impactOptions.find((item) => item.value === selectedGroupedImpactId);
@@ -2136,6 +2154,7 @@ const LcaAnalysisPage = () => {
                                 source: profileResult.source,
                                 computedAt: profileResult.computedAt,
                                 calculationEvidence: profileResult.calculationEvidence,
+                                lciaAvailability: profileResult.lciaAvailability,
                               }}
                             />
 
@@ -2341,7 +2360,11 @@ const LcaAnalysisPage = () => {
                                 source: compareResult.source,
                                 computedAt: compareResult.computedAt,
                                 calculationEvidence: compareResult.calculationEvidence,
+                                lciaAvailability: compareResult.lciaAvailability,
                               }}
+                            />
+                            <LciaAvailabilityNotice
+                              incomplete={compareResult.model.unavailableCount > 0}
                             />
 
                             <Row gutter={[16, 16]}>
@@ -2364,7 +2387,7 @@ const LcaAnalysisPage = () => {
                                       defaultMessage='Top contributor'
                                     />
                                   }
-                                  value={compareResult.model.topItem!.processName}
+                                  value={compareResult.model.topItem?.processName ?? '-'}
                                 />
                               </Col>
                               <Col xs={24} sm={8}>
@@ -2378,7 +2401,13 @@ const LcaAnalysisPage = () => {
                                   value={compareResult.model.totalAbsoluteValue}
                                   formatter={(value) => (
                                     <>
-                                      <AlignedNumber value={Number(value)} />{' '}
+                                      <AlignedNumber
+                                        value={
+                                          compareResult.model.unavailableCount
+                                            ? null
+                                            : Number(value)
+                                        }
+                                      />{' '}
                                       <Typography.Text type='secondary'>
                                         {compareUnit}
                                       </Typography.Text>
@@ -2592,7 +2621,11 @@ const LcaAnalysisPage = () => {
                                 source: groupedResult.source,
                                 computedAt: groupedResult.computedAt,
                                 calculationEvidence: groupedResult.calculationEvidence,
+                                lciaAvailability: groupedResult.lciaAvailability,
                               }}
+                            />
+                            <LciaAvailabilityNotice
+                              incomplete={groupedResult.model.unavailableCount > 0}
                             />
 
                             <Row gutter={[16, 16]}>
@@ -2626,7 +2659,7 @@ const LcaAnalysisPage = () => {
                                       defaultMessage='Top group'
                                     />
                                   }
-                                  value={groupedResult.model.topItem!.groupLabel}
+                                  value={groupedResult.model.topItem?.groupLabel ?? '-'}
                                 />
                               </Col>
                               <Col xs={24} sm={12} lg={6}>
@@ -2640,7 +2673,13 @@ const LcaAnalysisPage = () => {
                                   value={groupedResult.model.totalAbsoluteValue}
                                   formatter={(value) => (
                                     <>
-                                      <AlignedNumber value={Number(value)} />{' '}
+                                      <AlignedNumber
+                                        value={
+                                          groupedResult.model.unavailableCount
+                                            ? null
+                                            : Number(value)
+                                        }
+                                      />{' '}
                                       <Typography.Text type='secondary'>
                                         {groupedUnit}
                                       </Typography.Text>

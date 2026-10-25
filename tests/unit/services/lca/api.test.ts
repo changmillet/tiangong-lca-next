@@ -562,6 +562,165 @@ describe('LCA service API (src/services/lca/api.ts)', () => {
       });
     });
 
+    it.each(['selected_processes', 'ranked_processes'])(
+      'rejects forged numeric %s values for an unavailable category',
+      async (kind) => {
+        const availability = {
+          schema_version: 'lcia.category-availability.v1',
+          policy_version: 'lcia.applicability.source-bound.v2',
+          completeness: 'unavailable',
+          categories: [
+            {
+              impact_index: 0,
+              method_id: '11111111-1111-4111-8111-111111111111',
+              method_version: '01.00.000',
+              status: 'unavailable',
+              reasons: ['unresolved'],
+            },
+          ],
+        };
+        supabaseMock.functions.invoke.mockResolvedValueOnce({
+          data: {
+            mode: 'processes_one_impact',
+            data: {
+              kind,
+              impact_id: availability.categories[0].method_id,
+              impact_index: 0,
+              values:
+                kind === 'selected_processes'
+                  ? { 'process-1': 42 }
+                  : [{ value: 42, absolute_value: 42 }],
+            },
+            meta: { query_artifact_format: 'all-unit-query:v3', lcia_availability: availability },
+          },
+          error: null,
+        });
+        const request =
+          kind === 'selected_processes'
+            ? {
+                mode: 'processes_one_impact' as const,
+                impact_id: availability.categories[0].method_id,
+                process_ids: ['process-1'],
+              }
+            : {
+                mode: 'processes_one_impact' as const,
+                impact_id: availability.categories[0].method_id,
+                top_n: 10,
+              };
+        await expect(queryLcaResults(request)).rejects.toMatchObject({
+          code: 'lcia_category_unavailable',
+          status: 409,
+        });
+      },
+    );
+
+    it('requires current v3 receipts and binds single-category values to the exact requested axis', async () => {
+      const method = '11111111-1111-4111-8111-111111111111';
+      const availability = {
+        schema_version: 'lcia.category-availability.v1',
+        policy_version: 'lcia.applicability.source-bound.v2',
+        completeness: 'complete',
+        categories: [
+          {
+            impact_index: 0,
+            method_id: method,
+            method_version: '01.00.000',
+            status: 'available',
+            reasons: [],
+          },
+        ],
+      };
+      const current = {
+        mode: 'processes_one_impact',
+        data: {
+          kind: 'selected_processes',
+          impact_id: method,
+          impact_index: 0,
+          values: { 'process-1': 0 },
+        },
+        meta: { query_artifact_format: 'all-unit-query:v3', lcia_availability: availability },
+      };
+      const request = {
+        mode: 'processes_one_impact' as const,
+        impact_id: method,
+        process_ids: ['process-1'],
+      };
+      supabaseMock.functions.invoke.mockResolvedValueOnce({ data: current, error: null });
+      await expect(queryLcaResults(request)).resolves.toMatchObject({
+        data: { values: { 'process-1': 0 } },
+      });
+      for (const data of [
+        { ...current, data: { ...current.data, impact_index: 1 } },
+        { ...current, data: { ...current.data, status: 'unavailable' } },
+        { ...current, data: { ...current.data, values: { 'process-1': null } } },
+        { ...current, data: { ...current.data, values: { 'process-2': 5 } } },
+        { ...current, mode: 'process_all_impacts' },
+        { ...current, meta: { query_artifact_format: 'all-unit-query:v3' } },
+      ]) {
+        supabaseMock.functions.invoke.mockResolvedValueOnce({ data, error: null });
+        await expect(queryLcaResults(request)).rejects.toThrow();
+      }
+    });
+
+    it('validates current ranking scalars and preserves an explicit historical v2 response', async () => {
+      const method = '11111111-1111-4111-8111-111111111111';
+      const availability = {
+        schema_version: 'lcia.category-availability.v1',
+        policy_version: 'lcia.applicability.source-bound.v2',
+        completeness: 'complete',
+        categories: [
+          {
+            impact_index: 0,
+            method_id: method,
+            method_version: '01.00.000',
+            status: 'available',
+            reasons: [],
+          },
+        ],
+      };
+      const data = {
+        kind: 'ranked_processes',
+        impact_id: method,
+        impact_index: 0,
+        offset: 0,
+        limit: 10,
+        returned_count: 1,
+        total_process_count: 1,
+        total_absolute_value: 2,
+        values: [
+          {
+            process_id: 'process-1',
+            process_version: '01.00.000',
+            process_index: 0,
+            value: -2,
+            absolute_value: 2,
+          },
+        ],
+      };
+      const request = { mode: 'processes_one_impact' as const, impact_id: method, top_n: 10 };
+      const current = {
+        mode: 'processes_one_impact',
+        data,
+        meta: { query_artifact_format: 'all-unit-query:v3', lcia_availability: availability },
+      };
+      supabaseMock.functions.invoke.mockResolvedValueOnce({ data: current, error: null });
+      await expect(queryLcaResults(request)).resolves.toMatchObject({
+        data: { total_absolute_value: 2 },
+      });
+      supabaseMock.functions.invoke.mockResolvedValueOnce({
+        data: { ...current, data: { ...data, values: [{ ...data.values[0], value: null }] } },
+        error: null,
+      });
+      await expect(queryLcaResults(request)).rejects.toThrow('lcia_availability_values_invalid');
+      const historical = {
+        mode: 'processes_one_impact',
+        data: { values: { 'process-1': 42 } },
+        meta: { query_artifact_format: 'all-unit-query:v2' },
+      };
+      supabaseMock.functions.invoke.mockResolvedValueOnce({ data: historical, error: null });
+      await expect(queryLcaResults(request)).resolves.toEqual(historical);
+    });
+
     it('supports hotspot ranking requests without explicit process_ids', async () => {
       supabaseMock.functions.invoke.mockResolvedValueOnce({
         data: {

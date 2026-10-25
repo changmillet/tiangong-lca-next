@@ -1,3 +1,12 @@
+import {
+  isKnownEmptyLciaInventory,
+  normalizeLciaInventoryClassification,
+} from './inventoryClassification';
+import { parseLciaAvailability } from '@/services/lca/categoryAvailability';
+import {
+  LCIA_APPLICABILITY_POLICY_VERSION,
+  SUPPORTED_SOURCE_POLICY_MANIFEST_SHA256,
+} from './supportedSourcePolicyConstants';
 import staticCacheManifestJson from '../../../public/lciamethods/cache_manifest.json';
 import staticMethodListJson from '../../../public/lciamethods/list.json';
 import type {
@@ -320,6 +329,16 @@ const UNCHARACTERIZED_REASONS = new Set<LciaUncharacterizedReason>([
   'invalid_factor',
   'calculation_failure',
   'method_source_drift',
+  'lcia_inventory_flow_version_invalid',
+  'lcia_factor_flow_version_mismatch',
+  'lcia_factor_location_semantics_unresolved',
+  'lcia_factor_qualifier_unsupported',
+  'lcia_factor_applicability_ambiguous',
+  'no_lcia_factor_for_exact_location_direction',
+  'no_lcia_factor_for_flow_direction',
+  'ambiguous_elementary_flow_direction_axis',
+  'ambiguous_flow_reference',
+  'lcia_mixed_location_axis_unsupported',
 ]);
 
 function normalizeUncharacterizedExchange(value: unknown): LciaUncharacterizedExchange | null {
@@ -372,17 +391,27 @@ function sumCoverageRows(rows: LciaMethodCoverageRow[]): LciaCoverageCounts {
   );
 }
 
-export function normalizeMethodFactorCoverageMatrix(
+function normalizeCoverageMatrix(
+  raw: unknown,
+  artifactVersion: 'v1',
+  allowEmptyObservationSet: boolean,
+): LciaMethodFactorCoverageMatrix<LcaUncharacterizedEvidenceArtifactV1> | null;
+function normalizeCoverageMatrix(
   raw: unknown,
   artifactVersion: 'v2',
+  allowEmptyObservationSet: boolean,
 ): LciaMethodFactorCoverageMatrix<LcaUncharacterizedEvidenceArtifactV2> | null;
-export function normalizeMethodFactorCoverageMatrix(
+function normalizeCoverageMatrix(
   raw: unknown,
-  artifactVersion?: 'v1',
-): LciaMethodFactorCoverageMatrix<LcaUncharacterizedEvidenceArtifactV1> | null;
-export function normalizeMethodFactorCoverageMatrix(
+  artifactVersion: 'v1' | 'v2',
+  allowEmptyObservationSet: boolean,
+): LciaMethodFactorCoverageMatrix<
+  LcaUncharacterizedEvidenceArtifactV1 | LcaUncharacterizedEvidenceArtifactV2
+> | null;
+function normalizeCoverageMatrix(
   raw: unknown,
-  artifactVersion: 'v1' | 'v2' = 'v1',
+  artifactVersion: 'v1' | 'v2',
+  allowEmptyObservationSet: boolean,
 ): LciaMethodFactorCoverageMatrix<
   LcaUncharacterizedEvidenceArtifactV1 | LcaUncharacterizedEvidenceArtifactV2
 > | null {
@@ -447,9 +476,17 @@ export function normalizeMethodFactorCoverageMatrix(
   );
   const inlineGapCounts = normalizedInlineGaps.reduce<LciaCoverageCounts>(
     (sum, gap) => {
-      if (gap.reason === 'missing_factor') {
+      if (
+        [
+          'missing_factor',
+          'no_lcia_factor_for_exact_location_direction',
+          'no_lcia_factor_for_flow_direction',
+        ].includes(gap.reason)
+      ) {
         sum.unmatched += 1;
-      } else if (gap.reason === 'unsupported_direction') {
+      } else if (
+        ['unsupported_direction', 'ambiguous_elementary_flow_direction_axis'].includes(gap.reason)
+      ) {
         sum.unsupported_direction += 1;
       } else {
         sum.invalid += 1;
@@ -478,9 +515,11 @@ export function normalizeMethodFactorCoverageMatrix(
     Array.from(expectedMethodKeys).some((key) => !actualMethodKeys.has(key)) ||
     canonicalJson(summedCounts) !== canonicalJson(counts) ||
     Object.values(summedCounts).some((count) => !Number.isSafeInteger(count)) ||
-    globalPairCount <= 0 ||
+    globalPairCount < 0 ||
+    (globalPairCount === 0 && !allowEmptyObservationSet) ||
     !Number.isSafeInteger(globalPairCount) ||
-    expectedPairsPerMethod <= 0 ||
+    expectedPairsPerMethod < 0 ||
+    (expectedPairsPerMethod === 0 && !allowEmptyObservationSet) ||
     methodPairTotals.some((total) => !Number.isSafeInteger(total)) ||
     methodPairTotals.some((total) => total !== expectedPairsPerMethod) ||
     !Number.isSafeInteger(expectedPairsPerMethod * expectedMethodKeys.size) ||
@@ -500,7 +539,8 @@ export function normalizeMethodFactorCoverageMatrix(
               `${gap.method_id}:${gap.method_version}:${gap.artifact_locator_id}`,
             ) ||
             !gap.exchange_id ||
-            (gap.reason !== 'missing_flow_uuid' && !gap.flow_uuid) ||
+            (!['missing_flow_uuid', 'ambiguous_flow_reference'].includes(gap.reason) &&
+              !gap.flow_uuid) ||
             (gap.reason !== 'unsupported_direction' &&
               gap.direction !== 'INPUT' &&
               gap.direction !== 'OUTPUT'),
@@ -525,6 +565,23 @@ export function normalizeMethodFactorCoverageMatrix(
     uncharacterized_evidence: artifact,
     ...(inlineGaps.length > 0 ? { uncharacterized_exchanges: normalizedInlineGaps } : {}),
   };
+}
+
+export function normalizeMethodFactorCoverageMatrix(
+  raw: unknown,
+  artifactVersion: 'v2',
+): LciaMethodFactorCoverageMatrix<LcaUncharacterizedEvidenceArtifactV2> | null;
+export function normalizeMethodFactorCoverageMatrix(
+  raw: unknown,
+  artifactVersion?: 'v1',
+): LciaMethodFactorCoverageMatrix<LcaUncharacterizedEvidenceArtifactV1> | null;
+export function normalizeMethodFactorCoverageMatrix(
+  raw: unknown,
+  artifactVersion: 'v1' | 'v2' = 'v1',
+): LciaMethodFactorCoverageMatrix<
+  LcaUncharacterizedEvidenceArtifactV1 | LcaUncharacterizedEvidenceArtifactV2
+> | null {
+  return normalizeCoverageMatrix(raw, artifactVersion, false);
 }
 
 export function resolveServiceLciaStatus(
@@ -620,11 +677,51 @@ export function parseStaticLciaReport(raw: unknown): LciaStaticCalculationReport
   }
   try {
     const parsed = JSON.parse(text) as LciaStaticCalculationReport;
-    const matrix = normalizeMethodFactorCoverageMatrix(parsed?.method_factor_coverage);
     const source = parsed?.source;
+    const availability = parseLciaAvailability(parsed?.lcia_availability);
+    const hasPolicy =
+      source?.applicability_policy_version !== undefined ||
+      source?.source_policy_manifest_sha256 !== undefined;
+    if (
+      availability &&
+      (availability.categories.length !== STATIC_LCIA_CACHE_MANIFEST.methods.length ||
+        !availability.categories.every((category, index) => {
+          const method = STATIC_LCIA_CACHE_MANIFEST.methods[index];
+          return (
+            category.method_id === method.method_id &&
+            category.method_version === method.method_version
+          );
+        }))
+    )
+      return null;
+    if (
+      hasPolicy &&
+      (source.applicability_policy_version !== LCIA_APPLICABILITY_POLICY_VERSION ||
+        source.source_policy_manifest_sha256 !== SUPPORTED_SOURCE_POLICY_MANIFEST_SHA256)
+    )
+      return null;
     const trustedStatus =
       parsed?.calculation_status === 'complete' ||
       parsed?.calculation_status === 'incomplete_coverage';
+    const inventory =
+      parsed?.inventory_classification === undefined
+        ? null
+        : normalizeLciaInventoryClassification(parsed.inventory_classification);
+    if (parsed?.inventory_classification !== undefined && !inventory) return null;
+    const allowEmpty =
+      hasPolicy &&
+      (!trustedStatus ||
+        (isKnownEmptyLciaInventory(inventory) && availability?.completeness === 'complete'));
+    const matrix = normalizeCoverageMatrix(parsed?.method_factor_coverage, 'v1', allowEmpty);
+    if (
+      trustedStatus &&
+      inventory &&
+      matrix &&
+      Object.values(matrix.by_method[0].counts).reduce((sum, count) => sum + count, 0) !==
+        inventory.elementary_exchange_count
+    )
+      return null;
+
     if (
       parsed?.schema_version !== 'lcia.frontend_calculation_report.v1' ||
       !source ||
@@ -642,7 +739,12 @@ export function parseStaticLciaReport(raw: unknown): LciaStaticCalculationReport
       matrix.method_identity_manifest_sha256 !== source.method_identity_manifest_sha256 ||
       matrix.factor_manifest_sha256 !== source.factor_manifest_sha256 ||
       (trustedStatus &&
-        (source.observed_list_sha256 !== STATIC_LCIA_CACHE_MANIFEST.files.list.sha256 ||
+        ((hasPolicy && !availability) ||
+          (availability && !hasPolicy) ||
+          (availability?.completeness !== undefined &&
+            availability.completeness !== 'complete' &&
+            parsed.calculation_status === 'complete') ||
+          source.observed_list_sha256 !== STATIC_LCIA_CACHE_MANIFEST.files.list.sha256 ||
           source.observed_factor_sha256 !== STATIC_LCIA_CACHE_MANIFEST.files.factors.sha256 ||
           parsed.calculation_status !== matrix.coverage_status ||
           parsed.failure_reason !== null)) ||
@@ -653,7 +755,12 @@ export function parseStaticLciaReport(raw: unknown): LciaStaticCalculationReport
     ) {
       return null;
     }
-    return { ...parsed, method_factor_coverage: matrix };
+    return {
+      ...parsed,
+      method_factor_coverage: matrix,
+      ...(availability ? { lcia_availability: availability } : {}),
+      ...(inventory ? { inventory_classification: inventory } : {}),
+    };
   } catch {
     return null;
   }

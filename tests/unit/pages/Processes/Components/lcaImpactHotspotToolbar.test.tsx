@@ -845,7 +845,7 @@ describe('lcaImpactHotspotToolbar', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Run ranking' }));
 
     expect(await screen.findByText('snapshot-malformed')).toBeInTheDocument();
-    expect(screen.getByText('#1 - #2')).toBeInTheDocument();
+    expect(screen.getByText('#1 - #1')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Next page' })).toBeDisabled();
     expect(screen.getAllByText('process-name-fallback').length).toBeGreaterThanOrEqual(2);
     expect(screen.getAllByText('-1').length).toBeGreaterThanOrEqual(1);

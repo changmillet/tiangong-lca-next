@@ -1,3 +1,7 @@
+import LciaAvailabilityNotice, {
+  formatLciaUnavailableQueryError,
+} from '@/components/LciaAvailabilityNotice';
+import { finiteLciaValue } from '@/services/lca/categoryAvailability';
 import AlignedNumber from '@/components/AlignedNumber';
 import ToolBarButton from '@/components/ToolBarButton';
 import { queryPublishedLciaResults } from '@/services/dataProducts';
@@ -68,6 +72,7 @@ export type LcaImpactCompareModel = {
   topPositiveItem?: LcaImpactCompareItem;
   topNegativeItem?: LcaImpactCompareItem;
   totalAbsoluteValue: number;
+  unavailableCount: number;
 };
 
 type QueryDataValues = {
@@ -100,6 +105,7 @@ export function buildLcaImpactCompareModel(
   valuesByProcessId: Record<string, unknown>,
 ): LcaImpactCompareModel {
   const baseItems = processes
+    .filter((process) => finiteLciaValue(valuesByProcessId[process.value]) !== null)
     .map((process) => {
       const value = normalizeNumber(valuesByProcessId[process.value]);
       const absoluteValue = Math.abs(value);
@@ -149,6 +155,7 @@ export function buildLcaImpactCompareModel(
     topPositiveItem: items.find((item) => item.direction === 'positive'),
     topNegativeItem: items.find((item) => item.direction === 'negative'),
     totalAbsoluteValue,
+    unavailableCount: processes.length - items.length,
   };
 }
 
@@ -320,7 +327,9 @@ const LcaImpactCompareToolbar: FC<{
       });
     } catch (error: unknown) {
       setAnalysisResult(null);
-      if (isLcaFunctionInvokeError(error) && error.code === 'snapshot_build_queued') {
+      if (isLcaFunctionInvokeError(error) && error.code === 'lcia_category_unavailable') {
+        setAnalysisError(formatLciaUnavailableQueryError(error.body, intl));
+      } else if (isLcaFunctionInvokeError(error) && error.code === 'snapshot_build_queued') {
         const buildJobId =
           typeof error.body?.build_job_id === 'string' ? error.body.build_job_id.trim() : '';
         setAnalysisError(
@@ -592,6 +601,9 @@ const LcaImpactCompareToolbar: FC<{
                 />
               </Typography.Text>
               {analysisError ? <Alert title={analysisError} type='error' /> : null}
+              <LciaAvailabilityNotice
+                incomplete={Boolean(analysisResult?.model.unavailableCount)}
+              />
               {!analysisResult && !analysisError ? (
                 <Typography.Paragraph type='secondary'>
                   <FormattedMessage
@@ -699,7 +711,13 @@ const LcaImpactCompareToolbar: FC<{
                           value={analysisResult.model.totalAbsoluteValue}
                           formatter={(value) => (
                             <>
-                              <AlignedNumber value={normalizeNumber(value)} />{' '}
+                              <AlignedNumber
+                                value={
+                                  analysisResult.model.unavailableCount
+                                    ? null
+                                    : normalizeNumber(value)
+                                }
+                              />{' '}
                               <Typography.Text type='secondary'>
                                 {analysisResult.unit}
                               </Typography.Text>

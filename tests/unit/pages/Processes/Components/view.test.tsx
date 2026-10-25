@@ -941,8 +941,11 @@ describe('ProcessView component', () => {
       within(screen.getByTestId('pro-row-impact-sparse')).getByText('impact-sparse'),
     ).toBeInTheDocument();
     expect(
-      within(screen.getByTestId('pro-row-impact-sparse')).getByTestId('aligned-number'),
-    ).toHaveTextContent('0');
+      within(screen.getByTestId('pro-row-impact-sparse')).queryByTestId('aligned-number'),
+    ).not.toBeInTheDocument();
+    expect(
+      within(screen.getByTestId('pro-row-impact-sparse')).getByText('Unavailable'),
+    ).toBeInTheDocument();
     expect(within(screen.getByTestId('pro-row-impact-sparse')).getByText('-')).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole('button', { name: 'Refresh latest calculated results' }));
@@ -1370,7 +1373,7 @@ describe('ProcessView component', () => {
     expect(screen.getAllByTestId(/^pro-row-/)).toHaveLength(1);
   });
 
-  it('keeps base LCIA rows when solver payload values are not an array and uses row.key as the table row key', async () => {
+  it('does not restore saved LCIA numbers when current solver values are absent', async () => {
     mockGenProcessFromData.mockReturnValueOnce({
       ...processDataSet,
       LCIAResults: {
@@ -1402,10 +1405,8 @@ describe('ProcessView component', () => {
 
     fireEvent.click(screen.getByRole('button', { name: 'LCIA Results' }));
 
-    await waitFor(() => expect(screen.getByTestId('pro-row-base-key')).toBeInTheDocument());
-    expect(
-      within(screen.getByTestId('pro-row-base-key')).getByTestId('aligned-number'),
-    ).toHaveTextContent('9');
+    await waitFor(() => expect(mockQueryLcaResults).toHaveBeenCalledTimes(1));
+    expect(screen.queryByTestId('pro-row-base-key')).not.toBeInTheDocument();
   });
 
   it('falls back to a generic solver error when queued snapshot metadata is incomplete', async () => {

@@ -22,6 +22,7 @@ import {
   buildLcaProcessOptions,
   buildLcaProcessSelectionKey,
   buildMergedLcaRows,
+  applyLciaAvailabilityToRows,
   formatPercent,
   formatSourceLabel,
   getDefaultLcaDataScopeForPath,
@@ -612,5 +613,43 @@ describe('lcaAnalysisShared', () => {
         'common:shortDescription': { '@xml:lang': 'en', '#text': 'impact-empty' },
       },
     });
+  });
+  it('reconstructs omitted unavailable saved rows without restoring stale or different-version values', () => {
+    const ids = [
+      '11111111-1111-4111-8111-111111111111',
+      '22222222-2222-4222-8222-222222222222',
+      '33333333-3333-4333-8333-333333333333',
+    ];
+    const receipt: import('@/services/lca/categoryAvailability').LciaAvailability = {
+      schema_version: 'lcia.category-availability.v1',
+      policy_version: 'lcia.applicability.source-bound.v2',
+      completeness: 'partial',
+      categories: ids.map((id, index) => ({
+        impact_index: index,
+        method_id: id,
+        method_version: '01.00.000',
+        status: index === 1 ? 'unavailable' : 'available',
+        reasons: index === 1 ? ['unresolved'] : [],
+      })),
+    };
+    const stored = ids.map((id, index) => ({
+      key: id,
+      referenceToLCIAMethodDataSet: {
+        '@refObjectId': id,
+        '@version': index === 2 ? '02.00.000' : '01.00.000',
+      },
+      meanAmount: index === 0 ? 0 : 99,
+    })) as any;
+    const rows = applyLciaAvailabilityToRows(stored, receipt, new Map());
+    expect(rows.map((row) => row.meanAmount)).toEqual([0, null, null]);
+    expect(rows.map((row) => row.referenceToLCIAMethodDataSet['@version'])).toEqual([
+      '01.00.000',
+      '01.00.000',
+      '01.00.000',
+    ]);
+    expect(rows[1].status).toBe('unavailable');
+    const omitted = applyLciaAvailabilityToRows(stored.slice(0, 1), receipt, new Map());
+    expect(omitted).toHaveLength(3);
+    expect(omitted[1].meanAmount).toBeNull();
   });
 });

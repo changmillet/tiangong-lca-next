@@ -45,14 +45,20 @@ jest.mock('@/services/lciaMethods/util', () => ({
   default: jest.fn(),
   LCIAResultCalculationWithEvidence: async (...args: unknown[]) => {
     const calculate = jest.requireMock('@/services/lciaMethods/util').default;
-    return { results: await calculate(...args), report: { schema_version: 'test-report' } };
+    const calculated = await calculate(...args);
+    return calculated && !Array.isArray(calculated) && calculated.results
+      ? calculated
+      : { results: calculated, report: { schema_version: 'test-report' } };
   },
 }));
 
 jest.mock('@/services/lciaMethods/evidence', () => ({
   __esModule: true,
   ...jest.requireActual('@/services/lciaMethods/evidence'),
-  serializeStaticLciaReport: (report: unknown) => ({ 'tg:testEvidence': report }),
+  serializeStaticLciaReport: (report: any) =>
+    report?.lcia_availability
+      ? jest.requireActual('@/services/lciaMethods/evidence').serializeStaticLciaReport(report)
+      : { 'tg:testEvidence': report },
 }));
 
 jest.mock('uuid', () => ({
@@ -475,6 +481,62 @@ describe('genLifeCycleModelProcesses (matrix calculation)', () => {
     expect(edgeByFlow.get('flow-B-to-C')?.exchangeAmount).toBe(0);
     expect(edgeByFlow.get('flow-B-to-C')?.upstreamNodeId).toBe('graph-node-b');
     expect(edgeByFlow.get('flow-B-to-C')?.downstreamNodeId).toBe('graph-node-c');
+  });
+
+  it('persists available zero while excluding unavailable nullable and stale numeric categories', async () => {
+    const data = createLifeCycleModelData();
+    mockOr.mockResolvedValue({ data: clone(createSupabaseProcesses()) });
+    const categories = ['available', 'unavailable', 'unavailable'].map((status, index) => ({
+      impact_index: index,
+      method_id: `00000000-0000-0000-0000-00000000000${index + 1}`,
+      method_version: '01.00.000',
+      status,
+      reasons: status === 'available' ? [] : ['lcia_factor_location_semantics_unresolved'],
+    }));
+    const availability = {
+      schema_version: 'lcia.category-availability.v1',
+      policy_version: 'lcia.applicability.source-bound.v2',
+      completeness: 'partial',
+      categories,
+    };
+    mockLCIAResultCalculation.mockResolvedValue({
+      results: categories.map((category, index) => ({
+        key: category.method_id,
+        referenceToLCIAMethodDataSet: {
+          '@refObjectId': category.method_id,
+          '@version': category.method_version,
+        },
+        meanAmount: index === 0 ? '0' : index === 1 ? null : '999',
+        // The receipt must override even a stale row claiming available with a numeric value.
+        status: index === 2 ? 'available' : category.status,
+        reasons: category.reasons,
+      })),
+      report: {
+        lcia_availability: availability,
+        method_factor_coverage: { coverage_status: 'incomplete_coverage' },
+      },
+    });
+    const { lifeCycleModelProcesses, lciaIncomplete } = await genLifeCycleModelProcesses(
+      'model-partial-lcia',
+      createIndexedModelNodes() as any,
+      data,
+      [],
+    );
+    expect(lciaIncomplete).toBe(true);
+    const computed = lifeCycleModelProcesses.filter((record) =>
+      ['primary', 'secondary'].includes(record.modelInfo.type),
+    );
+    expect(computed.length).toBeGreaterThan(0);
+    for (const record of computed) {
+      const persisted = record.data.processDataSet.LCIAResults;
+      expect(persisted.LCIAResult).toEqual([expect.objectContaining({ meanAmount: '0' })]);
+      expect(persisted.LCIAResult[0].status).toBeUndefined();
+      expect(persisted.LCIAResult[0].reasons).toBeUndefined();
+      expect(
+        JSON.parse(persisted['common:other']['tg:lciaCalculationEvidence']['#text'])
+          .lcia_availability,
+      ).toEqual(availability);
+    }
   });
 
   it('creates a new secondary id when no previous secondary matches', async () => {

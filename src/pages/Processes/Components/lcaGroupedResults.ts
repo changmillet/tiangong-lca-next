@@ -1,3 +1,4 @@
+import { finiteLciaValue } from '@/services/lca/categoryAvailability';
 import { normalizeNumber, VALUE_EPSILON } from './lcaAnalysisShared';
 
 export type LcaGroupedResultBy = 'location' | 'classification' | 'typeOfDataSet' | 'team';
@@ -40,6 +41,7 @@ export type LcaGroupedResultModel = {
   totalAbsoluteValue: number;
   processCount: number;
   groupCount: number;
+  unavailableCount: number;
   topItem?: LcaGroupedResultItem;
   topPositiveItem?: LcaGroupedResultItem;
   topNegativeItem?: LcaGroupedResultItem;
@@ -131,8 +133,14 @@ export function buildGroupedResultModel(
     }
   >();
 
+  const unavailableGroups = new Set(
+    processes
+      .filter((process) => finiteLciaValue(valuesByProcessId[process.id]) === null)
+      .map((process) => resolveGroupDescriptor(process, options).key),
+  );
   processes.forEach((process) => {
     const descriptor = resolveGroupDescriptor(process, options);
+    if (unavailableGroups.has(descriptor.key)) return;
     const value = normalizeNumber(valuesByProcessId[process.id]);
     const absoluteValue = Math.abs(value);
     const member = {
@@ -211,6 +219,9 @@ export function buildGroupedResultModel(
     totalAbsoluteValue,
     processCount: processes.length,
     groupCount: items.length,
+    unavailableCount: processes.filter((process) =>
+      unavailableGroups.has(resolveGroupDescriptor(process, options).key),
+    ).length,
     topItem: items[0],
     topPositiveItem: items.find((item) => item.direction === 'positive'),
     topNegativeItem: items.find((item) => item.direction === 'negative'),

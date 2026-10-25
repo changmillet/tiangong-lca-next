@@ -9,11 +9,13 @@ import CalculationBundlePanel, {
 } from '@/pages/DataProcessing/CalculationBundlePanel';
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 
+jest.mock('umi', () => require('../../../mocks/umi').createUmiMock());
 jest.mock('antd', () => require('../../../mocks/antd').createAntdMock());
 jest.mock('@ant-design/icons', () =>
   require('../../../mocks/antDesignIcons').createAntDesignIconsMock(),
 );
 jest.mock('@umijs/max', () => ({
+  ...require('../../../mocks/umi').createUmiMock(),
   __esModule: true,
   useIntl: () => ({
     formatMessage: ({ defaultMessage, id }: any) => defaultMessage ?? id,
@@ -198,6 +200,102 @@ describe('CalculationBundlePanel', () => {
     HTMLAnchorElement.prototype.click = jest.fn();
   });
 
+  it('shows explicit unavailable partial LCIA and retains directional inventory', async () => {
+    const method = STATIC_LCIA_CACHE_MANIFEST.methods[0];
+    const availability = {
+      schema_version: 'lcia.category-availability.v1',
+      policy_version: 'lcia.applicability.source-bound.v2',
+      completeness: 'unavailable',
+      categories: [
+        {
+          impact_index: 0,
+          method_id: method.method_id,
+          method_version: method.method_version,
+          status: 'unavailable',
+          reasons: ['lcia_factor_location_semantics_unresolved'],
+        },
+      ],
+    };
+    const projection = bundleProjection();
+    projection.calculationBundle.manifest = {
+      ...projection.calculationBundle.manifest,
+      schemaVersion: 'tiangong.calculation-bundle.v3',
+      lciaAvailability: availability,
+    } as any;
+    mockGetCalculationBundle.mockResolvedValue({ data: projection, error: null });
+    const previous = mockFetchRecords.getMockImplementation()!;
+    mockFetchRecords.mockImplementation(async (item: any) =>
+      item.kind === 'lcia'
+        ? processRows.map((process) => ({
+            processIndex: process.processIndex,
+            method: { id: method.method_id, version: method.method_version },
+            meanAmount: null,
+            status: 'unavailable',
+            reasons: ['lcia_factor_location_semantics_unresolved'],
+          }))
+        : previous(item),
+    );
+    render(<CalculationBundlePanel packageId='partial-package' />);
+    expect(await screen.findByText('Unavailable')).toBeInTheDocument();
+    expect(screen.getByText(/Impact assessment is unavailable/)).toBeInTheDocument();
+    fireEvent.click(screen.getByTestId('tab-lci'));
+    expect(await screen.findByText('1.000000e-6')).toBeInTheDocument();
+  });
+
+  it.each(['empty', 'missing-selected'])(
+    'rejects %s LCIA process rows while keeping verified inventory readable',
+    async (mode) => {
+      const method = STATIC_LCIA_CACHE_MANIFEST.methods[0];
+      const projection = bundleProjection();
+      projection.calculationBundle.manifest = {
+        ...projection.calculationBundle.manifest,
+        schemaVersion: 'tiangong.calculation-bundle.v3',
+        lciaAvailability: {
+          schema_version: 'lcia.category-availability.v1',
+          policy_version: 'lcia.applicability.source-bound.v2',
+          completeness: 'unavailable',
+          categories: [
+            {
+              impact_index: 0,
+              method_id: method.method_id,
+              method_version: method.method_version,
+              status: 'unavailable',
+              reasons: ['unresolved'],
+            },
+          ],
+        },
+      } as any;
+      mockGetCalculationBundle.mockResolvedValue({ data: projection, error: null });
+      const original = mockFetchRecords.getMockImplementation()!;
+      mockFetchRecords.mockImplementation(async (item: any) =>
+        item.kind === 'lcia'
+          ? mode === 'empty'
+            ? []
+            : [
+                {
+                  processIndex: 0,
+                  method: { id: method.method_id, version: method.method_version },
+                  meanAmount: null,
+                  status: 'unavailable',
+                  reasons: ['unresolved'],
+                },
+              ]
+          : original(item),
+      );
+      render(
+        <CalculationBundlePanel
+          packageId='missing-process-results'
+          initialProcessId={processRows[1].rootProcess.id}
+          initialProcessVersion={processRows[1].rootProcess.version}
+        />,
+      );
+      expect(await screen.findByText('lcia_artifact_process_extent_invalid')).toBeInTheDocument();
+      fireEvent.click(screen.getByTestId('tab-lci'));
+      expect(await screen.findByText('12.500000')).toBeInTheDocument();
+      expect(screen.queryByText('Unavailable')).not.toBeInTheDocument();
+    },
+  );
+
   it('does not substitute the first process for a missing exact version', async () => {
     render(
       <CalculationBundlePanel
@@ -223,6 +321,11 @@ describe('CalculationBundlePanel', () => {
               processIndex: 0,
               method: { id: method.method_id, version: method.method_version },
               meanAmount: 3,
+            },
+            {
+              processIndex: 1,
+              method: { id: method.method_id, version: method.method_version },
+              meanAmount: 4,
             },
           ]
         : baseRead(artifact),

@@ -1,10 +1,17 @@
 import {
+  parseLciaAvailability,
+  validateLciaQueryRows,
+  validateLciaImpactQueryData,
+  type LciaAvailability,
+} from './categoryAvailability';
+import {
   assertTaskSession,
   createTaskSessionClient,
   TaskSessionChangedError,
   type TaskSessionGuard,
 } from '@/services/taskCenter/sessionGuard';
 import { supabase } from '@/services/supabase';
+import { toCanonicalLciaMethodId } from '@/services/lciaMethods/evidence';
 import { FunctionRegion } from '@supabase/supabase-js';
 import type { LcaScope } from './scope';
 
@@ -182,6 +189,7 @@ export type LcaQueryResponse = {
     computed_at: string;
     query_artifact_format?: string;
     calculation_evidence?: unknown;
+    lcia_availability?: LciaAvailability;
   };
 };
 
@@ -455,10 +463,41 @@ export async function getLcaResult(resultId: string): Promise<LcaResultResponse>
 }
 
 export async function queryLcaResults(request: LcaQueryRequest): Promise<LcaQueryResponse> {
-  return await invokeLcaFn<LcaQueryResponse>(
+  const response = await invokeLcaFn<LcaQueryResponse>(
     'lca_query_results',
     request as Record<string, unknown>,
   );
+  const availability = parseLciaAvailability(response.meta?.lcia_availability);
+  const format = response.meta?.query_artifact_format;
+  if (
+    (format === 'all-unit-query:v3' && !availability) ||
+    (availability && format !== undefined && format !== 'all-unit-query:v3')
+  )
+    throw new Error('lcia_availability_query_contract_invalid');
+  if (availability) {
+    if (response.mode !== request.mode) throw new Error('lcia_availability_query_mode_mismatch');
+    if (request.mode === 'process_all_impacts') {
+      validateLciaQueryRows((response.data as { values?: unknown })?.values, availability);
+    } else {
+      const methodId = toCanonicalLciaMethodId(request.impact_id);
+      const categories = availability.categories.filter(
+        (category) => category.method_id === methodId,
+      );
+      if (categories.length !== 1) throw new Error('lcia_availability_requested_category_mismatch');
+      const category = categories[0];
+      if (category.status === 'unavailable')
+        throw new LcaFunctionInvokeError('lcia_category_unavailable', {
+          status: 409,
+          body: {
+            error: 'lcia_category_unavailable',
+            detail: category.reasons.join(','),
+            reasons: category.reasons,
+          },
+        });
+      validateLciaImpactQueryData(response.data, category, request.process_ids);
+    }
+  }
+  return response;
 }
 
 export async function submitLcaContributionPath(

@@ -1,3 +1,4 @@
+import { parseLciaAvailability, type LciaAvailability } from '@/services/lca/categoryAvailability';
 import { supabase } from '@/services/supabase';
 import type { SupabaseError } from '@/services/supabase/data';
 import { FunctionRegion } from '@supabase/supabase-js';
@@ -76,6 +77,7 @@ export type CalculationBundleManifest = {
   >[];
   calculationEvidence: Record<string, unknown>;
   hashes: Record<string, unknown>;
+  lciaAvailability?: LciaAvailability;
 };
 
 export type CalculationBundleProjection = {
@@ -122,7 +124,9 @@ export type CalculationBundleLciRecord = {
 export type CalculationBundleLciaRecord = {
   processIndex: number;
   method: { id: string; version: string };
-  meanAmount: number;
+  meanAmount: number | null;
+  status?: 'available' | 'unavailable';
+  reasons?: string[];
 };
 
 export type LcaReleaseArtifact = {
@@ -281,12 +285,26 @@ async function invokeReleaseFunction<T>(
   return { data: unwrap<T>(result.data), error: null, count: null, status: 200, statusText: 'OK' };
 }
 
-export function getCalculationBundle(packageId: string) {
-  return invokeReleaseFunction<CalculationBundleProjection>(
+export async function getCalculationBundle(packageId: string) {
+  const response = await invokeReleaseFunction<CalculationBundleProjection>(
     'app_lca_release_commands',
     { action: 'get_calculation_bundle', packageId },
     { requireAuth: true },
   );
+  const manifest = response.data?.calculationBundle?.manifest;
+  if (manifest) {
+    const availability = parseLciaAvailability(manifest.lciaAvailability);
+    if (
+      manifest.schemaVersion === 'tiangong.calculation-bundle.v3' &&
+      (!availability || availability.completeness === 'complete')
+    ) {
+      throw new Error('partial_bundle_availability_invalid');
+    }
+    if (availability && availability.categories.length !== manifest.snapshot.impactCount) {
+      throw new Error('lcia_availability_axis_invalid');
+    }
+  }
+  return response;
 }
 
 export function getCurrentLcaRelease() {

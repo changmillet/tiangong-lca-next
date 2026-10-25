@@ -928,4 +928,12 @@ export default {
   'pages.process.lca.evidence.reason.unknown': 'Les preuves n’ont pas passé la validation.',
   'pages.process.published.climate.error': 'Échec du chargement',
   'pages.process.published.climate.missing': 'Aucun résultat pour cette version dans la publication actuelle',
+  'pages.process.lca.availability.partial': 'Certaines catégories d’impact ne peuvent pas être calculées. Les catégories calculées et l’inventaire restent consultables ; les résultats incomplets ne constituent pas une évaluation complète.',
+  'pages.process.lca.availability.unavailable': 'Non calculable',
+  'pages.process.lca.availability.reason.version': 'La version exacte référencée est indisponible.',
+  'pages.process.lca.availability.reason.location': 'Le lieu applicable ou les règles régionales restent à déterminer.',
+  'pages.process.lca.availability.reason.condition': 'Les conditions d’application du facteur doivent être examinées.',
+  'pages.process.lca.availability.reason.source': 'Les preuves d’applicabilité de la source sont indisponibles.',
+  'pages.process.lca.availability.reason.factor': 'Aucun facteur de caractérisation applicable ne peut être déterminé.',
+  'pages.process.lca.availability.none': 'L’évaluation des impacts est indisponible. L’inventaire reste consultable ; aucune évaluation complète ni aucun score global ne peut être fourni.',
 };

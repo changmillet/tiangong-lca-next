@@ -14,7 +14,18 @@ import type {
   LciaUncharacterizedExchange,
   LciaUncharacterizedReason,
 } from './data';
+import { parseLciaAvailability, type LciaAvailability } from '@/services/lca/categoryAvailability';
 import { computeLciaSha256, STATIC_LCIA_CACHE_MANIFEST } from './evidence';
+import {
+  isKnownEmptyLciaInventory,
+  type LciaInventoryClassification,
+} from './inventoryClassification';
+import {
+  exchangeFactorLocation,
+  LCIA_APPLICABILITY_POLICY_VERSION,
+  loadSupportedMethodFactors,
+  SUPPORTED_SOURCE_POLICY_MANIFEST_SHA256,
+} from './supportedSourcePolicy';
 
 type StaticCalculationInput = {
   exchanges: ProcessExchangeData[];
@@ -22,6 +33,7 @@ type StaticCalculationInput = {
   factors: LciaFlowFactorMap;
   observedListSha256?: string;
   observedFactorSha256?: string;
+  inventoryClassification?: LciaInventoryClassification;
 };
 
 const emptyCounts = (): LciaCoverageCounts => ({
@@ -31,10 +43,11 @@ const emptyCounts = (): LciaCoverageCounts => ({
   unsupported_direction: 0,
 });
 
-const normalizeExchangeFlowRef = (exchange: ProcessExchangeData) =>
-  Array.isArray(exchange.referenceToFlowDataSet)
-    ? exchange.referenceToFlowDataSet[0]
-    : exchange.referenceToFlowDataSet;
+const normalizeExchangeFlowRef = (exchange: ProcessExchangeData) => {
+  const reference = exchange.referenceToFlowDataSet;
+  if (!Array.isArray(reference)) return reference;
+  return reference.length === 1 ? reference[0] : undefined;
+};
 
 function buildGap(
   method: LciaStaticCacheMethod,
@@ -132,6 +145,8 @@ function buildSource(
     factor_manifest_sha256: STATIC_LCIA_CACHE_MANIFEST.factor_manifest_sha256,
     observed_list_sha256: observedListSha256 ?? null,
     observed_factor_sha256: observedFactorSha256 ?? null,
+    applicability_policy_version: LCIA_APPLICABILITY_POLICY_VERSION,
+    source_policy_manifest_sha256: SUPPORTED_SOURCE_POLICY_MANIFEST_SHA256,
   };
 }
 
@@ -199,7 +214,14 @@ export async function buildStaticCalculationFailure(
 export async function calculateStaticLcia(
   input: StaticCalculationInput,
 ): Promise<LciaStaticCalculationResult> {
-  const { exchanges, listData, factors, observedListSha256, observedFactorSha256 } = input;
+  const {
+    exchanges,
+    listData,
+    factors,
+    observedListSha256,
+    observedFactorSha256,
+    inventoryClassification,
+  } = input;
   const byMethod = buildMethodRows();
   const methodRowById = new Map(byMethod.map((row) => [row.method_id, row]));
   const methodById = new Map(
@@ -231,76 +253,157 @@ export async function calculateStaticLcia(
     );
   }
 
-  for (const [exchangeIndex, exchange] of exchanges.entries()) {
-    const flowRef = normalizeExchangeFlowRef(exchange);
-    const flowId = String(flowRef?.['@refObjectId'] ?? '').trim();
+  if (exchanges.length === 0 && !isKnownEmptyLciaInventory(inventoryClassification)) {
+    return await buildStaticNoResult(
+      exchanges,
+      'calculation_failure',
+      'lcia_inventory_classification_missing',
+      {
+        listSha256: observedListSha256,
+        factorSha256: observedFactorSha256,
+      },
+    );
+  }
+  if (exchanges.length === 0) {
+    for (const method of STATIC_LCIA_CACHE_MANIFEST.methods) {
+      methodsWithNumericFactors.add(method.method_id);
+      totals.set(method.method_id, toBigNumberOrZero(0));
+    }
+  }
+
+  const reasonsByMethod = new Map<string, Set<LciaUncharacterizedReason>>(
+    STATIC_LCIA_CACHE_MANIFEST.methods.map((method) => [method.method_id, new Set()]),
+  );
+  const selectedByAxis = new Map<string, string>();
+  const directionByFlow = new Map<string, Set<string>>();
+  for (const exchange of exchanges) {
+    const flowId = normalizeExchangeFlowRef(exchange)?.['@refObjectId'];
+    const amount = toBigNumberOrNaN(exchange.meanAmount);
+    if (typeof flowId !== 'string' || amount.isZero()) continue;
     const direction = String(exchange.exchangeDirection ?? '')
       .trim()
       .toUpperCase();
-    const amount = toBigNumberOrNaN(exchange.meanAmount);
-    let sharedReason: LciaUncharacterizedReason | null = null;
-    let countKey: keyof LciaCoverageCounts | null = null;
+    const directions = directionByFlow.get(flowId) ?? new Set();
+    directions.add(direction);
+    directionByFlow.set(flowId, directions);
+  }
 
-    if (!flowId) {
-      sharedReason = 'missing_flow_uuid';
-      countKey = 'invalid';
-    } else if (direction !== 'INPUT' && direction !== 'OUTPUT') {
-      sharedReason = 'unsupported_direction';
-      countKey = 'unsupported_direction';
-    } else if (amount.isNaN() || !amount.isFinite()) {
-      sharedReason = 'invalid_exchange_amount';
-      countKey = 'invalid';
-    }
-
-    if (sharedReason && countKey) {
-      for (const method of STATIC_LCIA_CACHE_MANIFEST.methods) {
-        methodRowById.get(method.method_id)!.counts[countKey] += 1;
-        gaps.push(buildGap(method, exchange, exchangeIndex, sharedReason));
+  try {
+    for (const [exchangeIndex, exchange] of exchanges.entries()) {
+      const flowRef = normalizeExchangeFlowRef(exchange);
+      const flowId = String(flowRef?.['@refObjectId'] ?? '').trim();
+      const flowVersion = String(flowRef?.['@version'] ?? '');
+      const direction = String(exchange.exchangeDirection ?? '')
+        .trim()
+        .toUpperCase();
+      const amount = toBigNumberOrNaN(exchange.meanAmount);
+      let sharedReason: LciaUncharacterizedReason | null = null;
+      let countKey: keyof LciaCoverageCounts = 'invalid';
+      if (
+        Array.isArray(exchange.referenceToFlowDataSet) &&
+        exchange.referenceToFlowDataSet.length !== 1
+      ) {
+        sharedReason = 'ambiguous_flow_reference';
+      } else if (!flowId) {
+        sharedReason = 'missing_flow_uuid';
+      } else if (direction !== 'INPUT' && direction !== 'OUTPUT') {
+        sharedReason = 'unsupported_direction';
+        countKey = 'unsupported_direction';
+      } else if (amount.isNaN() || !amount.isFinite()) {
+        sharedReason = 'invalid_exchange_amount';
+      } else if (!amount.isZero() && directionByFlow.get(flowId)?.size !== 1) {
+        sharedReason = 'ambiguous_elementary_flow_direction_axis';
+        countKey = 'unsupported_direction';
       }
-      continue;
-    }
-
-    const group = factors[`${flowId}:${direction}`];
-    const factorEntries = Array.isArray(group?.factor) ? group.factor : [];
-    const entriesByMethod = new Map<string, typeof factorEntries>();
-    for (const factor of factorEntries) {
-      const factorMethodId = String(factor?.key ?? '').trim();
-      if (!methodById.has(factorMethodId)) {
-        sourceDriftReasons.push(`unknown_factor_method_id:${factorMethodId || '<empty>'}`);
-        continue;
-      }
-      entriesByMethod.set(factorMethodId, [...(entriesByMethod.get(factorMethodId) ?? []), factor]);
-    }
-
-    for (const method of STATIC_LCIA_CACHE_MANIFEST.methods) {
-      const methodRow = methodRowById.get(method.method_id)!;
-      const methodFactors = entriesByMethod.get(method.method_id) ?? [];
-      if (methodFactors.length === 0) {
-        methodRow.counts.unmatched += 1;
-        gaps.push(buildGap(method, exchange, exchangeIndex, 'missing_factor'));
-        continue;
-      }
-
-      let invalidFactor = false;
-      for (const factor of methodFactors) {
-        const factorValue = toBigNumberOrNaN(factor.value);
-        if (factorValue.isNaN() || !factorValue.isFinite()) {
-          invalidFactor = true;
-          continue;
+      if (sharedReason) {
+        for (const method of STATIC_LCIA_CACHE_MANIFEST.methods) {
+          methodRowById.get(method.method_id)!.counts[countKey] += 1;
+          reasonsByMethod.get(method.method_id)!.add(sharedReason);
+          gaps.push(buildGap(method, exchange, exchangeIndex, sharedReason));
         }
-        methodsWithNumericFactors.add(method.method_id);
-        totals.set(
-          method.method_id,
-          (totals.get(method.method_id) ?? toBigNumberOrZero(0)).plus(amount.times(factorValue)),
-        );
+        continue;
       }
-      if (invalidFactor) {
-        methodRow.counts.invalid += 1;
-        gaps.push(buildGap(method, exchange, exchangeIndex, 'invalid_factor'));
-      } else {
-        methodRow.counts.matched += 1;
+      // Finite zero observations carry no burden and need no factor/location inference.
+      if (amount.isZero()) {
+        for (const method of STATIC_LCIA_CACHE_MANIFEST.methods) {
+          methodRowById.get(method.method_id)!.counts.matched += 1;
+          methodsWithNumericFactors.add(method.method_id);
+          if (!totals.has(method.method_id)) totals.set(method.method_id, toBigNumberOrZero(0));
+        }
+        continue;
+      }
+      const group = factors[`${flowId}:${direction}`];
+      const rawEntries: unknown = group?.factor;
+      const entries = Array.isArray(rawEntries)
+        ? rawEntries
+        : rawEntries && typeof rawEntries === 'object'
+          ? [rawEntries]
+          : [];
+      const entriesByMethod = new Set<string>();
+      for (const factor of entries) {
+        const methodId = String(factor?.key ?? '').trim();
+        if (!methodById.has(methodId))
+          sourceDriftReasons.push(`unknown_factor_method_id:${methodId || '<empty>'}`);
+        else entriesByMethod.add(methodId);
+      }
+      if (sourceDriftReasons.length > 0) break;
+      for (const method of STATIC_LCIA_CACHE_MANIFEST.methods) {
+        const row = methodRowById.get(method.method_id)!;
+        let reason: LciaUncharacterizedReason | null = null;
+        let bucket: keyof LciaCoverageCounts = 'invalid';
+        if (!/^\d{2}\.\d{2}\.\d{3}$/.test(flowVersion)) {
+          reason = 'lcia_inventory_flow_version_invalid';
+        } else if (!entriesByMethod.has(method.method_id)) {
+          reason = 'missing_factor';
+          bucket = 'unmatched';
+        } else {
+          const policy = await loadSupportedMethodFactors(method.method_id, factors);
+          const decision = policy.select(
+            flowId,
+            flowVersion,
+            direction,
+            exchangeFactorLocation(exchange.location),
+          );
+          if (decision.status !== 'selected') {
+            reason = decision.reason;
+            if (decision.status === 'unmatched') bucket = 'unmatched';
+          } else {
+            const axis = `${method.method_id}:${flowId}:${flowVersion}`;
+            const record = `${decision.source_record_index}:${decision.source_record_sha256}`;
+            const previous = selectedByAxis.get(axis);
+            if (previous && previous !== record) {
+              reason = 'lcia_mixed_location_axis_unsupported';
+            } else {
+              selectedByAxis.set(axis, record);
+              const value = toBigNumberOrNaN(decision.value);
+              if (value.isNaN() || !value.isFinite())
+                throw new Error('lcia_supported_policy_static_record_invalid');
+              methodsWithNumericFactors.add(method.method_id);
+              totals.set(
+                method.method_id,
+                (totals.get(method.method_id) ?? toBigNumberOrZero(0)).plus(amount.times(value)),
+              );
+              row.counts.matched += 1;
+            }
+          }
+        }
+        if (reason) {
+          row.counts[bucket] += 1;
+          reasonsByMethod.get(method.method_id)!.add(reason);
+          gaps.push(buildGap(method, exchange, exchangeIndex, reason));
+        }
       }
     }
+  } catch (error: unknown) {
+    return await buildStaticNoResult(
+      exchanges,
+      'method_source_drift',
+      error instanceof Error ? error.message : String(error),
+      {
+        listSha256: observedListSha256,
+        factorSha256: observedFactorSha256,
+      },
+    );
   }
 
   const counts = byMethod.reduce<LciaCoverageCounts>(
@@ -322,16 +425,36 @@ export async function calculateStaticLcia(
       { listSha256: observedListSha256, factorSha256: observedFactorSha256 },
     );
   }
-  const results = STATIC_LCIA_CACHE_MANIFEST.methods.flatMap((method) => {
+  const categories: LciaAvailability['categories'] = STATIC_LCIA_CACHE_MANIFEST.methods.map(
+    (method, impactIndex) => {
+      const reasons: string[] = [...reasonsByMethod.get(method.method_id)!].sort();
+      if (!methodsWithNumericFactors.has(method.method_id) && reasons.length === 0)
+        reasons.push('no_inventory_observations');
+      return {
+        impact_index: impactIndex,
+        method_id: method.method_id,
+        method_version: method.method_version,
+        status: reasons.length === 0 ? 'available' : 'unavailable',
+        reasons,
+      };
+    },
+  );
+  const availableCount = categories.filter((category) => category.status === 'available').length;
+  const availability: LciaAvailability = {
+    schema_version: 'lcia.category-availability.v1',
+    policy_version: LCIA_APPLICABILITY_POLICY_VERSION,
+    completeness:
+      availableCount === categories.length
+        ? 'complete'
+        : availableCount === 0
+          ? 'unavailable'
+          : 'partial',
+    categories,
+  };
+  parseLciaAvailability(availability);
+  const results = STATIC_LCIA_CACHE_MANIFEST.methods.map((method, index) => {
     const value = totals.get(method.method_id);
-    if (
-      !methodsWithNumericFactors.has(method.method_id) ||
-      !value ||
-      value.isNaN() ||
-      !value.isFinite()
-    ) {
-      return [];
-    }
+    const category = categories[index];
     const metadata = listedByLocator.get(method.artifact_locator_id);
     const result: LCIAResultTable = {
       key: method.method_id,
@@ -344,9 +467,12 @@ export async function calculateStaticLcia(
           { '@xml:lang': CANONICAL_CONTENT_LANGUAGE, '#text': method.method_id },
         ],
       },
-      meanAmount: value.toString(),
+      meanAmount:
+        category.status === 'available' && value && value.isFinite() ? value.toString() : null,
+      status: category.status,
+      reasons: category.reasons,
     };
-    return [result];
+    return result;
   });
 
   return {
@@ -354,9 +480,39 @@ export async function calculateStaticLcia(
     report: {
       schema_version: 'lcia.frontend_calculation_report.v1',
       calculation_status: matrix.coverage_status,
+      lcia_availability: availability,
+      ...(inventoryClassification ? { inventory_classification: inventoryClassification } : {}),
       source: buildSource(observedListSha256, observedFactorSha256),
       method_factor_coverage: matrix,
       failure_reason: null,
     },
   };
+}
+
+/** Keep nullable availability view rows outside the scientific TIDAS LCIAResult array. */
+export function persistableStaticLciaResults(
+  calculation: LciaStaticCalculationResult,
+): LCIAResultTable[] {
+  const availability = parseLciaAvailability(calculation.report?.lcia_availability);
+  return calculation.results.flatMap((row) => {
+    const category = availability?.categories.find(
+      (entry) =>
+        entry.method_id === row.referenceToLCIAMethodDataSet?.['@refObjectId'] &&
+        entry.method_version === row.referenceToLCIAMethodDataSet?.['@version'],
+    );
+    const amount = row.meanAmount;
+    if (
+      row.status === 'unavailable' ||
+      (availability && category?.status !== 'available') ||
+      amount === null ||
+      amount === undefined ||
+      String(amount).trim() === '' ||
+      !Number.isFinite(Number(amount))
+    )
+      return [];
+    const scientific = { ...row };
+    delete scientific.status;
+    delete scientific.reasons;
+    return [scientific];
+  });
 }

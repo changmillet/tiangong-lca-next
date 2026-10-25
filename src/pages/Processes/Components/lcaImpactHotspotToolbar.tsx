@@ -1,3 +1,5 @@
+import { formatLciaUnavailableQueryError } from '@/components/LciaAvailabilityNotice';
+import { finiteLciaValue } from '@/services/lca/categoryAvailability';
 import AlignedNumber from '@/components/AlignedNumber';
 import ToolBarButton from '@/components/ToolBarButton';
 import { queryPublishedLciaResults } from '@/services/dataProducts';
@@ -165,11 +167,14 @@ export function buildLcaImpactHotspotModel(
     totalAbsoluteValue: number;
   },
 ): LcaImpactHotspotModel {
-  const maxAbsoluteValue = values.reduce(
+  const knownValues = values.filter(
+    (item) => finiteLciaValue(item.value) !== null && finiteLciaValue(item.absolute_value) !== null,
+  );
+  const maxAbsoluteValue = knownValues.reduce(
     (currentMax, item) => Math.max(currentMax, normalizeNumber(item.absolute_value)),
     0,
   );
-  const fallbackTotalAbsoluteValue = values.reduce(
+  const fallbackTotalAbsoluteValue = knownValues.reduce(
     (sum, item) => sum + normalizeNumber(item.absolute_value),
     0,
   );
@@ -177,13 +182,13 @@ export function buildLcaImpactHotspotModel(
     options.totalAbsoluteValue > VALUE_EPSILON
       ? options.totalAbsoluteValue
       : fallbackTotalAbsoluteValue;
-  const displayedAbsoluteValue = values.reduce(
+  const displayedAbsoluteValue = knownValues.reduce(
     (sum, item) => sum + normalizeNumber(item.absolute_value),
     0,
   );
   let cumulativeAbsoluteValue = 0;
 
-  const items = values.map((item, index) => {
+  const items = knownValues.map((item, index) => {
     const absoluteValue = normalizeNumber(item.absolute_value);
     cumulativeAbsoluteValue += absoluteValue;
 
@@ -229,6 +234,7 @@ export function buildSelectedProcessHotspotModel(
   },
 ): LcaImpactHotspotModel {
   const baseItems = processes
+    .filter((process) => finiteLciaValue(valuesByProcessId[process.value]) !== null)
     .map((process) => {
       const value = normalizeNumber(valuesByProcessId[process.value]);
       const absoluteValue = Math.abs(value);
@@ -411,13 +417,19 @@ const LcaImpactHotspotToolbar: FC<{
       }
 
       const rankedValues = Array.isArray(data.values)
-        ? (data.values as RankedProcessValue[]).map((item) => ({
-            process_id: String(item?.process_id ?? '').trim(),
-            process_version: String(item?.process_version ?? '').trim(),
-            process_index: Number(item?.process_index ?? -1),
-            value: normalizeNumber(item?.value),
-            absolute_value: normalizeNumber(item?.absolute_value),
-          }))
+        ? (data.values as RankedProcessValue[])
+            .filter(
+              (item) =>
+                finiteLciaValue(item?.value) !== null &&
+                finiteLciaValue(item?.absolute_value) !== null,
+            )
+            .map((item) => ({
+              process_id: String(item?.process_id ?? '').trim(),
+              process_version: String(item?.process_version ?? '').trim(),
+              process_index: Number(item?.process_index ?? -1),
+              value: normalizeNumber(item?.value),
+              absolute_value: normalizeNumber(item?.absolute_value),
+            }))
         : [];
 
       let processNameLookup = new Map<string, string>();
@@ -452,7 +464,9 @@ const LcaImpactHotspotToolbar: FC<{
       });
     } catch (error: unknown) {
       setAnalysisResult(null);
-      if (isLcaFunctionInvokeError(error) && error.code === 'snapshot_build_queued') {
+      if (isLcaFunctionInvokeError(error) && error.code === 'lcia_category_unavailable') {
+        setAnalysisError(formatLciaUnavailableQueryError(error.body, intl));
+      } else if (isLcaFunctionInvokeError(error) && error.code === 'snapshot_build_queued') {
         const buildJobId =
           typeof error.body?.build_job_id === 'string' ? error.body.build_job_id.trim() : '';
         setAnalysisError(

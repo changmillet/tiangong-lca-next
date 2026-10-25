@@ -289,9 +289,9 @@ describe('reviewed LCIA calculation and evidence', () => {
     expect(normalizeLcaCalculationEvidence({ schema_version: 'unknown' })).toBeNull();
   });
 
-  it('preserves valid duplicate aggregation, emits explicit zero, and maps locator aliases', async () => {
+  it('refuses a reduced duplicate index that only claims the reviewed source hash', async () => {
     const result = await calculateStaticLcia({
-      exchanges: [exchange(), exchange({ '@dataSetInternalID': 'exchange-2', meanAmount: '4' })],
+      exchanges: [exchange()],
       listData,
       factors: {
         'flow-1:OUTPUT': {
@@ -303,23 +303,12 @@ describe('reviewed LCIA calculation and evidence', () => {
       },
       ...sourceProof,
     });
-
-    expect(result.results).toEqual([
-      expect.objectContaining({
-        key: primary.method_id,
-        meanAmount: '0',
-        referenceToLCIAMethodDataSet: expect.objectContaining({
-          '@refObjectId': primary.method_id,
-          '@uri': `../lciamethods/${primary.artifact_locator_id}.xml`,
-        }),
-      }),
-    ]);
-    expect(result.report.calculation_status).toBe('incomplete_coverage');
-    expect(result.report.method_factor_coverage.counts.matched).toBe(2);
-    expect(result.report.method_factor_coverage.counts.unmatched).toBe((methods.length - 1) * 2);
+    expect(result.results).toEqual([]);
+    expect(result.report.calculation_status).toBe('method_source_drift');
+    expect(result.report.failure_reason).toContain('lcia_supported_policy');
   });
 
-  it('keeps valid duplicate values but reports an invalid duplicate instead of substituting zero', async () => {
+  it('refuses an invalid duplicate without retaining the valid entry as a numeric subtotal', async () => {
     const result = await calculateStaticLcia({
       exchanges: [exchange()],
       listData,
@@ -333,17 +322,8 @@ describe('reviewed LCIA calculation and evidence', () => {
       },
       ...sourceProof,
     });
-
-    expect(result.results[0].meanAmount).toBe('6');
-    expect(result.report.method_factor_coverage.by_method[0].counts).toEqual({
-      matched: 0,
-      unmatched: 0,
-      invalid: 1,
-      unsupported_direction: 0,
-    });
-    expect(result.report.method_factor_coverage.uncharacterized_exchanges).toEqual(
-      expect.arrayContaining([expect.objectContaining({ reason: 'invalid_factor' })]),
-    );
+    expect(result.results).toEqual([]);
+    expect(result.report.calculation_status).toBe('method_source_drift');
   });
 
   it.each([
@@ -357,7 +337,10 @@ describe('reviewed LCIA calculation and evidence', () => {
       factors: {},
       ...sourceProof,
     });
-    expect(result.results).toEqual([]);
+    expect(result.results).toHaveLength(methods.length);
+    expect(
+      result.results.every((row) => row.meanAmount === null && row.status === 'unavailable'),
+    ).toBe(true);
     expect(result.report.method_factor_coverage.counts[countKey as 'invalid']).toBe(methods.length);
     expect(result.report.method_factor_coverage.uncharacterized_exchanges?.[0].reason).toBe(reason);
   });
@@ -741,11 +724,8 @@ describe('reviewed LCIA calculation and evidence', () => {
       },
       ...sourceProof,
     });
-    expect(inputDirection.results[0]).toMatchObject({
-      referenceToLCIAMethodDataSet: {
-        'common:shortDescription': [{ '@xml:lang': 'en', '#text': primary.method_id }],
-      },
-    });
+    expect(inputDirection.results).toEqual([]);
+    expect(inputDirection.report.calculation_status).toBe('method_source_drift');
     expect(
       inputDirection.report.method_factor_coverage.uncharacterized_exchanges?.[0],
     ).toHaveProperty('resulting_amount', null);

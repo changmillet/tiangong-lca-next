@@ -69,6 +69,20 @@ describe('buildLcaProfileModel', () => {
     expect(model.items[2].direction).toBe('neutral');
   });
 
+  it('keeps unknown categories out of ranked values and preserves a confirmed zero', () => {
+    const unknown = {
+      ...buildRow('unknown', 'Unknown', 0),
+      meanAmount: null,
+      status: 'unavailable' as const,
+      reasons: ['unresolved'],
+    };
+    const model = buildLcaProfileModel([unknown, buildRow('known-zero', 'Known zero', 0)], 'en');
+    expect(model.totalCount).toBe(2);
+    expect(model.unavailableCount).toBe(1);
+    expect(model.items.map((item) => item.key)).toEqual(['known-zero']);
+    expect(model.items[0].value).toBe(0);
+  });
+
   it('prefers locale-matched labels and respects the top-item limit', () => {
     const rows = Array.from({ length: DEFAULT_LCA_PROFILE_LIMIT + 2 }).map((_, index) =>
       buildRow(

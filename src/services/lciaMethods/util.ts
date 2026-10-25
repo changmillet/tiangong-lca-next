@@ -13,6 +13,7 @@ import {
 import { getLangJson } from '@/services/general/util';
 import type { ProcessExchangeData } from '@/services/processes/data';
 import { buildStaticCalculationFailure, calculateStaticLcia } from './calculation';
+import { classifyLciaInventory, type LciaFlowMetadata } from './inventory';
 import { LciaFlowFactorMap, LciaMethodListData, LCIAResultTable } from './data';
 import { computeLciaSha256, STATIC_LCIA_CACHE_MANIFEST, toLciaArtifactLocatorId } from './evidence';
 
@@ -306,6 +307,7 @@ export const getReferenceQuantityFromMethod = async (
 
 export const LCIAResultCalculationWithEvidence = async (
   exchangeDataSource: ProcessExchangeData[],
+  options?: { flowMetadata?: readonly LciaFlowMetadata[] },
 ): ReturnType<typeof calculateStaticLcia> => {
   const flowFactorsFile = 'flow_factors.json.gz';
   const listEntry = await getVerifiedDecompressedMethodEntry<LciaMethodListData>('list.json');
@@ -345,8 +347,22 @@ export const LCIAResultCalculationWithEvidence = async (
       );
     }
 
+    const inventory = await classifyLciaInventory(exchangeDataSource, options?.flowMetadata);
+    if (inventory.receipt.unresolved_exchange_count > 0) {
+      const failed = await buildStaticCalculationFailure(
+        exchangeDataSource,
+        'lcia_inventory_flow_classification_unresolved',
+        {
+          listSha256: listEntry.sha256,
+          factorSha256: factorEntry.sha256,
+        },
+      );
+      failed.report.inventory_classification = inventory.receipt;
+      return failed;
+    }
     return await calculateStaticLcia({
-      exchanges: exchangeDataSource,
+      exchanges: inventory.exchanges,
+      inventoryClassification: inventory.receipt,
       listData: listEntry.data,
       factors: factorEntry.data,
       observedListSha256: listEntry.sha256,

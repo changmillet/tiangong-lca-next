@@ -671,6 +671,73 @@ describe('ProcessLciaResultsPanel', () => {
     });
   });
 
+  it.each([
+    '{broken',
+    JSON.stringify({
+      schema_version: 'lcia.frontend_calculation_report.v1',
+      source: {
+        applicability_policy_version: 'lcia.applicability.source-bound.v2',
+        source_policy_manifest_sha256: 'drifted',
+      },
+    }),
+  ])(
+    'suppresses saved numbers and profile when declared static evidence is invalid: %s',
+    async (text) => {
+      const invalidEvidence = {
+        'tg:lciaCalculationEvidence': {
+          '@schemaVersion': 'lcia.frontend_calculation_report.v1',
+          '#text': text,
+        },
+      };
+      render(
+        <ProcessLciaResultsPanel
+          baseCalculationEvidence={invalidEvidence}
+          baseRows={[
+            {
+              key: 'stale',
+              meanAmount: 999,
+              referenceToLCIAMethodDataSet: {
+                '@refObjectId': 'stale-method',
+                'common:shortDescription': { '#text': 'Stale invalid value' },
+              },
+            },
+          ]}
+          enableSolverRefresh={false}
+          lang='en'
+        />,
+      );
+      await screen.findByTestId('lcia-evidence-notice');
+      expect(screen.queryByTestId('pro-row-stale-method')).not.toBeInTheDocument();
+      expect(screen.queryByText('999')).not.toBeInTheDocument();
+      expect(screen.getByTestId('lca-profile-summary')).toHaveTextContent('0');
+      expect(mockLcaCalculationEvidenceNotice).toHaveBeenLastCalledWith({
+        staticEvidence: invalidEvidence,
+      });
+    },
+  );
+
+  it('preserves explicitly historical saved values when no calculation report is declared', async () => {
+    render(
+      <ProcessLciaResultsPanel
+        baseCalculationEvidence={{ historicalNote: 'saved legacy record' }}
+        baseRows={[
+          {
+            key: 'legacy',
+            meanAmount: 99,
+            referenceToLCIAMethodDataSet: {
+              '@refObjectId': 'legacy-method',
+              'common:shortDescription': { '#text': 'Legacy saved value' },
+            },
+          },
+        ]}
+        enableSolverRefresh={false}
+        lang='en'
+      />,
+    );
+    await screen.findByTestId('pro-row-legacy-method');
+    expect(screen.getByText('99')).toBeInTheDocument();
+  });
+
   it('still validates static evidence when solver querying is disabled', async () => {
     const staticEvidence = { report: true };
     render(

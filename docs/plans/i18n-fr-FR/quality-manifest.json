@@ -3,12 +3,12 @@
   "locale": "fr-FR",
   "source": {
     "baselineSha": "c26f306e82ac66f50a56aafe8f89ea96c0b0c67d",
-    "sourceManifestDigest": "c080a06770f9520766e9a132fe684e6fded07f3457b9edcc8427e981d0000f8b",
-    "contextDigest": "45ded256e097e8622f6418024bf55fb215fe7127874e8002aa4a6945f2eecaad"
+    "sourceManifestDigest": "0e962ebe887a9f6d9d2890353b8b6c021259c03e82c044d9f9f170719006d193",
+    "contextDigest": "3f7b0aa88bc082e1c5ac03b5599a7293ab5aa45f4722521116b01ca0225d843b"
   },
   "catalog": {
-    "messageCount": 3614,
-    "catalogDigest": "9fb928731975e3b4fc93c63d77f9cc3d65117cd8ce2538e5eeb8785eb2d943d8",
+    "messageCount": 3622,
+    "catalogDigest": "f8f5165b74a914be98b539fd44c6c1c34d02685cc9eb98feb4db0f42a1ff98b2",
     "emptyTranslationCount": 0,
     "acceptedSourceEmptyCount": 1,
     "acceptedSourceEmptyDigest": "182ce2fe247d78a1af1027643331be2239d4e4815d2a32f5795a8f6954367560",
@@ -21,7 +21,7 @@
     "acceptedDeclaredSourceEqualityDigest": "be028d81ba9066cf1272051d0adea4ff82370cd99e7f2c6bd935e1e43560f180",
     "forbiddenGlossaryMatchCount": 0,
     "forbiddenGlossaryMatchDigest": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
-    "suspiciousSourceEqualityRatio": 0.0011068068622025456,
+    "suspiciousSourceEqualityRatio": 0.0011043622308117063,
     "maxSuspiciousSourceEqualityRatio": 0.02
   },
   "automatedChecks": {
@@ -42,10 +42,10 @@
   },
   "structuralValidation": {
     "path": "docs/plans/i18n-fr-FR/structural-validation.json",
-    "digest": "f0e076f89d0db633c4241d0803cb6d46ed751671fab5b48f04b9aad7119457d9",
-    "validationDigest": "8d2afbaa34bcb0a172185a7ad515c12fe255a03206cc0978ab36980b425f4514",
+    "digest": "b29bc4abf65905ea9b97e67ef44b62382d45881ab16abf6ed79f4ed9dec980b2",
+    "validationDigest": "f1a47fd9fc791ca62f5763eda2b5259c9c9121fb4e5538ffbc03ec831dfdd9d2",
     "laneCount": 1,
-    "validatedMessageCount": 3614,
+    "validatedMessageCount": 3622,
     "validatedModuleCount": 32,
     "highRiskMessageCount": 1693,
     "highRiskMessageDigest": "bc5b5fdd00be162cf0db75722045484a43b207219b67397655eb3a5600c21ed1",
@@ -53,5 +53,5 @@
     "blockedItems": 0,
     "semanticReviewPerformed": false
   },
-  "qualityDigest": "0fefdd7e1e61d51a57b18748f205e55d3fd5b9c6148a6bb6d68345899861e3db"
+  "qualityDigest": "c6b9e0fefddebb2990b252bf10d09e8f64423ba47915b20b1419db12421cf702"
 }

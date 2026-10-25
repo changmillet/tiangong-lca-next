@@ -1,3 +1,4 @@
+import { finiteLciaValue, type LciaAvailability } from '@/services/lca/categoryAvailability';
 import { CANONICAL_CONTENT_LANGUAGE } from '@/services/general/contentLanguageRegistry';
 import { getDataSource, getLangJson } from '@/services/general/util';
 import { DEFAULT_LCA_SCOPE } from '@/services/lca/scope';
@@ -59,9 +60,12 @@ type LcaMethodMeta = {
 export type SolverLcaImpactValueRow = {
   impact_id: string;
   impact_index?: number;
+  impact_version?: string;
   impact_name: string;
   unit: string;
-  value: number;
+  value: number | null;
+  status?: 'available' | 'unavailable';
+  reasons?: string[];
 };
 
 export function resolveLangText(value: unknown, lang: string): string {
@@ -296,8 +300,13 @@ export function buildMergedLcaRows(
 
   solverRows.forEach((solverRow) => {
     const methodId = toCanonicalLciaMethodId(solverRow.impact_id);
-    const methodMeta = methodMetaById.get(methodId);
-    const artifactLocatorId = toLciaArtifactLocatorId(methodId, methodMeta?.version);
+    const candidateMeta = methodMetaById.get(methodId);
+    const methodMeta =
+      solverRow.impact_version && candidateMeta?.version !== solverRow.impact_version
+        ? undefined
+        : candidateMeta;
+    const methodVersion = solverRow.impact_version || methodMeta?.version || '';
+    const artifactLocatorId = toLciaArtifactLocatorId(methodId, methodVersion);
     const shortDescription =
       methodMeta?.description ??
       toLangFallback(solverRow.impact_name?.trim() || solverRow.impact_id || '-');
@@ -310,16 +319,25 @@ export function buildMergedLcaRows(
 
     if (existingIdx !== undefined) {
       const existing = mergedRows[existingIdx];
+      const sameVersion =
+        !methodVersion ||
+        !existing.referenceToLCIAMethodDataSet?.['@version'] ||
+        existing.referenceToLCIAMethodDataSet['@version'] === methodVersion;
       mergedRows[existingIdx] = {
         ...existing,
-        meanAmount: solverRow.value,
-        referenceQuantityDesc: existing.referenceQuantityDesc || unitDesc,
+        meanAmount: solverRow.status === 'unavailable' ? null : finiteLciaValue(solverRow.value),
+        status: solverRow.status,
+        reasons: solverRow.reasons,
+        referenceQuantityDesc:
+          (sameVersion ? existing.referenceQuantityDesc : undefined) || unitDesc,
         referenceToLCIAMethodDataSet: {
           ...existing.referenceToLCIAMethodDataSet,
-          '@version':
-            existing.referenceToLCIAMethodDataSet?.['@version'] || methodMeta?.version || '',
+          '@version': methodVersion || existing.referenceToLCIAMethodDataSet?.['@version'] || '',
+          '@uri': `../lciamethods/${artifactLocatorId}.xml`,
           'common:shortDescription':
-            existing.referenceToLCIAMethodDataSet?.['common:shortDescription'] ||
+            (sameVersion
+              ? existing.referenceToLCIAMethodDataSet?.['common:shortDescription']
+              : undefined) ||
             (shortDescription as LCIAResultTable['referenceToLCIAMethodDataSet']['common:shortDescription']),
         },
       };
@@ -332,14 +350,53 @@ export function buildMergedLcaRows(
         '@refObjectId': methodId,
         '@type': 'lCIA method data set',
         '@uri': `../lciamethods/${artifactLocatorId}.xml`,
-        '@version': methodMeta?.version || '',
+        '@version': methodVersion,
         'common:shortDescription':
           shortDescription as LCIAResultTable['referenceToLCIAMethodDataSet']['common:shortDescription'],
       },
-      meanAmount: solverRow.value,
+      meanAmount: solverRow.status === 'unavailable' ? null : finiteLciaValue(solverRow.value),
+      status: solverRow.status,
+      reasons: solverRow.reasons,
       referenceQuantityDesc: unitDesc as string | undefined,
     });
   });
 
+  if (solverRows.length > 0) {
+    const solverMethods = new Set(solverRows.map((row) => toCanonicalLciaMethodId(row.impact_id)));
+    return mergedRows.filter((row) =>
+      solverMethods.has(String(row.referenceToLCIAMethodDataSet?.['@refObjectId'] ?? '')),
+    );
+  }
   return mergedRows;
+}
+
+/** Reconstructs the frozen display axis without restoring stale or unavailable saved values. */
+export function applyLciaAvailabilityToRows(
+  baseRows: LCIAResultTable[],
+  availability: LciaAvailability,
+  methodMetaById: Map<string, LcaMethodMeta>,
+): LCIAResultTable[] {
+  const exactRows = new Map(
+    baseRows.map((row) => [
+      `${toCanonicalLciaMethodId(row.referenceToLCIAMethodDataSet?.['@refObjectId'])}:${row.referenceToLCIAMethodDataSet?.['@version']}`,
+      row,
+    ]),
+  );
+  const rows = availability.categories.map((category) => {
+    const row = exactRows.get(`${category.method_id}:${category.method_version}`);
+    return {
+      impact_id: category.method_id,
+      impact_index: category.impact_index,
+      impact_version: category.method_version,
+      impact_name: '',
+      unit: '',
+      value:
+        category.status === 'available' && row?.status !== 'unavailable'
+          ? finiteLciaValue(row?.meanAmount)
+          : null,
+      status: category.status,
+      reasons: category.reasons,
+    } satisfies SolverLcaImpactValueRow;
+  });
+  return buildMergedLcaRows([], rows, methodMetaById);
 }

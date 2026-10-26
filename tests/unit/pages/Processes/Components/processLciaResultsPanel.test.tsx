@@ -228,6 +228,52 @@ describe('ProcessLciaResultsPanel', () => {
     expect(screen.getByText('kg CO2 eq')).toBeInTheDocument();
   });
 
+  it.each(['published', 'solver'])(
+    'preserves frozen revisions in the %s reader',
+    async (reader) => {
+      const values = [
+        {
+          impact_id: 'impact-1',
+          impact_version: ' 01.00.000 ',
+          impact_name: 'Frozen climate',
+          unit: 'frozen kg',
+          value: 0,
+        },
+        {
+          impact_id: 'impact-1',
+          impact_version: '02.00.000',
+          impact_name: 'Second revision',
+          unit: 'frozen m3',
+          value: -2,
+        },
+      ];
+      if (reader === 'published') {
+        mockGetDataSource.mockReturnValue('tg');
+        mockUseLocation.mockReturnValue({ pathname: '/tgdata/processes', search: '' });
+        mockGetPublishedLciaResultPackage.mockResolvedValueOnce({ data: { values }, error: null });
+      } else {
+        mockQueryLcaResults.mockResolvedValueOnce({ data: { values }, meta: {} });
+      }
+      render(
+        <ProcessLciaResultsPanel
+          baseRows={[]}
+          lang='en'
+          processId='process-1'
+          processVersion='1.0'
+          enablePublishedPackageReader={reader === 'published'}
+        />,
+      );
+      expect(await screen.findByTestId('pro-row-impact-1@01.00.000')).toHaveTextContent(
+        'frozen kg',
+      );
+      expect(await screen.findByTestId('pro-row-impact-1@02.00.000')).toHaveTextContent(
+        'frozen m3',
+      );
+      expect(screen.getByText('0')).toBeInTheDocument();
+      expect(screen.getByText('-2')).toBeInTheDocument();
+    },
+  );
+
   it('deduplicates published package loads while the current request is pending', async () => {
     mockGetDataSource.mockReturnValue('tg');
     mockUseLocation.mockReturnValue({ pathname: '/tgdata/processes', search: '' });
@@ -364,7 +410,7 @@ describe('ProcessLciaResultsPanel', () => {
     expect(await screen.findByText('Water use')).toBeInTheDocument();
     expect(await screen.findByText('impact-2')).toBeInTheDocument();
     expect(screen.getByText('m3')).toBeInTheDocument();
-    expect(screen.getByTestId('pro-row-impact-1')).toHaveTextContent('2');
+    expect(screen.getByTestId('pro-row-impact-1@')).toHaveTextContent('2');
   });
 
   it('shows an empty published state when package payload omits row values and metadata', async () => {

@@ -349,6 +349,7 @@ describe('lcaAnalysisShared', () => {
       [
         {
           impact_id: ALIASED_CANONICAL_METHOD_ID,
+          impact_version: ALIASED_METHOD_VERSION,
           impact_name: 'Aliased method',
           unit: 'kg alias-eq',
           value: 4,
@@ -389,7 +390,7 @@ describe('lcaAnalysisShared', () => {
     expect(Array.from(meta.keys())).toEqual(['impact-1']);
   });
 
-  it('preserves an explicit row key and fills a missing reviewed method version', () => {
+  it('preserves an explicit row key without guessing a missing method version', () => {
     const merged = buildMergedLcaRows(
       [
         {
@@ -407,10 +408,10 @@ describe('lcaAnalysisShared', () => {
     expect(merged[0]).toMatchObject({
       key: 'explicit-result-key',
       referenceToLCIAMethodDataSet: {
-        '@refObjectId': ALIASED_CANONICAL_METHOD_ID,
-        '@version': ALIASED_METHOD_VERSION,
+        '@refObjectId': ALIASED_ARTIFACT_LOCATOR_ID,
       },
     });
+    expect(merged[0].referenceToLCIAMethodDataSet['@version']).toBeUndefined();
   });
 
   it('skips method entries whose ids are not strings', async () => {
@@ -493,18 +494,21 @@ describe('lcaAnalysisShared', () => {
       [
         {
           impact_id: 'impact-1',
+          impact_version: '01.00.000',
           impact_name: 'ignored existing name',
           unit: 'kg CO2-eq',
           value: 11,
         },
         {
           impact_id: 'impact-keep',
+          impact_version: '03.00.000',
           impact_name: 'fallback keep',
           unit: UNKNOWN_LCIA_UNIT,
           value: -4,
         },
         {
           impact_id: 'impact-2',
+          impact_version: '02.00.000',
           impact_name: 'Acidification',
           unit: 'mol H+-eq',
           value: 5,
@@ -527,7 +531,7 @@ describe('lcaAnalysisShared', () => {
 
     expect(merged[0]).toMatchObject({
       meanAmount: 11,
-      referenceQuantityDesc: [{ '@xml:lang': 'en', '#text': 'kg CO2-eq' }],
+      referenceQuantityDesc: { '@xml:lang': 'en', '#text': 'kg CO2-eq' },
       referenceToLCIAMethodDataSet: {
         '@refObjectId': 'impact-1',
         '@version': '01.00.000',
@@ -551,7 +555,7 @@ describe('lcaAnalysisShared', () => {
     expect(merged[3]).toMatchObject({
       key: 'impact-2',
       meanAmount: 5,
-      referenceQuantityDesc: [{ '@xml:lang': 'en', '#text': 'mol H+-eq' }],
+      referenceQuantityDesc: { '@xml:lang': 'en', '#text': 'mol H+-eq' },
       referenceToLCIAMethodDataSet: {
         '@refObjectId': 'impact-2',
         '@version': '02.00.000',
@@ -612,5 +616,97 @@ describe('lcaAnalysisShared', () => {
         'common:shortDescription': { '@xml:lang': 'en', '#text': 'impact-empty' },
       },
     });
+  });
+  it.each(['01.00.000', undefined, ''])(
+    'never relabels a frozen or unknown revision from live metadata (%s)',
+    (version) => {
+      const rows = buildMergedLcaRows(
+        [
+          {
+            key: 'm',
+            referenceToLCIAMethodDataSet: {
+              '@refObjectId': 'm',
+              '@version': '02.00.000',
+              'common:shortDescription': 'Stale saved label',
+            },
+            meanAmount: 99,
+            referenceQuantityDesc: 'm3',
+          },
+        ] as any,
+        [
+          {
+            impact_id: 'm',
+            impact_version: version,
+            impact_name: 'Frozen label',
+            unit: 'kg',
+            value: 17.5,
+          },
+        ],
+        new Map([
+          ['m', { version: '02.00.000', description: 'New label', referenceQuantityDesc: 'm3' }],
+        ]),
+      );
+      expect(rows).toHaveLength(1);
+      expect(rows[0].meanAmount).toBe(17.5);
+      expect(rows[0].referenceToLCIAMethodDataSet['@version']).toBe(version || '');
+      expect(rows[0].referenceToLCIAMethodDataSet['common:shortDescription']).toEqual({
+        '@xml:lang': 'en',
+        '#text': 'Frozen label',
+      });
+      expect(rows[0].referenceQuantityDesc).toEqual({ '@xml:lang': 'en', '#text': 'kg' });
+      expect(rows[0].referenceToLCIAMethodDataSet['@uri']).toBe(
+        version ? '../lciamethods/m.xml' : '',
+      );
+    },
+  );
+
+  it('keeps both solver revisions and replaces stale saved revisions without changing values', () => {
+    const rows = buildMergedLcaRows(
+      [
+        {
+          key: 'm-old',
+          referenceToLCIAMethodDataSet: { '@refObjectId': 'm', '@version': '00.00.000' },
+          meanAmount: 9,
+        },
+        {
+          key: 'm-old2',
+          referenceToLCIAMethodDataSet: { '@refObjectId': 'm', '@version': '00.00.001' },
+          meanAmount: 8,
+        },
+      ] as any,
+      [
+        {
+          impact_id: 'm',
+          impact_version: '01.00.000',
+          impact_name: 'Old frozen',
+          unit: 'kg',
+          value: 0,
+        },
+        {
+          impact_id: 'm',
+          impact_version: '02.00.000',
+          impact_name: 'New frozen',
+          unit: 'm3',
+          value: -2,
+        },
+      ],
+      new Map([
+        [
+          'm',
+          {
+            version: '02.00.000',
+            description: 'Exact localized',
+            referenceQuantityDesc: 'wrong unit',
+          },
+        ],
+      ]),
+    );
+    expect(rows.map((row) => row.meanAmount)).toEqual([0, -2]);
+    expect(rows.map((row) => row.referenceToLCIAMethodDataSet['@version'])).toEqual([
+      '01.00.000',
+      '02.00.000',
+    ]);
+    expect(rows[1].referenceToLCIAMethodDataSet['common:shortDescription']).toBe('Exact localized');
+    expect(rows[1].referenceQuantityDesc).toEqual({ '@xml:lang': 'en', '#text': 'm3' });
   });
 });

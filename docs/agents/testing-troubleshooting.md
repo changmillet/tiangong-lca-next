@@ -43,7 +43,7 @@ checkPaths:
   - .github/workflows/release-gate.yml
   - .github/workflows/release-readiness.yml
 lastReviewedAt: 2026-10-26
-lastReviewedCommit: 81bf639b80946bad144dd67e393d884148192696
+lastReviewedCommit: a5e998603ac49a97b99a29b6b14ae60bf61eb643
 lastReviewedNote: 'Platform #1342: reviewed focused frozen-metadata unit/component/browser regressions and unchanged full coverage, bootstrap, checked-push and release proof requirements.'
 ---
 

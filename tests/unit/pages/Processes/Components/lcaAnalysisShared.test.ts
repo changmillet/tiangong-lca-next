@@ -390,6 +390,25 @@ describe('lcaAnalysisShared', () => {
     expect(Array.from(meta.keys())).toEqual(['impact-1']);
   });
 
+  it('keeps an explicit saved row key when its reviewed revision is present', () => {
+    const row = {
+      key: 'explicit-key',
+      meanAmount: 7,
+      referenceToLCIAMethodDataSet: {
+        '@refObjectId': ALIASED_ARTIFACT_LOCATOR_ID,
+        '@version': ALIASED_METHOD_VERSION,
+      },
+    };
+    expect(buildMergedLcaRows([row] as any, [], new Map())[0]).toMatchObject({
+      key: 'explicit-key',
+      meanAmount: 7,
+      referenceToLCIAMethodDataSet: {
+        '@refObjectId': ALIASED_CANONICAL_METHOD_ID,
+        '@version': ALIASED_METHOD_VERSION,
+      },
+    });
+  });
+
   it('preserves an explicit row key without guessing a missing method version', () => {
     const merged = buildMergedLcaRows(
       [

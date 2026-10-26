@@ -282,7 +282,7 @@ export function buildMergedLcaRows(
         ...reference,
         '@refObjectId': identity.method_id,
         '@uri': `../lciamethods/${identity.artifact_locator_id}.xml`,
-        '@version': reference['@version'] || identity.method_version,
+        '@version': reference['@version'],
       },
     };
   });

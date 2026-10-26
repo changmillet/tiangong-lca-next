@@ -76,6 +76,7 @@ export type PreviewLciaResultPackageRequest = {
 
 export type PublishedLciaResultValue = {
   impact_id: string;
+  impact_version?: string;
   impact_index: number;
   impact_name: string;
   unit: string;

@@ -544,6 +544,7 @@ describe('LcaAnalysisPage', () => {
             values: [
               {
                 impact_id: 'impact-1',
+                impact_version: ' 01.00.000 ',
                 impact_index: 1,
                 impact_name: 'Climate change',
                 unit: 'kg CO2-eq',

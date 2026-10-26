@@ -48,9 +48,9 @@ checkPaths:
   - .nvmrc
   - .husky/pre-push
   - .github/workflows/**
-lastReviewedAt: 2026-10-25
-lastReviewedCommit: bccb28cff5cffca067f1d21ea555cbe731fae744
-lastReviewedNote: 'Platform #1328 / PR #1329: reviewed conflict resolution against dev a5302dbf. Retained incoming navigation, review, dependency and qualification contracts plus the v6 latest-current draft reporting dependency and validation scope. Regenerated four-locale artifacts; 31 dashboard tests pass. Final checked-push evidence belongs on the PR.'
+lastReviewedAt: 2026-10-26
+lastReviewedCommit: 81bf639b80946bad144dd67e393d884148192696
+lastReviewedNote: 'Platform #1342: reviewed frozen result revision and unit display, exact-version optional enrichment and legacy unknown revisions. Calculation, data-quality policy, database ownership, release and validation gates remain unchanged.'
 related:
   - .docpact/config.yaml
   - docs/agents/repo-validation.md

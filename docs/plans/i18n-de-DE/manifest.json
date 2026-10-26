@@ -3,7 +3,7 @@
   "source": {
     "baseRef": "c26f306e82ac66f50a56aafe8f89ea96c0b0c67d",
     "baseCommit": "c26f306e82ac66f50a56aafe8f89ea96c0b0c67d",
-    "auditedInputDigest": "bfba748579a639dd50bd24739fc806256d520ef1ee02fb7c1724e6ba7830855d",
+    "auditedInputDigest": "8e71d91f021619ef7fcdcd6c4fef5f6a88e5af644a63fc36379d2af32f2c1e90",
     "auditedInputDigestAlgorithm": "sha256(path\\0content\\0)",
     "repository": "tiangong-lca/platform"
   },
@@ -153642,7 +153642,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 1919,
+          "line": 1910,
           "column": 13,
           "symbol": "contributionPathLinkColumns",
           "defaultMessage": "No",
@@ -153657,7 +153657,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 1919,
+              "line": 1910,
               "column": 13,
               "kind": "formatMessage"
             }
@@ -159836,7 +159836,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 2295,
+          "line": 2286,
           "column": 27,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Clear selection",
@@ -159845,7 +159845,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 2546,
+          "line": 2537,
           "column": 27,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Clear selection",
@@ -159854,7 +159854,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 2892,
+          "line": 2883,
           "column": 27,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Clear selection",
@@ -159878,19 +159878,19 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 2295,
+              "line": 2286,
               "column": 27,
               "kind": "FormattedMessage"
             },
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 2546,
+              "line": 2537,
               "column": 27,
               "kind": "FormattedMessage"
             },
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 2892,
+              "line": 2883,
               "column": 27,
               "kind": "FormattedMessage"
             },
@@ -159964,7 +159964,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 2308,
+          "line": 2299,
           "column": 27,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Run analysis",
@@ -159988,7 +159988,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 2308,
+              "line": 2299,
               "column": 27,
               "kind": "FormattedMessage"
             },
@@ -160311,7 +160311,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 911,
+          "line": 914,
           "column": 11,
           "symbol": "loadAnalysisOptions",
           "defaultMessage": "No impact categories are available.",
@@ -160344,7 +160344,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 911,
+              "line": 914,
               "column": 11,
               "kind": "formatMessage"
             },
@@ -160424,7 +160424,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 2328,
+          "line": 2319,
           "column": 27,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Select one impact category and at least one process, then run the analysis.",
@@ -160448,7 +160448,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 2328,
+              "line": 2319,
               "column": 27,
               "kind": "FormattedMessage"
             },
@@ -160605,7 +160605,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 392,
+          "line": 395,
           "column": 12,
           "symbol": "resolveQueuedSnapshotMessage",
           "defaultMessage": "No snapshot is ready for the selected data scope.",
@@ -160620,7 +160620,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 392,
+              "line": 395,
               "column": 12,
               "kind": "formatMessage"
             }
@@ -160688,7 +160688,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 385,
+          "line": 388,
           "column": 9,
           "symbol": "resolveQueuedSnapshotMessage",
           "defaultMessage": "Snapshot build is still running. Wait for it to finish, then rerun the analysis.",
@@ -160697,7 +160697,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 1362,
+          "line": 1353,
           "column": 15,
           "symbol": "runContributionPathAnalysis",
           "defaultMessage": "Snapshot build is still running. Wait for it to finish, then rerun the analysis.",
@@ -160730,13 +160730,13 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 385,
+              "line": 388,
               "column": 9,
               "kind": "formatMessage"
             },
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 1362,
+              "line": 1353,
               "column": 15,
               "kind": "formatMessage"
             },
@@ -160816,7 +160816,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 377,
+          "line": 380,
           "column": 9,
           "symbol": "resolveQueuedSnapshotMessage",
           "defaultMessage": "Snapshot build job {jobId} is still running. Wait for it to finish, then rerun the analysis.",
@@ -160825,7 +160825,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 1354,
+          "line": 1345,
           "column": 15,
           "symbol": "runContributionPathAnalysis",
           "defaultMessage": "Snapshot build job {jobId} is still running. Wait for it to finish, then rerun the analysis.",
@@ -160858,13 +160858,13 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 377,
+              "line": 380,
               "column": 9,
               "kind": "formatMessage"
             },
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 1354,
+              "line": 1345,
               "column": 15,
               "kind": "formatMessage"
             },
@@ -160944,7 +160944,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 398,
+          "line": 401,
           "column": 12,
           "symbol": "resolveQueuedSnapshotMessage",
           "defaultMessage": "The snapshot for the selected data scope is stale. Rebuild it before rerunning the analysis.",
@@ -160959,7 +160959,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 398,
+              "line": 401,
               "column": 12,
               "kind": "formatMessage"
             }
@@ -161027,7 +161027,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 2239,
+          "line": 2230,
           "column": 29,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Impact category",
@@ -161036,7 +161036,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 2247,
+          "line": 2238,
           "column": 41,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Impact category",
@@ -161045,7 +161045,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 2462,
+          "line": 2453,
           "column": 33,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Impact category",
@@ -161054,7 +161054,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 2470,
+          "line": 2461,
           "column": 45,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Impact category",
@@ -161063,7 +161063,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 2724,
+          "line": 2715,
           "column": 33,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Impact category",
@@ -161072,7 +161072,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 2732,
+          "line": 2723,
           "column": 45,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Impact category",
@@ -161081,7 +161081,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 3014,
+          "line": 3005,
           "column": 39,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Impact category",
@@ -161159,43 +161159,43 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 2239,
+              "line": 2230,
               "column": 29,
               "kind": "FormattedMessage"
             },
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 2247,
+              "line": 2238,
               "column": 41,
               "kind": "formatMessage"
             },
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 2462,
+              "line": 2453,
               "column": 33,
               "kind": "FormattedMessage"
             },
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 2470,
+              "line": 2461,
               "column": 45,
               "kind": "formatMessage"
             },
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 2724,
+              "line": 2715,
               "column": 33,
               "kind": "FormattedMessage"
             },
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 2732,
+              "line": 2723,
               "column": 45,
               "kind": "formatMessage"
             },
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 3014,
+              "line": 3005,
               "column": 39,
               "kind": "FormattedMessage"
             },
@@ -161305,7 +161305,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 920,
+          "line": 923,
           "column": 9,
           "symbol": "loadAnalysisOptions",
           "defaultMessage": "Failed to load impact categories.",
@@ -161338,7 +161338,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 920,
+              "line": 923,
               "column": 9,
               "kind": "formatMessage"
             },
@@ -161418,7 +161418,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 1216,
+          "line": 1207,
           "column": 11,
           "symbol": "runCompareAnalysis",
           "defaultMessage": "Failed to run impact analysis.",
@@ -161442,7 +161442,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 1216,
+              "line": 1207,
               "column": 11,
               "kind": "formatMessage"
             },
@@ -161516,7 +161516,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 352,
+          "line": 355,
           "column": 15,
           "symbol": "QueryMetaCard",
           "defaultMessage": "Computed at",
@@ -161549,7 +161549,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 352,
+              "line": 355,
               "column": 15,
               "kind": "FormattedMessage"
             },
@@ -161629,7 +161629,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 343,
+          "line": 346,
           "column": 15,
           "symbol": "QueryMetaCard",
           "defaultMessage": "Result source",
@@ -161662,7 +161662,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 343,
+              "line": 346,
               "column": 15,
               "kind": "FormattedMessage"
             },
@@ -162119,7 +162119,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 2115,
+          "line": 2106,
           "column": 25,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Results",
@@ -162128,7 +162128,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 2320,
+          "line": 2311,
           "column": 25,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Results",
@@ -162137,7 +162137,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 2571,
+          "line": 2562,
           "column": 25,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Results",
@@ -162146,7 +162146,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 2915,
+          "line": 2906,
           "column": 25,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Results",
@@ -162179,25 +162179,25 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 2115,
+              "line": 2106,
               "column": 25,
               "kind": "FormattedMessage"
             },
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 2320,
+              "line": 2311,
               "column": 25,
               "kind": "FormattedMessage"
             },
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 2571,
+              "line": 2562,
               "column": 25,
               "kind": "FormattedMessage"
             },
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 2915,
+              "line": 2906,
               "column": 25,
               "kind": "FormattedMessage"
             },
@@ -162277,7 +162277,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 2402,
+          "line": 2393,
           "column": 35,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Shares are calculated from absolute values so positive and negative contributors remain comparable.",
@@ -162301,7 +162301,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 2402,
+              "line": 2393,
               "column": 35,
               "kind": "FormattedMessage"
             },
@@ -162375,7 +162375,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 2351,
+          "line": 2342,
           "column": 37,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Compared processes",
@@ -162399,7 +162399,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 2351,
+              "line": 2342,
               "column": 37,
               "kind": "FormattedMessage"
             },
@@ -162473,7 +162473,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 2362,
+          "line": 2353,
           "column": 37,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Top contributor",
@@ -162506,7 +162506,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 2362,
+              "line": 2353,
               "column": 37,
               "kind": "FormattedMessage"
             },
@@ -162586,7 +162586,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 2373,
+          "line": 2364,
           "column": 37,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Absolute total",
@@ -162610,7 +162610,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 2373,
+              "line": 2364,
               "column": 37,
               "kind": "FormattedMessage"
             },
@@ -162684,7 +162684,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 1636,
+          "line": 1627,
           "column": 9,
           "symbol": "compareColumns",
           "defaultMessage": "Cumulative share",
@@ -162693,7 +162693,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 1732,
+          "line": 1723,
           "column": 9,
           "symbol": "groupedColumns",
           "defaultMessage": "Cumulative share",
@@ -162726,13 +162726,13 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 1636,
+              "line": 1627,
               "column": 9,
               "kind": "FormattedMessage"
             },
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 1732,
+              "line": 1723,
               "column": 9,
               "kind": "FormattedMessage"
             },
@@ -162925,7 +162925,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 1626,
+          "line": 1617,
           "column": 9,
           "symbol": "compareColumns",
           "defaultMessage": "Absolute share",
@@ -162934,7 +162934,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 1722,
+          "line": 1713,
           "column": 9,
           "symbol": "groupedColumns",
           "defaultMessage": "Absolute share",
@@ -162943,7 +162943,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 1790,
+          "line": 1781,
           "column": 9,
           "symbol": "contributionPathContributorColumns",
           "defaultMessage": "Absolute share",
@@ -162952,7 +162952,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 1899,
+          "line": 1890,
           "column": 9,
           "symbol": "contributionPathLinkColumns",
           "defaultMessage": "Absolute share",
@@ -162961,7 +162961,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 3249,
+          "line": 3240,
           "column": 49,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Absolute share",
@@ -162994,31 +162994,31 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 1626,
+              "line": 1617,
               "column": 9,
               "kind": "FormattedMessage"
             },
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 1722,
+              "line": 1713,
               "column": 9,
               "kind": "FormattedMessage"
             },
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 1790,
+              "line": 1781,
               "column": 9,
               "kind": "FormattedMessage"
             },
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 1899,
+              "line": 1890,
               "column": 9,
               "kind": "FormattedMessage"
             },
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 3249,
+              "line": 3240,
               "column": 49,
               "kind": "formatMessage"
             },
@@ -163098,7 +163098,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 1611,
+          "line": 1602,
           "column": 9,
           "symbol": "compareColumns",
           "defaultMessage": "Impact value",
@@ -163140,7 +163140,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 1611,
+              "line": 1602,
               "column": 9,
               "kind": "FormattedMessage"
             },
@@ -163604,7 +163604,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 1062,
+          "line": 1065,
           "column": 9,
           "symbol": "runProfileAnalysis",
           "defaultMessage": "Please select a process",
@@ -163619,7 +163619,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 1062,
+              "line": 1065,
               "column": 9,
               "kind": "formatMessage"
             }
@@ -169617,7 +169617,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 1926,
+          "line": 1917,
           "column": 9,
           "symbol": "summaryCardExtra",
           "defaultMessage": "Back to processes",
@@ -169632,7 +169632,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 1926,
+              "line": 1917,
               "column": 9,
               "kind": "FormattedMessage"
             }
@@ -169700,7 +169700,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 1943,
+          "line": 1934,
           "column": 9,
           "symbol": "summaryCardExtra",
           "defaultMessage": "Refresh options",
@@ -169715,7 +169715,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 1943,
+              "line": 1934,
               "column": 9,
               "kind": "FormattedMessage"
             }
@@ -169783,7 +169783,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 2394,
+          "line": 2385,
           "column": 33,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Impact comparison chart",
@@ -169798,7 +169798,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 2394,
+              "line": 2385,
               "column": 33,
               "kind": "FormattedMessage"
             }
@@ -170114,7 +170114,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 1979,
+          "line": 1970,
           "column": 21,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Data scope",
@@ -170123,7 +170123,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 1986,
+          "line": 1977,
           "column": 33,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Data scope",
@@ -170138,13 +170138,13 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 1979,
+              "line": 1970,
               "column": 21,
               "kind": "FormattedMessage"
             },
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 1986,
+              "line": 1977,
               "column": 33,
               "kind": "formatMessage"
             }
@@ -170212,7 +170212,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 591,
+          "line": 594,
           "column": 16,
           "symbol": "dataScopeOptions",
           "defaultMessage": "All data",
@@ -170227,7 +170227,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 591,
+              "line": 594,
               "column": 16,
               "kind": "formatMessage"
             }
@@ -170295,7 +170295,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 577,
+          "line": 580,
           "column": 16,
           "symbol": "dataScopeOptions",
           "defaultMessage": "Current user data",
@@ -170310,7 +170310,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 577,
+              "line": 580,
               "column": 16,
               "kind": "formatMessage"
             }
@@ -170378,7 +170378,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 584,
+          "line": 587,
           "column": 16,
           "symbol": "dataScopeOptions",
           "defaultMessage": "Open data",
@@ -170393,7 +170393,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 584,
+              "line": 587,
               "column": 16,
               "kind": "formatMessage"
             }
@@ -170461,7 +170461,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 570,
+          "line": 573,
           "column": 16,
           "symbol": "dataScopeOptions",
           "defaultMessage": "Public data + my drafts",
@@ -170476,7 +170476,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 570,
+              "line": 573,
               "column": 16,
               "kind": "formatMessage"
             }
@@ -170544,7 +170544,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 1969,
+          "line": 1960,
           "column": 15,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Use the existing LCA query API to review the LCIA profile of a single process, compare selected processes by impact category, aggregate selected processes into grouped results, or run contribution path analysis for a selected process-impact pair across current-user, open-data, or all-data scopes. Charts support quick interpretation; tables preserve exact values.",
@@ -170559,7 +170559,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 1969,
+              "line": 1960,
               "column": 15,
               "kind": "FormattedMessage"
             }
@@ -170627,7 +170627,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 2559,
+          "line": 2550,
           "column": 27,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Run grouped analysis",
@@ -170642,7 +170642,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 2559,
+              "line": 2550,
               "column": 27,
               "kind": "FormattedMessage"
             }
@@ -170710,7 +170710,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 2656,
+          "line": 2647,
           "column": 33,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Grouped ranking chart",
@@ -170725,7 +170725,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 2656,
+              "line": 2647,
               "column": 33,
               "kind": "FormattedMessage"
             }
@@ -170793,7 +170793,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 2579,
+          "line": 2570,
           "column": 27,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Select one impact category, one grouping rule, and at least one process, then run grouped analysis.",
@@ -170808,7 +170808,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 2579,
+              "line": 2570,
               "column": 27,
               "kind": "FormattedMessage"
             }
@@ -170876,7 +170876,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 2491,
+          "line": 2482,
           "column": 33,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Group by",
@@ -170885,7 +170885,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 2498,
+          "line": 2489,
           "column": 45,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Group by",
@@ -170900,13 +170900,13 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 2491,
+              "line": 2482,
               "column": 33,
               "kind": "FormattedMessage"
             },
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 2498,
+              "line": 2489,
               "column": 45,
               "kind": "formatMessage"
             }
@@ -170974,7 +170974,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 611,
+          "line": 614,
           "column": 16,
           "symbol": "groupedByOptions",
           "defaultMessage": "Classification",
@@ -170989,7 +170989,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 611,
+              "line": 614,
               "column": 16,
               "kind": "formatMessage"
             }
@@ -171057,7 +171057,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 604,
+          "line": 607,
           "column": 16,
           "symbol": "groupedByOptions",
           "defaultMessage": "Location",
@@ -171072,7 +171072,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 604,
+              "line": 607,
               "column": 16,
               "kind": "formatMessage"
             }
@@ -171140,7 +171140,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 625,
+          "line": 628,
           "column": 16,
           "symbol": "groupedByOptions",
           "defaultMessage": "Team",
@@ -171155,7 +171155,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 625,
+              "line": 628,
               "column": 16,
               "kind": "formatMessage"
             }
@@ -171223,7 +171223,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 618,
+          "line": 621,
           "column": 16,
           "symbol": "groupedByOptions",
           "defaultMessage": "Dataset type",
@@ -171238,7 +171238,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 618,
+              "line": 621,
               "column": 16,
               "kind": "formatMessage"
             }
@@ -171306,7 +171306,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 957,
+          "line": 960,
           "column": 24,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "No team",
@@ -171315,7 +171315,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 1292,
+          "line": 1283,
           "column": 24,
           "symbol": "runGroupedAnalysis",
           "defaultMessage": "No team",
@@ -171330,13 +171330,13 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 957,
+              "line": 960,
               "column": 24,
               "kind": "formatMessage"
             },
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 1292,
+              "line": 1283,
               "column": 24,
               "kind": "formatMessage"
             }
@@ -171404,7 +171404,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 953,
+          "line": 956,
           "column": 30,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Unknown",
@@ -171413,7 +171413,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 1288,
+          "line": 1279,
           "column": 30,
           "symbol": "runGroupedAnalysis",
           "defaultMessage": "Unknown",
@@ -171428,13 +171428,13 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 953,
+              "line": 956,
               "column": 30,
               "kind": "formatMessage"
             },
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 1288,
+              "line": 1279,
               "column": 30,
               "kind": "formatMessage"
             }
@@ -171502,7 +171502,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 1305,
+          "line": 1296,
           "column": 11,
           "symbol": "runGroupedAnalysis",
           "defaultMessage": "Failed to run grouped analysis.",
@@ -171517,7 +171517,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 1305,
+              "line": 1296,
               "column": 11,
               "kind": "formatMessage"
             }
@@ -171774,7 +171774,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 2664,
+          "line": 2655,
           "column": 35,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Bars rank groups by aggregated absolute impact. Colors reflect the net signed direction, while the table below keeps exact net and absolute values.",
@@ -171789,7 +171789,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 2664,
+              "line": 2655,
               "column": 35,
               "kind": "FormattedMessage"
             }
@@ -171857,7 +171857,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 2602,
+          "line": 2593,
           "column": 37,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Groups",
@@ -171872,7 +171872,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 2602,
+              "line": 2593,
               "column": 37,
               "kind": "FormattedMessage"
             }
@@ -171940,7 +171940,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 2613,
+          "line": 2604,
           "column": 37,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Selected processes",
@@ -171955,7 +171955,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 2613,
+              "line": 2604,
               "column": 37,
               "kind": "FormattedMessage"
             }
@@ -172023,7 +172023,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 2624,
+          "line": 2615,
           "column": 37,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Top group",
@@ -172038,7 +172038,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 2624,
+              "line": 2615,
               "column": 37,
               "kind": "FormattedMessage"
             }
@@ -172106,7 +172106,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 2635,
+          "line": 2626,
           "column": 37,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Absolute total",
@@ -172121,7 +172121,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 2635,
+              "line": 2626,
               "column": 37,
               "kind": "FormattedMessage"
             }
@@ -172189,7 +172189,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 1707,
+          "line": 1698,
           "column": 9,
           "symbol": "groupedColumns",
           "defaultMessage": "Absolute magnitude",
@@ -172204,7 +172204,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 1707,
+              "line": 1698,
               "column": 9,
               "kind": "FormattedMessage"
             }
@@ -172272,7 +172272,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 1657,
+          "line": 1648,
           "column": 9,
           "symbol": "groupedColumns",
           "defaultMessage": "Group",
@@ -172287,7 +172287,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 1657,
+              "line": 1648,
               "column": 9,
               "kind": "FormattedMessage"
             }
@@ -172367,7 +172367,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 1664,
+          "line": 1655,
           "column": 14,
           "symbol": "groupedColumns",
           "defaultMessage": "{count, plural, one {# process; top process: {processName}} other {# processes; top process: {processName}}}",
@@ -172385,7 +172385,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 1664,
+              "line": 1655,
               "column": 14,
               "kind": "formatMessage"
             }
@@ -172453,7 +172453,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 1692,
+          "line": 1683,
           "column": 9,
           "symbol": "groupedColumns",
           "defaultMessage": "Net impact value",
@@ -172468,7 +172468,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 1692,
+              "line": 1683,
               "column": 9,
               "kind": "FormattedMessage"
             }
@@ -172536,7 +172536,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 1681,
+          "line": 1672,
           "column": 9,
           "symbol": "groupedColumns",
           "defaultMessage": "Processes",
@@ -172551,7 +172551,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 1681,
+              "line": 1672,
               "column": 9,
               "kind": "FormattedMessage"
             }
@@ -172619,7 +172619,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 1649,
+          "line": 1640,
           "column": 9,
           "symbol": "groupedColumns",
           "defaultMessage": "Rank",
@@ -172628,7 +172628,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 1803,
+          "line": 1794,
           "column": 9,
           "symbol": "contributionPathBranchColumns",
           "defaultMessage": "Rank",
@@ -172643,13 +172643,13 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 1649,
+              "line": 1640,
               "column": 9,
               "kind": "FormattedMessage"
             },
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 1803,
+              "line": 1794,
               "column": 9,
               "kind": "FormattedMessage"
             }
@@ -173260,7 +173260,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 2903,
+          "line": 2894,
           "column": 27,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Run contribution path analysis",
@@ -173275,7 +173275,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 2903,
+              "line": 2894,
               "column": 27,
               "kind": "FormattedMessage"
             }
@@ -173343,7 +173343,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 3081,
+          "line": 3072,
           "column": 35,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Bars show direct impact contributions per process, ranked by absolute magnitude. Exact branch and edge details remain in the tables below.",
@@ -173358,7 +173358,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 3081,
+              "line": 3072,
               "column": 35,
               "kind": "FormattedMessage"
             }
@@ -173426,7 +173426,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 3073,
+          "line": 3064,
           "column": 33,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Top direct contributors",
@@ -173441,7 +173441,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 3073,
+              "line": 3064,
               "column": 33,
               "kind": "FormattedMessage"
             }
@@ -173509,7 +173509,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 3109,
+          "line": 3100,
           "column": 37,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "No direct contributors are available for charting.",
@@ -173524,7 +173524,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 3109,
+              "line": 3100,
               "column": 37,
               "kind": "FormattedMessage"
             }
@@ -173592,7 +173592,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 2923,
+          "line": 2914,
           "column": 27,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Select one process and one impact category, then run contribution path analysis.",
@@ -173607,7 +173607,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 2923,
+              "line": 2914,
               "column": 27,
               "kind": "FormattedMessage"
             }
@@ -173675,7 +173675,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 2753,
+          "line": 2744,
           "column": 33,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Demand amount",
@@ -173684,7 +173684,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 3023,
+          "line": 3014,
           "column": 39,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Demand amount",
@@ -173699,13 +173699,13 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 2753,
+              "line": 2744,
               "column": 33,
               "kind": "FormattedMessage"
             },
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 3023,
+              "line": 3014,
               "column": 39,
               "kind": "FormattedMessage"
             }
@@ -173773,7 +173773,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 2817,
+          "line": 2808,
           "column": 33,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Cutoff share",
@@ -173782,7 +173782,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 3050,
+          "line": 3041,
           "column": 39,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Cutoff share",
@@ -173797,13 +173797,13 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 2817,
+              "line": 2808,
               "column": 33,
               "kind": "FormattedMessage"
             },
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 3050,
+              "line": 3041,
               "column": 39,
               "kind": "FormattedMessage"
             }
@@ -173871,7 +173871,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 2773,
+          "line": 2764,
           "column": 33,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Max depth",
@@ -173880,7 +173880,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 3032,
+          "line": 3023,
           "column": 39,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Max depth",
@@ -173895,13 +173895,13 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 2773,
+              "line": 2764,
               "column": 33,
               "kind": "FormattedMessage"
             },
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 3032,
+              "line": 3023,
               "column": 39,
               "kind": "FormattedMessage"
             }
@@ -173969,7 +173969,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 2840,
+          "line": 2831,
           "column": 33,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Max nodes",
@@ -173978,7 +173978,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 3059,
+          "line": 3050,
           "column": 39,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Max nodes",
@@ -173993,13 +173993,13 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 2840,
+              "line": 2831,
               "column": 33,
               "kind": "FormattedMessage"
             },
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 3059,
+              "line": 3050,
               "column": 39,
               "kind": "FormattedMessage"
             }
@@ -174067,7 +174067,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 3002,
+          "line": 2993,
           "column": 39,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Root process",
@@ -174082,7 +174082,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 3002,
+              "line": 2993,
               "column": 39,
               "kind": "FormattedMessage"
             }
@@ -174150,7 +174150,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 2795,
+          "line": 2786,
           "column": 33,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Top-K children",
@@ -174159,7 +174159,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 3041,
+          "line": 3032,
           "column": 39,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Top-K children",
@@ -174174,13 +174174,13 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 2795,
+              "line": 2786,
               "column": 33,
               "kind": "FormattedMessage"
             },
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 3041,
+              "line": 3032,
               "column": 39,
               "kind": "FormattedMessage"
             }
@@ -174248,7 +174248,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 1408,
+          "line": 1399,
           "column": 11,
           "symbol": "runContributionPathAnalysis",
           "defaultMessage": "Unexpected contribution path payload returned from the analysis API.",
@@ -174263,7 +174263,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 1408,
+              "line": 1399,
               "column": 11,
               "kind": "formatMessage"
             }
@@ -174331,7 +174331,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 1386,
+          "line": 1377,
           "column": 13,
           "symbol": "runContributionPathAnalysis",
           "defaultMessage": "Contribution path analysis failed.",
@@ -174346,7 +174346,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 1386,
+              "line": 1377,
               "column": 13,
               "kind": "formatMessage"
             }
@@ -174414,7 +174414,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 1376,
+          "line": 1367,
           "column": 13,
           "symbol": "runContributionPathAnalysis",
           "defaultMessage": "Contribution path analysis finished without a result.",
@@ -174423,7 +174423,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 1396,
+          "line": 1387,
           "column": 13,
           "symbol": "runContributionPathAnalysis",
           "defaultMessage": "Contribution path analysis finished without a result.",
@@ -174438,13 +174438,13 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 1376,
+              "line": 1367,
               "column": 13,
               "kind": "formatMessage"
             },
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 1396,
+              "line": 1387,
               "column": 13,
               "kind": "formatMessage"
             }
@@ -174512,7 +174512,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 1436,
+          "line": 1427,
           "column": 11,
           "symbol": "runContributionPathAnalysis",
           "defaultMessage": "Failed to run contribution path analysis.",
@@ -174527,7 +174527,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 1436,
+              "line": 1427,
               "column": 11,
               "kind": "formatMessage"
             }
@@ -174595,7 +174595,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 3264,
+          "line": 3255,
           "column": 37,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "No traversed links are available for Sankey visualization.",
@@ -174610,7 +174610,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 3264,
+              "line": 3255,
               "column": 37,
               "kind": "FormattedMessage"
             }
@@ -174694,7 +174694,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 3138,
+          "line": 3129,
           "column": 44,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Repeated or cycle-related processes are split by depth to keep all traversed links visible in the Sankey diagram. The current view includes {repeatCount, plural, one {# repeated node instance} other {# repeated node instances}}, {cycleCutCount, plural, one {# cycle-cut link} other {# cycle-cut links}}, and {selfLoopCount, plural, one {# self-loop link} other {# self-loop links}}.",
@@ -174713,7 +174713,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 3138,
+              "line": 3129,
               "column": 44,
               "kind": "formatMessage"
             }
@@ -174781,7 +174781,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 3129,
+          "line": 3120,
           "column": 35,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "This Sankey diagram summarizes explored path links by absolute direct impact. Revisited processes are split by depth so all traversed links remain visible. Use the tables below for exact values and link diagnostics.",
@@ -174796,7 +174796,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 3129,
+              "line": 3120,
               "column": 35,
               "kind": "FormattedMessage"
             }
@@ -174864,7 +174864,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 3121,
+          "line": 3112,
           "column": 33,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Contribution-path Sankey diagram",
@@ -174879,7 +174879,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 3121,
+              "line": 3112,
               "column": 33,
               "kind": "FormattedMessage"
             }
@@ -174947,7 +174947,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 3200,
+          "line": 3191,
           "column": 49,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Node total",
@@ -174962,7 +174962,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 3200,
+              "line": 3191,
               "column": 49,
               "kind": "formatMessage"
             }
@@ -175030,7 +175030,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 3210,
+          "line": 3201,
           "column": 49,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Source",
@@ -175045,7 +175045,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 3210,
+              "line": 3201,
               "column": 49,
               "kind": "formatMessage"
             }
@@ -175113,7 +175113,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 3219,
+          "line": 3210,
           "column": 49,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Target",
@@ -175128,7 +175128,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 3219,
+              "line": 3210,
               "column": 49,
               "kind": "formatMessage"
             }
@@ -175196,7 +175196,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 3294,
+          "line": 3285,
           "column": 33,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Explored branches",
@@ -175211,7 +175211,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 3294,
+              "line": 3285,
               "column": 33,
               "kind": "FormattedMessage"
             }
@@ -175279,7 +175279,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 3276,
+          "line": 3267,
           "column": 33,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Process contributors",
@@ -175294,7 +175294,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 3276,
+              "line": 3267,
               "column": 33,
               "kind": "FormattedMessage"
             }
@@ -175362,7 +175362,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 3316,
+          "line": 3307,
           "column": 33,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Traversal links",
@@ -175377,7 +175377,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 3316,
+              "line": 3307,
               "column": 33,
               "kind": "FormattedMessage"
             }
@@ -175634,7 +175634,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 2962,
+          "line": 2953,
           "column": 37,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Coverage",
@@ -175649,7 +175649,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 2962,
+              "line": 2953,
               "column": 37,
               "kind": "FormattedMessage"
             }
@@ -175717,7 +175717,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 2973,
+          "line": 2964,
           "column": 37,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Expanded nodes",
@@ -175732,7 +175732,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 2973,
+              "line": 2964,
               "column": 37,
               "kind": "FormattedMessage"
             }
@@ -175800,7 +175800,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 2945,
+          "line": 2936,
           "column": 37,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Total impact",
@@ -175815,7 +175815,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 2945,
+              "line": 2936,
               "column": 37,
               "kind": "FormattedMessage"
             }
@@ -175883,7 +175883,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 2984,
+          "line": 2975,
           "column": 37,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Truncated nodes",
@@ -175898,7 +175898,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 2984,
+              "line": 2975,
               "column": 37,
               "kind": "FormattedMessage"
             }
@@ -175966,7 +175966,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 1909,
+          "line": 1900,
           "column": 9,
           "symbol": "contributionPathLinkColumns",
           "defaultMessage": "Cycle cut",
@@ -175981,7 +175981,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 1909,
+              "line": 1900,
               "column": 9,
               "kind": "FormattedMessage"
             }
@@ -176049,7 +176049,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 1767,
+          "line": 1758,
           "column": 9,
           "symbol": "contributionPathContributorColumns",
           "defaultMessage": "Depth",
@@ -176058,7 +176058,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 1876,
+          "line": 1867,
           "column": 9,
           "symbol": "contributionPathLinkColumns",
           "defaultMessage": "Depth",
@@ -176067,7 +176067,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 3228,
+          "line": 3219,
           "column": 49,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Depth",
@@ -176082,19 +176082,19 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 1767,
+              "line": 1758,
               "column": 9,
               "kind": "FormattedMessage"
             },
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 1876,
+              "line": 1867,
               "column": 9,
               "kind": "FormattedMessage"
             },
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 3228,
+              "line": 3219,
               "column": 49,
               "kind": "formatMessage"
             }
@@ -176162,7 +176162,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 1775,
+          "line": 1766,
           "column": 9,
           "symbol": "contributionPathContributorColumns",
           "defaultMessage": "Direct impact",
@@ -176171,7 +176171,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 1884,
+          "line": 1875,
           "column": 9,
           "symbol": "contributionPathLinkColumns",
           "defaultMessage": "Direct impact",
@@ -176180,7 +176180,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 3240,
+          "line": 3231,
           "column": 49,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Direct impact",
@@ -176195,19 +176195,19 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 1775,
+              "line": 1766,
               "column": 9,
               "kind": "FormattedMessage"
             },
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 1884,
+              "line": 1875,
               "column": 9,
               "kind": "FormattedMessage"
             },
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 3240,
+              "line": 3231,
               "column": 49,
               "kind": "formatMessage"
             }
@@ -176275,7 +176275,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 1861,
+          "line": 1852,
           "column": 14,
           "symbol": "contributionPathLinkColumns",
           "defaultMessage": "Edge",
@@ -176290,7 +176290,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 1861,
+              "line": 1852,
               "column": 14,
               "kind": "FormattedMessage"
             }
@@ -176358,7 +176358,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 1810,
+          "line": 1801,
           "column": 14,
           "symbol": "contributionPathBranchColumns",
           "defaultMessage": "Path",
@@ -176373,7 +176373,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 1810,
+              "line": 1801,
               "column": 14,
               "kind": "FormattedMessage"
             }
@@ -176441,7 +176441,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 1834,
+          "line": 1825,
           "column": 9,
           "symbol": "contributionPathBranchColumns",
           "defaultMessage": "Path score",
@@ -176456,7 +176456,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 1834,
+              "line": 1825,
               "column": 9,
               "kind": "FormattedMessage"
             }
@@ -176524,7 +176524,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 1752,
+          "line": 1743,
           "column": 17,
           "symbol": "contributionPathContributorColumns",
           "defaultMessage": "Root",
@@ -176539,7 +176539,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 1752,
+              "line": 1743,
               "column": 17,
               "kind": "FormattedMessage"
             }
@@ -176607,7 +176607,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 1849,
+          "line": 1840,
           "column": 9,
           "symbol": "contributionPathBranchColumns",
           "defaultMessage": "Terminal reason",
@@ -176622,7 +176622,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 1849,
+              "line": 1840,
               "column": 9,
               "kind": "FormattedMessage"
             }
@@ -176690,7 +176690,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 419,
+          "line": 422,
           "column": 14,
           "symbol": "formatContributionPathTerminalReason",
           "defaultMessage": "Cut off by share threshold",
@@ -176705,7 +176705,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 419,
+              "line": 422,
               "column": 14,
               "kind": "formatMessage"
             }
@@ -176773,7 +176773,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 434,
+          "line": 437,
           "column": 14,
           "symbol": "formatContributionPathTerminalReason",
           "defaultMessage": "Cycle cut",
@@ -176788,7 +176788,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 434,
+              "line": 437,
               "column": 14,
               "kind": "formatMessage"
             }
@@ -176856,7 +176856,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 414,
+          "line": 417,
           "column": 14,
           "symbol": "formatContributionPathTerminalReason",
           "defaultMessage": "Leaf process",
@@ -176871,7 +176871,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 414,
+              "line": 417,
               "column": 14,
               "kind": "formatMessage"
             }
@@ -176939,7 +176939,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 424,
+          "line": 427,
           "column": 14,
           "symbol": "formatContributionPathTerminalReason",
           "defaultMessage": "Stopped at max depth",
@@ -176954,7 +176954,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 424,
+              "line": 427,
               "column": 14,
               "kind": "formatMessage"
             }
@@ -177022,7 +177022,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 429,
+          "line": 432,
           "column": 14,
           "symbol": "formatContributionPathTerminalReason",
           "defaultMessage": "Stopped at max node limit",
@@ -177037,7 +177037,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 429,
+              "line": 432,
               "column": 14,
               "kind": "formatMessage"
             }
@@ -177105,7 +177105,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 439,
+          "line": 442,
           "column": 14,
           "symbol": "formatContributionPathTerminalReason",
           "defaultMessage": "Stopped by top-k child limit",
@@ -177120,7 +177120,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 439,
+              "line": 442,
               "column": 14,
               "kind": "formatMessage"
             }
@@ -177188,7 +177188,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 1321,
+          "line": 1312,
           "column": 9,
           "symbol": "runContributionPathAnalysis",
           "defaultMessage": "Please enter a non-zero amount.",
@@ -177203,7 +177203,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 1321,
+              "line": 1312,
               "column": 9,
               "kind": "formatMessage"
             }
@@ -177437,7 +177437,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 2038,
+          "line": 2029,
           "column": 17,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "{count, plural, one {# process row is currently available for analysis.} other {# process rows are currently available for analysis.}}",
@@ -177452,7 +177452,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 2038,
+              "line": 2029,
               "column": 17,
               "kind": "FormattedMessage"
             }
@@ -177520,7 +177520,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 808,
+          "line": 811,
           "column": 11,
           "symbol": "loadProcessOptions",
           "defaultMessage": "No processes are available for the selected data scope.",
@@ -177535,7 +177535,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 808,
+              "line": 811,
               "column": 11,
               "kind": "formatMessage"
             }
@@ -177603,7 +177603,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 827,
+          "line": 830,
           "column": 9,
           "symbol": "loadProcessOptions",
           "defaultMessage": "Failed to load processes for analysis.",
@@ -177618,7 +177618,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 827,
+              "line": 830,
               "column": 9,
               "kind": "formatMessage"
             }
@@ -177706,7 +177706,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 876,
+          "line": 879,
           "column": 7,
           "symbol": "processSelectionPagination",
           "defaultMessage": "Showing {start}-{end} on page {current} of {totalPages}.",
@@ -177735,7 +177735,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 876,
+              "line": 879,
               "column": 7,
               "kind": "formatMessage"
             },
@@ -177809,7 +177809,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 2004,
+          "line": 1995,
           "column": 25,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Process search",
@@ -177824,7 +177824,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 2004,
+              "line": 1995,
               "column": 25,
               "kind": "FormattedMessage"
             }
@@ -177892,7 +177892,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 2015,
+          "line": 2006,
           "column": 38,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Search processes in the selected data scope",
@@ -177907,7 +177907,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 2015,
+              "line": 2006,
               "column": 38,
               "kind": "formatMessage"
             }
@@ -177975,7 +177975,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 1963,
+          "line": 1954,
           "column": 15,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Analysis inputs",
@@ -177990,7 +177990,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 1963,
+              "line": 1954,
               "column": 15,
               "kind": "FormattedMessage"
             }
@@ -178058,7 +178058,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 2104,
+          "line": 2095,
           "column": 25,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Load LCIA profile",
@@ -178073,7 +178073,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 2104,
+              "line": 2095,
               "column": 25,
               "kind": "FormattedMessage"
             }
@@ -178141,7 +178141,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 2170,
+          "line": 2161,
           "column": 33,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Normalized profile chart",
@@ -178156,7 +178156,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 2170,
+              "line": 2161,
               "column": 33,
               "kind": "FormattedMessage"
             }
@@ -178224,7 +178224,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 2123,
+          "line": 2114,
           "column": 27,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Select one process, then load its LCIA profile.",
@@ -178239,7 +178239,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 2123,
+              "line": 2114,
               "column": 27,
               "kind": "FormattedMessage"
             }
@@ -178307,7 +178307,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 2070,
+          "line": 2061,
           "column": 27,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Process",
@@ -178316,7 +178316,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 2078,
+          "line": 2069,
           "column": 39,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Process",
@@ -178331,13 +178331,13 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 2070,
+              "line": 2061,
               "column": 27,
               "kind": "FormattedMessage"
             },
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 2078,
+              "line": 2069,
               "column": 39,
               "kind": "formatMessage"
             }
@@ -178405,7 +178405,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 1140,
+          "line": 1131,
           "column": 11,
           "symbol": "runProfileAnalysis",
           "defaultMessage": "Failed to load the LCIA profile.",
@@ -178420,7 +178420,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 1140,
+              "line": 1131,
               "column": 11,
               "kind": "formatMessage"
             }
@@ -178488,7 +178488,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 2146,
+          "line": 2137,
           "column": 37,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Selected process",
@@ -178503,7 +178503,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 2146,
+              "line": 2137,
               "column": 37,
               "kind": "FormattedMessage"
             }
@@ -178571,7 +178571,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 2227,
+          "line": 2218,
           "column": 17,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Impact comparison",
@@ -178586,7 +178586,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 2227,
+              "line": 2218,
               "column": 17,
               "kind": "FormattedMessage"
             }
@@ -178654,7 +178654,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 2448,
+          "line": 2439,
           "column": 17,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Grouped results",
@@ -178669,7 +178669,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 2448,
+              "line": 2439,
               "column": 17,
               "kind": "FormattedMessage"
             }
@@ -178796,7 +178796,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 2710,
+          "line": 2701,
           "column": 17,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Contribution path",
@@ -178811,7 +178811,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 2710,
+              "line": 2701,
               "column": 17,
               "kind": "FormattedMessage"
             }
@@ -178879,7 +178879,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 2059,
+          "line": 2050,
           "column": 17,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Process profile",
@@ -178894,7 +178894,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 2059,
+              "line": 2050,
               "column": 17,
               "kind": "FormattedMessage"
             }
@@ -178962,7 +178962,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 1954,
+          "line": 1945,
           "column": 16,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "LCA Analysis",
@@ -178995,7 +178995,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 1954,
+              "line": 1945,
               "column": 16,
               "kind": "FormattedMessage"
             },
@@ -180698,7 +180698,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 334,
+          "line": 337,
           "column": 15,
           "symbol": "QueryMetaCard",
           "defaultMessage": "Result ID",
@@ -180737,7 +180737,7 @@
             },
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 334,
+              "line": 337,
               "column": 15,
               "kind": "FormattedMessage"
             },
@@ -180968,7 +180968,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 325,
+          "line": 328,
           "column": 15,
           "symbol": "QueryMetaCard",
           "defaultMessage": "Snapshot ID",
@@ -181007,7 +181007,7 @@
             },
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 325,
+              "line": 328,
               "column": 15,
               "kind": "FormattedMessage"
             },
@@ -214803,7 +214803,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Components/processLciaResultsPanel.tsx",
-          "line": 240,
+          "line": 242,
           "column": 11,
           "symbol": "columns",
           "defaultMessage": "Mean amount",
@@ -214818,7 +214818,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Components/processLciaResultsPanel.tsx",
-              "line": 240,
+              "line": 242,
               "column": 11,
               "kind": "FormattedMessage"
             }
@@ -214969,7 +214969,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 2206,
+          "line": 2197,
           "column": 37,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "No LCIA results available for profile analysis.",
@@ -214993,7 +214993,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 2206,
+              "line": 2197,
               "column": 37,
               "kind": "FormattedMessage"
             },
@@ -215067,7 +215067,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 2157,
+          "line": 2148,
           "column": 37,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Non-zero categories",
@@ -215091,7 +215091,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 2157,
+              "line": 2148,
               "column": 37,
               "kind": "FormattedMessage"
             },
@@ -215165,7 +215165,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 2178,
+          "line": 2169,
           "column": 35,
           "symbol": "LcaAnalysisPage",
           "defaultMessage": "Bars are normalized by the largest absolute impact value. Exact raw values remain in the table below.",
@@ -215189,7 +215189,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 2178,
+              "line": 2169,
               "column": 35,
               "kind": "FormattedMessage"
             },
@@ -215595,7 +215595,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Processes/Components/processLciaResultsPanel.tsx",
-          "line": 125,
+          "line": 127,
           "column": 16,
           "symbol": "lciaDiagnostics",
           "defaultMessage": "Published result details",
@@ -215610,7 +215610,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Components/processLciaResultsPanel.tsx",
-              "line": 125,
+              "line": 127,
               "column": 16,
               "kind": "formatMessage"
             }
@@ -215678,7 +215678,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Components/processLciaResultsPanel.tsx",
-          "line": 175,
+          "line": 177,
           "column": 11,
           "symbol": "lciaProfileNotice",
           "defaultMessage": "No published LCIA result rows are available for this process.",
@@ -215693,7 +215693,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Components/processLciaResultsPanel.tsx",
-              "line": 175,
+              "line": 177,
               "column": 11,
               "kind": "FormattedMessage"
             }
@@ -215761,7 +215761,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Processes/Components/processLciaResultsPanel.tsx",
-          "line": 191,
+          "line": 193,
           "column": 20,
           "symbol": "lciaProfileNotice",
           "defaultMessage": "Detail: {message}",
@@ -215776,7 +215776,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Components/processLciaResultsPanel.tsx",
-              "line": 191,
+              "line": 193,
               "column": 20,
               "kind": "formatMessage"
             }
@@ -215844,7 +215844,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Processes/Components/processLciaResultsPanel.tsx",
-          "line": 157,
+          "line": 159,
           "column": 37,
           "symbol": "publishedErrorDetailLabel",
           "defaultMessage": "Published result error details",
@@ -215859,7 +215859,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Components/processLciaResultsPanel.tsx",
-              "line": 157,
+              "line": 159,
               "column": 37,
               "kind": "formatMessage"
             }
@@ -215927,7 +215927,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Components/processLciaResultsPanel.tsx",
-          "line": 185,
+          "line": 187,
           "column": 13,
           "symbol": "lciaProfileNotice",
           "defaultMessage": "Published LCIA results are unavailable.",
@@ -215942,7 +215942,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Components/processLciaResultsPanel.tsx",
-              "line": 185,
+              "line": 187,
               "column": 13,
               "kind": "FormattedMessage"
             }
@@ -216010,7 +216010,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Components/processLciaResultsPanel.tsx",
-          "line": 261,
+          "line": 263,
           "column": 11,
           "symbol": "columns",
           "defaultMessage": "Version",
@@ -216025,7 +216025,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Components/processLciaResultsPanel.tsx",
-              "line": 261,
+              "line": 263,
               "column": 11,
               "kind": "FormattedMessage"
             }
@@ -216093,7 +216093,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Components/processLciaResultsPanel.tsx",
-          "line": 222,
+          "line": 224,
           "column": 11,
           "symbol": "columns",
           "defaultMessage": "LCIA",
@@ -216108,7 +216108,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Components/processLciaResultsPanel.tsx",
-              "line": 222,
+              "line": 224,
               "column": 11,
               "kind": "FormattedMessage"
             }
@@ -216176,7 +216176,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Components/processLciaResultsPanel.tsx",
-          "line": 565,
+          "line": 570,
           "column": 15,
           "symbol": "ProcessLciaResultsPanel",
           "defaultMessage": "LCIA results are being calculated (job {jobId}). Retrying automatically...",
@@ -216191,7 +216191,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Components/processLciaResultsPanel.tsx",
-              "line": 565,
+              "line": 570,
               "column": 15,
               "kind": "FormattedMessage"
             }
@@ -216259,7 +216259,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Processes/Components/processLciaResultsPanel.tsx",
-          "line": 135,
+          "line": 137,
           "column": 16,
           "symbol": "lciaDiagnostics",
           "defaultMessage": "Calculated result details",
@@ -216274,7 +216274,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Components/processLciaResultsPanel.tsx",
-              "line": 135,
+              "line": 137,
               "column": 16,
               "kind": "formatMessage"
             }
@@ -216342,7 +216342,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Components/processLciaResultsPanel.tsx",
-          "line": 166,
+          "line": 168,
           "column": 11,
           "symbol": "lciaProfileNotice",
           "defaultMessage": "Result query failed: {message}",
@@ -216357,7 +216357,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Components/processLciaResultsPanel.tsx",
-              "line": 166,
+              "line": 168,
               "column": 11,
               "kind": "FormattedMessage"
             }
@@ -216425,7 +216425,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Components/processLciaResultsPanel.tsx",
-          "line": 549,
+          "line": 554,
           "column": 13,
           "symbol": "ProcessLciaResultsPanel",
           "defaultMessage": "Refresh latest calculated results",
@@ -216440,7 +216440,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Components/processLciaResultsPanel.tsx",
-              "line": 549,
+              "line": 554,
               "column": 13,
               "kind": "FormattedMessage"
             }
@@ -216508,7 +216508,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Components/processLciaResultsPanel.tsx",
-          "line": 556,
+          "line": 561,
           "column": 15,
           "symbol": "ProcessLciaResultsPanel",
           "defaultMessage": "Snapshot is rebuilding (job {jobId}). Retrying automatically...",
@@ -216523,7 +216523,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Components/processLciaResultsPanel.tsx",
-              "line": 556,
+              "line": 561,
               "column": 15,
               "kind": "FormattedMessage"
             }
@@ -216609,7 +216609,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Components/processLciaResultsPanel.tsx",
-          "line": 252,
+          "line": 254,
           "column": 16,
           "symbol": "columns",
           "defaultMessage": "Unit",
@@ -216636,7 +216636,7 @@
             },
             {
               "path": "src/pages/Processes/Components/processLciaResultsPanel.tsx",
-              "line": 252,
+              "line": 254,
               "column": 16,
               "kind": "FormattedMessage"
             }
@@ -266876,7 +266876,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Components/processLciaResultsPanel.tsx",
-          "line": 214,
+          "line": 216,
           "column": 16,
           "symbol": "columns",
           "defaultMessage": "Index",
@@ -267113,7 +267113,7 @@
             },
             {
               "path": "src/pages/Processes/Components/processLciaResultsPanel.tsx",
-              "line": 214,
+              "line": 216,
               "column": 16,
               "kind": "FormattedMessage"
             },
@@ -267465,7 +267465,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 1600,
+          "line": 1591,
           "column": 14,
           "symbol": "compareColumns",
           "defaultMessage": "Name",
@@ -267474,7 +267474,7 @@
         {
           "kind": "FormattedMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 1744,
+          "line": 1735,
           "column": 14,
           "symbol": "contributionPathContributorColumns",
           "defaultMessage": "Name",
@@ -267672,13 +267672,13 @@
             },
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 1600,
+              "line": 1591,
               "column": 14,
               "kind": "FormattedMessage"
             },
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 1744,
+              "line": 1735,
               "column": 14,
               "kind": "FormattedMessage"
             },
@@ -288242,7 +288242,7 @@
         {
           "kind": "formatMessage",
           "path": "src/pages/Processes/Analysis/index.tsx",
-          "line": 1918,
+          "line": 1909,
           "column": 13,
           "symbol": "contributionPathLinkColumns",
           "defaultMessage": "Yes",
@@ -288257,7 +288257,7 @@
           "locations": [
             {
               "path": "src/pages/Processes/Analysis/index.tsx",
-              "line": 1918,
+              "line": 1909,
               "column": 13,
               "kind": "formatMessage"
             }

@@ -27,9 +27,9 @@ checkPaths:
   - config/docs-capture/**
   - tests/e2e/i18n/**
   - tests/e2e/dataset-lists/**
-lastReviewedAt: 2026-10-25
-lastReviewedCommit: f9b51626bf8fac8609be6416cd6b345764f075db
-lastReviewedNote: 'Platform #1328 / PR #1329: reviewed conflict resolution against dev a5302dbf. Retained incoming navigation, review, dependency and qualification contracts plus the v6 latest-current draft reporting dependency and validation scope. Regenerated four-locale artifacts; 31 dashboard tests pass. Final checked-push evidence belongs on the PR.'
+lastReviewedAt: 2026-10-26
+lastReviewedCommit: 81bf639b80946bad144dd67e393d884148192696
+lastReviewedNote: 'Platform #1342: reviewed frozen result revision and unit display, exact-version optional enrichment and legacy unknown revisions. Calculation, data-quality policy, database ownership, release and validation gates remain unchanged.'
 related:
   - ../AGENTS.md
   - ../.docpact/config.yaml
@@ -306,3 +306,7 @@ The committed SDK version is pinned by `package.json` and `pnpm-lock.yaml`; `tes
 Worker #320 replay coverage: service calculation evidence may carry matrix v2 with a `lcia-coverage-replay-snapshot:v1` descriptor. Its count is the exact logical gap count, while the locator/hash bind compressed snapshot replay inputs. Legacy matrix v1 and browser static calculation retain their original JSONL contracts. The UI never labels or links a replay snapshot as a downloadable gap JSONL. Terminal snapshot-build errors follow the existing error state and clear pending polling; production raw artifact URLs remain unavailable as browser downloads.
 
 Result preview uses the shared data-list pagination defaults through the native Table pagination API. Server offsets and limits remain authoritative; changing page size resets the offset. A preview read does not announce command success. Unavailable results have one localized retryable notice, with raw reasons and warnings in collapsed technical evidence; numeric zero remains a result. Snapshot evidence prefers the current summary or snapshotSource identity, retaining the earlier snapshotBuilder field as a fallback.
+
+## Frozen LCIA display metadata
+
+Private solver and published `process_all_impacts` rows retain optional `impact_version` through normalization. A result keeps its frozen numeric value, revision and unit; labels may be localized only from matching method ID/revision metadata. Saved rows for the same method are replaced by the returned solver rows without collapsing distinct revisions. Missing revisions remain unknown and do not block display. Historical saved results with no unit may use the exact static revision to fill that unit; explicit frozen units, including an empty unit, are never overwritten by this enrichment. These are result-display rules and do not change calculation eligibility or data-quality policy.

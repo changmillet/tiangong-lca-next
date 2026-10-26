@@ -285,14 +285,20 @@ export const getReferenceQuantityFromMethod = async (
       ?.data;
     if (!listData) return;
 
-    // Match lciaResults with listData and add unit
+    // Enrich only an absent unit from the exact frozen method revision.
     for (const result of lciaResults) {
+      if (result.referenceQuantityDesc !== undefined && result.referenceQuantityDesc !== null)
+        continue;
+      const version = result.referenceToLCIAMethodDataSet['@version'];
+      if (!version) continue;
       const methodId = result.referenceToLCIAMethodDataSet['@refObjectId'];
       const artifactLocatorId = toLciaArtifactLocatorId(
         methodId,
         result.referenceToLCIAMethodDataSet['@version'],
       );
-      const methodInfo = listData?.files?.find((it) => it.id === artifactLocatorId);
+      const methodInfo = listData?.files?.find(
+        (it) => it.id === artifactLocatorId && it.version === version,
+      );
       if (methodInfo?.referenceQuantity?.['common:shortDescription']) {
         result.referenceQuantityDesc = getLangJson(
           methodInfo.referenceQuantity['common:shortDescription'],

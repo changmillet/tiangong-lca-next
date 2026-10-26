@@ -1008,6 +1008,7 @@ describe('LCIA Methods Utility Functions', () => {
         files: [
           {
             id: 'method-1',
+            version: '01.00.000',
             referenceQuantity: {
               'common:shortDescription': [{ '@xml:lang': 'en', '#text': 'kg CO2-eq' }],
             },
@@ -1019,6 +1020,7 @@ describe('LCIA Methods Utility Functions', () => {
         {
           referenceToLCIAMethodDataSet: {
             '@refObjectId': 'method-1',
+            '@version': '01.00.000',
           },
         },
       ];
@@ -1082,6 +1084,7 @@ describe('LCIA Methods Utility Functions', () => {
         {
           referenceToLCIAMethodDataSet: {
             '@refObjectId': 'method-1',
+            '@version': '01.00.000',
           },
         },
       ];
@@ -1102,6 +1105,7 @@ describe('LCIA Methods Utility Functions', () => {
         {
           referenceToLCIAMethodDataSet: {
             '@refObjectId': 'method-1',
+            '@version': '01.00.000',
           },
         },
       ];
@@ -1118,6 +1122,7 @@ describe('LCIA Methods Utility Functions', () => {
         files: [
           {
             id: 'method-1',
+            version: '01.00.000',
             referenceQuantity: {
               'common:shortDescription': [{ '@xml:lang': 'en', '#text': 'kg CO2-eq' }],
             },
@@ -1133,6 +1138,7 @@ describe('LCIA Methods Utility Functions', () => {
         {
           referenceToLCIAMethodDataSet: {
             '@refObjectId': 'method-1',
+            '@version': '01.00.000',
           },
         },
       ];
@@ -1143,6 +1149,40 @@ describe('LCIA Methods Utility Functions', () => {
       expect(warnSpy).toHaveBeenCalledWith('Failed to get referenceQuantity:', expect.any(Error));
       warnSpy.mockRestore();
     });
+    it.each([
+      { version: '01.00.000', unit: 'frozen kg', expected: 'frozen kg' },
+      { version: '01.00.000', unit: '', expected: '' },
+      { version: '02.00.000', unit: undefined, expected: undefined },
+      { version: undefined, unit: undefined, expected: undefined },
+      { version: '', unit: undefined, expected: undefined },
+      { version: '01.00.000', unit: null, expected: 'kg exact' },
+    ])(
+      'preserves frozen units and enriches only the exact revision: %j',
+      async ({ version, unit, expected }) => {
+        setCachedMethod('list.json', {
+          files: [
+            {
+              id: 'method-1',
+              version: '01.00.000',
+              referenceQuantity: {
+                'common:shortDescription': [{ '@xml:lang': 'en', '#text': 'kg exact' }],
+              },
+            },
+          ],
+        });
+        const rows: any[] = [
+          {
+            referenceToLCIAMethodDataSet: {
+              '@refObjectId': 'method-1',
+              '@version': version,
+            },
+            referenceQuantityDesc: unit,
+          },
+        ];
+        await getReferenceQuantityFromMethod(rows);
+        expect(rows[0].referenceQuantityDesc).toBe(expected);
+      },
+    );
   });
 
   describe('LCIAResultCalculation fail-closed legacy fixtures', () => {

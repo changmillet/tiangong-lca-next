@@ -936,14 +936,14 @@ describe('ProcessView component', () => {
     fireEvent.click(screen.getByRole('button'));
     fireEvent.click(screen.getByRole('button', { name: 'LCIA Results' }));
 
-    await waitFor(() => expect(screen.getByTestId('pro-row-impact-sparse')).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByTestId('pro-row-impact-sparse@')).toBeInTheDocument());
     expect(
-      within(screen.getByTestId('pro-row-impact-sparse')).getByText('impact-sparse'),
+      within(screen.getByTestId('pro-row-impact-sparse@')).getByText('impact-sparse'),
     ).toBeInTheDocument();
     expect(
-      within(screen.getByTestId('pro-row-impact-sparse')).getByTestId('aligned-number'),
+      within(screen.getByTestId('pro-row-impact-sparse@')).getByTestId('aligned-number'),
     ).toHaveTextContent('0');
-    expect(within(screen.getByTestId('pro-row-impact-sparse')).getByText('-')).toBeInTheDocument();
+    expect(within(screen.getByTestId('pro-row-impact-sparse@')).getByText('-')).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole('button', { name: 'Refresh latest calculated results' }));
     await waitFor(() =>
@@ -1218,13 +1218,13 @@ describe('ProcessView component', () => {
     fireEvent.click(screen.getByRole('button'));
     fireEvent.click(screen.getByRole('button', { name: 'LCIA Results' }));
 
-    await waitFor(() => expect(screen.getByTestId('pro-row-impact-1')).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByTestId('pro-row-impact-1@')).toBeInTheDocument());
     expect(
-      within(screen.getByTestId('pro-row-impact-1')).getByText('Impact Name'),
+      within(screen.getByTestId('pro-row-impact-1@')).getByText('Impact Name'),
     ).toBeInTheDocument();
-    expect(within(screen.getByTestId('pro-row-impact-1')).getByText('kg')).toBeInTheDocument();
+    expect(within(screen.getByTestId('pro-row-impact-1@')).getByText('kg')).toBeInTheDocument();
     expect(
-      within(screen.getByTestId('pro-row-impact-1')).getByTestId('aligned-number'),
+      within(screen.getByTestId('pro-row-impact-1@')).getByTestId('aligned-number'),
     ).toHaveTextContent('12.5');
   });
 
@@ -1264,10 +1264,10 @@ describe('ProcessView component', () => {
     fireEvent.click(screen.getByRole('button'));
     fireEvent.click(screen.getByRole('button', { name: 'LCIA Results' }));
 
-    await waitFor(() => expect(screen.getByTestId('pro-row-impact-1')).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByTestId('pro-row-impact-1@')).toBeInTheDocument());
     expect(
       screen.getAllByTestId(/^pro-row-/).map((node) => node.getAttribute('data-testid')),
-    ).toEqual(['pro-row-impact-1', 'pro-row-impact-2']);
+    ).toEqual(['pro-row-impact-1@', 'pro-row-impact-2@']);
   });
 
   it('refreshes the method cache and merges solver rows into existing LCIA rows', async () => {
@@ -1320,9 +1320,10 @@ describe('ProcessView component', () => {
         values: [
           {
             impact_id: 'impact-1',
+            impact_version: '2.0.0',
             impact_index: 1,
             impact_name: '',
-            unit: 'unknown',
+            unit: 'kg CO2 eq',
             value: 42,
           },
           {
@@ -1358,14 +1359,16 @@ describe('ProcessView component', () => {
     );
     expect(mockCacheAndDecompressMethod).toHaveBeenCalledWith('list.json');
     expect(
-      within(screen.getByTestId('pro-row-impact-1')).getByText('Method description'),
-    ).toBeInTheDocument();
-    expect(within(screen.getByTestId('pro-row-impact-1')).getByText('2.0.0')).toBeInTheDocument();
-    expect(
-      within(screen.getByTestId('pro-row-impact-1')).getByText('kg CO2 eq'),
+      within(screen.getByTestId('pro-row-impact-1@2.0.0')).getByText('Method description'),
     ).toBeInTheDocument();
     expect(
-      within(screen.getByTestId('pro-row-impact-1')).getByTestId('aligned-number'),
+      within(screen.getByTestId('pro-row-impact-1@2.0.0')).getByText('2.0.0'),
+    ).toBeInTheDocument();
+    expect(
+      within(screen.getByTestId('pro-row-impact-1@2.0.0')).getByText('kg CO2 eq'),
+    ).toBeInTheDocument();
+    expect(
+      within(screen.getByTestId('pro-row-impact-1@2.0.0')).getByTestId('aligned-number'),
     ).toHaveTextContent('42');
     expect(screen.getAllByTestId(/^pro-row-/)).toHaveLength(1);
   });
@@ -1402,9 +1405,9 @@ describe('ProcessView component', () => {
 
     fireEvent.click(screen.getByRole('button', { name: 'LCIA Results' }));
 
-    await waitFor(() => expect(screen.getByTestId('pro-row-base-key')).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByTestId('pro-row-base-key@')).toBeInTheDocument());
     expect(
-      within(screen.getByTestId('pro-row-base-key')).getByTestId('aligned-number'),
+      within(screen.getByTestId('pro-row-base-key@')).getByTestId('aligned-number'),
     ).toHaveTextContent('9');
   });
 

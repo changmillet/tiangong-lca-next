@@ -54,6 +54,8 @@ function normalizePublishedLciaValues(values: PublishedLciaResultValue[] | undef
   return (Array.isArray(values) ? values : [])
     .map((row) => ({
       impact_id: String(row.impact_id ?? ''),
+      impact_version:
+        typeof row.impact_version === 'string' ? row.impact_version.trim() : undefined,
       impact_index: Number(row.impact_index ?? 0),
       impact_name: String(row.impact_name ?? ''),
       unit: String(row.unit ?? ''),
@@ -399,6 +401,7 @@ const ProcessLciaResultsPanel: FC<Props> = ({
           .map((item) => {
             const row = item as {
               impact_id?: unknown;
+              impact_version?: unknown;
               impact_index?: unknown;
               impact_name?: unknown;
               unit?: unknown;
@@ -407,6 +410,8 @@ const ProcessLciaResultsPanel: FC<Props> = ({
 
             return {
               impact_id: String(row.impact_id ?? ''),
+              impact_version:
+                typeof row.impact_version === 'string' ? row.impact_version.trim() : undefined,
               impact_index: Number(row.impact_index ?? 0),
               impact_name: String(row.impact_name ?? ''),
               unit: String(row.unit ?? ''),
@@ -585,7 +590,9 @@ const ProcessLciaResultsPanel: FC<Props> = ({
         notice={lciaProfileNotice}
       />
       <ProTable<LCIAResultTable, ListPagination>
-        rowKey={(row) => row.referenceToLCIAMethodDataSet?.['@refObjectId'] || row.key}
+        rowKey={(row) =>
+          `${row.referenceToLCIAMethodDataSet?.['@refObjectId'] || row.key}@${row.referenceToLCIAMethodDataSet?.['@version'] || ''}`
+        }
         loading={lciaLoading}
         search={false}
         options={false}

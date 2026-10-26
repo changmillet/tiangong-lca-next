@@ -3,7 +3,7 @@
   "locale": "en-US",
   "validationClosure": {
     "baselineSha": "c26f306e82ac66f50a56aafe8f89ea96c0b0c67d",
-    "auditedInputDigest": "bfba748579a639dd50bd24739fc806256d520ef1ee02fb7c1724e6ba7830855d",
+    "auditedInputDigest": "8e71d91f021619ef7fcdcd6c4fef5f6a88e5af644a63fc36379d2af32f2c1e90",
     "validatedMessageCount": 3614,
     "validatedModules": [
       "$entry",
@@ -42,9 +42,9 @@
     "highRiskMessageCount": 1693,
     "highRiskMessageDigest": "bc5b5fdd00be162cf0db75722045484a43b207219b67397655eb3a5600c21ed1",
     "catalogDigest": "4c3f001a9085fcb8712170352bfc05c4f9257dda8a4d340663b5b4d8e9ec6e38",
-    "dossierDigest": "d55e129e06d92c4259772a0aa1c0cae85eaa1e27c75cfd476ebf738e05f7c734",
+    "dossierDigest": "682a73fb6b298f95eee4b9310ad3e74bc5925dd0702c1a1456519cb0607bb260",
     "typedContentDossierDigest": "93ff72bef2323e7a766f111c3945669da9e0f3fc6c961dfebe977787d5d8b158",
-    "routeEvidenceDigest": "450f96ace2a6561ae1444a0fb82bd06104b0bbfd48b1ef634fa9fee5a7a4582a",
+    "routeEvidenceDigest": "c50000dea740c8f678f1d774bf4f24111c44b760d97447078b430e5acdd0d556",
     "scope": "deterministic structure only; semantic translation and rendered route review are separate production blockers owned by #635"
   },
   "validationLanes": [
@@ -98,7 +98,7 @@
         "messageDigest": "ce4fddb76cb956d8de465ec6b7c677b70cd1d9793fa52e4dd30f201dccf03b06",
         "highRiskMessageCount": 1693,
         "highRiskMessageDigest": "bc5b5fdd00be162cf0db75722045484a43b207219b67397655eb3a5600c21ed1",
-        "dossierDigest": "d55e129e06d92c4259772a0aa1c0cae85eaa1e27c75cfd476ebf738e05f7c734",
+        "dossierDigest": "682a73fb6b298f95eee4b9310ad3e74bc5925dd0702c1a1456519cb0607bb260",
         "checks": {
           "nonEmptyTargets": true,
           "icuArgumentSignatureParity": true,
@@ -113,5 +113,5 @@
     }
   ],
   "blockedItems": [],
-  "validationDigest": "dd498bfc0be24bd5a4e37e29d3ea176fb7815cb793272441c79e8225147857f1"
+  "validationDigest": "de34812f610d2be57a8bf7e6364e75df0c33116af5cd543635a1689817445b58"
 }

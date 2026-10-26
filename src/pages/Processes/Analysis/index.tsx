@@ -149,6 +149,7 @@ type AntdThemeToken = ReturnType<typeof theme.useToken>['token'];
 
 type ProcessAllImpactsValue = {
   impact_id?: unknown;
+  impact_version?: unknown;
   impact_index?: unknown;
   impact_name?: unknown;
   unit?: unknown;
@@ -209,6 +210,8 @@ function normalizeProcessAllImpactRows(values: unknown): SolverLcaImpactValueRow
   return (Array.isArray(values) ? (values as ProcessAllImpactsValue[]) : [])
     .map((row) => ({
       impact_id: String(row.impact_id ?? '').trim(),
+      impact_version:
+        typeof row.impact_version === 'string' ? row.impact_version.trim() : undefined,
       impact_name: String(row.impact_name ?? '').trim(),
       unit: String(row.unit ?? '').trim(),
       value: normalizeNumber(row.value),
@@ -1110,19 +1113,7 @@ const LcaAnalysisPage = () => {
         };
       }
       const methodMetaById = await getLcaMethodMetaMap(solverRows.map((row) => row.impact_id));
-      const mergedRows = buildMergedLcaRows(
-        [],
-        solverRows.map(
-          (row) =>
-            ({
-              impact_id: row.impact_id,
-              impact_name: row.impact_name,
-              unit: row.unit,
-              value: row.value,
-            }) satisfies SolverLcaImpactValueRow,
-        ),
-        methodMetaById,
-      );
+      const mergedRows = buildMergedLcaRows([], solverRows, methodMetaById);
 
       if (analysisEpoch !== analysisScopeEpochRef.current) return;
       setProfileResult({

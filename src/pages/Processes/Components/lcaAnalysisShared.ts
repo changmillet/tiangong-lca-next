@@ -58,6 +58,7 @@ type LcaMethodMeta = {
 
 export type SolverLcaImpactValueRow = {
   impact_id: string;
+  impact_version?: string;
   impact_index?: number;
   impact_name: string;
   unit: string;
@@ -271,7 +272,7 @@ export function buildMergedLcaRows(
       reference?.['@refObjectId'],
       reference?.['@version'],
     );
-    if (!identity) {
+    if (!identity || !reference['@version']) {
       return { ...row, referenceToLCIAMethodDataSet: reference };
     }
     return {
@@ -281,65 +282,61 @@ export function buildMergedLcaRows(
         ...reference,
         '@refObjectId': identity.method_id,
         '@uri': `../lciamethods/${identity.artifact_locator_id}.xml`,
-        '@version': reference['@version'] || identity.method_version,
+        '@version': reference['@version'],
       },
     };
   });
-  const indexByMethodId = new Map<string, number>();
-
-  mergedRows.forEach((row, idx) => {
-    const methodId = String(row?.referenceToLCIAMethodDataSet?.['@refObjectId'] ?? '').trim();
-    if (methodId) {
-      indexByMethodId.set(methodId, idx);
-    }
-  });
-
-  solverRows.forEach((solverRow) => {
+  // A solver value replaces saved values for that method, but never inherits
+  // the identity or unit of a different revision (including an unknown one).
+  const solverByMethodId = new Map<string, LCIAResultTable[]>();
+  for (const solverRow of solverRows) {
     const methodId = toCanonicalLciaMethodId(solverRow.impact_id);
-    const methodMeta = methodMetaById.get(methodId);
-    const artifactLocatorId = toLciaArtifactLocatorId(methodId, methodMeta?.version);
+    const version = solverRow.impact_version?.trim() || '';
+    const existing = version
+      ? mergedRows.find(
+          (row) =>
+            row.referenceToLCIAMethodDataSet?.['@refObjectId'] === methodId &&
+            row.referenceToLCIAMethodDataSet?.['@version'] === version,
+        )
+      : undefined;
+    const candidateMeta = methodMetaById.get(methodId);
+    const methodMeta = version && candidateMeta?.version === version ? candidateMeta : undefined;
     const shortDescription =
       methodMeta?.description ??
-      toLangFallback(solverRow.impact_name?.trim() || solverRow.impact_id || '-');
+      existing?.referenceToLCIAMethodDataSet?.['common:shortDescription'] ??
+      toLangFallback(solverRow.impact_name?.trim() || methodId || '-');
+    const unit = solverRow.unit?.trim();
     const unitDesc =
-      methodMeta?.referenceQuantityDesc ??
-      (solverRow.unit?.trim() && solverRow.unit !== UNKNOWN_LCIA_UNIT
-        ? toLangFallback(solverRow.unit)
-        : undefined);
-    const existingIdx = indexByMethodId.get(methodId);
-
-    if (existingIdx !== undefined) {
-      const existing = mergedRows[existingIdx];
-      mergedRows[existingIdx] = {
-        ...existing,
-        meanAmount: solverRow.value,
-        referenceQuantityDesc: existing.referenceQuantityDesc || unitDesc,
-        referenceToLCIAMethodDataSet: {
-          ...existing.referenceToLCIAMethodDataSet,
-          '@version':
-            existing.referenceToLCIAMethodDataSet?.['@version'] || methodMeta?.version || '',
-          'common:shortDescription':
-            existing.referenceToLCIAMethodDataSet?.['common:shortDescription'] ||
-            (shortDescription as LCIAResultTable['referenceToLCIAMethodDataSet']['common:shortDescription']),
-        },
-      };
-      return;
-    }
-
-    mergedRows.push({
+      unit && unit !== UNKNOWN_LCIA_UNIT ? toLangFallback(unit) : existing?.referenceQuantityDesc;
+    const row: LCIAResultTable = {
       key: methodId,
       referenceToLCIAMethodDataSet: {
         '@refObjectId': methodId,
         '@type': 'lCIA method data set',
-        '@uri': `../lciamethods/${artifactLocatorId}.xml`,
-        '@version': methodMeta?.version || '',
+        '@uri': version ? `../lciamethods/${toLciaArtifactLocatorId(methodId, version)}.xml` : '',
+        '@version': version,
         'common:shortDescription':
           shortDescription as LCIAResultTable['referenceToLCIAMethodDataSet']['common:shortDescription'],
       },
       meanAmount: solverRow.value,
       referenceQuantityDesc: unitDesc as string | undefined,
-    });
-  });
+    };
+    const rows = solverByMethodId.get(methodId) ?? [];
+    rows.push(row);
+    solverByMethodId.set(methodId, rows);
+  }
 
-  return mergedRows;
+  const replaced = new Set<string>();
+  const result = mergedRows.flatMap((row) => {
+    const id = String(row.referenceToLCIAMethodDataSet?.['@refObjectId'] ?? '');
+    const replacements = id ? solverByMethodId.get(id) : undefined;
+    if (!replacements) return [row];
+    if (replaced.has(id)) return [];
+    replaced.add(id);
+    return replacements;
+  });
+  for (const [id, rows] of solverByMethodId) {
+    if (!replaced.has(id)) result.push(...rows);
+  }
+  return result;
 }

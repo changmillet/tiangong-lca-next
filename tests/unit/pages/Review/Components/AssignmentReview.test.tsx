@@ -289,6 +289,7 @@ const MockProTable = ({
   actionRef,
   rowSelection,
   toolBarRender,
+  toolbar,
   headerTitle,
   columns,
   expandable,
@@ -335,7 +336,11 @@ const MockProTable = ({
   return (
     <section data-testid='protable'>
       <div data-testid='header-title'>{headerTitle}</div>
-      <div data-testid='toolbar'>{toolBarRender?.()}</div>
+      <div data-testid='toolbar'>
+        {toolbar?.search}
+        {toolbar?.filter}
+        {toolBarRender?.()}
+      </div>
       <div data-testid='table-alert'>
         {(rowSelection?.selectedRowKeys?.length ?? 0) > 0 &&
           tableAlertRender?.({
@@ -473,7 +478,7 @@ describe('AssignmentReview', () => {
     );
 
     await screen.findByTestId(role === 'review-member' ? 'row-review-2' : 'row-review-1');
-    expect(mockMainTableProps.scroll).toEqual({ x: 'max-content' });
+    expect(mockMainTableProps.scroll).toMatchObject({ x: 'max-content', y: expect.any(Number) });
     expect(
       mockMainTableProps.columns.find((column: any) => column.dataIndex === 'actions'),
     ).toMatchObject({ align: 'center', fixed: 'right', width: 168 });
@@ -839,7 +844,7 @@ describe('AssignmentReview', () => {
 
     expect(mockMainTableProps.style).toEqual({ maxWidth: '100%' });
     expect(mockMainTableProps.tableLayout).toBe('fixed');
-    expect(mockMainTableProps.scroll).toEqual({ x: 'max-content' });
+    expect(mockMainTableProps.scroll).toMatchObject({ x: 'max-content', y: expect.any(Number) });
     expect(
       Object.fromEntries(
         mockMainTableProps.columns.map((column: any) => [column.dataIndex, column.width]),
@@ -2624,7 +2629,7 @@ describe('AssignmentReview', () => {
     );
   });
 
-  it('renders the reviewed subtitle for reviewed member tables', async () => {
+  it('loads reviewed member tasks without repeating the page or tab title', async () => {
     const actionRef = { current: { reload: jest.fn() } };
     render(
       <AssignmentReview
@@ -2644,7 +2649,7 @@ describe('AssignmentReview', () => {
       ),
     );
 
-    expect(screen.getByTestId('header-title')).toHaveTextContent('Review Management / Reviewed');
+    expect(screen.getByTestId('header-title')).toBeEmptyDOMElement();
     expect(await screen.findByRole('button', { name: 'expand-review-2' })).toBeInTheDocument();
   });
 

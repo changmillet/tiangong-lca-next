@@ -4,7 +4,12 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 
 const mockGetReviewUserRoleApi = jest.fn();
 const mockGetReviewerContactStatus = jest.fn();
+let mockIsMobile = false;
 const assignmentReloads: Record<string, jest.Mock> = {};
+
+jest.mock('@/components/ResponsiveDataList', () => ({
+  useResponsiveDataListMobile: () => mockIsMobile,
+}));
 
 jest.mock('@umijs/max', () => ({
   __esModule: true,
@@ -88,12 +93,13 @@ jest.mock('antd', () => {
     </section>
   );
   const Spin = ({ children }: any) => <div data-testid='spin'>{children}</div>;
-  const Tabs = ({ items = [], activeKey, onChange, styles }: any) => {
+  const Tabs = ({ items = [], activeKey, onChange, styles, tabPlacement }: any) => {
     const currentItem = items.find((item: any) => item.key === activeKey) ?? items[0];
 
     return (
       <div
         data-testid='review-tabs'
+        data-tab-placement={tabPlacement}
         data-body-min-width={String(styles?.body?.minWidth)}
         data-content-min-width={String(styles?.content?.minWidth)}
       >
@@ -125,11 +131,27 @@ jest.mock('antd', () => {
 describe('Review page', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    mockIsMobile = false;
     mockGetReviewerContactStatus.mockResolvedValue({
       data: { status: 'ready', ready: true, contact: {}, dataset: {} },
       error: null,
     });
     Object.keys(assignmentReloads).forEach((key) => delete assignmentReloads[key]);
+  });
+
+  it('keeps the selected review queue when tabs move above the narrow list', async () => {
+    mockGetReviewUserRoleApi.mockResolvedValue({ user_id: 'user-1', role: 'review-admin' });
+    const { rerender } = render(<ReviewPage />);
+    await screen.findByTestId('assignment-unassigned');
+    fireEvent.click(screen.getByRole('button', { name: 'Review Tasks in Progress' }));
+    await screen.findByTestId('assignment-in-progress');
+    expect(screen.getByTestId('review-tabs')).toHaveAttribute('data-tab-placement', 'start');
+
+    mockIsMobile = true;
+    rerender(<ReviewPage />);
+    expect(screen.getByTestId('review-tabs')).toHaveAttribute('data-tab-placement', 'top');
+    expect(screen.getByTestId('assignment-in-progress')).toBeInTheDocument();
+    expect(mockGetReviewUserRoleApi).toHaveBeenCalledTimes(1);
   });
 
   it('renders review-admin tabs and switches between them', async () => {

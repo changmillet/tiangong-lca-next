@@ -1,6 +1,7 @@
 import AccessDenied from '@/components/AccessDenied';
 import { useAntdAppApi } from '@/contexts/AntdAppContext';
 import AllTeams from '@/components/AllTeams';
+import { useResponsiveDataListMobile } from '@/components/ResponsiveDataList';
 import { ListPagination } from '@/services/general/data';
 import {
   delRoleApi,
@@ -27,6 +28,7 @@ const ManageSystem = () => {
   const [addModalVisible, setAddModalVisible] = useState(false);
   const intl = useIntl();
   const { token } = theme.useToken();
+  const isMobileDataList = useResponsiveDataListMobile();
 
   const checkUserAuth = async () => {
     setLoading(true);
@@ -313,7 +315,13 @@ const ManageSystem = () => {
       ) : !isAuthorized ? (
         <AccessDenied />
       ) : (
-        <Tabs activeKey={activeTabKey} onChange={onTabChange} tabPlacement='start' items={tabs} />
+        <Tabs
+          activeKey={activeTabKey}
+          onChange={onTabChange}
+          tabPlacement={isMobileDataList ? 'top' : 'start'}
+          styles={{ body: { minWidth: 0 }, content: { minWidth: 0 } }}
+          items={tabs}
+        />
       )}
     </PageContainer>
   );

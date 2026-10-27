@@ -27,9 +27,9 @@ checkPaths:
   - config/docs-capture/**
   - tests/e2e/i18n/**
   - tests/e2e/dataset-lists/**
-lastReviewedAt: 2026-10-26
-lastReviewedCommit: 81bf639b80946bad144dd67e393d884148192696
-lastReviewedNote: 'Platform #1342: reviewed frozen result revision and unit display, exact-version optional enrichment and legacy unknown revisions. Calculation, data-quality policy, database ownership, release and validation gates remain unchanged.'
+lastReviewedAt: 2026-10-27
+lastReviewedCommit: 28f4fea0bc9829316938ff85fe3ac6a3ce7a7ce6
+lastReviewedNote: 'Reviewed Platform #1355: Review and All Teams reuse dataset-list presentation with responsive tabs, preserved workflow handlers, lazy column translation initialization and a bounded join-team modal. Query, permission, dependency, release and gate contracts remain unchanged. Actual validation and review evidence belong to the Issue/PR; no release qualification is claimed.'
 related:
   - ../AGENTS.md
   - ../.docpact/config.yaml
@@ -152,6 +152,8 @@ The seven dataset catalogs reuse the same layout across `tg`, `co`, `ex`, `my`, 
 The seven Open Data catalogs show all sources without a source toggle. Their requests explicitly opt into the catalog query path through `getOpenDataCatalogArgs`; the service retains fixed `all` source/publication values required by the current RPC/Hybrid protocol. This routing choice is independent of UI filter state. Callers that omit it, including reference selectors and analysis candidates, retain their existing authorization, version, count and search semantics.
 
 Search and the native filter/action/settings area share the complete toolbar width instead of reserving equal halves. Wide layouts keep their visible controls on one aligned row; constrained pages and drawers reflow controls without clipping or hiding their actions. The common rule applies to every consumer of the shared list toolbar.
+
+Review queues, Review member management, and All Teams also reuse this toolbar and measured viewport presentation. Their page or modal title and active tab identify the context, so tables omit repeated inner headings. Review and system-management tabs move above the content at the shared mobile breakpoint without changing the active section. These management tables retain their own columns, page sizes, query and permission contracts; the six dataset base columns are not applied to them. Review workload drawers continue to omit search, while Root/Reference expansion and team drag ordering remain native table interactions. The join-team modal supplies a bounded body height so the table can measure its remaining space without deriving the modal's height from its own viewport.
 
 Search expands into the space left by the controls, without a desktop maximum-width cap. Dataset names are the single fluid table column; compact metadata and business/action columns retain explicit widths. `ResponsiveDataList/columnSizing.ts` owns this presentation budget, and each viewport receives its actual column definition to derive native horizontal scrolling. Extra screen width therefore goes to names instead of stretching years or versions. Headers and truncated values retain full hover content, including the original name description, formatted dates and exact-version controls.
 

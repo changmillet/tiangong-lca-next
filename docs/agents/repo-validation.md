@@ -46,9 +46,9 @@ checkPaths:
   - scripts/typescript-native-parser.*
   - scripts/i18n/locale-delivery.mjs
   - .github/workflows/**
-lastReviewedAt: 2026-10-26
-lastReviewedCommit: a5e998603ac49a97b99a29b6b14ae60bf61eb643
-lastReviewedNote: 'Platform #1342: reviewed frozen result revision and unit display, exact-version optional enrichment and legacy unknown revisions. Calculation, data-quality policy, database ownership, release and validation gates remain unchanged.'
+lastReviewedAt: 2026-10-27
+lastReviewedCommit: ab62bb92d9dcefd38424cee1056744cb05059ba4
+lastReviewedNote: 'Reviewed Platform #1355 canonical locale artifact refresh after removing duplicate management headings. Translation catalogs, policies, readiness and existing production blockers remain unchanged; two generations are idempotent and all 19 locale contracts pass. Full checked-push and CI evidence remain on the Issue/PR.'
 related:
   - ../AGENTS.md
   - ../.docpact/config.yaml
@@ -250,6 +250,8 @@ E2E_QUALIFICATION=true E2E_EXTERNAL_SERVER=true E2E_BASE_URL=http://127.0.0.1:80
 ```
 
 The configured suite exercises all seven Open Data catalogs, desktop/narrow layouts, six-column order, default paging, internal body scrolling, toolbar containment, combined classification/full-text/reference query bodies, mixed display filters, AllVersions/fullscreen/zoom geometry and nested Flow selectors. Its screenshots and run output live under ignored `.local/dataset-list-unification/`; fixture credentials and synthetic records never reach a live backend. It is focused frontend/layout evidence, not deployed filter/ACL proof, canonical semantic localization evidence, authenticated production persistence proof or release qualification. Record actual commands and results in the delivery Issue/PR; this guide does not claim those checks have run. Existing full-gate and production-authorization boundaries remain unchanged.
+
+For Review or All Teams presentation changes, select `management-layout.spec.ts` in that suite. Its closed fixtures cover administrator and reviewer queues, the member workload drawer, system team management and the join-team modal at 1440, 1024 and 390 px, plus the modal at 844 × 390. Check usable search width, contained filters/actions, no repeated list title, internal table scrolling, submitted-search/filter arguments, Root/Reference selection and expansion, and the workload drawer's no-search contract. Team ordering uses an actual pointer drag followed by synthetic rank-save payload and readback assertions. Pair browser geometry with the existing Review, AllTeams and ManageSystem unit/integration suites for permissions, query failures and review actions. Open the avatar-owned modal through its real entry point at each viewport, because ProLayout remounts that owner when switching desktop/mobile navigation.
 
 Platform #1221 additionally checks the actual vertical alignment of search, filters and native settings at wide desktop widths; containment alone does not prove a compact single row. Verify no authenticated global footer occupies table space and keyboard entry/exit of the help/about menu preserves documentation fallback and brand-specific links. Retain laptop/narrow, dark/light, zoom and drawer screenshots. The interface-confirmation condition was specific to the user's #1221 review request; later work follows its own current authorization. Platform #1263 separately authorizes complete delivery and publication after the required validation and release gates.
 

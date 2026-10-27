@@ -25,6 +25,7 @@ import {
   qualificationReportFailures,
   readQualificationReportReceipt,
 } from './qualification-closure.cjs';
+import { verifyMaintainedPatches, type MaintainedPatchEntry } from './maintained-patches.cjs';
 import { handoffOutputOwnership } from './output-ownership.cjs';
 
 type CheckStatus = 'failed' | 'passed' | 'skipped';
@@ -50,6 +51,8 @@ type CandidateManifest = {
       unitTestTreeDigest: string;
     };
     dependencyLockSha256: string;
+    maintainedPatches: MaintainedPatchEntry[];
+    maintainedPatchesSha256: string;
     packageJsonSha256: string;
     packageVersion: string;
     pnpmWorkspaceSha256: string;
@@ -246,7 +249,7 @@ async function verifyCandidateIdentity(
 ): Promise<Record<string, unknown>> {
   if (
     manifest.kind !== 'tiangong-next-release-e2e-candidate' ||
-    manifest.schemaVersion !== 5 ||
+    manifest.schemaVersion !== 6 ||
     manifest.repository?.canonical !== 'tiangong-lca/platform' ||
     manifest.repository?.packageName !== 'tiangong-lca-next'
   ) {
@@ -266,6 +269,11 @@ async function verifyCandidateIdentity(
       readFile(path.join(process.cwd(), 'docker/e2e/Dockerfile')),
       readFile(path.join(process.cwd(), 'docker/e2e/environment.json')),
     ]);
+  verifyMaintainedPatches(
+    process.cwd(),
+    manifest.candidate.maintainedPatches,
+    manifest.candidate.maintainedPatchesSha256,
+  );
   const packageJson = JSON.parse(packageJsonRaw.toString('utf8')) as { version?: string };
   const installedPlaywright = await readJson<{ version: string }>(
     path.join(process.cwd(), 'node_modules/@playwright/test/package.json'),

@@ -15,6 +15,7 @@ whenToUpdate:
   - when helper ownership or recommended commands change
   - when the current pattern guidance becomes misleading
 checkPaths:
+  - patches/**
   - docs/agents/testing-patterns.md
   - docs/agents/repo-validation.md
   - docs/agents/testing-troubleshooting.md
@@ -45,9 +46,9 @@ checkPaths:
   - .github/workflows/build.yml
   - .github/workflows/release-gate.yml
   - .github/workflows/release-readiness.yml
-lastReviewedAt: 2026-10-26
-lastReviewedCommit: a5e998603ac49a97b99a29b6b14ae60bf61eb643
-lastReviewedNote: 'Platform #1342: reviewed focused frozen-metadata unit/component/browser regressions and unchanged full coverage, bootstrap, checked-push and release proof requirements.'
+lastReviewedAt: 2026-10-27
+lastReviewedCommit: 784779ce3836b1c0bd601980fd6c4d145e810efe
+lastReviewedNote: 'Reviewed Platform #1358 patch image closure at784779ce: declared tracked patch bytes bind install contexts, cache identity, manifest6, runtime, reporter and resource verification. Focused controls and typed/static review pass; fresh hosted proof remains required. Backend authority, credential isolation, canonical assertions, execution budgets and release policy are unchanged.'
 ---
 
 # Testing Patterns Reference
@@ -286,3 +287,9 @@ Inline release-admission guards stay workflow-owned. Focused tests extract the e
 ### ILCD asynchronous editor proof
 
 Run affected React form suites with `CI=true` so the existing act-warning guard matches release CI. Wait for the classification pending state to clear and the expected location option to render. Await the actual Form interaction with async `act` when assertions inspect the form store after promise-driven updates. A synchronous DOM-presence assertion does not prove resource loading has completed. Keep warnings fatal; do not add arbitrary sleeps or suppressions.
+
+## Installed Portal lifecycle contracts
+
+Run real package lifecycle contracts in isolated Node children with development/production React and actual unique IDs; Jest's test-mode ID substitution cannot establish multi-Portal ordering. Observe effect commit separately from render, keep a non-replayed sibling beside the replayed StrictMode subtree, and make a reparent discriminator change which subtree wins. At least one assertion preserves callback dispatch order. Check both event-listener removals and process/window disposal, propagate cleanup/receipt failure to exit status, and label in-memory negative controls explicitly. Native keyboard/default-container/focus and ESM bundle execution remain separate browser evidence.
+
+Image-input tests should bind declared patch bytes before cache lookup, then cover both dependency and candidate contexts and every manifest consumer, including the Git-free evidence reporter. Use a patch-free control and explicit path/hash/index/schema failures. Resource observer fixtures canonicalize their owned temporary root before deriving paths so macOS aliases do not replace the intended ownership assertions with an unrelated setup failure.

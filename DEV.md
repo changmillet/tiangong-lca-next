@@ -15,6 +15,7 @@ whenToUpdate:
   - when the default local work loop changes
   - when the owning doc pointers become stale
 checkPaths:
+  - patches/**
   - DEV.md
   - AGENTS.md
   - .docpact/config.yaml
@@ -45,9 +46,9 @@ checkPaths:
   - .github/workflows/release-readiness.yml
   - .github/workflows/build.yml
   - .nvmrc
-lastReviewedAt: 2026-10-26
-lastReviewedCommit: a5e998603ac49a97b99a29b6b14ae60bf61eb643
-lastReviewedNote: 'Platform #1342: reviewed focused frozen-metadata unit/component/browser regressions and unchanged full coverage, bootstrap, checked-push and release proof requirements.'
+lastReviewedAt: 2026-10-27
+lastReviewedCommit: b169e2431847a9e5550f51d20ae24a39214864a1
+lastReviewedNote: 'Reviewed Platform #1358: exact maintained Portal patch ownership and commit-safe installed contracts; bound semantic-only Main hotfix admission preserves full-gate ownership, read-only qualification, complete inventory and resource/artifact closure. Native ESM/browser, current-source semantic and full delivery proof remain pending; no prior failure cause or release/deployment pass claimed.'
 ---
 
 # Development Bootstrap
@@ -342,3 +343,7 @@ Both release commands default to read-only planning when `--apply` is omitted. `
 - branding, packaging, and local-stack surfaces: `docs/agents/repo-architecture.md`
 - narrow source docs: the owning file under `docs/agents/**`
 - additional governed source docs only after the core contract surface is insufficient: `README*`, testing references, rollout notes, PR templates, and proposal docs
+
+## Maintained dependency patches
+
+Keep patches in `patches/` through the exact-version `patchedDependencies` entry in `pnpm-workspace.yaml` and its generated lock hash. Use the pinned pnpm extraction/commit procedure in [dependency maintenance](docs/agents/dependency-maintenance.md); installed modules are never an editable source. A normal frozen install applies patches and fails on incompatible or unused entries. Preserve the unpatched baseline and verify graph identity before the final checked push.

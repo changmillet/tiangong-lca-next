@@ -18,7 +18,19 @@ describe('ordinary dependency browser qualification boundary', () => {
   it('uses the same protected-phase selection and one unchanged aggregate owner', () => {
     const condition = (section: string) =>
       section.split('    if: >-\n')[1].split('    runs-on:')[0];
-    expect(condition(browserJob)).toBe(condition(workflowJob(workflow, 'dependency-gate')));
+    expect(condition(workflowJob(workflow, 'action-compatibility'))).toBe(
+      condition(workflowJob(workflow, 'dependency-gate')),
+    );
+    expect(browserJob).toContain('needs: [dependency-gate, action-compatibility]');
+    expect(condition(browserJob)).toContain("needs.dependency-gate.result == 'success'");
+    expect(condition(browserJob)).toContain("needs.action-compatibility.result == 'success'");
+    expect(condition(browserJob)).toContain("needs.dependency-gate.result == 'skipped'");
+    expect(condition(browserJob)).toContain("needs.action-compatibility.result == 'skipped'");
+    expect(condition(browserJob)).toContain('tiangong-next-main-semantic:v1');
+    expect(condition(browserJob)).toContain('always() && !cancelled()');
+    expect(browserJob.indexOf('hotfix-semantic-admission.cjs')).toBeLessThan(
+      browserJob.indexOf('pnpm install --frozen-lockfile'),
+    );
     expect(workflow.match(/run: pnpm prepush:gate/gu)).toHaveLength(1);
     expect(browserJob).toContain('ref: ${{ github.event.pull_request.head.sha || github.sha }}');
     expect(browserJob).toContain('persist-credentials: false');

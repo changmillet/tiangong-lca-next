@@ -122,7 +122,7 @@ describe('i18n evidence reporter', () => {
     }
   });
 
-  it('reads exact candidate identity from the host manifest when container Git is absent', () => {
+  it('reads exact candidate identity from the schema-6 host manifest when container Git is absent', () => {
     const directory = mkdtempSync(path.join(os.tmpdir(), 'e2e-evidence-manifest-'));
     const manifestPath = path.join(directory, 'candidate-manifest.json');
     const identity = {
@@ -137,14 +137,60 @@ describe('i18n evidence reporter', () => {
       `${JSON.stringify({
         candidate: { evidenceIdentity: identity },
         kind: 'tiangong-next-release-e2e-candidate',
-        schemaVersion: 5,
+        schemaVersion: 6,
       })}\n`,
     );
     const originalManifestPath = process.env.E2E_CANDIDATE_MANIFEST_PATH;
     process.env.E2E_CANDIDATE_MANIFEST_PATH = manifestPath;
+    const unavailableGit = jest
+      .spyOn(require('node:child_process'), 'execFileSync')
+      .mockImplementation(() => {
+        throw new Error('Container Git is unavailable.');
+      });
     try {
       expect(readManifestCandidateIdentity()).toEqual(identity);
+      expect(unavailableGit).not.toHaveBeenCalled();
     } finally {
+      unavailableGit.mockRestore();
+      if (originalManifestPath === undefined) delete process.env.E2E_CANDIDATE_MANIFEST_PATH;
+      else process.env.E2E_CANDIDATE_MANIFEST_PATH = originalManifestPath;
+      rmSync(directory, { force: true, recursive: true });
+    }
+  });
+
+  it('rejects a legacy schema-5 manifest despite valid semantic identity and never falls back to Git', () => {
+    const directory = mkdtempSync(path.join(os.tmpdir(), 'e2e-evidence-legacy-manifest-'));
+    const manifestPath = path.join(directory, 'candidate-manifest.json');
+    writeFileSync(
+      manifestPath,
+      JSON.stringify({
+        candidate: {
+          evidenceIdentity: {
+            configTreeDigest: 'a'.repeat(64),
+            observedHeadCommit: 'b'.repeat(40),
+            packageManifestDigest: 'c'.repeat(64),
+            sourceTreeDigest: 'd'.repeat(64),
+            unitTestTreeDigest: 'e'.repeat(64),
+          },
+        },
+        kind: 'tiangong-next-release-e2e-candidate',
+        schemaVersion: 5,
+      }),
+    );
+    const originalManifestPath = process.env.E2E_CANDIDATE_MANIFEST_PATH;
+    process.env.E2E_CANDIDATE_MANIFEST_PATH = manifestPath;
+    const unavailableGit = jest
+      .spyOn(require('node:child_process'), 'execFileSync')
+      .mockImplementation(() => {
+        throw new Error('Container Git is unavailable.');
+      });
+    try {
+      expect(() => readManifestCandidateIdentity()).toThrow(
+        'Candidate manifest has no valid semantic evidence identity.',
+      );
+      expect(unavailableGit).not.toHaveBeenCalled();
+    } finally {
+      unavailableGit.mockRestore();
       if (originalManifestPath === undefined) delete process.env.E2E_CANDIDATE_MANIFEST_PATH;
       else process.env.E2E_CANDIDATE_MANIFEST_PATH = originalManifestPath;
       rmSync(directory, { force: true, recursive: true });

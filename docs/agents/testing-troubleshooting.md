@@ -15,6 +15,7 @@ whenToUpdate:
   - when common failure modes or first actions change
   - when the troubleshooting playbook becomes stale
 checkPaths:
+  - patches/**
   - docs/agents/testing-troubleshooting.md
   - docs/agents/testing-patterns.md
   - docs/agents/repo-validation.md
@@ -42,9 +43,9 @@ checkPaths:
   - .github/workflows/build.yml
   - .github/workflows/release-gate.yml
   - .github/workflows/release-readiness.yml
-lastReviewedAt: 2026-10-26
-lastReviewedCommit: a5e998603ac49a97b99a29b6b14ae60bf61eb643
-lastReviewedNote: 'Platform #1342: reviewed focused frozen-metadata unit/component/browser regressions and unchanged full coverage, bootstrap, checked-push and release proof requirements.'
+lastReviewedAt: 2026-10-27
+lastReviewedCommit: 784779ce3836b1c0bd601980fd6c4d145e810efe
+lastReviewedNote: 'Reviewed Platform #1358 patch image closure at784779ce: declared tracked patch bytes bind install contexts, cache identity, manifest6, runtime, reporter and resource verification. Focused controls and typed/static review pass; fresh hosted proof remains required. Backend authority, credential isolation, canonical assertions, execution budgets and release policy are unchanged.'
 ---
 
 # Testing Troubleshooting
@@ -198,3 +199,9 @@ Canonical baseline and proof ownership stays with `DEV.md` and `docs/agents/repo
 - rerun the baseline proof from `docs/agents/repo-validation.md` when the failure affected shipped behavior or repo gates
 - for a concurrency-only failure, wait for all Umi-generating commands to exit and rerun the narrow failed proof serially before escalating; reserve the full gate for the final controlled checkpoint
 - update the owning testing docs only if workflow or state changed
+
+## Portal lifecycle and patch evidence
+
+An abandoned-render Escape registration is a separately reproduced library defect, not an automatic explanation for a hosted modal/drawer timeout. Compare native event delivery, actual committed state, ancestry and callback publication before choosing a repair. Preserve the original assertion and failure history. Exact pnpm patch installation can require uncached registry metadata for supply-chain verification even when all package bytes are present: use the normal frozen policy check rather than disabling policy or claiming offline verification passed.
+
+If a frozen dependency-image install reports `ENOENT` for a declared patch, inspect both generated build contexts and the Docker copy order. Patch bytes must arrive before installation and participate in cache, manifest, runtime and qualification identity. Validate every manifest consumer when the internal version changes, then rerun the corrected committed candidate. A cleanup receipt with no observed survivors does not establish browser qualification when image construction never reached a candidate runtime.

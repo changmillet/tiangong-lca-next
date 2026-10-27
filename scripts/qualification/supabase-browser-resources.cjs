@@ -9,6 +9,8 @@ const os = require('node:os');
 const path = require('node:path');
 const { spawn, spawnSync } = require('node:child_process');
 
+const { readMaintainedPatches } = require('../e2e/maintained-patches.cjs');
+
 const PREFIX = 'org.tiangong.lca.next.';
 const CANDIDATE = `${PREFIX}release-e2e`;
 const DEPENDENCY = `${PREFIX}release-e2e-environment`;
@@ -71,6 +73,7 @@ function sourceIdentity(root, head) {
     command('git', ['--no-optional-locks', '-C', root, ...args], { env }).trim();
   check(/^[a-f0-9]{40}$/u.test(head) && git('rev-parse', 'HEAD') === head, 'HEAD_MISMATCH');
   check(git('status', '--porcelain=v1', '--untracked-files=all') === '', 'SOURCE_NOT_CLEAN');
+  const maintainedPatches = readMaintainedPatches(root);
   const files = {};
   for (const name of [
     'package.json',
@@ -78,6 +81,7 @@ function sourceIdentity(root, head) {
     'pnpm-workspace.yaml',
     'docker/e2e/environment.json',
     'docker/e2e/Dockerfile',
+    ...maintainedPatches.entries.map((entry) => entry.path),
   ]) {
     noSymlinks(path.join(root, name), root);
     files[name] = sha(fs.readFileSync(path.join(root, name)));
@@ -105,6 +109,8 @@ function sourceIdentity(root, head) {
     head,
     tree: git('rev-parse', 'HEAD^{tree}'),
     files,
+    maintainedPatches: maintainedPatches.entries,
+    maintainedPatchesSha256: maintainedPatches.sha256,
     baseImages: [environment.playwrightImage, environment.nodeImage],
   };
 }
@@ -192,6 +198,7 @@ function dependencyLabels(source) {
     [`${PREFIX}dependency-lock-sha256`]: source.files['pnpm-lock.yaml'],
     [`${PREFIX}package-json-sha256`]: source.files['package.json'],
     [`${PREFIX}pnpm-workspace-sha256`]: source.files['pnpm-workspace.yaml'],
+    [`${PREFIX}maintained-patches-sha256`]: source.maintainedPatchesSha256,
     [`${PREFIX}environment-sha256`]: source.files['docker/e2e/environment.json'],
     [`${PREFIX}dockerfile-sha256`]: source.files['docker/e2e/Dockerfile'],
   };
@@ -222,6 +229,7 @@ function expectedImageTag(source, kind) {
     environmentSha256: source.files['docker/e2e/environment.json'],
     packageJsonSha256: source.files['package.json'],
     pnpmWorkspaceSha256: source.files['pnpm-workspace.yaml'],
+    maintainedPatchesSha256: source.maintainedPatchesSha256,
   };
   return `tiangong-lca-next-e2e-dependencies:${sha(json(stable(identity))).slice(0, 24)}`;
 }
@@ -417,7 +425,7 @@ function createManager(options) {
       const candidate = manifest.candidate;
       check(
         manifest.kind === 'tiangong-next-release-e2e-candidate' &&
-          manifest.schemaVersion === 5 &&
+          manifest.schemaVersion === 6 &&
           manifest.repository?.canonical === 'tiangong-lca/platform',
         'MANIFEST_KIND_MISMATCH',
       );
@@ -426,7 +434,10 @@ function createManager(options) {
           candidate.tree === receipt.source.tree &&
           candidate.dependencyLockSha256 === receipt.source.files['pnpm-lock.yaml'] &&
           candidate.packageJsonSha256 === receipt.source.files['package.json'] &&
-          candidate.pnpmWorkspaceSha256 === receipt.source.files['pnpm-workspace.yaml'],
+          candidate.pnpmWorkspaceSha256 === receipt.source.files['pnpm-workspace.yaml'] &&
+          candidate.maintainedPatchesSha256 === receipt.source.maintainedPatchesSha256 &&
+          JSON.stringify(candidate.maintainedPatches) ===
+            JSON.stringify(receipt.source.maintainedPatches),
         'MANIFEST_SOURCE_MISMATCH',
       );
       check(
@@ -736,6 +747,9 @@ function createManager(options) {
           'pnpm-lock.yaml': receipt.source.files['pnpm-lock.yaml'],
           'pnpm-workspace.yaml': receipt.source.files['pnpm-workspace.yaml'],
           Dockerfile: receipt.source.files['docker/e2e/Dockerfile'],
+          ...Object.fromEntries(
+            receipt.source.maintainedPatches.map((entry) => [entry.path, entry.sha256]),
+          ),
         })) {
           noSymlinks(path.join(environmentBuild, file), root);
           check(

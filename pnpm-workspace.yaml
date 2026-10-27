@@ -63,3 +63,6 @@ minimumReleaseAgeExclude:
   - '@ant-design/icons-svg@4.6.0'
   - '@ant-design/icons@6.3.4'
   - electron@44.1.0
+
+patchedDependencies:
+  '@rc-component/portal@2.2.1': patches/@rc-component__portal@2.2.1.patch

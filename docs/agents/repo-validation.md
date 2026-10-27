@@ -15,6 +15,7 @@ whenToUpdate:
   - when change categories require different proof
   - when coverage or deploy policy changes
 checkPaths:
+  - patches/**
   - docs/agents/repo-validation.md
   - .docpact/config.yaml
   - package.json
@@ -46,9 +47,9 @@ checkPaths:
   - scripts/typescript-native-parser.*
   - scripts/i18n/locale-delivery.mjs
   - .github/workflows/**
-lastReviewedAt: 2026-10-26
-lastReviewedCommit: a5e998603ac49a97b99a29b6b14ae60bf61eb643
-lastReviewedNote: 'Platform #1342: reviewed frozen result revision and unit display, exact-version optional enrichment and legacy unknown revisions. Calculation, data-quality policy, database ownership, release and validation gates remain unchanged.'
+lastReviewedAt: 2026-10-27
+lastReviewedCommit: 784779ce3836b1c0bd601980fd6c4d145e810efe
+lastReviewedNote: 'Reviewed Platform #1358 patch image closure at784779ce: declared tracked patch bytes bind install contexts, cache identity, manifest6, runtime, reporter and resource verification. Focused controls and typed/static review pass; fresh hosted proof remains required. Backend authority, credential isolation, canonical assertions, execution budgets and release policy are unchanged.'
 related:
   - ../AGENTS.md
   - ../.docpact/config.yaml
@@ -308,3 +309,11 @@ For the six-family Supabase `2.118.0` update, run the mapper-independent `instal
 ## National carbon organization draft reporting
 
 For Platform #1328, run the dashboard service/page suites against the required v6 contract, including invalid or missing draft fields, localized sixth-column placement, zero values, and ten-row client pagination without extra RPCs. Browser proof uses the qualification build and intercepted synthetic snapshots, checking six-column alignment, long localized labels and rank continuity. Database #860 must be available in the selected environment before frontend publication; database counting and ordering proof stays in its SQL suite.
+
+## Maintained Portal lifecycle compatibility
+
+For #1358, `tests/unit/config/installedPortalEscape.test.ts` launches the real installed CJS package outside Jest mappers/test-ID substitution. Require committed markers, nested and sibling ordering, committed and aborted reparent, isolated StrictMode effect replay, callback publication, close/reopen, all-active dispatch order, omitted callbacks/keyboard=false, both IME gates and both listener cleanups. The intentionally naive effect-only control must fail its nested assertion; injected cleanup failures must return nonzero despite green behavioral assertions. Bind the resolved package/source hashes, not a receipt-provided arbitrary path.
+
+CJS/JSDOM success is not ESM/native-browser proof. Native qualification must resolve the actual patched ESM bundle, use default body containers, close child then parent with two real Escapes, restore opener focus and verify owned browser/server cleanup. Use fresh keyboard and pointer rounds with an explicitly focused, focusable opener before activation. The synthetic pointer trigger focuses itself in its opening handler before capturing focus and setting open state; label that setup separately from the real click; both rounds must verify opener focus inside activation and restore that exact element after closing. Keep trusted Enter/Escape and pointer-click classification distinct; a mouse click, platform Tab behavior or fallback `document.body` alone does not establish a restorable focus precondition. The explicitly opted-in Main hotfix path in dependency maintenance additionally runs the unchanged complete canonical semantic qualification and resource/artifact closure. Ordinary aggregate/Action jobs must succeed; their legitimate protected-hotfix skips are accepted only by bound hotfix admission while Main Candidate owns its full gate. Keep this browser proof separate from release proof; no local result claims the historical failure's cause.
+
+Maintained-patch image proof must exercise both generated build contexts, dependency cache identity, manifest version 6, build/runtime checks and the resource observer. Cover patch-free inputs; missing, changed, untracked, nonregular, symlinked, escaping and lock-mismatched files; unsupported or duplicate mappings; and stale image/manifest rejection. The reporter must accept the exact current manifest without Git and reject legacy version 5 without a fallback. A focused test or native fixture is not an actual Docker install or canonical hosted qualification: retain the real failed image-build evidence and require fresh current-source execution plus artifact/resource verification.

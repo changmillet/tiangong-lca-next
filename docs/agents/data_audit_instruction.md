@@ -18,9 +18,9 @@ checkPaths:
   - docs/agents/data_audit_instruction.md
   - src/pages/Review/**
   - src/pages/ManageSystem/**
-lastReviewedAt: 2026-10-14
-lastReviewedCommit: 349c49def9e7fdfd2660d7484b8a21daae3a5c36
-lastReviewedNote: 'Platform #1221 width/confirmation follow-up reviewed against 349c49def9e7fdfd2660d7484b8a21daae3a5c36: reviewer-model exchange selection retains exact references and actions while using shared column budgets. Audit codes, advisory opinions, submission and final-decision authority are unchanged.'
+lastReviewedAt: 2026-10-27
+lastReviewedCommit: 28f4fea0bc9829316938ff85fe3ac6a3ce7a7ce6
+lastReviewedNote: 'Reviewed Platform #1355: Review and All Teams reuse dataset-list presentation with responsive tabs, preserved workflow handlers, lazy column translation initialization and a bounded join-team modal. Query, permission, dependency, release and gate contracts remain unchanged. Actual validation and review evidence belong to the Issue/PR; no release qualification is claimed.'
 ---
 
 # Audit Status Reference
@@ -129,5 +129,7 @@ Before Review Members can access their task tabs, they must publish and bind a v
 17. editable Process and Lifecycle Model Root opinion forms use the same footer order: `Reject Review`, `Temporary Save`, `Save`; rejection submits the current member's metadata and non-empty reason as `comments.state_code = -3`, while read-only views expose no mutation footer
 
 ## Review Queue Search
+
+Queue search, display-mode/data-type filters and permitted actions share the default data-list toolbar. The page title and active tab provide context without a repeated table heading. Narrow screens place tabs above the content, and the main table scrolls within its measured viewport; expanded Reference tables retain their own horizontal scrolling. Member workload drawers reuse the table presentation without introducing a search field. These presentation rules do not change queue requests, permissions, selection or review transitions.
 
 All six task tabs use the V5 Admin/Member queue RPCs with `p_query`, reusing the seven dataset families' existing `search_text` projections. V5 preserves V4 matching, authorization, ordering, and pagination while exposing reviewer totals, completed-opinion totals, approve/reject counts, and the actor's editable Comment. Matching binds the review's exact table/id/version and retains queue authorization and filters before task totals and pagination. Search reads that version's current stored projection, not submission-time historical content or submitter/team/opinion metadata. Root and Reference tasks match independently; expanded children keep the current tab's readable reference context. Search and clear reset paging, selection and expansion; repeated submissions refresh. Request/view epochs reject stale main and child responses. Query failures show the shared localized request error and are not reported as successful empty lists. Database V5 availability is a deployment prerequisite; V4 remains for older clients.

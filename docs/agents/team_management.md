@@ -19,9 +19,9 @@ checkPaths:
   - src/pages/Teams/**
   - src/pages/Review/**
   - src/pages/ManageSystem/**
-lastReviewedAt: 2026-10-21
-lastReviewedCommit: a25d26143d72817e1b841a1f4b7859f0a602d57f
-lastReviewedNote: 'Platform #1319: reviewed matching single, expanded-Reference and batch one-approval controls, four-locale messages and focused regressions. Exact-dev frozen installation and all 127 focused tests pass after network recovery. Team/profile authorization, rejection, selection and gate ownership remain unchanged; final checked-push qualification is recorded on the PR.'
+lastReviewedAt: 2026-10-27
+lastReviewedCommit: 28f4fea0bc9829316938ff85fe3ac6a3ce7a7ce6
+lastReviewedNote: 'Reviewed Platform #1355: Review and All Teams reuse dataset-list presentation with responsive tabs, preserved workflow handlers, lazy column translation initialization and a bounded join-team modal. Query, permission, dependency, release and gate contracts remain unchanged. Actual validation and review evidence belong to the Issue/PR; no release qualification is claimed.'
 ---
 
 # Team Management Reference
@@ -51,6 +51,8 @@ lastReviewedNote: 'Platform #1319: reviewed matching single, expanded-Reference 
 | create a team | user fills team information and becomes the owner after creation     |
 
 ## Member-Management Rule
+
+All Teams uses the shared data-list toolbar and viewport in both system management and the join-team modal. Search sits in the toolbar at the default control size; the surrounding page or modal supplies the title. System-management tabs move above the content on narrow screens. The team table retains its ten-row paging, submitted-keyword lookup, drag ordering, rank-save operation and existing role checks.
 
 Member-management actions are always role-gated:
 

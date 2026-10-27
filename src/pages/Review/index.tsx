@@ -1,4 +1,5 @@
 import AccessDenied from '@/components/AccessDenied';
+import { useResponsiveDataListMobile } from '@/components/ResponsiveDataList';
 import { getReviewUserRoleApi } from '@/services/roles/api';
 import {
   getReviewerContactStatus,
@@ -14,6 +15,7 @@ import ReviewQualityDiagnostic from './Components/ReviewQualityDiagnostic';
 import ReviewerProfile from './Components/ReviewerProfile';
 
 const Review = () => {
+  const isMobileDataList = useResponsiveDataListMobile();
   const [activeTabKey, setActiveTabKey] = useState('');
   const [loading, setLoading] = useState(false);
   const [authResolved, setAuthResolved] = useState(false);
@@ -221,7 +223,7 @@ const Review = () => {
   }, [isAuthorized, isReviewAdmin, profileLoading, profileReady]);
 
   return (
-    <PageContainer title={<FormattedMessage id='pages.review.title' />}>
+    <PageContainer title={<FormattedMessage id='pages.review.title' />} breadcrumb={{}}>
       <Spin spinning={loading}>
         {!authResolved ? null : !isAuthorized ? (
           <AccessDenied />
@@ -236,7 +238,7 @@ const Review = () => {
             <Tabs
               activeKey={activeTabKey}
               onChange={onTabChange}
-              tabPlacement='start'
+              tabPlacement={isMobileDataList ? 'top' : 'start'}
               styles={{
                 body: { minWidth: 0 },
                 content: { minWidth: 0 },

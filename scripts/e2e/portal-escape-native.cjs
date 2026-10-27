@@ -1,6 +1,9 @@
 #!/usr/bin/env node
 // No native work without --execute. Fixture compilation is not a product build.
 const fs = require('node:fs'), path = require('node:path'), crypto = require('node:crypto');
+const { performance } = require('node:perf_hooks');
+const os = require('node:os');
+const { readSnapshot, Ownership, createRuntime, runtimeRemovable } = require('./portal-native-resources.cjs');
 const http = require('node:http'), cp = require('node:child_process'), { createRequire } = require('node:module');
 const root = path.resolve(__dirname, '../..'), req = createRequire(path.join(root, 'package.json'));
 const sha = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
@@ -15,38 +18,66 @@ function sources(expectedHead) {
   check(req(path.join(portalRoot, 'package.json')).version === '2.2.1', 'portal_version_mismatch');
   const patch = 'patches/@rc-component__portal@2.2.1.patch', patchHash = sha(fs.readFileSync(path.join(root, patch)));
   check(fs.readFileSync(path.join(root, 'pnpm-lock.yaml'), 'utf8').includes(`'@rc-component/portal@2.2.1': ${patchHash}`), 'patch_lock_mismatch');
-  const files = ['package.json', 'pnpm-lock.yaml', 'pnpm-workspace.yaml', patch, 'scripts/e2e/portal-escape-native.cjs', 'tests/package-contracts/native-portal-escape/fixture.mjs'];
+  const files = ['package.json', 'pnpm-lock.yaml', 'pnpm-workspace.yaml', patch, 'scripts/e2e/portal-escape-native.cjs', 'scripts/e2e/portal-native-resources.cjs', 'tests/package-contracts/native-portal-escape/fixture.mjs'];
   const hashes = Object.fromEntries(files.map(file => [file, sha(fs.readFileSync(path.join(root, file)))]));
   for (const file of ['es/index.js', 'es/Portal.js', 'es/useEscKeyDown.js', 'es/Context.js']) hashes[path.join(portalRoot, file)] = sha(fs.readFileSync(path.join(portalRoot, file)));
   return { head: expectedHead, patchHash, portalRoot, antdRoot, proRoot: path.dirname(req.resolve('@ant-design/pro-components/package.json')), hashes };
 }
 function sameSources(binding) { check(git(['rev-parse', 'HEAD']) === binding.head, 'head_changed'); for (const [file, digest] of Object.entries(binding.hashes)) check(sha(fs.readFileSync(path.isAbsolute(file) ? file : path.join(root, file))) === digest, 'source_changed'); }
-function processRows() { return cp.execFileSync('ps', ['-axo', 'pid=,ppid=,pgid=,rss='], { encoding: 'utf8', timeout: 2000 }).trim().split('\n').filter(Boolean).map(line => { const [pid, ppid, pgid, rss] = line.trim().split(/\s+/u).map(Number); return { pid, ppid, pgid, rss: rss * 1024 }; }); }
-function birth(pid) { try { return cp.execFileSync('ps', ['-p', String(pid), '-o', 'lstart='], { encoding: 'utf8', timeout: 1000 }).trim(); } catch { return null; } }
 async function execute(options, binding) {
   check(['darwin', 'linux'].includes(process.platform), 'posix_identity_required');
   check(!git(['status', '--porcelain=v1', '--untracked-files=all']), 'dirty_source');
   const output = path.resolve(options['--output'] || ''); check(options['--output'] && path.isAbsolute(options['--output']) && !fs.existsSync(output), 'new_absolute_output_required');
   check(fs.realpathSync(path.dirname(output)) === path.dirname(output), 'symlink_output_parent'); fs.mkdirSync(output, { mode: 0o700 });
   const write = (file, data) => fs.writeFileSync(path.join(output, file), JSON.stringify(data, null, 2) + '\n', { mode: 0o600 });
-  const started = Date.now(), deadline = started + 900000, workDeadline = deadline - 120000;
-  const receipt = { schema: 'platform.portal-native.v1', source: binding, startedAt: started, deadline, workDeadline, browsers: [], steps: [], failures: [], ownership: [], peakRssBytes: 0, peakTotalOwnedDiskBytes: 0, cleanup: { verified: false }, nativePass: false };
+  const started = Date.now(), deadline = started + 900000, startedMono = performance.now(), deadlineMono = startedMono + 900000, workDeadlineMono = deadlineMono - 120000;
+  const remaining = () => Math.max(0, deadlineMono - performance.now());
+  const inspect = () => readSnapshot({ remainingMs: remaining() });
+  const registry = new Ownership();
+  let runtime = null, runtimeEnvironment = {}, previousEnvironment = {};
+  const browserCache = process.env.PLAYWRIGHT_BROWSERS_PATH || path.join(process.platform === 'darwin' ? path.join(os.homedir(), 'Library', 'Caches') : process.env.XDG_CACHE_HOME || path.join(os.homedir(), '.cache'), 'ms-playwright');
+  const receipt = { schema: 'platform.portal-native.v1', source: binding, startedAt: started, deadline, workDeadline: deadline - 120000, runtime: { path: null, toolCache: browserCache, retained: false }, browsers: [], steps: [], failures: [], ownership: [], peakRssBytes: 0, peakTotalOwnedDiskBytes: 0, cleanup: { verified: false }, nativePass: false };
   let stopping = false, browserServer, browser, context, server, esbuild, sampler, softTimer, hardTimer, rejectAbort;
   const abortPromise = new Promise((_, reject) => { rejectAbort = reject; }); abortPromise.catch(() => {});
   const abort = code => { if (!stopping) { const error = new Error(code); error.code = code; rejectAbort(error); } };
   const race = promise => Promise.race([promise, abortPromise]);
-  const owned = new Map(), handles = new Map(); const spawn = cp.spawn;
-  const remember = (pid, handle) => { if (!pid || owned.has(pid)) return; if (handle) handles.set(pid, handle); owned.set(pid, { pid, birth: null, pgid: null }); write('ownership.json', [...owned.keys()].map(pid => ({ pid, identity: 'captured-handle-pending' }))); const identity = birth(pid); check(identity, 'owned_identity_unavailable'); const row = processRows().find(row => row.pid === pid); check(row, 'owned_process_missing'); owned.set(pid, { pid, birth: identity, pgid: row.pgid }); if (handle) handles.set(pid, handle); receipt.ownership = [...owned.values()].map(row => ({ pid: row.pid, pgid: row.pgid, startHash: sha(row.birth) })); write('ownership.json', receipt.ownership); };
-  cp.spawn = (...args) => { check(!stopping, 'spawn_after_cancellation'); const child = spawn(...args); if (child.pid) remember(child.pid, child); else abort('spawn_identity_missing'); child.once('error', () => abort('owned_child_spawn_error')); return child; };
+  const spawn = cp.spawn;
+  const remember = (pid, handle) => {
+    if (!pid || registry.handles.get(pid) === handle && registry.records.has(pid)) return;
+    registry.capture(pid, handle);
+    write('ownership.json', registry.evidence());
+    if (!registry.bind(pid, inspect())) { receipt.failures.push({ phase: 'ownership', code: 'owned_identity_unknown' }); abort('owned_identity_unknown'); }
+    receipt.ownership = registry.evidence(); write('ownership.json', receipt.ownership);
+  };
+  const launchOwned = args => { const child = spawn(...args); if (child.pid) remember(child.pid, child); else abort('spawn_identity_missing'); child.once('error', () => abort('owned_child_spawn_error')); return child; };
+  cp.spawn = (...args) => { check(!stopping, 'spawn_after_cancellation'); return launchOwned(args); };
   const signal = () => abort('cancelled'); process.on('SIGINT', signal); process.on('SIGTERM', signal);
-  const sample = () => { const rows = processRows(); let changed = true; while (changed) { changed = false; for (const row of rows) if (row.pid !== process.pid && !owned.has(row.pid) && (owned.has(row.ppid) || [...owned.values()].some(owner => row.pgid === owner.pgid && owner.pgid === owner.pid))) { remember(row.pid); changed = true; } } const live = rows.filter(row => owned.has(row.pid) || row.pid === process.pid); receipt.peakRssBytes = Math.max(receipt.peakRssBytes, live.reduce((sum, row) => sum + row.rss, 0)); const disk = [root, output].reduce((sum, dir) => sum + Number(cp.execFileSync('du', ['-sk', dir], { encoding: 'utf8', timeout: 5000 }).trim().split(/\s+/u)[0]) * 1024, 0); receipt.peakTotalOwnedDiskBytes = Math.max(receipt.peakTotalOwnedDiskBytes, disk); check(receipt.peakRssBytes <= 4 * 1024 ** 3 && disk <= 12 * 1024 ** 3, 'resource_limit'); };
-  const bounded = (promise, ms) => Promise.race([promise, new Promise((_, reject) => { const timer = setTimeout(() => reject(Error('cleanup_timeout')), ms); timer.unref(); })]);
-  const killOwned = signalName => { for (const owner of owned.values()) { if (!owner.birth) { const handle = handles.get(owner.pid); if (handle && handle.exitCode === null) { try { handle.kill(signalName); } catch { receipt.failures.push({ phase: 'cleanup', code: 'unknown_handle_kill_failed' }); } } continue; } if (birth(owner.pid) !== owner.birth) continue; try { process.kill(owner.pid, signalName); } catch (error) { if (error.code !== 'ESRCH') receipt.failures.push({ phase: 'cleanup', code: 'owned_signal_failed' }); } } };
+  const sample = () => {
+    const snapshot = inspect(), state = registry.refresh(snapshot);
+    check(state.status === 'ok', 'resource_inventory_unknown');
+    const self = snapshot.rows.get(process.pid); check(self, 'resource_self_unknown');
+    receipt.peakRssBytes = Math.max(receipt.peakRssBytes, state.live.reduce((sum, row) => sum + snapshot.rows.get(row.pid).rss, self.rss));
+    const diskRoots = output.startsWith(root + path.sep) ? [root] : [root, output];
+    const disk = diskRoots.reduce((sum, dir) => { check(remaining() > 200, 'disk_inspection_budget'); return sum + Number(cp.execFileSync('du', ['-sk', dir], { encoding: 'utf8', timeout: Math.min(1000, Math.floor(remaining() - 100)) }).trim().split(/\s+/u)[0]) * 1024; }, 0);
+    receipt.peakTotalOwnedDiskBytes = Math.max(receipt.peakTotalOwnedDiskBytes, disk);
+    receipt.ownership = registry.evidence();
+    check(receipt.peakRssBytes <= 4 * 1024 ** 3 && disk <= 12 * 1024 ** 3, 'resource_limit');
+  };
+  const bounded = (start, ms) => { check(remaining() > 100, 'cleanup_budget'); return Promise.race([Promise.resolve().then(start), new Promise((_, reject) => { const timer = setTimeout(() => reject(Error('cleanup_timeout')), Math.min(ms, Math.max(1, remaining() - 100))); timer.unref(); })]); };
+  const killOwned = signalName => {
+    const snapshot = inspect(), plan = registry.signalPlan(snapshot, remaining());
+    if (plan.status !== 'ok') { receipt.failures.push({ phase: 'cleanup', code: 'signal_inventory_unknown' }); return; }
+    for (const pid of plan.pids) { if (remaining() < 100 || performance.now() - snapshot.observedAt > 250) { receipt.failures.push({ phase: 'cleanup', code: 'signal_budget_or_freshness' }); break; } try { process.kill(pid, signalName); } catch (error) { if (error.code !== 'ESRCH') receipt.failures.push({ phase: 'cleanup', code: 'owned_signal_failed' }); } }
+  };
   const intent = { ...binding, owner: 'platform#1358', pid: process.pid, started, deadline, rssCapBytes: 4 * 1024 ** 3, totalOwnedDiskCapBytes: 12 * 1024 ** 3, browsers: ['chromium', 'firefox', 'webkit'] };
   try {
-    write('intent.json', intent);
-    softTimer = setTimeout(() => abort('cleanup_reserve_reached'), workDeadline - Date.now());
-    hardTimer = setTimeout(() => { stopping = true; killOwned('SIGKILL'); receipt.failures.push({ phase: 'deadline', code: 'hard_deadline' }); receipt.finishedAt = Date.now(); write('receipt.json', receipt); process.exit(124); }, deadline - Date.now() - 2000);
+    runtime = createRuntime(output, value => { runtime = value; receipt.runtime.path = value.path; receipt.runtime.retained = true; write('runtime-intent.json', { path: value.path, status: 'created-before-config' }); });
+    runtimeEnvironment = { ...runtime.env, PLAYWRIGHT_BROWSERS_PATH: browserCache };
+    previousEnvironment = Object.fromEntries(Object.keys(runtimeEnvironment).map(key => [key, process.env[key]]));
+    for (const [key, value] of Object.entries(runtimeEnvironment)) process.env[key] = value;
+    write('intent.json', { ...intent, runtime });
+    softTimer = setTimeout(() => abort('cleanup_reserve_reached'), workDeadlineMono - performance.now());
+    hardTimer = setTimeout(() => { stopping = true; killOwned('SIGKILL'); receipt.failures.push({ phase: 'deadline', code: 'hard_deadline' }); receipt.finishedAt = Date.now(); write('receipt.json', receipt); process.exit(124); }, deadlineMono - performance.now() - 2000);
     sampler = setInterval(() => { try { sample(); } catch { abort('resource_observation_failed'); } }, 1000); sample();
     process.env.GOMAXPROCS = '2'; process.env.UV_THREADPOOL_SIZE = '2'; process.env.OMP_NUM_THREADS = '2';
     const compilerReq = createRequire(req.resolve('@umijs/max/package.json')); esbuild = compilerReq('esbuild');
@@ -69,8 +100,8 @@ async function execute(options, binding) {
     const playwright = req('@playwright/test'); check(req('@playwright/test/package.json').version === '1.62.1', 'playwright_version_mismatch');
     for (const name of ['chromium', 'firefox', 'webkit']) {
       const runBrowser = async () => {
-      check(Date.now() < workDeadline && !stopping, 'no_time_for_browser'); receipt.step = `${name}:launch`; sample();
-      const launch = playwright[name].launchServer({ headless: true, host: '127.0.0.1', timeout: 30000 }); launch.then(value => { if (stopping) value.close().catch(() => {}); }); browserServer = await race(launch); remember(browserServer.process().pid, browserServer.process());
+      check(performance.now() < workDeadlineMono && !stopping, 'no_time_for_browser'); receipt.step = `${name}:launch`; sample();
+      const launch = playwright[name].launchServer({ headless: true, host: '127.0.0.1', timeout: 30000, env: { ...process.env }, downloadsPath: runtime.directories.downloads, tracesDir: runtime.directories.traces }); launch.then(value => { if (stopping) value.close().catch(() => {}); }); browserServer = await race(launch); remember(browserServer.process().pid, browserServer.process());
       browser = await race(playwright[name].connect(browserServer.wsEndpoint())); context = await race(browser.newContext({ viewport: { width: 1100, height: 800 }, serviceWorkers: 'block' }));
       let externalRequests = 0, pageErrors = 0; await context.route('**/*', route => { if (new URL(route.request().url()).origin !== origin) { externalRequests++; return route.abort(); } return route.continue(); });
       const page = await context.newPage(); page.on('pageerror', () => pageErrors++); page.setDefaultTimeout(15000);
@@ -85,7 +116,7 @@ async function execute(options, binding) {
       const cases = [];
       receipt.step = `${name}:default-container-two-escape-focus`; await configure('drawers'); await page.getByRole('button', { name: 'Open parent', exact: true }).press('Enter'); const parent = page.getByRole('dialog', { name: 'Parent', exact: true }); await playwright.expect(parent).toBeVisible(); check(await parent.evaluate(node => !node.closest('#root')), 'not_default_body_container'); await page.getByRole('button', { name: 'Open child', exact: true }).click(); const child = page.getByRole('dialog', { name: 'Child', exact: true }); await playwright.expect(child).toBeVisible(); await page.keyboard.press('Escape'); await playwright.expect(child).toBeHidden(); await playwright.expect(parent).toBeVisible(); await playwright.expect(page.locator('#open-child')).toBeFocused(); await page.keyboard.press('Escape'); await playwright.expect(parent).toBeHidden(); await playwright.expect(page.locator('#open-parent')).toBeFocused(); let observed = await snapshot(); check(observed.calls.map(call => call.name).join(',') === 'closed-child,closed-parent' && observed.events.filter(event => event.key === 'Escape' && event.classification === 'native').length === 2, 'native_two_escape_unproved'); cases.push(observed);
       for (const scenario of ['siblings', 'nested', 'aborted-open', 'aborted-close', 'aborted-callback', 'omitted', 'keyboard-false', 'reparent', 'aborted-reparent', 'isolated-replay', 'prolayout-inline', 'ime']) {
-        check(!stopping && Date.now() < workDeadline, 'no_time_for_case'); receipt.step = `${name}:${scenario}`; await configure(scenario);
+        check(!stopping && performance.now() < workDeadlineMono, 'no_time_for_case'); receipt.step = `${name}:${scenario}`; await configure(scenario);
         if (scenario === 'siblings') { await advance(); await escape(); await top('B'); await advance(); await escape(); await top('C'); await advance(); await escape(); await top('B'); }
         else if (scenario === 'nested') { await escape(); observed = await top('child'); check(observed.calls.length === 2 && observed.calls[0].name === 'child' && observed.calls[1].name === 'parent', 'native_fanout_order'); }
         else if (scenario === 'aborted-open') { await page.waitForFunction(() => window.portalEscapeFixture.snapshot().pendingRenders > 0); await escape(); await top('A'); }
@@ -109,10 +140,27 @@ async function execute(options, binding) {
   } catch (error) { receipt.failures.push({ phase: receipt.step || 'setup', code: /^[a-z0-9_]+$/u.test(error.code || '') ? error.code : 'native_harness_failed' }); }
   finally {
     stopping = true; if (sampler) clearInterval(sampler); if (softTimer) clearTimeout(softTimer);
-    for (const [kind, close] of [['context', () => context?.close()], ['browser', () => browser?.close()], ['browser-server', () => browserServer?.close()], ['compiler', () => esbuild?.stop()], ['http-server', () => server && new Promise(resolve => { server.closeAllConnections(); server.close(resolve); })]]) { try { await bounded(Promise.resolve().then(close), 10000); } catch { receipt.failures.push({ phase: 'cleanup', code: `${kind}_close_failed` }); } }
+    for (const [kind, close] of [['context', () => context?.close()], ['browser', () => browser?.close()], ['browser-server', () => browserServer?.close()], ['compiler', () => esbuild?.stop()], ['http-server', () => server && new Promise(resolve => { server.closeAllConnections(); server.close(resolve); })]]) { try { await bounded(close, 10000); } catch { receipt.failures.push({ phase: 'cleanup', code: `${kind}_close_failed` }); } }
     killOwned('SIGTERM'); await new Promise(resolve => setTimeout(resolve, 300)); killOwned('SIGKILL'); await new Promise(resolve => setTimeout(resolve, 100));
-    receipt.cleanup.remainingOwnedPids = [...owned.values()].filter(owner => birth(owner.pid) === owner.birth).map(owner => owner.pid); receipt.cleanup.verified = receipt.cleanup.remainingOwnedPids.length === 0 && (!server || !server.listening); cp.spawn = spawn; process.off('SIGINT', signal); process.off('SIGTERM', signal); if (hardTimer) clearTimeout(hardTimer);
-    receipt.finishedAt = Date.now(); receipt.withinDeadline = receipt.finishedAt <= deadline; receipt.nativePass = receipt.browsers.length === 3 && receipt.failures.length === 0 && receipt.cleanup.verified && receipt.withinDeadline; write('receipt.json', receipt); process.stdout.write(JSON.stringify({ nativePass: receipt.nativePass, receipt: path.join(output, 'receipt.json') }) + '\n'); process.exitCode = receipt.nativePass ? 0 : 1;
+    receipt.cleanup = registry.closure(inspect());
+    receipt.cleanup.verified = receipt.cleanup.verified && (!server || !server.listening);
+    if (runtime && receipt.cleanup.verified && remaining() > 2000 && runtimeRemovable(runtime, receipt.cleanup)) {
+      try {
+        check(sha(fs.readFileSync(path.join(root, 'scripts/e2e/portal-native-resources.cjs'))) === binding.hashes['scripts/e2e/portal-native-resources.cjs'], 'cleanup_helper_changed');
+        const helper = path.join(root, 'scripts/e2e/portal-native-resources.cjs');
+        const program = `const fs=require('fs');const helper=require(process.argv[1]);const runtime=JSON.parse(process.argv[2]);process.stdin.once('data',()=>{if(!helper.runtimeRemovable(runtime,{verified:true}))process.exit(2);fs.rmSync(runtime.path,{recursive:true,force:false});});`;
+        const worker = launchOwned([process.execPath, ['-e', program, helper, JSON.stringify(runtime)], { stdio: ['pipe', 'ignore', 'ignore'] }]);
+        const closed = new Promise((resolve, reject) => { worker.once('error', reject); worker.once('close', code => code === 0 ? resolve() : reject(Error('runtime_remove_failed'))); });
+        worker.stdin.end('remove'); await bounded(() => closed, Math.min(10000, remaining() - 1000));
+        try { fs.lstatSync(runtime.path); throw Error('runtime_still_present'); } catch (error) { check(error.code === 'ENOENT', 'runtime_absence_unknown'); }
+        receipt.runtime.retained = false;
+      } catch { receipt.failures.push({ phase: 'cleanup', code: 'runtime_cleanup_failed_or_unknown' }); killOwned('SIGKILL'); }
+    }
+    receipt.cleanup = { ...registry.closure(inspect()), httpServerClosed: !server || !server.listening };
+    receipt.cleanup.verified = receipt.cleanup.verified && receipt.cleanup.httpServerClosed && !receipt.runtime.retained;
+    for (const [key, value] of Object.entries(previousEnvironment)) { if (value === undefined) delete process.env[key]; else process.env[key] = value; }
+    cp.spawn = spawn; process.off('SIGINT', signal); process.off('SIGTERM', signal); if (hardTimer) clearTimeout(hardTimer);
+    receipt.ownership = registry.evidence(); receipt.finishedAt = Date.now(); receipt.elapsedMs = performance.now() - startedMono; receipt.withinDeadline = receipt.elapsedMs <= 900000; receipt.nativePass = receipt.browsers.length === 3 && receipt.failures.length === 0 && receipt.cleanup.verified && receipt.withinDeadline; write('receipt.json', receipt); process.stdout.write(JSON.stringify({ nativePass: receipt.nativePass, receipt: path.join(output, 'receipt.json') }) + '\n'); process.exitCode = receipt.nativePass ? 0 : 1;
   }
 }
 async function main() { if (process.argv.length === 3 && process.argv[2] === '--help') { console.log('Usage: node scripts/e2e/portal-escape-native.cjs --expected-head SHA [--execute --output NEW_ABSOLUTE_DIRECTORY]\nDefault is read-only plan. Execution is15min including120s cleanup reserve,4GiB RSS/12GiB total owned disk,serial Chromium/Firefox/WebKit.'); return; } const options = parse(process.argv.slice(2)); const binding = sources(options['--expected-head']); if (!options.execute) { console.log(JSON.stringify({ mode: 'plan-only', binding, wallSeconds: 900, cleanupReserveSeconds: 120, rssCapBytes: 4 * 1024 ** 3, totalOwnedDiskCapBytes: 12 * 1024 ** 3, browsers: ['chromium', 'firefox', 'webkit'] })); return; } await execute(options, binding); }

@@ -15,7 +15,7 @@ global.getComputedStyle = window.getComputedStyle.bind(window);
 global.requestAnimationFrame = window.requestAnimationFrame.bind(window);
 global.cancelAnimationFrame = window.cancelAnimationFrame.bind(window);
 global.IS_REACT_ACT_ENVIRONMENT = true;
-window.matchMedia = () => ({ matches: false, addListener() {}, removeListener() {}, addEventListener() {}, removeEventListener() {} });
+window.matchMedia = () => ({ matches: false, addEventListener() {}, removeEventListener() {} });
 const React = req('react');
 const { createRoot } = req('react-dom/client');
 const { flushSync } = req('react-dom');
@@ -46,7 +46,7 @@ const add = window.addEventListener.bind(window), remove = window.removeEventLis
 window.addEventListener = (type, fn, ...args) => { listeners.get(type)?.add(fn); return add(type, fn, ...args); };
 window.removeEventListener = (type, fn, ...args) => { listeners.get(type)?.delete(fn); return remove(type, fn, ...args); };
 const h = React.createElement, roots = [], calls = [], commits = new Set();
-const delay = () => new Promise(resolve => setTimeout(resolve, 8));
+const delay = () => new Promise(resolve => { setTimeout(resolve, 8); });
 function Marker({ name }) { React.useLayoutEffect(() => { commits.add(name); return () => commits.delete(name); }, [name]); return h('span', { 'data-contract-marker': name }); }
 const cb = name => ({ top }) => calls.push([name, top]);
 function P({ name, open = true, children, onEsc, ...props }) { return h(Portal, { open, getContainer: false, onEsc: onEsc || cb(name), ...props }, h(React.Fragment, null, h(Marker, { name }), children)); }

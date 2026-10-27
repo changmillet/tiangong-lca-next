@@ -6,7 +6,7 @@ exports.EscapeContext = React.createContext(null);
 const keydown = event => {
   if (event.key === 'Escape') stack.slice().reverse().forEach((node, index) => node.onEsc?.({ top: index === 0, event }));
 };
-exports.default = function naiveEffect(open, onEsc) {
+exports.default = function useNaiveEffect(open, onEsc) {
   const node = React.useRef({}).current;
   React.useEffect(() => {
     node.onEsc = onEsc;

@@ -7,7 +7,7 @@ export function mountFixture({ React, createRoot, flushSync, Portal, Drawer, Sid
   window.addEventListener = (type, fn, options) => { const entries = tracked.get(type); if (entries) { if (!entries.has(fn)) entries.set(fn, new Set()); entries.get(fn).add(captureValue(options)); } return originalAdd(type, fn, options); };
   window.removeEventListener = (type, fn, options) => { const entries = tracked.get(type); entries?.get(fn)?.delete(captureValue(options)); if (!entries?.get(fn)?.size) entries?.delete(fn); return originalRemove(type, fn, options); };
   let root, requestedPhase = 0, committedPhase = -1, scenario = 'drawers', calls = [], events = [], overflow = false, pendingRenders = 0, lastComposition = null;
-  const committed = new Set(), nodes = {}, replay = { A: 0, B: 0 };
+  const committed = new Set(), nodes = {}, replay = { A: 0, B: 0 }, focusAtOpen = { parent: null, child: null };
   const record = (target, value) => { if (target.length >= 64) { overflow = true; return; } target.push(value); };
   const focus = () => ['open-parent', 'open-child', 'key-target'].includes(document.activeElement?.id) ? document.activeElement.id : document.activeElement?.closest('[role="dialog"]') ? 'drawer' : document.activeElement === document.body ? 'body' : 'other';
   const keydown = event => { if (['Escape', 'Enter', 'Tab'].includes(event.key)) record(events, { type: 'keydown', key: event.key, classification: event.isTrusted ? 'native' : 'simulated', composing: event.isComposing, focus: focus(), imeRecent: lastComposition !== null && Date.now() - lastComposition >= 0 && Date.now() - lastComposition < 200 }); };
@@ -24,9 +24,9 @@ export function mountFixture({ React, createRoot, flushSync, Portal, Drawer, Sid
   function NativeDrawers() {
     const [parent, setParent] = React.useState(false), [child, setChild] = React.useState(false);
     return h(React.Fragment, null,
-      h('button', { id: 'open-parent', onClick: event => { record(events, { type: 'open-parent', classification: event.nativeEvent.isTrusted ? 'native' : 'simulated', focus: focus() }); setParent(true); } }, 'Open parent'),
+      h('button', { id: 'open-parent', onClick: event => { focusAtOpen.parent = document.activeElement; record(events, { type: 'open-parent', classification: event.nativeEvent.isTrusted ? 'native' : 'simulated', detail: event.nativeEvent.detail, focus: focus() }); setParent(true); } }, 'Open parent'),
       h(Drawer, { title: 'Parent', open: parent, onClose: () => { record(calls, { name: 'closed-parent' }); setParent(false); } },
-        h('button', { id: 'open-child', onClick: event => { record(events, { type: 'open-child', classification: event.nativeEvent.isTrusted ? 'native' : 'simulated', focus: focus() }); setChild(true); } }, 'Open child'),
+        h('button', { id: 'open-child', onClick: event => { focusAtOpen.child = document.activeElement; record(events, { type: 'open-child', classification: event.nativeEvent.isTrusted ? 'native' : 'simulated', detail: event.nativeEvent.detail, focus: focus() }); setChild(true); } }, 'Open child'),
         h(Drawer, { title: 'Child', open: child, onClose: () => { record(calls, { name: 'closed-child' }); setChild(false); } }, 'Synthetic child')));
   }
   function Scene({ phase, name }) {
@@ -59,11 +59,11 @@ export function mountFixture({ React, createRoot, flushSync, Portal, Drawer, Sid
   function configure(name) {
     if (!['drawers', 'siblings', 'nested', 'aborted-open', 'aborted-close', 'aborted-callback', 'reparent', 'aborted-reparent', 'isolated-replay', 'omitted', 'keyboard-false', 'ime', 'prolayout-inline'].includes(name)) throw Error('Unknown fixture scenario');
     if (root) flushSync(() => root.unmount());
-    scenario = name; requestedPhase = 0; committedPhase = -1; calls = []; events = []; pendingRenders = 0; committed.clear(); overflow = false; lastComposition = null; replay.A = replay.B = 0;
+    scenario = name; requestedPhase = 0; committedPhase = -1; calls = []; events = []; pendingRenders = 0; committed.clear(); overflow = false; lastComposition = null; replay.A = replay.B = 0; focusAtOpen.parent = focusAtOpen.child = null;
     root = createRoot(host, { onUncaughtError: () => { overflow = true; }, onRecoverableError: () => { overflow = true; } }); flushSync(render);
   }
   const advance = () => { requestedPhase++; if ((scenario === 'aborted-close' || scenario === 'aborted-callback') && requestedPhase > 0 || scenario === 'aborted-reparent' && requestedPhase >= 4) React.startTransition(render); else flushSync(render); };
-  function snapshot() { const value = { scenario, requestedPhase, committedPhase, calls: calls.slice(), events: events.slice(), committed: [...committed], pendingRenders, replay: { ...replay }, overflow, focus: focus(), imePast: lastComposition !== null && Date.now() - lastComposition >= 200 }; if (JSON.stringify(value).length > 8192) throw Error('Fixture byte cap exceeded'); return value; }
+  function snapshot() { const value = { scenario, requestedPhase, committedPhase, calls: calls.slice(), events: events.slice(), committed: [...committed], pendingRenders, replay: { ...replay }, overflow, focus: focus(), restoredFocus: Object.fromEntries(Object.entries(focusAtOpen).map(([name, node]) => [name, Boolean(node) && node === document.activeElement])), savedFocusConnected: Object.fromEntries(Object.entries(focusAtOpen).map(([name, node]) => [name, Boolean(node?.isConnected)])), imePast: lastComposition !== null && Date.now() - lastComposition >= 200 }; if (JSON.stringify(value).length > 8192) throw Error('Fixture byte cap exceeded'); return value; }
   function dispose() {
     if (root) { flushSync(() => root.unmount()); root = null; }
     window.removeEventListener('keydown', keydown, true); window.removeEventListener('compositionend', compositionend);

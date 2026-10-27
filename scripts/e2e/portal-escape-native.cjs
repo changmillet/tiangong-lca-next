@@ -118,36 +118,49 @@ async function execute(options, binding) {
       const escape = async () => { callStart = (await snapshot()).calls.length; await page.locator('#key-target').focus(); await page.keyboard.press('Escape'); };
       const top = async expected => { const value = await snapshot(); const tops = value.calls.slice(callStart).filter(call => call.top); check(tops.length === 1 && tops[0].name === expected && !value.overflow, 'wrong_native_escape_priority'); return value; };
       const cases = [];
-      receipt.step = `${name}:default-container-two-escape-focus`;
-      await configure('drawers');
-      const focusProbe = { browser: name }; receipt.focusProbes.push(focusProbe);
-      await page.getByRole('button', { name: 'Open parent', exact: true }).press('Enter');
-      const parent = page.getByRole('dialog', { name: 'Parent', exact: true });
-      await playwright.expect(parent).toBeVisible();
-      check(await parent.evaluate(node => !node.closest('#root')), 'not_default_body_container');
-      focusProbe.parentActivation = (await snapshot()).events.find(event => event.type === 'open-parent');
-      check(focusProbe.parentActivation?.classification === 'native' && focusProbe.parentActivation.focus === 'open-parent', 'parent_opener_focus_unproved');
-      // Drawer restores the element focused at open, not an inferred mouse trigger.
-      // Establish that precondition through bounded native keyboard navigation.
-      const openChild = page.getByRole('button', { name: 'Open child', exact: true });
-      for (let tab = 0; tab < 4 && (await snapshot()).focus !== 'open-child'; tab++) await page.keyboard.press('Tab');
-      focusProbe.beforeChildClick = await snapshot();
-      await playwright.expect(openChild).toBeFocused();
-      check(focusProbe.beforeChildClick.events.filter(event => event.key === 'Tab').every(event => event.classification === 'native'), 'native_tab_unproved');
-      await openChild.click();
-      const child = page.getByRole('dialog', { name: 'Child', exact: true });
-      await playwright.expect(child).toBeVisible();
-      focusProbe.childActivation = (await snapshot()).events.find(event => event.type === 'open-child');
-      check(focusProbe.childActivation?.classification === 'native' && focusProbe.childActivation.focus === 'open-child', 'child_opener_focus_unproved');
-      await page.keyboard.press('Escape');
-      await playwright.expect(child).toBeHidden(); await playwright.expect(parent).toBeVisible();
-      focusProbe.afterChildEscape = await snapshot();
-      await playwright.expect(page.locator('#open-child')).toBeFocused();
-      await page.keyboard.press('Escape'); await playwright.expect(parent).toBeHidden();
-      focusProbe.afterParentEscape = await snapshot();
-      await playwright.expect(page.locator('#open-parent')).toBeFocused();
-      let observed = await snapshot();
-      check(observed.calls.map(call => call.name).join(',') === 'closed-child,closed-parent' && observed.events.filter(event => event.key === 'Escape' && event.classification === 'native').length === 2, 'native_two_escape_unproved'); cases.push(observed);
+      let observed;
+      for (const activationMode of ['keyboard', 'pointer']) {
+        receipt.step = `${name}:default-container-two-escape-focus:${activationMode}`;
+        await configure('drawers');
+        const focusProbe = { browser: name, activationMode }; receipt.focusProbes.push(focusProbe);
+        const activate = async locator => activationMode === 'keyboard' ? locator.press('Enter') : locator.click();
+        const verifyActivation = (activation, opener) => {
+          check(activation?.classification === 'native', 'native_activation_unproved');
+          if (activationMode === 'keyboard') check(activation.detail === 0 && activation.focus === opener, 'keyboard_opener_focus_unproved');
+          else check(activation.detail > 0, 'pointer_activation_unproved');
+        };
+        await activate(page.getByRole('button', { name: 'Open parent', exact: true }));
+        const parent = page.getByRole('dialog', { name: 'Parent', exact: true });
+        await playwright.expect(parent).toBeVisible();
+        check(await parent.evaluate(node => !node.closest('#root')), 'not_default_body_container');
+        focusProbe.parentActivation = (await snapshot()).events.find(event => event.type === 'open-parent');
+        verifyActivation(focusProbe.parentActivation, 'open-parent');
+        await activate(page.getByRole('button', { name: 'Open child', exact: true }));
+        const child = page.getByRole('dialog', { name: 'Child', exact: true });
+        await playwright.expect(child).toBeVisible();
+        check(await child.evaluate(node => !node.closest('#root')), 'not_default_child_body_container');
+        focusProbe.childActivation = (await snapshot()).events.find(event => event.type === 'open-child');
+        verifyActivation(focusProbe.childActivation, 'open-child');
+        await page.keyboard.press('Escape');
+        await playwright.expect(child).toBeHidden(); await playwright.expect(parent).toBeVisible();
+        focusProbe.afterChildEscape = await snapshot();
+        if (activationMode === 'keyboard') await playwright.expect(page.locator('#open-child')).toBeFocused();
+        // In pointer mode the browser need not focus its clicked button. The
+        // installed Drawer contract restores the exact element focused at open.
+        await page.waitForFunction(() => window.portalEscapeFixture.snapshot().restoredFocus.child, null, { timeout: 5000 });
+        focusProbe.afterChildEscape = await snapshot();
+        check(focusProbe.afterChildEscape.savedFocusConnected.child, 'child_saved_focus_detached');
+        await page.keyboard.press('Escape'); await playwright.expect(parent).toBeHidden();
+        focusProbe.afterParentEscape = await snapshot();
+        if (activationMode === 'keyboard') await playwright.expect(page.locator('#open-parent')).toBeFocused();
+        await page.waitForFunction(() => window.portalEscapeFixture.snapshot().restoredFocus.parent, null, { timeout: 5000 });
+        focusProbe.afterParentEscape = await snapshot();
+        check(focusProbe.afterParentEscape.savedFocusConnected.parent, 'parent_saved_focus_detached');
+        observed = await snapshot();
+        check(observed.calls.map(call => call.name).join(',') === 'closed-child,closed-parent' && observed.events.filter(event => event.key === 'Escape' && event.classification === 'native').length === 2, 'native_two_escape_unproved');
+        if (activationMode === 'keyboard') check(observed.events.filter(event => event.key === 'Enter' && event.classification === 'native').length === 2, 'native_enter_unproved');
+        cases.push({ ...observed, activationMode });
+      }
       for (const scenario of ['siblings', 'nested', 'aborted-open', 'aborted-close', 'aborted-callback', 'omitted', 'keyboard-false', 'reparent', 'aborted-reparent', 'isolated-replay', 'prolayout-inline', 'ime']) {
         check(!stopping && performance.now() < workDeadlineMono, 'no_time_for_case'); receipt.step = `${name}:${scenario}`; await configure(scenario);
         if (scenario === 'siblings') { await advance(); await escape(); await top('B'); await advance(); await escape(); await top('C'); await advance(); await escape(); await top('B'); }

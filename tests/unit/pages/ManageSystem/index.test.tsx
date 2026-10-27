@@ -6,6 +6,11 @@ const mockDelRoleApi = jest.fn();
 const mockGetSystemMembersApi = jest.fn();
 const mockGetSystemUserRoleApi = jest.fn();
 const mockUpdateRoleApi = jest.fn();
+let mockMobileDataList = false;
+
+jest.mock('@/components/ResponsiveDataList', () => ({
+  useResponsiveDataListMobile: () => mockMobileDataList,
+}));
 
 function mockGetManageSystemState() {
   const scopedGlobal = globalThis as typeof globalThis & {
@@ -165,11 +170,11 @@ jest.mock('antd', () => {
   );
   const Spin = ({ children }: any) => <div data-testid='spin'>{children}</div>;
 
-  const Tabs = ({ items = [], activeKey, onChange }: any) => {
+  const Tabs = ({ items = [], activeKey, onChange, tabPlacement }: any) => {
     const currentItem = items.find((item: any) => item.key === activeKey) ?? items[0];
 
     return (
-      <div>
+      <div data-testid='system-tabs' data-placement={tabPlacement}>
         <div>
           {items.map((item: any) => (
             <button key={item.key} type='button' onClick={() => onChange?.(item.key)}>
@@ -241,6 +246,7 @@ const memberRows = [
 describe('ManageSystem page', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    mockMobileDataList = false;
     mockGetManageSystemState().modalConfirm.mockImplementation(({ onOk }: any) => onOk?.());
     mockGetSystemMembersApi.mockResolvedValue({
       success: true,
@@ -285,6 +291,22 @@ describe('ManageSystem page', () => {
     await waitFor(() => {
       expect(mockGetSystemMembersApi).toHaveBeenCalledTimes(2);
     });
+  });
+
+  it('moves tabs above the content on narrow screens without changing the selected section', async () => {
+    mockGetSystemUserRoleApi.mockResolvedValueOnce({ user_id: 'owner-1', role: 'owner' });
+    const { rerender } = render(<ManageSystemPage />);
+
+    fireEvent.click(await screen.findByRole('button', { name: 'Member Management' }));
+    expect(await screen.findByTestId('pro-table')).toBeInTheDocument();
+    expect(screen.getByTestId('system-tabs')).toHaveAttribute('data-placement', 'start');
+
+    mockMobileDataList = true;
+    rerender(<ManageSystemPage />);
+
+    expect(screen.getByTestId('system-tabs')).toHaveAttribute('data-placement', 'top');
+    expect(screen.getByTestId('active-tab')).toContainElement(screen.getByTestId('pro-table'));
+    expect(mockGetSystemUserRoleApi).toHaveBeenCalledTimes(1);
   });
 
   it('closes the add-member modal without reloading when the user cancels', async () => {

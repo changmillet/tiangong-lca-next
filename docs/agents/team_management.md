@@ -52,6 +52,8 @@ lastReviewedNote: 'Platform #1319: reviewed matching single, expanded-Reference 
 
 ## Member-Management Rule
 
+All Teams uses the shared data-list toolbar and viewport in both system management and the join-team modal. Search sits in the toolbar at the default control size; the surrounding page or modal supplies the title. System-management tabs move above the content on narrow screens. The team table retains its ten-row paging, submitted-keyword lookup, drag ordering, rank-save operation and existing role checks.
+
 Member-management actions are always role-gated:
 
 - `owner`: full team-management surface

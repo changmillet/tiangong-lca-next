@@ -1,3 +1,8 @@
+import {
+  getDataListToolbar,
+  responsiveDataListTableProps,
+  ResponsiveDataListViewport,
+} from '@/components/ResponsiveDataList';
 import { renderTableSelectionClearAction } from '@/components/TableSelectionAlert';
 import AccountView from '@/pages/Account/view';
 import ContactView from '@/pages/Contacts/Components/view';
@@ -26,21 +31,7 @@ import { hasCurrentReviewerApproval } from '@/services/reviews/util';
 import { ExperimentOutlined } from '@ant-design/icons';
 import { ProColumns, ProTable } from '@ant-design/pro-components';
 import { FormattedMessage, useIntl } from '@umijs/max';
-import {
-  Alert,
-  Button,
-  Card,
-  Col,
-  Input,
-  Row,
-  Select,
-  Space,
-  Spin,
-  Table,
-  Tag,
-  theme,
-  Tooltip,
-} from 'antd';
+import { Alert, Button, Input, Select, Space, Spin, Table, Tag, theme, Tooltip } from 'antd';
 import { SearchProps } from 'antd/es/input/Search';
 import { SortOrder } from 'antd/es/table/interface';
 import { useEffect, useRef, useState } from 'react';
@@ -1280,36 +1271,6 @@ const AssignmentReview = ({
     );
   }
 
-  const getSubTitle = () => {
-    switch (tableType) {
-      case 'unassigned':
-        return (
-          <FormattedMessage id='pages.review.tabs.unassigned' defaultMessage='Unassigned Task' />
-        );
-      case 'assigned':
-      case 'in-progress':
-        return <FormattedMessage id='pages.review.tabs.assigned' defaultMessage='Assigned Task' />;
-      case 'reviewed':
-      case 'submitted':
-        return <FormattedMessage id='pages.review.tabs.reviewed' defaultMessage='Reviewed' />;
-      case 'pending':
-        return (
-          <FormattedMessage id='pages.review.tabs.pending' defaultMessage='Pending Review Tasks' />
-        );
-      case 'reviewer-rejected':
-        return <FormattedMessage id='pages.review.tabs.rejected' defaultMessage='Rejected' />;
-      case 'admin-rejected':
-      case 'completed':
-        return (
-          <FormattedMessage
-            id='pages.review.tabs.completed'
-            defaultMessage='Completed Review Tasks'
-          />
-        );
-      default:
-    }
-  };
-
   const getReviewsTableData = async (
     params: {
       pageSize: number;
@@ -1375,22 +1336,6 @@ const AssignmentReview = ({
 
   return (
     <>
-      {!actionFrom && (
-        <Card>
-          <Row align={'middle'}>
-            <Col flex='auto' style={{ marginRight: '10px' }}>
-              <Search
-                size={'large'}
-                placeholder={intl.formatMessage({ id: 'pages.search.keyWord' })}
-                onSearch={onSearch}
-                allowClear
-                maxLength={1000}
-                enterButton
-              />
-            </Col>
-          </Row>
-        </Card>
-      )}
       {queryFailed && (
         <Alert
           type='error'
@@ -1398,252 +1343,260 @@ const AssignmentReview = ({
           title={intl.formatMessage({ id: 'component.request.failed' })}
         />
       )}
-      <ProTable<ReviewsTable, Partial<ListPagination> & { scope: string }>
-        loading={tableLoading}
-        dataSource={queryFailed ? [] : undefined}
-        params={{ scope: requestScope }}
-        columns={columns}
-        rowKey='id'
-        search={false}
-        className='review-table-with-expand-icon'
-        style={{ maxWidth: '100%' }}
-        tableLayout='fixed'
-        scroll={{ x: 'max-content' }}
-        pagination={{
-          pageSize: 50,
-          showSizeChanger: true,
-          showQuickJumper: true,
-        }}
-        expandable={{
-          expandedRowKeys,
-          onExpand: handleExpand,
-          rowExpandable: isExpandableRootReview,
-          expandedRowRender: (record) => {
-            if (subTableLoading[record.id]) {
-              return (
-                <div style={{ textAlign: 'center', padding: 20 }}>
-                  <Spin />
-                </div>
-              );
-            }
-            return (
-              <div
-                style={{
-                  boxSizing: 'border-box',
-                  minWidth: 0,
-                  paddingInline: 'clamp(12px, 3vw, 48px)',
-                }}
-              >
-                <Table
-                  columns={subColumns}
-                  dataSource={subTableData[record.id]}
-                  pagination={false}
-                  rowKey='reference_review_id'
-                  rowSelection={
-                    supportsBatchSelection
-                      ? {
-                          selectedRowKeys: (subTableData[record.id] ?? [])
-                            .map((item) => item.reference_review_id)
-                            .filter((id) => effectiveSelectedReferenceIdSet.has(id)),
-                          onChange: (keys) =>
-                            handleReferenceSelectionChange(subTableData[record.id] ?? [], keys),
-                        }
-                      : undefined
-                  }
-                  size='small'
-                  tableLayout='fixed'
-                  scroll={{ x: 'max-content' }}
+      <ResponsiveDataListViewport>
+        {({ scroll }) => (
+          <ProTable<ReviewsTable, Partial<ListPagination> & { scope: string }>
+            {...responsiveDataListTableProps}
+            loading={tableLoading}
+            dataSource={queryFailed ? [] : undefined}
+            params={{ scope: requestScope }}
+            columns={columns}
+            rowKey='id'
+            search={false}
+            className={`${responsiveDataListTableProps.className} review-table-with-expand-icon`}
+            style={{ maxWidth: '100%' }}
+            scroll={scroll}
+            toolbar={getDataListToolbar({
+              search: !actionFrom ? (
+                <Search
+                  style={{ width: '100%' }}
+                  placeholder={intl.formatMessage({ id: 'pages.search.keyWord' })}
+                  onSearch={onSearch}
+                  allowClear
+                  maxLength={1000}
+                  enterButton
                 />
-              </div>
-            );
-          },
-        }}
-        toolBarRender={() => {
-          const qualityDiagnosticLabel = intl.formatMessage({
-            id: 'pages.review.qualityDiagnostic.run',
-            defaultMessage: 'Run quality diagnostic',
-          });
-          const qualityDiagnosticAction =
-            userData?.role === 'review-admin' &&
-            tableType !== 'completed' &&
-            tableType !== 'admin-rejected' &&
-            onOpenQualityDiagnostic ? (
-              <Tooltip key='review-quality-diagnostic' title={qualityDiagnosticLabel}>
-                <Button
-                  type='text'
-                  aria-label={qualityDiagnosticLabel}
-                  icon={<ExperimentOutlined />}
-                  onClick={onOpenQualityDiagnostic}
-                />
-              </Tooltip>
-            ) : null;
-          const filterControls = (
-            <Space key='review-list-filters' wrap>
-              <Select<ReviewDisplayMode>
-                aria-label={intl.formatMessage({
-                  id: 'pages.review.filters.displayMode.label',
-                  defaultMessage: 'Display mode',
-                })}
-                value={displayMode}
-                options={displayModeOptions}
-                labelRender={({ label }) => <ReviewFilterLabel label={label} />}
-                onChange={handleDisplayModeChange}
-                style={{ width: REVIEW_DISPLAY_MODE_FILTER_WIDTH }}
-              />
-              <Select<ReviewSubmitDatasetTable | 'all'>
-                aria-label={intl.formatMessage({
-                  id: 'pages.review.filters.dataType.label',
-                  defaultMessage: 'Data type',
-                })}
-                value={targetTable ?? 'all'}
-                options={targetTableOptions}
-                labelRender={({ label }) => <ReviewFilterLabel label={label} />}
-                onChange={handleTargetTableChange}
-                style={{ width: REVIEW_DATA_TYPE_FILTER_WIDTH }}
-              />
-            </Space>
-          );
-          if (selectedReviewIds.length > 0 && supportsBatchSelection) {
-            return [
-              filterControls,
-              <Space key='batch-assignment-selection'>
-                {selectionFailedRootIds.length > 0 && (
-                  <span>
-                    <FormattedMessage
-                      id='pages.review.selection.loadError'
-                      defaultMessage='Failed to load referenced reviews. Reselect the root review to retry.'
-                    />
-                  </span>
-                )}
-                {tableType === 'unassigned' && (
-                  <SelectReviewer
-                    tabType='unassigned'
-                    actionRef={actionRef}
-                    reviewIds={selectedReviewIds}
-                    disabled={
-                      selectionLoadingRootIds.length > 0 || selectionFailedRootIds.length > 0
-                    }
+              ) : undefined,
+              filter: (
+                <Space wrap>
+                  <Select<ReviewDisplayMode>
+                    aria-label={intl.formatMessage({
+                      id: 'pages.review.filters.displayMode.label',
+                      defaultMessage: 'Display mode',
+                    })}
+                    value={displayMode}
+                    options={displayModeOptions}
+                    labelRender={({ label }) => <ReviewFilterLabel label={label} />}
+                    onChange={handleDisplayModeChange}
+                    style={{ width: REVIEW_DISPLAY_MODE_FILTER_WIDTH, maxWidth: '100%' }}
                   />
-                )}
-                <BatchReviewActions
-                  role={tableType === 'pending' ? 'reviewer' : 'admin'}
-                  reviewIds={selectedReviewIds}
-                  getReviewName={(reviewId) => {
-                    const mainName = mainReviewRowsRef.current[reviewId]?.name;
-                    if (mainName && mainName !== '-') return mainName;
-                    const cachedName = reviewNamesRef.current[reviewId];
-                    if (cachedName) return cachedName;
-                    return undefined;
-                  }}
-                  allowApprove={
-                    tableType === 'in-progress' ||
-                    tableType === 'assigned' ||
-                    tableType === 'pending'
-                  }
-                  disabled={selectionLoadingRootIds.length > 0 || selectionFailedRootIds.length > 0}
-                  onFinished={reloadAfterChildAction}
-                />
-              </Space>,
-              qualityDiagnosticAction,
-            ];
-          }
-          return [filterControls, qualityDiagnosticAction];
-        }}
-        headerTitle={
-          <>
-            {!actionFrom && (
-              <>
-                <FormattedMessage id='menu.review' defaultMessage='Review Management' /> /{' '}
-                {getSubTitle()}
-              </>
-            )}
-          </>
-        }
-        request={async (
-          params: {
-            pageSize?: number;
-            current?: number;
-            scope?: string;
-          },
-          sort,
-        ) => {
-          if (params.scope !== undefined && params.scope !== requestScopeRef.current) {
-            return { data: [], success: false, total: 0 };
-          }
-          const requestEpoch = ++requestEpochRef.current;
-          const isCurrentRequest = () => requestEpoch === requestEpochRef.current;
-          try {
-            if (!userData?.role) {
-              return {
-                data: [],
-                success: true,
-                total: 0,
-              };
-            }
-            setTableLoading(true);
-            setQueryFailed(false);
-            const result = await getReviewsTableData(
-              { current: params.current ?? 1, pageSize: params.pageSize ?? 50 },
+                  <Select<ReviewSubmitDatasetTable | 'all'>
+                    aria-label={intl.formatMessage({
+                      id: 'pages.review.filters.dataType.label',
+                      defaultMessage: 'Data type',
+                    })}
+                    value={targetTable ?? 'all'}
+                    options={targetTableOptions}
+                    labelRender={({ label }) => <ReviewFilterLabel label={label} />}
+                    onChange={handleTargetTableChange}
+                    style={{ width: REVIEW_DATA_TYPE_FILTER_WIDTH, maxWidth: '100%' }}
+                  />
+                </Space>
+              ),
+            })}
+            pagination={{
+              pageSize: 50,
+              showSizeChanger: true,
+              showQuickJumper: true,
+            }}
+            expandable={{
+              expandedRowKeys,
+              onExpand: handleExpand,
+              rowExpandable: isExpandableRootReview,
+              expandedRowRender: (record) => {
+                if (subTableLoading[record.id]) {
+                  return (
+                    <div style={{ textAlign: 'center', padding: 20 }}>
+                      <Spin />
+                    </div>
+                  );
+                }
+                return (
+                  <div
+                    style={{
+                      boxSizing: 'border-box',
+                      minWidth: 0,
+                      paddingInline: 'clamp(12px, 3vw, 48px)',
+                    }}
+                  >
+                    <Table
+                      columns={subColumns}
+                      dataSource={subTableData[record.id]}
+                      pagination={false}
+                      rowKey='reference_review_id'
+                      rowSelection={
+                        supportsBatchSelection
+                          ? {
+                              selectedRowKeys: (subTableData[record.id] ?? [])
+                                .map((item) => item.reference_review_id)
+                                .filter((id) => effectiveSelectedReferenceIdSet.has(id)),
+                              onChange: (keys) =>
+                                handleReferenceSelectionChange(subTableData[record.id] ?? [], keys),
+                            }
+                          : undefined
+                      }
+                      size='small'
+                      tableLayout='fixed'
+                      scroll={{ x: 'max-content' }}
+                    />
+                  </div>
+                );
+              },
+            }}
+            toolBarRender={() => {
+              const qualityDiagnosticLabel = intl.formatMessage({
+                id: 'pages.review.qualityDiagnostic.run',
+                defaultMessage: 'Run quality diagnostic',
+              });
+              const qualityDiagnosticAction =
+                userData?.role === 'review-admin' &&
+                tableType !== 'completed' &&
+                tableType !== 'admin-rejected' &&
+                onOpenQualityDiagnostic ? (
+                  <Tooltip key='review-quality-diagnostic' title={qualityDiagnosticLabel}>
+                    <Button
+                      type='text'
+                      aria-label={qualityDiagnosticLabel}
+                      icon={<ExperimentOutlined />}
+                      onClick={onOpenQualityDiagnostic}
+                    />
+                  </Tooltip>
+                ) : null;
+              if (selectedReviewIds.length > 0 && supportsBatchSelection) {
+                return [
+                  <Space key='batch-assignment-selection' wrap style={{ maxWidth: '100%' }}>
+                    {selectionFailedRootIds.length > 0 && (
+                      <span>
+                        <FormattedMessage
+                          id='pages.review.selection.loadError'
+                          defaultMessage='Failed to load referenced reviews. Reselect the root review to retry.'
+                        />
+                      </span>
+                    )}
+                    {tableType === 'unassigned' && (
+                      <SelectReviewer
+                        tabType='unassigned'
+                        actionRef={actionRef}
+                        reviewIds={selectedReviewIds}
+                        disabled={
+                          selectionLoadingRootIds.length > 0 || selectionFailedRootIds.length > 0
+                        }
+                      />
+                    )}
+                    <BatchReviewActions
+                      role={tableType === 'pending' ? 'reviewer' : 'admin'}
+                      reviewIds={selectedReviewIds}
+                      getReviewName={(reviewId) => {
+                        const mainName = mainReviewRowsRef.current[reviewId]?.name;
+                        if (mainName && mainName !== '-') return mainName;
+                        const cachedName = reviewNamesRef.current[reviewId];
+                        if (cachedName) return cachedName;
+                        return undefined;
+                      }}
+                      allowApprove={
+                        tableType === 'in-progress' ||
+                        tableType === 'assigned' ||
+                        tableType === 'pending'
+                      }
+                      disabled={
+                        selectionLoadingRootIds.length > 0 || selectionFailedRootIds.length > 0
+                      }
+                      onFinished={reloadAfterChildAction}
+                    />
+                  </Space>,
+                  qualityDiagnosticAction,
+                ];
+              }
+              return [qualityDiagnosticAction];
+            }}
+            headerTitle={false}
+            request={async (
+              params: {
+                pageSize?: number;
+                current?: number;
+                scope?: string;
+              },
               sort,
-            );
-            if (!isCurrentRequest()) return { data: [], success: false, total: 0 };
-            if (result.success === false) {
-              mainReviewRowsRef.current = {};
-              setQueryFailed(true);
-              return { data: [], success: false, total: 0 };
-            }
-            mainReviewRowsRef.current = Object.fromEntries(
-              (result.data ?? []).map((record) => [record.id, record]),
-            );
-            (result.data ?? []).forEach((record) => {
-              if (record.name && record.name !== '-') {
-                reviewNamesRef.current[record.id] = record.name;
+            ) => {
+              if (params.scope !== undefined && params.scope !== requestScopeRef.current) {
+                return { data: [], success: false, total: 0 };
               }
-            });
-            return result;
-          } catch (_error) {
-            if (isCurrentRequest()) {
-              mainReviewRowsRef.current = {};
-              setQueryFailed(true);
+              const requestEpoch = ++requestEpochRef.current;
+              const isCurrentRequest = () => requestEpoch === requestEpochRef.current;
+              try {
+                if (!userData?.role) {
+                  return {
+                    data: [],
+                    success: true,
+                    total: 0,
+                  };
+                }
+                setTableLoading(true);
+                setQueryFailed(false);
+                const result = await getReviewsTableData(
+                  { current: params.current ?? 1, pageSize: params.pageSize ?? 50 },
+                  sort,
+                );
+                if (!isCurrentRequest()) return { data: [], success: false, total: 0 };
+                if (result.success === false) {
+                  mainReviewRowsRef.current = {};
+                  setQueryFailed(true);
+                  return { data: [], success: false, total: 0 };
+                }
+                mainReviewRowsRef.current = Object.fromEntries(
+                  (result.data ?? []).map((record) => [record.id, record]),
+                );
+                (result.data ?? []).forEach((record) => {
+                  if (record.name && record.name !== '-') {
+                    reviewNamesRef.current[record.id] = record.name;
+                  }
+                });
+                return result;
+              } catch (_error) {
+                if (isCurrentRequest()) {
+                  mainReviewRowsRef.current = {};
+                  setQueryFailed(true);
+                }
+                return { data: [], success: false, total: 0 };
+              } finally {
+                if (isCurrentRequest()) setTableLoading(false);
+              }
+            }}
+            actionRef={actionRef}
+            tableAlertRender={({ intl: tableIntl, selectedRowKeys = [] }) => (
+              <Space>
+                <span>
+                  {tableIntl.getMessage('alert.selected', 'Selected')} {selectedRowKeys.length}{' '}
+                  {tableIntl.getMessage('alert.item', 'items')}
+                </span>
+                <span>
+                  <FormattedMessage
+                    id='pages.review.selection.summary'
+                    defaultMessage='Selected {rootCount} root reviews and {referenceCount} reference reviews'
+                    values={{
+                      rootCount: selectedRootReviewIds.length,
+                      referenceCount: effectiveSelectedReferenceIds.length,
+                    }}
+                  />
+                </span>
+              </Space>
+            )}
+            tableAlertOptionRender={tableAlertOptionRender}
+            rowSelection={
+              supportsBatchSelection
+                ? {
+                    selectedRowKeys: selectedReviewIds,
+                    preserveSelectedRowKeys: true,
+                    onChange: handleMainSelectionChange,
+                    getCheckboxProps: (record: ReviewsTable) => ({
+                      disabled: record.rootMatchesStatus === false,
+                    }),
+                  }
+                : undefined
             }
-            return { data: [], success: false, total: 0 };
-          } finally {
-            if (isCurrentRequest()) setTableLoading(false);
-          }
-        }}
-        actionRef={actionRef}
-        tableAlertRender={({ intl: tableIntl, selectedRowKeys = [] }) => (
-          <Space>
-            <span>
-              {tableIntl.getMessage('alert.selected', 'Selected')} {selectedRowKeys.length}{' '}
-              {tableIntl.getMessage('alert.item', 'items')}
-            </span>
-            <span>
-              <FormattedMessage
-                id='pages.review.selection.summary'
-                defaultMessage='Selected {rootCount} root reviews and {referenceCount} reference reviews'
-                values={{
-                  rootCount: selectedRootReviewIds.length,
-                  referenceCount: effectiveSelectedReferenceIds.length,
-                }}
-              />
-            </span>
-          </Space>
+          />
         )}
-        tableAlertOptionRender={tableAlertOptionRender}
-        rowSelection={
-          supportsBatchSelection
-            ? {
-                selectedRowKeys: selectedReviewIds,
-                preserveSelectedRowKeys: true,
-                onChange: handleMainSelectionChange,
-                getCheckboxProps: (record: ReviewsTable) => ({
-                  disabled: record.rootMatchesStatus === false,
-                }),
-              }
-            : undefined
-        }
-      />
+      </ResponsiveDataListViewport>
       <ExpandIconStyle />
     </>
   );

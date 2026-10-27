@@ -1,4 +1,9 @@
 import ToolBarButton from '@/components/ToolBarButton';
+import {
+  getDataListToolbar,
+  responsiveDataListTableProps,
+  ResponsiveDataListViewport,
+} from '@/components/ResponsiveDataList';
 import { useAntdAppApi } from '@/contexts/AntdAppContext';
 import { ListPagination } from '@/services/general/data';
 import { getLang, getLangText } from '@/services/general/util';
@@ -11,7 +16,7 @@ import {
 import { TeamTable } from '@/services/teams/data';
 import { EyeInvisibleOutlined, SaveOutlined } from '@ant-design/icons';
 import { ActionType, DragSortTable, ProColumns, ProTable } from '@ant-design/pro-components';
-import { Button, Card, Input, Space, theme, Tooltip } from 'antd';
+import { Button, Input, Space, theme, Tooltip } from 'antd';
 import { SearchProps } from 'antd/es/input/Search';
 import type { FC } from 'react';
 import { useRef, useState } from 'react';
@@ -221,23 +226,27 @@ const TableList: FC<TableListProps> = ({ systemUserRole, tableType }) => {
     }
   };
 
+  const toolbar = getDataListToolbar({
+    search: (
+      <Search
+        style={{ width: '100%' }}
+        placeholder={intl.formatMessage({ id: 'pages.search.keyWord' })}
+        onSearch={onSearch}
+        enterButton
+      />
+    ),
+  });
+
   return (
-    <>
-      <Card>
-        <Search
-          size={'large'}
-          placeholder={intl.formatMessage({ id: 'pages.search.keyWord' })}
-          onSearch={onSearch}
-          enterButton
-        />
-      </Card>
-      {tableType === 'manageSystem' ? (
-        <>
+    <ResponsiveDataListViewport>
+      {({ scroll }) =>
+        tableType === 'manageSystem' ? (
           <DragSortTable<TeamTable, ListPagination>
+            {...responsiveDataListTableProps}
+            scroll={scroll}
+            toolbar={toolbar}
             rowKey='id'
-            headerTitle={
-              <FormattedMessage id='component.allTeams.table.title' defaultMessage='All Teams' />
-            }
+            headerTitle={false}
             actionRef={actionRef}
             search={false}
             options={{ fullScreen: true }}
@@ -324,30 +333,31 @@ const TableList: FC<TableListProps> = ({ systemUserRole, tableType }) => {
               </Tooltip>,
             ]}
           />
-        </>
-      ) : (
-        <ProTable<TeamTable, ListPagination>
-          rowKey='id'
-          headerTitle={
-            <FormattedMessage id='component.allTeams.table.title' defaultMessage='All Teams' />
-          }
-          actionRef={actionRef}
-          search={false}
-          options={{ fullScreen: true }}
-          pagination={{
-            showSizeChanger: false,
-            pageSize: 10,
-          }}
-          request={async (params: { pageSize: number; current: number }) => {
-            if (keyWord.length > 0) {
-              return getTeamsByKeyword(keyWord, tableType);
-            }
-            return getAllTableTeams(params, tableType);
-          }}
-          columns={teamColumns}
-        />
-      )}
-    </>
+        ) : (
+          <ProTable<TeamTable, ListPagination>
+            {...responsiveDataListTableProps}
+            scroll={scroll}
+            toolbar={toolbar}
+            rowKey='id'
+            headerTitle={false}
+            actionRef={actionRef}
+            search={false}
+            options={{ fullScreen: true }}
+            pagination={{
+              showSizeChanger: false,
+              pageSize: 10,
+            }}
+            request={async (params: { pageSize: number; current: number }) => {
+              if (keyWord.length > 0) {
+                return getTeamsByKeyword(keyWord, tableType);
+              }
+              return getAllTableTeams(params, tableType);
+            }}
+            columns={teamColumns}
+          />
+        )
+      }
+    </ResponsiveDataListViewport>
   );
 };
 

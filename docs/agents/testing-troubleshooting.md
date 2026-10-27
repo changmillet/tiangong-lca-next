@@ -44,7 +44,7 @@ checkPaths:
   - .github/workflows/release-gate.yml
   - .github/workflows/release-readiness.yml
 lastReviewedAt: 2026-10-28
-lastReviewedCommit: 64403fd7ae4afd759eeb8a66a6d1cfb0185fd622
+lastReviewedCommit: 5e502c85033cab89ab7b2f055b90504abb765cc0
 lastReviewedNote: 'Reviewed Platform #1349 follow-up 64403fd7ae after actual CI40546918693 and strict local reproduction. A separate async act after completed mount awaits the viewport measurement frame and recreated request continuation; a causal probe observed height and callback identity changes. All22 strict focused tests pass and independent review found no material issue. Testing patterns now documents frame ordering. Permission assertions, product, global mocks, guards, timeouts and release contracts remain unchanged; fresh hosted qualification is pending.'
 ---
 

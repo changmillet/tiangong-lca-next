@@ -529,6 +529,12 @@ describe('AllTeams component', () => {
     await act(async () => {
       renderAllTeams({ systemUserRole: undefined });
     });
+    // Settle the viewport's scheduled measurement and the request recreated by that render.
+    await act(async () => {
+      await new Promise<void>((resolve) => {
+        window.requestAnimationFrame(() => resolve());
+      });
+    });
     expect(mockGetAllTableTeams).not.toHaveBeenCalled();
     expect(mockGetTeamsByKeyword).not.toHaveBeenCalled();
 

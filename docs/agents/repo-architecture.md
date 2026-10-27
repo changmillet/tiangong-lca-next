@@ -27,9 +27,9 @@ checkPaths:
   - config/docs-capture/**
   - tests/e2e/i18n/**
   - tests/e2e/dataset-lists/**
-lastReviewedAt: 2026-10-26
-lastReviewedCommit: 81bf639b80946bad144dd67e393d884148192696
-lastReviewedNote: 'Platform #1342: reviewed frozen result revision and unit display, exact-version optional enrichment and legacy unknown revisions. Calculation, data-quality policy, database ownership, release and validation gates remain unchanged.'
+lastReviewedAt: 2026-10-27
+lastReviewedCommit: 28f4fea0bc9829316938ff85fe3ac6a3ce7a7ce6
+lastReviewedNote: 'Reviewed Platform #1355: Review and All Teams reuse dataset-list presentation with responsive tabs, preserved workflow handlers, lazy column translation initialization and a bounded join-team modal. Query, permission, dependency, release and gate contracts remain unchanged. Actual validation and review evidence belong to the Issue/PR; no release qualification is claimed.'
 related:
   - ../AGENTS.md
   - ../.docpact/config.yaml

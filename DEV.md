@@ -45,9 +45,9 @@ checkPaths:
   - .github/workflows/release-readiness.yml
   - .github/workflows/build.yml
   - .nvmrc
-lastReviewedAt: 2026-10-26
-lastReviewedCommit: a5e998603ac49a97b99a29b6b14ae60bf61eb643
-lastReviewedNote: 'Platform #1342: reviewed focused frozen-metadata unit/component/browser regressions and unchanged full coverage, bootstrap, checked-push and release proof requirements.'
+lastReviewedAt: 2026-10-27
+lastReviewedCommit: 28f4fea0bc9829316938ff85fe3ac6a3ce7a7ce6
+lastReviewedNote: 'Reviewed Platform #1355: Review and All Teams reuse dataset-list presentation with responsive tabs, preserved workflow handlers, lazy column translation initialization and a bounded join-team modal. Query, permission, dependency, release and gate contracts remain unchanged. Actual validation and review evidence belong to the Issue/PR; no release qualification is claimed.'
 ---
 
 # Development Bootstrap

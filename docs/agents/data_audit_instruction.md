@@ -18,9 +18,9 @@ checkPaths:
   - docs/agents/data_audit_instruction.md
   - src/pages/Review/**
   - src/pages/ManageSystem/**
-lastReviewedAt: 2026-10-14
-lastReviewedCommit: 349c49def9e7fdfd2660d7484b8a21daae3a5c36
-lastReviewedNote: 'Platform #1221 width/confirmation follow-up reviewed against 349c49def9e7fdfd2660d7484b8a21daae3a5c36: reviewer-model exchange selection retains exact references and actions while using shared column budgets. Audit codes, advisory opinions, submission and final-decision authority are unchanged.'
+lastReviewedAt: 2026-10-27
+lastReviewedCommit: 28f4fea0bc9829316938ff85fe3ac6a3ce7a7ce6
+lastReviewedNote: 'Reviewed Platform #1355: Review and All Teams reuse dataset-list presentation with responsive tabs, preserved workflow handlers, lazy column translation initialization and a bounded join-team modal. Query, permission, dependency, release and gate contracts remain unchanged. Actual validation and review evidence belong to the Issue/PR; no release qualification is claimed.'
 ---
 
 # Audit Status Reference

@@ -47,8 +47,8 @@ checkPaths:
   - pnpm-workspace.yaml
   - Dockerfile.app
 lastReviewedAt: 2026-10-28
-lastReviewedCommit: 55475b709eba699353b9851c17f1881b2e751e83
-lastReviewedNote: 'Reviewed Platform #1349 combined merge55475b7: current Dev preserves #1357 management UI, tests and locale artifacts; qualified Main supplies #1358 Portal patch and manifest6 image provenance. Metadata conflicts were resolved without replacing document bodies. Query, permission, canonical assertions, budgets, release and production boundaries remain unchanged. Combined-candidate execution is recorded on #1352 and is not inferred from Main proof.'
+lastReviewedCommit: db04e9d807a65bd8c98efb2fbac960d10b574596
+lastReviewedNote: 'Reviewed Platform #1349 receipt-fixture correction db04e9d8 against the Git 2.56 tracking-ref behavior observed in CI40539695158. Remote-owned exact-head fetch preserves the client checkpoint; positive idempotency and negative baseline-drift cases pass. Production guards, gate inventory, timeouts and release boundaries are unchanged. Testing patterns and troubleshooting record the fixture distinction; fresh hosted qualification remains pending.'
 ---
 
 # Testing Strategy

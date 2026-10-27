@@ -47,8 +47,8 @@ checkPaths:
   - .github/workflows/release-gate.yml
   - .github/workflows/release-readiness.yml
 lastReviewedAt: 2026-10-28
-lastReviewedCommit: 05b2c01e7780756d131dba20c51d666279c4e669
-lastReviewedNote: 'Reviewed Platform #1349 AllTeams test correction05b2c01e7 after CI40543182513. Awaited async act completes the no-role empty request before drag assertions; strict warning mode reproduces the old failure and all22 focused cases pass after correction. Permission/error/no-save assertions remain, with added assertions that backend reads and sort writes do not occur. Existing async testing guidance suffices; product, guards, inventory, timeouts and release boundaries are unchanged. Fresh hosted full qualification remains required.'
+lastReviewedCommit: 64403fd7ae4afd759eeb8a66a6d1cfb0185fd622
+lastReviewedNote: 'Reviewed Platform #1349 follow-up 64403fd7ae after actual CI40546918693 and strict local reproduction. A separate async act after completed mount awaits the viewport measurement frame and recreated request continuation; a causal probe observed height and callback identity changes. All22 strict focused tests pass and independent review found no material issue. Testing patterns now documents frame ordering. Permission assertions, product, global mocks, guards, timeouts and release contracts remain unchanged; fresh hosted qualification is pending.'
 ---
 
 # Testing Patterns Reference

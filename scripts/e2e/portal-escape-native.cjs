@@ -122,11 +122,11 @@ async function execute(options, binding) {
       for (const activationMode of ['keyboard', 'pointer']) {
         receipt.step = `${name}:default-container-two-escape-focus:${activationMode}`;
         await configure('drawers');
-        const focusProbe = { browser: name, activationMode }; receipt.focusProbes.push(focusProbe);
-        const activate = async locator => activationMode === 'keyboard' ? locator.press('Enter') : locator.click();
+        const focusProbe = { browser: name, activationMode, focusSetup: activationMode === 'pointer' ? 'programmatic locator.focus before native click' : 'locator.press focus before native Enter' }; receipt.focusProbes.push(focusProbe);
+        const activate = async locator => { if (activationMode === 'keyboard') return locator.press('Enter'); await locator.focus(); await playwright.expect(locator).toBeFocused(); return locator.click(); };
         const verifyActivation = (activation, opener) => {
-          check(activation?.classification === 'native', 'native_activation_unproved');
-          if (activationMode === 'keyboard') check(activation.detail === 0 && activation.focus === opener, 'keyboard_opener_focus_unproved');
+          check(activation?.classification === 'native' && activation.focus === opener, 'native_activation_opener_focus_unproved');
+          if (activationMode === 'keyboard') check(activation.detail === 0, 'keyboard_activation_unproved');
           else check(activation.detail > 0, 'pointer_activation_unproved');
         };
         await activate(page.getByRole('button', { name: 'Open parent', exact: true }));
@@ -144,22 +144,22 @@ async function execute(options, binding) {
         await page.keyboard.press('Escape');
         await playwright.expect(child).toBeHidden(); await playwright.expect(parent).toBeVisible();
         focusProbe.afterChildEscape = await snapshot();
-        if (activationMode === 'keyboard') await playwright.expect(page.locator('#open-child')).toBeFocused();
-        // In pointer mode the browser need not focus its clicked button. The
-        // installed Drawer contract restores the exact element focused at open.
+        await playwright.expect(page.locator('#open-child')).toBeFocused();
+        // Verify both the declared focusable opener and its exact identity.
+        // A fallback document.body is not a restorable focus precondition.
         await page.waitForFunction(() => window.portalEscapeFixture.snapshot().restoredFocus.child, null, { timeout: 5000 });
         focusProbe.afterChildEscape = await snapshot();
         check(focusProbe.afterChildEscape.savedFocusConnected.child, 'child_saved_focus_detached');
         await page.keyboard.press('Escape'); await playwright.expect(parent).toBeHidden();
         focusProbe.afterParentEscape = await snapshot();
-        if (activationMode === 'keyboard') await playwright.expect(page.locator('#open-parent')).toBeFocused();
+        await playwright.expect(page.locator('#open-parent')).toBeFocused();
         await page.waitForFunction(() => window.portalEscapeFixture.snapshot().restoredFocus.parent, null, { timeout: 5000 });
         focusProbe.afterParentEscape = await snapshot();
         check(focusProbe.afterParentEscape.savedFocusConnected.parent, 'parent_saved_focus_detached');
         observed = await snapshot();
         check(observed.calls.map(call => call.name).join(',') === 'closed-child,closed-parent' && observed.events.filter(event => event.key === 'Escape' && event.classification === 'native').length === 2, 'native_two_escape_unproved');
         if (activationMode === 'keyboard') check(observed.events.filter(event => event.key === 'Enter' && event.classification === 'native').length === 2, 'native_enter_unproved');
-        cases.push({ ...observed, activationMode });
+        cases.push({ ...observed, activationMode, focusSetup: focusProbe.focusSetup });
       }
       for (const scenario of ['siblings', 'nested', 'aborted-open', 'aborted-close', 'aborted-callback', 'omitted', 'keyboard-false', 'reparent', 'aborted-reparent', 'isolated-replay', 'prolayout-inline', 'ime']) {
         check(!stopping && performance.now() < workDeadlineMono, 'no_time_for_case'); receipt.step = `${name}:${scenario}`; await configure(scenario);

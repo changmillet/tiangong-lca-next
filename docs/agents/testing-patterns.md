@@ -15,6 +15,7 @@ whenToUpdate:
   - when helper ownership or recommended commands change
   - when the current pattern guidance becomes misleading
 checkPaths:
+  - patches/**
   - docs/agents/testing-patterns.md
   - docs/agents/repo-validation.md
   - docs/agents/testing-troubleshooting.md
@@ -45,9 +46,9 @@ checkPaths:
   - .github/workflows/build.yml
   - .github/workflows/release-gate.yml
   - .github/workflows/release-readiness.yml
-lastReviewedAt: 2026-10-27
-lastReviewedCommit: ab62bb92d9dcefd38424cee1056744cb05059ba4
-lastReviewedNote: 'Reviewed Platform #1355 canonical locale artifact refresh after removing duplicate management headings. Translation catalogs, policies, readiness and existing production blockers remain unchanged; two generations are idempotent and all 19 locale contracts pass. Full checked-push and CI evidence remain on the Issue/PR.'
+lastReviewedAt: 2026-10-28
+lastReviewedCommit: 64403fd7ae4afd759eeb8a66a6d1cfb0185fd622
+lastReviewedNote: 'Reviewed Platform #1349 follow-up 64403fd7ae after actual CI40546918693 and strict local reproduction. A separate async act after completed mount awaits the viewport measurement frame and recreated request continuation; a causal probe observed height and callback identity changes. All22 strict focused tests pass and independent review found no material issue. Testing patterns now documents frame ordering. Permission assertions, product, global mocks, guards, timeouts and release contracts remain unchanged; fresh hosted qualification is pending.'
 ---
 
 # Testing Patterns Reference
@@ -76,6 +77,7 @@ lastReviewedNote: 'Reviewed Platform #1355 canonical locale artifact refresh aft
 - make mocks for stateful hooks preserve the identity of returned API objects across parent rerenders; update methods on the stable object instead of returning a fresh placeholder on each render
 - pair shared hook mocks with a direct rerender regression that proves both object identity and the callable API the consumer relies on
 - when mount and user actions can call the same async loader, guard the in-flight request outside render-state closures and prove that an action fired before the first response does not start a second request or let a later empty response overwrite valid data
+- when a mounted responsive viewport schedules an animation-frame measurement, finish the mount's async `act` before awaiting that frame in a separate async `act`. The measurement can recreate a render-prop request and its asynchronous state update; a frame awaited inside the initial mount callback can precede effect registration. Verify the actual measurement and request lifecycle when diagnosing this boundary, retain strict act warnings, and avoid fixed sleeps.
 - validate changed workflow expressions with `actionlint`; YAML parsing and extracted-script tests do not validate GitHub context availability. Runner-dependent paths belong in supported step contexts or are exported from a runner step through `GITHUB_ENV`, never `jobs.<job_id>.env`
 - bound per-job workflow assertions to the exact named job before the next sibling job; never treat a selected job as the remainder of the file. Keep workflow-wide permission guards on the complete source, and use negative controls that place a forbidden install, aggregate, credential or release operation inside the selected job while a legitimate separate job remains excluded.
 - when an actual app transition intentionally reloads a page, observe fresh document identity and exact session owner atomically through Playwright's public navigation-aware wait rather than polling standalone page evaluations. Use timer polling for potentially hidden tabs, retain the existing authenticated/public assertion budget and total testcase limit, and keep post-release identity plus zero-stale-dispatch checks; do not catch arbitrary errors or manufacture SDK events.
@@ -87,6 +89,7 @@ lastReviewedNote: 'Reviewed Platform #1355 canonical locale artifact refresh aft
 - release-helper fixtures must enforce the actual `gh` contract: list by bare branch, return explicit head owner/repository metadata, create direct repository heads without an organization prefix, and read the exact multiline `--body-file` contents while the owned temporary file exists. Prove `--apply --prepare-only` still prepares and pushes the exact version/promotion candidate, emits its submission proposal, and never invokes PR creation; malformed identity, ambiguous remotes and failed preflight must remain fail-closed.
 - schedule known process-heavy Jest suites first when that lowers cold-run tail latency, but preserve Jest discovery and the complete inventory. Keep Jest's own failure/duration/file-size order within each priority group and lock the selected paths with a sequencer contract test
 - for process-heavy Git/pnpm contract suites, build one immutable seed only when setup dominates runtime, then copy a separate repository and bare remote for every test case and rebind `origin` to that case. Never share mutable refs, receipts, gate logs, or transport state between tests
+- when a receipt test models an already-accepted remote commit, transfer that exact object/ref from inside the isolated bare remote and assert the local tracking baseline stayed unchanged before retry. A successful URL push can update matching tracking refs in Git 2.56, which changes the checkpoint and tests baseline invalidation instead of idempotency. Keep the separate baseline-drift rejection case and production checkpoint guards intact
 - retain parallel unit execution on macOS, but start Jest workers with concurrent recompilation and Maglev disabled and recycle a unit worker after it crosses `512MB`; this avoids the documented Node 24/V8 stale-left-trimmed-pointer failure while allowing the slow-first suites to overlap ordinary work
 - test release-orchestration commands with temporary Git repositories plus fake `gh`/`pnpm`/Docpact executables: assert one JSON stdout document, exact remote/base/head/version identities, independent candidate and cumulative `main`-to-`dev` path evaluation, bounded review-only fixed-point behavior, branch-sensitive checked-push delegation, idempotent PR reuse, and stable fail-closed drift codes without creating real GitHub resources; additionally run a real Docpact canary in an isolated exact-`dev` clone to prove the current governed-document closure and metadata-only mutation boundary
 - keep semantic E2E specs anywhere below `tests/e2e/i18n/**`; qualification discovery must recurse through nested directories, exclude only the dedicated harness-control spec, and fail closed when the discovered, executed, or designed-skip totals drift
@@ -286,3 +289,9 @@ Inline release-admission guards stay workflow-owned. Focused tests extract the e
 ### ILCD asynchronous editor proof
 
 Run affected React form suites with `CI=true` so the existing act-warning guard matches release CI. Wait for the classification pending state to clear and the expected location option to render. Await the actual Form interaction with async `act` when assertions inspect the form store after promise-driven updates. A synchronous DOM-presence assertion does not prove resource loading has completed. Keep warnings fatal; do not add arbitrary sleeps or suppressions.
+
+## Installed Portal lifecycle contracts
+
+Run real package lifecycle contracts in isolated Node children with development/production React and actual unique IDs; Jest's test-mode ID substitution cannot establish multi-Portal ordering. Observe effect commit separately from render, keep a non-replayed sibling beside the replayed StrictMode subtree, and make a reparent discriminator change which subtree wins. At least one assertion preserves callback dispatch order. Check both event-listener removals and process/window disposal, propagate cleanup/receipt failure to exit status, and label in-memory negative controls explicitly. Native keyboard/default-container/focus and ESM bundle execution remain separate browser evidence.
+
+Image-input tests should bind declared patch bytes before cache lookup, then cover both dependency and candidate contexts and every manifest consumer, including the Git-free evidence reporter. Use a patch-free control and explicit path/hash/index/schema failures. Resource observer fixtures canonicalize their owned temporary root before deriving paths so macOS aliases do not replace the intended ownership assertions with an unrelated setup failure.

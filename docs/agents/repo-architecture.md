@@ -27,9 +27,9 @@ checkPaths:
   - config/docs-capture/**
   - tests/e2e/i18n/**
   - tests/e2e/dataset-lists/**
-lastReviewedAt: 2026-10-27
-lastReviewedCommit: 28f4fea0bc9829316938ff85fe3ac6a3ce7a7ce6
-lastReviewedNote: 'Reviewed Platform #1355: Review and All Teams reuse dataset-list presentation with responsive tabs, preserved workflow handlers, lazy column translation initialization and a bounded join-team modal. Query, permission, dependency, release and gate contracts remain unchanged. Actual validation and review evidence belong to the Issue/PR; no release qualification is claimed.'
+lastReviewedAt: 2026-10-28
+lastReviewedCommit: 55475b709eba699353b9851c17f1881b2e751e83
+lastReviewedNote: 'Reviewed Platform #1349 combined merge55475b7: current Dev preserves #1357 management UI, tests and locale artifacts; qualified Main supplies #1358 Portal patch and manifest6 image provenance. Metadata conflicts were resolved without replacing document bodies. Query, permission, canonical assertions, budgets, release and production boundaries remain unchanged. Combined-candidate execution is recorded on #1352 and is not inferred from Main proof.'
 related:
   - ../AGENTS.md
   - ../.docpact/config.yaml
@@ -64,6 +64,7 @@ This repo is a Umi `4.7.24` React 19 SPA on one native Ant Design `6.6.6` / ProC
 | `public/robots.txt`, `public/404.html`, `public/edgeone.json` | the application host's crawler and response boundary: crawling is deliberately allowed so crawlers can read noindex, the shell and the unknown-path document are noindex, and this file also owns the OAuth path rewrite and response headers |
 | `scripts/reference-data/**` | deterministic classification/location generation and fail-closed evidence validation |
 | `scripts/e2e/**`, `docker/e2e/**` | test-only exact-candidate release-E2E orchestration, deterministic closed-simulator backend profile, isolated environment, static server, preflight, diagnostics, and bounded continuation |
+| `scripts/e2e/maintained-patches.cjs` | exact maintained patch inventory and digest shared by isolated image creation, build/runtime verification and resource identity; input grammar and retirement rules belong to `dependency-maintenance.md` |
 | `scripts/qualification/**`, `playwright.closure-download.config.ts`, `tests/browser/**` | test-only exact-commit scope-closure Next adapter and loopback browser contract accepted by the Worker provider aggregator |
 | `playwright.config.ts`, `tests/e2e/i18n/**` | test-only semantic localization browser matrix, guarded production fixture ledger, and non-secret evidence reporter |
 | `playwright.dataset-lists.config.ts`, `tests/e2e/dataset-lists/**` | separately selected synthetic Chromium layout and list-request proof; local screenshots are not production or release qualification |

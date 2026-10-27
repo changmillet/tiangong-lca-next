@@ -1,0 +1,454 @@
+diff --git a/es/Portal.js b/es/Portal.js
+index 3a2b35a068cb81e1df55899afa93e504c3b220ef..187f5f07719f38bcfc4ccd3082f02ab018681c1a 100644
+--- a/es/Portal.js
++++ b/es/Portal.js
+@@ -5,7 +5,7 @@ import OrderContext from "./Context";
+ import { inlineMock } from "./mock";
+ import useDom from "./useDom";
+ import useScrollLocker from "./useScrollLocker";
+-import useEscKeyDown from "./useEscKeyDown";
++import useEscKeyDown, { EscapeContext } from "./useEscKeyDown";
+ const getPortalContainer = getContainer => {
+   if (getContainer === false) {
+     return false;
+@@ -64,7 +64,7 @@ const Portal = /*#__PURE__*/React.forwardRef((props, ref) => {
+   useScrollLocker(autoLock && open && canUseDom() && (mergedContainer === defaultContainer || mergedContainer === document.body));
+ 
+   // ========================= Esc Keydown ==========================
+-  useEscKeyDown(open, onEsc);
++  const escapeNode = useEscKeyDown(open, onEsc);
+ 
+   // =========================== Ref ===========================
+   let childRef = null;
+@@ -88,9 +88,9 @@ const Portal = /*#__PURE__*/React.forwardRef((props, ref) => {
+       ref: mergedRef
+     });
+   }
+-  return /*#__PURE__*/React.createElement(OrderContext.Provider, {
++  return /*#__PURE__*/React.createElement(EscapeContext.Provider, { value: escapeNode }, /*#__PURE__*/React.createElement(OrderContext.Provider, {
+     value: queueCreate
+-  }, renderInline ? reffedChildren : /*#__PURE__*/createPortal(reffedChildren, mergedContainer));
++  }, renderInline ? reffedChildren : /*#__PURE__*/createPortal(reffedChildren, mergedContainer)));
+ });
+ if (process.env.NODE_ENV !== 'production') {
+   Portal.displayName = 'Portal';
+diff --git a/es/useEscKeyDown.d.ts b/es/useEscKeyDown.d.ts
+index ab462d1082a21f4b382fd4c222cfeac1d4568ff6..ca964717604c804f6a4b6d217d9ff645a60d656f 100644
+--- a/es/useEscKeyDown.d.ts
++++ b/es/useEscKeyDown.d.ts
+@@ -1,9 +1,12 @@
++import * as React from 'react';
+ import { type EscCallback } from './Portal';
+-export declare const _test: () => {
+-    stack: {
+-        id: string;
+-        onEsc?: EscCallback;
+-    }[];
+-    reset: () => void;
+-};
+-export default function useEscKeyDown(open: boolean, onEsc?: EscCallback): void;
++export interface EscapeNode {
++    id: string;
++    parent: EscapeNode | null;
++    epoch: number;
++    wasOpen: boolean;
++    onEsc?: EscCallback;
++}
++export declare const EscapeContext: React.Context<EscapeNode | null>;
++export declare const _test: null | (() => { stack: EscapeNode[]; reset: () => void });
++export default function useEscKeyDown(open: boolean, onEsc?: EscCallback): EscapeNode;
+diff --git a/es/useEscKeyDown.js b/es/useEscKeyDown.js
+index 90c0bece9c4acc3dbeccda2d74f8a7855c80c882..3ce2916281ffe52659d84a0f667e5a8c9b4ad552 100644
+--- a/es/useEscKeyDown.js
++++ b/es/useEscKeyDown.js
+@@ -1,78 +1,101 @@
+-import { useEvent, useId } from '@rc-component/util';
+-import { useEffect, useMemo } from 'react';
+-let stack = [];
++import * as React from 'react';
++import { useId } from '@rc-component/util';
++import useLayoutEffect from '@rc-component/util/es/hooks/useLayoutEffect';
++
++// Logical Escape ancestry is independent of the DOM append-order context.
++export const EscapeContext = React.createContext(null);
++const active = new Set();
++let activationEpoch = 0;
++let listening = false;
+ const IME_LOCK_DURATION = 200;
+ let lastCompositionEndTime = 0;
+ 
+-// Export for testing
+-export const _test = process.env.NODE_ENV === 'test' ? () => ({
+-  stack,
+-  reset: () => {
+-    // Not reset stack to ensure effect will clean up correctly
+-    lastCompositionEndTime = 0;
++function priorityOrder() {
++  const children = new Map([[null, []]]);
++  for (const node of active) children.set(node, []);
++  for (const node of active) {
++    let ancestor = node.parent;
++    let parent = null;
++    const seen = new Set([node]);
++    while (ancestor && !seen.has(ancestor)) {
++      if (!parent && active.has(ancestor)) parent = ancestor;
++      seen.add(ancestor);
++      ancestor = ancestor.parent;
++    }
++    // An invalid ancestry cycle never suppresses an active registration.
++    if (ancestor) parent = null;
++    children.get(parent).push(node);
+   }
+-}) : null;
++  const scores = new Map();
++  const score = node => {
++    if (!scores.has(node)) {
++      scores.set(node, Math.max(node.epoch, ...children.get(node).map(score)));
++    }
++    return scores.get(node);
++  };
++  const byPriority = (a, b) => score(b) - score(a);
++  const result = [];
++  const visit = node => {
++    children.get(node).sort(byPriority).forEach(visit);
++    result.push(node);
++  };
++  children.get(null).sort(byPriority).forEach(visit);
++  return result;
++}
+ 
+-// Global event handlers
+ const onGlobalKeyDown = event => {
+   if (event.key === 'Escape' && !event.isComposing) {
+-    const now = Date.now();
+-    if (now - lastCompositionEndTime < IME_LOCK_DURATION) {
+-      return;
+-    }
+-    const len = stack.length;
+-    for (let i = len - 1; i >= 0; i -= 1) {
+-      stack[i].onEsc({
+-        top: i === len - 1,
+-        event
+-      });
+-    }
++    if (Date.now() - lastCompositionEndTime < IME_LOCK_DURATION) return;
++    // Snapshot once: callbacks may synchronously close or unmount a Portal.
++    const ordered = priorityOrder();
++    const top = ordered[0];
++    ordered.forEach(node => node.onEsc?.({ top: node === top, event }));
+   }
+ };
+-const onGlobalCompositionEnd = () => {
+-  lastCompositionEndTime = Date.now();
+-};
+-function attachGlobalEventListeners() {
+-  window.addEventListener('keydown', onGlobalKeyDown);
+-  window.addEventListener('compositionend', onGlobalCompositionEnd);
+-}
+-function detachGlobalEventListeners() {
+-  if (stack.length === 0) {
++const onGlobalCompositionEnd = () => { lastCompositionEndTime = Date.now(); };
++function syncListeners() {
++  if (active.size && !listening) {
++    window.addEventListener('keydown', onGlobalKeyDown);
++    window.addEventListener('compositionend', onGlobalCompositionEnd);
++    listening = true;
++  } else if (!active.size && listening) {
+     window.removeEventListener('keydown', onGlobalKeyDown);
+     window.removeEventListener('compositionend', onGlobalCompositionEnd);
++    listening = false;
+   }
+ }
++
++export const _test = process.env.NODE_ENV === 'test' ? () => ({
++  stack: priorityOrder(),
++  reset: () => { lastCompositionEndTime = 0; },
++}) : null;
++
+ export default function useEscKeyDown(open, onEsc) {
+   const id = useId();
+-  const onEventEsc = useEvent(onEsc);
+-  const ensure = () => {
+-    if (!stack.find(item => item.id === id)) {
+-      stack.push({
+-        id,
+-        onEsc: onEventEsc
+-      });
+-    }
+-  };
+-  const clear = () => {
+-    stack = stack.filter(item => item.id !== id);
+-  };
+-  useMemo(() => {
+-    if (open) {
+-      ensure();
+-    } else if (!open) {
+-      clear();
+-    }
+-  }, [open]);
+-  useEffect(() => {
++  const parent = React.useContext(EscapeContext);
++  const ref = React.useRef(null);
++  // Only local identity is initialized during render; no shared state changes.
++  if (!ref.current) ref.current = { id, parent: null, epoch: 0, wasOpen: false, onEsc: undefined };
++  const node = ref.current;
++  useLayoutEffect(() => {
++    // Publish callbacks and ancestry only for a committed render.
++    node.parent = parent;
++    node.onEsc = onEsc;
+     if (open) {
+-      ensure();
+-      // Attach global event listeners
+-      attachGlobalEventListeners();
+-      return () => {
+-        clear();
+-        // Remove global event listeners if instances is empty
+-        detachGlobalEventListeners();
+-      };
++      if (!node.wasOpen) node.epoch = ++activationEpoch;
++      node.wasOpen = true;
++      active.add(node);
++    } else {
++      node.wasOpen = false;
++      active.delete(node);
+     }
+-  }, [open]);
++    syncListeners();
++    return () => {
++      active.delete(node);
++      syncListeners();
++      // Preserve the epoch across StrictMode replay and callback updates.
++      // Only a committed open=false render resets the opening lifecycle.
++    };
++  }, [open, parent, onEsc]);
++  return node;
+ }
+diff --git a/lib/Portal.js b/lib/Portal.js
+index ce4c0fc5010746cdc41525198490d7fe48a2815b..5b8efd40c4822030d90d674206adcd954d7bea0f 100644
+--- a/lib/Portal.js
++++ b/lib/Portal.js
+@@ -73,7 +73,7 @@ const Portal = /*#__PURE__*/React.forwardRef((props, ref) => {
+   (0, _useScrollLocker.default)(autoLock && open && (0, _util.canUseDom)() && (mergedContainer === defaultContainer || mergedContainer === document.body));
+ 
+   // ========================= Esc Keydown ==========================
+-  (0, _useEscKeyDown.default)(open, onEsc);
++  const escapeNode = (0, _useEscKeyDown.default)(open, onEsc);
+ 
+   // =========================== Ref ===========================
+   let childRef = null;
+@@ -97,9 +97,9 @@ const Portal = /*#__PURE__*/React.forwardRef((props, ref) => {
+       ref: mergedRef
+     });
+   }
+-  return /*#__PURE__*/React.createElement(_Context.default.Provider, {
++  return /*#__PURE__*/React.createElement(_useEscKeyDown.EscapeContext.Provider, { value: escapeNode }, /*#__PURE__*/React.createElement(_Context.default.Provider, {
+     value: queueCreate
+-  }, renderInline ? reffedChildren : /*#__PURE__*/(0, _reactDom.createPortal)(reffedChildren, mergedContainer));
++  }, renderInline ? reffedChildren : /*#__PURE__*/(0, _reactDom.createPortal)(reffedChildren, mergedContainer)));
+ });
+ if (process.env.NODE_ENV !== 'production') {
+   Portal.displayName = 'Portal';
+diff --git a/lib/useEscKeyDown.d.ts b/lib/useEscKeyDown.d.ts
+index ab462d1082a21f4b382fd4c222cfeac1d4568ff6..ca964717604c804f6a4b6d217d9ff645a60d656f 100644
+--- a/lib/useEscKeyDown.d.ts
++++ b/lib/useEscKeyDown.d.ts
+@@ -1,9 +1,12 @@
++import * as React from 'react';
+ import { type EscCallback } from './Portal';
+-export declare const _test: () => {
+-    stack: {
+-        id: string;
+-        onEsc?: EscCallback;
+-    }[];
+-    reset: () => void;
+-};
+-export default function useEscKeyDown(open: boolean, onEsc?: EscCallback): void;
++export interface EscapeNode {
++    id: string;
++    parent: EscapeNode | null;
++    epoch: number;
++    wasOpen: boolean;
++    onEsc?: EscCallback;
++}
++export declare const EscapeContext: React.Context<EscapeNode | null>;
++export declare const _test: null | (() => { stack: EscapeNode[]; reset: () => void });
++export default function useEscKeyDown(open: boolean, onEsc?: EscCallback): EscapeNode;
+diff --git a/lib/useEscKeyDown.js b/lib/useEscKeyDown.js
+index 7955ae5510d78b248bda8f8237aef1e267da0f5a..17a3045c14ee92de0bb00c471acfbf62348896e1 100644
+--- a/lib/useEscKeyDown.js
++++ b/lib/useEscKeyDown.js
+@@ -3,83 +3,116 @@
+ Object.defineProperty(exports, "__esModule", {
+   value: true
+ });
+-exports._test = void 0;
++exports._test = exports.EscapeContext = void 0;
+ exports.default = useEscKeyDown;
++var React = _interopRequireWildcard(require("react"));
+ var _util = require("@rc-component/util");
+-var _react = require("react");
+-let stack = [];
++var _useLayoutEffect = _interopRequireDefault(require("@rc-component/util/lib/hooks/useLayoutEffect"));
++function _interopRequireDefault(e) { return e && e.__esModule ? e : { default: e }; }
++function _interopRequireWildcard(e, t) { if ("function" == typeof WeakMap) var r = new WeakMap(), n = new WeakMap(); return (_interopRequireWildcard = function (e, t) { if (!t && e && e.__esModule) return e; var o, i, f = { __proto__: null, default: e }; if (null === e || "object" != typeof e && "function" != typeof e) return f; if (o = t ? n : r) { if (o.has(e)) return o.get(e); o.set(e, f); } for (const t in e) "default" !== t && {}.hasOwnProperty.call(e, t) && ((i = (o = Object.defineProperty) && Object.getOwnPropertyDescriptor(e, t)) && (i.get || i.set) ? o(f, t, i) : f[t] = e[t]); return f; })(e, t); }
++// Logical Escape ancestry is independent of the DOM append-order context.
++const EscapeContext = exports.EscapeContext = React.createContext(null);
++const active = new Set();
++let activationEpoch = 0;
++let listening = false;
+ const IME_LOCK_DURATION = 200;
+ let lastCompositionEndTime = 0;
+-
+-// Export for testing
+-const _test = exports._test = process.env.NODE_ENV === 'test' ? () => ({
+-  stack,
+-  reset: () => {
+-    // Not reset stack to ensure effect will clean up correctly
+-    lastCompositionEndTime = 0;
++function priorityOrder() {
++  const children = new Map([[null, []]]);
++  for (const node of active) children.set(node, []);
++  for (const node of active) {
++    let ancestor = node.parent;
++    let parent = null;
++    const seen = new Set([node]);
++    while (ancestor && !seen.has(ancestor)) {
++      if (!parent && active.has(ancestor)) parent = ancestor;
++      seen.add(ancestor);
++      ancestor = ancestor.parent;
++    }
++    // An invalid ancestry cycle never suppresses an active registration.
++    if (ancestor) parent = null;
++    children.get(parent).push(node);
+   }
+-}) : null;
+-
+-// Global event handlers
++  const scores = new Map();
++  const score = node => {
++    if (!scores.has(node)) {
++      scores.set(node, Math.max(node.epoch, ...children.get(node).map(score)));
++    }
++    return scores.get(node);
++  };
++  const byPriority = (a, b) => score(b) - score(a);
++  const result = [];
++  const visit = node => {
++    children.get(node).sort(byPriority).forEach(visit);
++    result.push(node);
++  };
++  children.get(null).sort(byPriority).forEach(visit);
++  return result;
++}
+ const onGlobalKeyDown = event => {
+   if (event.key === 'Escape' && !event.isComposing) {
+-    const now = Date.now();
+-    if (now - lastCompositionEndTime < IME_LOCK_DURATION) {
+-      return;
+-    }
+-    const len = stack.length;
+-    for (let i = len - 1; i >= 0; i -= 1) {
+-      stack[i].onEsc({
+-        top: i === len - 1,
+-        event
+-      });
+-    }
++    if (Date.now() - lastCompositionEndTime < IME_LOCK_DURATION) return;
++    // Snapshot once: callbacks may synchronously close or unmount a Portal.
++    const ordered = priorityOrder();
++    const top = ordered[0];
++    ordered.forEach(node => node.onEsc?.({
++      top: node === top,
++      event
++    }));
+   }
+ };
+ const onGlobalCompositionEnd = () => {
+   lastCompositionEndTime = Date.now();
+ };
+-function attachGlobalEventListeners() {
+-  window.addEventListener('keydown', onGlobalKeyDown);
+-  window.addEventListener('compositionend', onGlobalCompositionEnd);
+-}
+-function detachGlobalEventListeners() {
+-  if (stack.length === 0) {
++function syncListeners() {
++  if (active.size && !listening) {
++    window.addEventListener('keydown', onGlobalKeyDown);
++    window.addEventListener('compositionend', onGlobalCompositionEnd);
++    listening = true;
++  } else if (!active.size && listening) {
+     window.removeEventListener('keydown', onGlobalKeyDown);
+     window.removeEventListener('compositionend', onGlobalCompositionEnd);
++    listening = false;
+   }
+ }
++const _test = exports._test = process.env.NODE_ENV === 'test' ? () => ({
++  stack: priorityOrder(),
++  reset: () => {
++    lastCompositionEndTime = 0;
++  }
++}) : null;
+ function useEscKeyDown(open, onEsc) {
+   const id = (0, _util.useId)();
+-  const onEventEsc = (0, _util.useEvent)(onEsc);
+-  const ensure = () => {
+-    if (!stack.find(item => item.id === id)) {
+-      stack.push({
+-        id,
+-        onEsc: onEventEsc
+-      });
+-    }
+-  };
+-  const clear = () => {
+-    stack = stack.filter(item => item.id !== id);
++  const parent = React.useContext(EscapeContext);
++  const ref = React.useRef(null);
++  // Only local identity is initialized during render; no shared state changes.
++  if (!ref.current) ref.current = {
++    id,
++    parent: null,
++    epoch: 0,
++    wasOpen: false,
++    onEsc: undefined
+   };
+-  (0, _react.useMemo)(() => {
+-    if (open) {
+-      ensure();
+-    } else if (!open) {
+-      clear();
+-    }
+-  }, [open]);
+-  (0, _react.useEffect)(() => {
++  const node = ref.current;
++  (0, _useLayoutEffect.default)(() => {
++    // Publish callbacks and ancestry only for a committed render.
++    node.parent = parent;
++    node.onEsc = onEsc;
+     if (open) {
+-      ensure();
+-      // Attach global event listeners
+-      attachGlobalEventListeners();
+-      return () => {
+-        clear();
+-        // Remove global event listeners if instances is empty
+-        detachGlobalEventListeners();
+-      };
++      if (!node.wasOpen) node.epoch = ++activationEpoch;
++      node.wasOpen = true;
++      active.add(node);
++    } else {
++      node.wasOpen = false;
++      active.delete(node);
+     }
+-  }, [open]);
++    syncListeners();
++    return () => {
++      active.delete(node);
++      syncListeners();
++      // Preserve the epoch across StrictMode replay and callback updates.
++      // Only a committed open=false render resets the opening lifecycle.
++    };
++  }, [open, parent, onEsc]);
++  return node;
+ }

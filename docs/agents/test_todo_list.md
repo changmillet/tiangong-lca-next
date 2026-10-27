@@ -15,6 +15,7 @@ whenToUpdate:
   - when the active queue state changes
   - when present-state testing facts become stale
 checkPaths:
+  - patches/**
   - docs/agents/test_todo_list.md
   - package.json
   - .oxlintrc.json
@@ -43,9 +44,9 @@ checkPaths:
   - .github/workflows/build.yml
   - .github/workflows/release-gate.yml
   - .github/workflows/release-readiness.yml
-lastReviewedAt: 2026-10-27
-lastReviewedCommit: ab62bb92d9dcefd38424cee1056744cb05059ba4
-lastReviewedNote: 'Reviewed Platform #1355 canonical locale artifact refresh after removing duplicate management headings. Translation catalogs, policies, readiness and existing production blockers remain unchanged; two generations are idempotent and all 19 locale contracts pass. Full checked-push and CI evidence remain on the Issue/PR.'
+lastReviewedAt: 2026-10-28
+lastReviewedCommit: 64403fd7ae4afd759eeb8a66a6d1cfb0185fd622
+lastReviewedNote: 'Reviewed Platform #1349 follow-up 64403fd7ae after actual CI40546918693 and strict local reproduction. A separate async act after completed mount awaits the viewport measurement frame and recreated request continuation; a causal probe observed height and callback identity changes. All22 strict focused tests pass and independent review found no material issue. Testing patterns now documents frame ordering. Permission assertions, product, global mocks, guards, timeouts and release contracts remain unchanged; fresh hosted qualification is pending.'
 ---
 
 # Testing Execution State
@@ -64,6 +65,8 @@ lastReviewedNote: 'Reviewed Platform #1355 canonical locale artifact refresh aft
 This is a checked-in reference, not a per-PR execution ledger. A delivery's post-commit, hook-owned full-gate result belongs in its PR validation evidence; update this section when the reference counts, coverage policy, or queue state materially changes.
 
 ## Current State
+
+- Issue #1358 owns the separately reproduced Portal commit-lifecycle repair, maintained-patch image input closure and exact Main semantic admission. Acceptance requires installed-package, native ESM/default-container/focus, current-source canonical semantic and normal complete-gate evidence; actual executions and remaining work are recorded on that Issue/PR. Package versions and unrelated dependency resolutions remain intact. Successful new evidence does not establish #1354's historical failure cause or independently authorize publication.
 
 - repo is in full-closure maintenance mode
 - there is no active ordered coverage queue right now

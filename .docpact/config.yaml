@@ -1,8 +1,8 @@
 version: 1
 layout: repo
-lastReviewedAt: "2026-10-27"
-lastReviewedCommit: "ab62bb92d9dcefd38424cee1056744cb05059ba4"
-lastReviewedNote: "Reviewed Platform #1355 canonical locale artifact refresh after removing duplicate management headings. Translation catalogs, policies, readiness and existing production blockers remain unchanged; two generations are idempotent and all 19 locale contracts pass. Full checked-push and CI evidence remain on the Issue/PR."
+lastReviewedAt: "2026-10-28"
+lastReviewedCommit: "64403fd7ae4afd759eeb8a66a6d1cfb0185fd622"
+lastReviewedNote: 'Reviewed Platform #1349 follow-up 64403fd7ae after actual CI40546918693 and strict local reproduction. A separate async act after completed mount awaits the viewport measurement frame and recreated request continuation; a causal probe observed height and callback identity changes. All22 strict focused tests pass and independent review found no material issue. Testing patterns now documents frame ordering. Permission assertions, product, global mocks, guards, timeouts and release contracts remain unchanged; fresh hosted qualification is pending.'
 
 # Keep path-level ownership, routing intents, and governed-doc rules here.
 # AGENTS.md keeps the entry-level repo contract and minimal execution summary.
@@ -68,6 +68,7 @@ ownership:
           - package.json
           - pnpm-lock.yaml
           - pnpm-workspace.yaml
+          - patches/**
           - .nvmrc
           - jest.config.cjs
           - Dockerfile.app
@@ -144,6 +145,7 @@ coverage:
     - package.json
     - pnpm-lock.yaml
     - pnpm-workspace.yaml
+    - patches/**
     - .nvmrc
     - jest.config.cjs
     - Dockerfile.app
@@ -230,6 +232,7 @@ routing:
         - package.json
         - pnpm-lock.yaml
         - pnpm-workspace.yaml
+        - patches/**
         - .dockerignore
         - .gitignore
         - .oxlintrc.json
@@ -307,6 +310,7 @@ routing:
         - package.json
         - pnpm-lock.yaml
         - pnpm-workspace.yaml
+        - patches/**
         - .dockerignore
         - .gitignore
         - .oxlintrc.json
@@ -440,6 +444,10 @@ rules:
     scope: repo
     repo: next
     triggers:
+      - path: scripts/qualification/hotfix-semantic-admission.cjs
+        kind: semantic-hotfix-admission
+      - path: patches/**
+        kind: maintained-dependency-patch
       - path: .github/dependabot.yml
         kind: dependency-monitoring-config
       - path: .github/workflows/dependency-pr.yml
@@ -454,6 +462,8 @@ rules:
     scope: repo
     repo: next
     triggers:
+      - path: patches/**
+        kind: maintained-dependency-patch
       - path: AGENTS.md
         kind: doc-contract
       - path: DEV.md
@@ -780,6 +790,8 @@ rules:
     scope: repo
     repo: next
     triggers:
+      - path: patches/**
+        kind: maintained-dependency-patch
       - path: package.json
         kind: runtime-config
       - path: pnpm-lock.yaml

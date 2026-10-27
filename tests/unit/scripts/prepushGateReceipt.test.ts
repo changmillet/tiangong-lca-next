@@ -1062,11 +1062,32 @@ describe('bounded checked-push transport receipt', () => {
   it('clears the receipt and succeeds idempotently when the exact commit already reached remote', () => {
     const current = fixture();
     activateFailedTransportReceipt(current);
-    git(current.root, ['push', '--no-verify', current.remote, 'refs/heads/main:refs/heads/main']);
+    // Git 2.56 also updates matching tracking refs for URL pushes. Advance only the remote.
+    git(current.container, [
+      `--git-dir=${current.remote}`,
+      'fetch',
+      '--no-tags',
+      current.root,
+      `${current.head}:refs/heads/main`,
+    ]);
+    expect(remoteSha(current)).toBe(current.head);
+    expect(git(current.root, ['rev-parse', 'refs/remotes/origin/main'])).toBe(current.mainBase);
 
     const gateCount = readGateLog(current).length;
     const result = retryPush(current);
 
+    if (result.status !== 0) {
+      throw new Error(
+        `Idempotent receipt retry failed: ${JSON.stringify({
+          command: ['pnpm', 'run', 'push:retry'],
+          status: result.status,
+          signal: result.signal,
+          error: result.error?.message,
+          stdout: result.stdout?.slice(0, 8_192),
+          stderr: result.stderr?.slice(0, 8_192),
+        })}`,
+      );
+    }
     expect(result.status).toBe(0);
     expect(result.stdout).toContain('already reached the remote');
     expect(remoteSha(current)).toBe(current.head);

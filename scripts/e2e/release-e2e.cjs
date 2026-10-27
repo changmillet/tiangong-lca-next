@@ -15,6 +15,8 @@ const {
   readQualificationReportReceipt,
 } = require('./qualification-closure.cjs');
 
+const { maintainedPatchIdentity, readMaintainedPatches } = require('./maintained-patches.cjs');
+
 const REPOSITORY_ROOT = path.resolve(__dirname, '../..');
 const RUNTIME_ROOT = path.join(REPOSITORY_ROOT, '.local/e2e-release');
 const RUNS_ROOT = path.join(RUNTIME_ROOT, 'runs');
@@ -32,7 +34,7 @@ const DEPENDENCY_LOCK_RELATIVE_PATH = 'pnpm-lock.yaml';
 const PNPM_WORKSPACE_RELATIVE_PATH = 'pnpm-workspace.yaml';
 const RECEIPT_TTL_MS = 60 * 60 * 1000;
 const RECEIPT_SCHEMA_VERSION = 6;
-const MANIFEST_SCHEMA_VERSION = 5;
+const MANIFEST_SCHEMA_VERSION = 6;
 const REPORT_SCHEMA_VERSION = 2;
 const CANONICAL_REPOSITORY = 'tiangong-lca/platform';
 const IMAGE_LABEL = 'org.tiangong.lca.next.release-e2e';
@@ -729,15 +731,26 @@ function ensureBaseImage(environment, options = {}) {
   return { imageId: installed.Id, reused: false };
 }
 
-function dependencyImageIdentity(environment) {
-  const packageJsonRaw = fs.readFileSync(path.join(REPOSITORY_ROOT, 'package.json'));
+function dependencyImageIdentity(environment, repositoryRoot = REPOSITORY_ROOT) {
+  const packageJsonRaw = fs.readFileSync(path.join(repositoryRoot, 'package.json'));
   const dependencyLockRaw = fs.readFileSync(
-    path.join(REPOSITORY_ROOT, DEPENDENCY_LOCK_RELATIVE_PATH),
+    path.join(repositoryRoot, DEPENDENCY_LOCK_RELATIVE_PATH),
   );
-  const pnpmWorkspaceRaw = fs.readFileSync(
-    path.join(REPOSITORY_ROOT, PNPM_WORKSPACE_RELATIVE_PATH),
-  );
-  const dockerfileRaw = fs.readFileSync(path.join(REPOSITORY_ROOT, DOCKERFILE_RELATIVE_PATH));
+  const pnpmWorkspaceRaw = fs.readFileSync(path.join(repositoryRoot, PNPM_WORKSPACE_RELATIVE_PATH));
+  const dockerfileRaw = fs.readFileSync(path.join(repositoryRoot, DOCKERFILE_RELATIVE_PATH));
+  const maintainedPatches = readMaintainedPatches(repositoryRoot);
+  for (const patch of maintainedPatches.entries) {
+    const entry = runCapture('git', ['ls-files', '--stage', '--', patch.path], {
+      cwd: repositoryRoot,
+      env: boundGitEnvironment(repositoryRoot),
+    }).stdout;
+    if (
+      !/^100644 [0-9a-f]+ 0\t/u.test(entry) ||
+      entry.trim().split('\t')[1] !== patch.path ||
+      entry.split('\n').filter(Boolean).length !== 1
+    )
+      throw new Error('Maintained patch must be a tracked regular non-executable file.');
+  }
   const packageJsonSha256 = sha256(packageJsonRaw);
   const dependencyLockSha256 = sha256(dependencyLockRaw);
   const pnpmWorkspaceSha256 = sha256(pnpmWorkspaceRaw);
@@ -749,10 +762,12 @@ function dependencyImageIdentity(environment) {
       environmentSha256: environment.sha256,
       packageJsonSha256,
       pnpmWorkspaceSha256,
+      maintainedPatchesSha256: maintainedPatches.sha256,
     }),
   );
   const tag = `tiangong-lca-next-e2e-dependencies:${identitySha256.slice(0, 24)}`;
   return {
+    maintainedPatches,
     dependencyLockRaw,
     dependencyLockSha256,
     dockerfileRaw,
@@ -772,6 +787,8 @@ function dependencyImageMatches(image, identity, environment) {
     labels['org.tiangong.lca.next.dependency-lock-sha256'] === identity.dependencyLockSha256 &&
     labels['org.tiangong.lca.next.package-json-sha256'] === identity.packageJsonSha256 &&
     labels['org.tiangong.lca.next.pnpm-workspace-sha256'] === identity.pnpmWorkspaceSha256 &&
+    labels['org.tiangong.lca.next.maintained-patches-sha256'] ===
+      identity.maintainedPatches.sha256 &&
     labels['org.tiangong.lca.next.environment-sha256'] === environment.sha256 &&
     labels['org.tiangong.lca.next.dockerfile-sha256'] === identity.dockerfileSha256
   );
@@ -815,6 +832,7 @@ function ensureDependencyImage(environment, options = {}) {
       identity.pnpmWorkspaceRaw,
       0o600,
     );
+    writeMaintainedPatches(directory, identity.maintainedPatches);
     writeBuildFile(path.join(directory, 'Dockerfile'), identity.dockerfileRaw, 0o600);
     const args = [
       'build',
@@ -832,6 +850,8 @@ function ensureDependencyImage(environment, options = {}) {
       `org.tiangong.lca.next.package-json-sha256=${identity.packageJsonSha256}`,
       '--label',
       `org.tiangong.lca.next.pnpm-workspace-sha256=${identity.pnpmWorkspaceSha256}`,
+      '--label',
+      `org.tiangong.lca.next.maintained-patches-sha256=${identity.maintainedPatches.sha256}`,
       '--label',
       `org.tiangong.lca.next.environment-sha256=${environment.sha256}`,
       '--label',
@@ -936,6 +956,13 @@ function requireCleanCommittedCandidate() {
   };
 }
 
+function writeMaintainedPatches(directory, identity) {
+  // Keep COPY valid for a source with no maintained patches as well.
+  fs.mkdirSync(path.join(directory, 'patches'), { recursive: true, mode: 0o700 });
+  for (const file of identity.files)
+    writeBuildFile(path.join(directory, file.path), file.raw, 0o600);
+}
+
 function createCandidateBuildContext(candidate, environment, runId, options = {}) {
   const directory = path.join(BUILD_ROOT, runId);
   fs.rmSync(directory, { recursive: true, force: true });
@@ -963,6 +990,16 @@ function createCandidateBuildContext(candidate, environment, runId, options = {}
   const dockerfileRaw = gitShow(DOCKERFILE_RELATIVE_PATH);
   const environmentRaw = gitShow(ENVIRONMENT_CONTRACT_RELATIVE_PATH);
   const buildVerifierRaw = gitShow('scripts/e2e/verify-build-input.cjs');
+  const patchVerifierRaw = gitShow('scripts/e2e/maintained-patches.cjs');
+  const maintainedPatches = maintainedPatchIdentity({
+    workspaceRaw: pnpmWorkspaceRaw,
+    lockRaw: dependencyLockRaw,
+    readFile: (relativePath) => {
+      if (git(['ls-tree', candidate.commit, '--', relativePath]).split(' ')[0] !== '100644')
+        throw new Error('Committed maintained patch must be a regular non-executable file.');
+      return gitShow(relativePath);
+    },
+  });
   const packageJson = JSON.parse(packageJsonRaw);
   const pinnedPnpmVersion = /^pnpm@([^+]+)(?:\+.+)?$/u.exec(packageJson.packageManager ?? '')?.[1];
   const hostPnpmVersion = runCapture('pnpm', ['--version'], {
@@ -1007,6 +1044,8 @@ function createCandidateBuildContext(candidate, environment, runId, options = {}
       archiveSha256: sha256(fs.readFileSync(archivePath)),
       commit: candidate.commit,
       dependencyLockSha256: sha256(dependencyLockRaw),
+      maintainedPatches: maintainedPatches.entries,
+      maintainedPatchesSha256: maintainedPatches.sha256,
       evidenceIdentity: {
         configTreeDigest: digestCommittedTree('config'),
         observedHeadCommit: candidate.commit,
@@ -1044,9 +1083,11 @@ function createCandidateBuildContext(candidate, environment, runId, options = {}
   writeBuildFile(path.join(directory, 'package.json'), packageJsonRaw, 0o600);
   writeBuildFile(path.join(directory, DEPENDENCY_LOCK_RELATIVE_PATH), dependencyLockRaw, 0o600);
   writeBuildFile(path.join(directory, PNPM_WORKSPACE_RELATIVE_PATH), pnpmWorkspaceRaw, 0o600);
+  writeMaintainedPatches(directory, maintainedPatches);
   writeBuildFile(path.join(directory, 'Dockerfile'), dockerfileRaw, 0o600);
   writeBuildFile(path.join(directory, 'environment.json'), environmentRaw, 0o600);
   writeBuildFile(path.join(directory, 'verify-build-input.cjs'), buildVerifierRaw, 0o600);
+  writeBuildFile(path.join(directory, 'maintained-patches.cjs'), patchVerifierRaw, 0o600);
   writeBuildFile(path.join(directory, 'candidate-manifest.json'), manifestText, 0o600);
 
   return { directory, imageTag, manifest, manifestSha256 };
@@ -1151,6 +1192,7 @@ function playwrightArguments(options) {
 function qualificationInputSha256(repositoryRoot = REPOSITORY_ROOT) {
   const pathPrefixes = [
     'src',
+    'patches',
     'public',
     'config',
     'tests/e2e/i18n',
@@ -1215,6 +1257,12 @@ function qualificationInputSha256(repositoryRoot = REPOSITORY_ROOT) {
     if (!entry) throw new Error(`Missing tracked qualification input: ${packagePath}`);
     return entry;
   };
+  const patchIdentity = readMaintainedPatches(repositoryRoot);
+  for (const entry of patchIdentity.entries) {
+    const tracked = trackedEntries.find((input) => input.path === entry.path);
+    if (!tracked || tracked.type !== 'blob' || tracked.mode !== '100644')
+      throw new Error('Maintained patch must be a tracked regular non-executable file.');
+  }
   const entries = [...trackedEntries];
   entries.push({
     ...packageEntry('package.json'),
@@ -2304,6 +2352,9 @@ module.exports = {
   assertLocalOperatorHostEnvironment,
   commandHelp,
   createReceipt,
+  dependencyImageIdentity,
+  dependencyImageMatches,
+  writeMaintainedPatches,
   dockerRunArguments,
   finalizeQualification,
   jsonText,

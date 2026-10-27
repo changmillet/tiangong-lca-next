@@ -43,9 +43,9 @@ checkPaths:
   - .github/workflows/build.yml
   - .github/workflows/release-gate.yml
   - .github/workflows/release-readiness.yml
-lastReviewedAt: 2026-10-27
-lastReviewedCommit: 784779ce3836b1c0bd601980fd6c4d145e810efe
-lastReviewedNote: 'Reviewed Platform #1358 patch image closure at784779ce: declared tracked patch bytes bind install contexts, cache identity, manifest6, runtime, reporter and resource verification. Focused controls and typed/static review pass; fresh hosted proof remains required. Backend authority, credential isolation, canonical assertions, execution budgets and release policy are unchanged.'
+lastReviewedAt: 2026-10-28
+lastReviewedCommit: 5e502c85033cab89ab7b2f055b90504abb765cc0
+lastReviewedNote: 'Reviewed Platform #1349 follow-up 64403fd7ae after actual CI40546918693 and strict local reproduction. A separate async act after completed mount awaits the viewport measurement frame and recreated request continuation; a causal probe observed height and callback identity changes. All22 strict focused tests pass and independent review found no material issue. Testing patterns now documents frame ordering. Permission assertions, product, global mocks, guards, timeouts and release contracts remain unchanged; fresh hosted qualification is pending.'
 ---
 
 # Testing Troubleshooting
@@ -84,6 +84,7 @@ Canonical baseline and proof ownership stays with `DEV.md` and `docs/agents/repo
 | element not found | query too early, wrong role/text, render path not reached | assert the prerequisite state first, then switch to semantic query |
 | a visible action exists but the expected request never starts | the control is present but still disabled while prerequisite data loads | wait for the control to become enabled, then interact; do not replace the product guard with an arbitrary delay |
 | a table browser fixture rejects the same fallback sort already asserted by the page and service unit tests | the fixture encoded a stale or invented initial order rather than the product contract | confirm the product decision, correct the fixture to the one exact service-owned RPC body, and rerun the browser scope; do not add `defaultSortOrder` merely to satisfy a wrong fixture or accept two contracts |
+| receipt idempotency fixture fails with changed `docpactBaseTip, docpactMergeBase` | a fixture URL push updated its matching local tracking ref, including on Git 2.56 | inspect the child diagnostic and local tracking baseline; advance only the isolated bare remote to model remote acceptance, assert both ref states, and retain baseline-drift rejection rather than relaxing the production checkpoint |
 | mock not hit | wrong import path or mock order | verify module path and set mocks before importing the subject |
 | SDK-backed Jest suites pass but the installed TIDAS SDK contract fails | Jest's `@tiangong-lca/tidas-sdk/core` mapper hid a package-version, factory, validation-envelope, Process review-shape, or required general-comment incompatibility | run `pnpm test:ci tests/unit/config/installedTidasSdkContract.test.ts --runInBand --no-coverage`, inspect the child Node output, and repair the exact lockfile-installed SDK graph or real package contract instead of weakening the mapper-independent assertion |
 | Jest 30 fails before or during discovery after a dependency update | a removed matcher alias, `jest.SpyInstance`-only typing, `testPathPattern`, unsupported internal deep import, or custom-sequencer constructor drift escaped the migration contract | run `pnpm test:ci tests/unit/config/packageManagerContract.test.ts tests/unit/scripts/slowJestSequencer.test.ts --runInBand --no-coverage`, preserve the explicit inventory and public package entrypoints, and fix the first exact migration finding instead of narrowing discovery |

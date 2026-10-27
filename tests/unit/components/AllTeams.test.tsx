@@ -55,6 +55,8 @@ jest.mock('@ant-design/pro-components', () => {
     columns,
     toolBarRender,
     onDragSortEnd,
+    toolbar,
+    headerTitle,
   }: any) => {
     const [rows, setRows] = React.useState(dataSource ?? []);
     const pageInfo = React.useRef({ current: 1, pageSize: 10 }).current;
@@ -112,6 +114,8 @@ jest.mock('@ant-design/pro-components', () => {
 
     return (
       <div data-testid='drag-sort-table'>
+        <div data-testid='pro-table-header'>{headerTitle}</div>
+        <div data-testid='table-search'>{toolbar?.search}</div>
         <div>
           {rows.map((row: any) => (
             <div key={row.id} data-testid={`row-${row.id}`}>
@@ -135,7 +139,7 @@ jest.mock('@ant-design/pro-components', () => {
     );
   };
 
-  const ProTable = ({ actionRef, request, columns, headerTitle }: any) => {
+  const ProTable = ({ actionRef, request, columns, headerTitle, toolbar }: any) => {
     const [rows, setRows] = React.useState([] as any[]);
     const pageInfo = React.useRef({ current: 1, pageSize: 10 }).current;
 
@@ -168,6 +172,7 @@ jest.mock('@ant-design/pro-components', () => {
     return (
       <div data-testid='pro-table'>
         <div data-testid='pro-table-header'>{headerTitle}</div>
+        <div data-testid='table-search'>{toolbar?.search}</div>
         {rows.map((row: any) => (
           <div key={row.id} data-testid={`row-${row.id}`}>
             {(columns || []).map((column: any, index: number) => (
@@ -358,12 +363,7 @@ describe('AllTeams component', () => {
     renderAllTeams({ tableType: 'joinTeam' });
 
     expect(await screen.findByText('Alpha Team')).toBeInTheDocument();
-    expect(screen.getByTestId('pro-table-header')).toHaveTextContent('All Teams');
-    expect(
-      screen
-        .getByTestId('pro-table-header')
-        .querySelector('[data-message-id="component.allTeams.table.title"]'),
-    ).toBeInTheDocument();
+    expect(screen.getByTestId('pro-table-header')).toBeEmptyDOMElement();
     expect(screen.queryByRole('button', { name: /open select teams/i })).not.toBeInTheDocument();
     expect(mockGetAllTableTeams).toHaveBeenCalledWith({ pageSize: 10, current: 1 }, 'joinTeam');
   });
@@ -526,7 +526,17 @@ describe('AllTeams component', () => {
   });
 
   it('prevents drag operations when user lacks permission', async () => {
-    renderAllTeams({ systemUserRole: undefined });
+    await act(async () => {
+      renderAllTeams({ systemUserRole: undefined });
+    });
+    // Settle the viewport's scheduled measurement and the request recreated by that render.
+    await act(async () => {
+      await new Promise<void>((resolve) => {
+        window.requestAnimationFrame(() => resolve());
+      });
+    });
+    expect(mockGetAllTableTeams).not.toHaveBeenCalled();
+    expect(mockGetTeamsByKeyword).not.toHaveBeenCalled();
 
     const dragButton = await screen.findByRole('button', { name: /simulate drag reorder/i });
     fireEvent.click(dragButton);
@@ -534,6 +544,7 @@ describe('AllTeams component', () => {
     expect(getMessageMock().error).toHaveBeenCalledWith(
       'You do not have permission to change the team order.',
     );
+    expect(mockUpdateSort).not.toHaveBeenCalled();
     expect(screen.queryByRole('button', { name: /save ranks/i })).not.toBeInTheDocument();
   });
 

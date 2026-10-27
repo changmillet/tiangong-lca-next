@@ -83,12 +83,14 @@ export type DataListColumnOptions = {
   pagination?: { current?: number; pageSize?: number };
 };
 
-const baseColumnDefinitions: {
+// All Teams is also imported by the app header before Umi's locale runtime is ready.
+// Resolve translated column elements when a dataset table renders, not during module loading.
+const getBaseColumnDefinitions = (): {
   field: DataListBaseField;
   aliases: string[];
   width?: number;
   title: ReactNode;
-}[] = [
+}[] => [
   {
     field: 'index',
     aliases: ['index'],
@@ -324,7 +326,7 @@ export function orderDataListColumns<T>(
   options: DataListColumnOptions = {},
 ): ProColumns<T>[] {
   const remaining = columns.filter((column) => getDataListColumnField(column) !== 'classification');
-  const ordered = baseColumnDefinitions.map(({ field, aliases, width, title }) => {
+  const ordered = getBaseColumnDefinitions().map(({ field, aliases, width, title }) => {
     const index = remaining.findIndex(
       (column) =>
         aliases.includes(getDataListColumnField(column)) ||

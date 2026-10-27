@@ -1,3 +1,7 @@
+import {
+  responsiveDataListTableProps,
+  ResponsiveDataListViewport,
+} from '@/components/ResponsiveDataList';
 import { ListPagination } from '@/services/general/data';
 import { delRoleApi, getUserManageTableData, updateRoleApi } from '@/services/roles/api';
 import { TeamMemberTable } from '@/services/teams/data';
@@ -254,67 +258,70 @@ const ReviewMember = ({ userData }: { userData: { user_id: string; role: string 
 
   return (
     <>
-      <ProTable<TeamMemberTable, ListPagination>
-        loading={membersLoading}
-        columns={columns}
-        rowKey='email'
-        search={false}
-        pagination={{
-          pageSize: 10,
-          showSizeChanger: true,
-          showQuickJumper: true,
-        }}
-        headerTitle={
-          <>
-            <FormattedMessage id='menu.review' defaultMessage='Review Management' /> /{' '}
-            <FormattedMessage id='pages.review.tabs.members' defaultMessage='Member Management' />
-          </>
-        }
-        toolBarRender={() => {
-          return [
-            <Tooltip
-              key={0}
-              title={<FormattedMessage id='pages.review.members.add' defaultMessage='Add Member' />}
-            >
-              <Button
-                disabled={!(userData?.role === 'review-admin')}
-                type='text'
-                icon={<PlusOutlined />}
-                onClick={() => setAddModalVisible(true)}
-              />
-            </Tooltip>,
-          ];
-        }}
-        request={async (
-          params: {
-            pageSize: number;
-            current: number;
-          },
-          sort,
-        ) => {
-          try {
-            if (!userData?.role) {
-              return {
-                data: [],
-                success: true,
-                total: 0,
-              };
-            }
-            setMembersLoading(true);
-            return await getUserManageTableData(params, sort);
-          } catch (error) {
-            console.error(error);
-            return {
-              data: [],
-              success: true,
-              total: 0,
-            };
-          } finally {
-            setMembersLoading(false);
-          }
-        }}
-        actionRef={membersActionRef}
-      />
+      <ResponsiveDataListViewport>
+        {({ scroll }) => (
+          <ProTable<TeamMemberTable, ListPagination>
+            {...responsiveDataListTableProps}
+            scroll={scroll}
+            loading={membersLoading}
+            columns={columns}
+            rowKey='email'
+            search={false}
+            pagination={{
+              pageSize: 10,
+              showSizeChanger: true,
+              showQuickJumper: true,
+            }}
+            headerTitle={false}
+            toolBarRender={() => {
+              return [
+                <Tooltip
+                  key={0}
+                  title={
+                    <FormattedMessage id='pages.review.members.add' defaultMessage='Add Member' />
+                  }
+                >
+                  <Button
+                    disabled={!(userData?.role === 'review-admin')}
+                    type='text'
+                    icon={<PlusOutlined />}
+                    onClick={() => setAddModalVisible(true)}
+                  />
+                </Tooltip>,
+              ];
+            }}
+            request={async (
+              params: {
+                pageSize: number;
+                current: number;
+              },
+              sort,
+            ) => {
+              try {
+                if (!userData?.role) {
+                  return {
+                    data: [],
+                    success: true,
+                    total: 0,
+                  };
+                }
+                setMembersLoading(true);
+                return await getUserManageTableData(params, sort);
+              } catch (error) {
+                console.error(error);
+                return {
+                  data: [],
+                  success: true,
+                  total: 0,
+                };
+              } finally {
+                setMembersLoading(false);
+              }
+            }}
+            actionRef={membersActionRef}
+          />
+        )}
+      </ResponsiveDataListViewport>
       <AddMemberModal
         open={addModalVisible}
         onCancel={() => setAddModalVisible(false)}

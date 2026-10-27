@@ -253,6 +253,7 @@ jest.mock('@ant-design/pro-components', () => {
     rowKey = 'id',
     pagination,
     toolBarRender,
+    toolbar: listToolbar,
     headerTitle,
   }: any) => {
     const [rows, setRows] = React.useState([] as any[]);
@@ -313,6 +314,8 @@ jest.mock('@ant-design/pro-components', () => {
       <div data-testid='pro-table'>
         <div data-testid='pro-table-header'>{header}</div>
         <div data-testid='pro-table-toolbar'>
+          {listToolbar?.search}
+          {listToolbar?.filter}
           {Array.isArray(toolbar)
             ? toolbar.map((node, index) => (
                 <React.Fragment key={`toolbar-${index}`}>{node}</React.Fragment>

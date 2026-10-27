@@ -181,3 +181,32 @@ it('rejects an ambiguous dispatch payload', () => {
   value.dependencyResult = value.actionResult = 'success';
   expect(() => admit(value, { gitText })).toThrow('semantic_ambiguous_dispatch');
 });
+
+it('preserves ordinary fork qualification when the existing jobs succeed', () => {
+  const value = fixture();
+  value.event.pull_request.head.ref = 'feature/fork';
+  value.event.pull_request.head.repo = {
+    full_name: 'contributor/fork',
+    id: 123,
+    owner: { id: 456 },
+  };
+  value.event.pull_request.body = '';
+  value.dependencyResult = value.actionResult = 'success';
+  expect(admit(value, { gitText }).kind).toBe('ordinary');
+});
+it.each([
+  ['short fence closer', '\x60\x60\x60\x60\n\x60\x60\x60\n'],
+  ['mismatched raw closer', '<pre>\n</code>\n'],
+  ['outer HTML comment', '<!-- outer\n'],
+])('rejects markers inside %s', (_label, opening) => {
+  const value = fixture();
+  value.event.pull_request.body = `${hotfix}\n${opening}${semantic}`;
+  expect(() => admit(value, { gitText })).toThrow(
+    /semantic_marker_(?:not_authoritative|nested_comment)/u,
+  );
+});
+it('accepts a valid standalone marker after correctly closed long fences and raw blocks', () => {
+  const value = fixture();
+  value.event.pull_request.body = `\x60\x60\x60\x60\nexample\n\x60\x60\x60\x60\n<pre>example</pre>\n${hotfix}\n${semantic}`;
+  expect(admit(value, { gitText }).kind).toBe('main-hotfix');
+});

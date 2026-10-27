@@ -8,18 +8,41 @@ function requireFact(value, code) { if (!value) { const error = new Error(code);
 function gitText(root, args) { return execFileSync('git', ['-C', root, ...args], { encoding: 'utf8' }).trim(); }
 function repoMatches(repo) { return repo?.full_name === CANONICAL.name && repo?.id === CANONICAL.id && repo?.owner?.id === CANONICAL.owner; }
 function markerLine(body, prefix) {
-  requireFact(typeof body === 'string' && body.split(prefix).length === 2, 'semantic_marker_missing_or_ambiguous');
-  let fence = null, raw = false, found;
-  for (const line of body.split(/\r?\n/u)) {
-    const delimiter = /^ {0,3}(`{3,}|~{3,})/u.exec(line);
-    if (delimiter) { if (!fence) fence = delimiter[1][0]; else if (fence === delimiter[1][0]) fence = null; }
-    if (/<(?:pre|code|script|style|textarea|xmp|plaintext|blockquote)(?:\s|>)/iu.test(line)) raw = true;
-    if (line.includes(prefix)) { requireFact(!fence && !raw && line.startsWith('<!-- ') && line.endsWith(' -->'), 'semantic_marker_not_authoritative'); found = line; }
-    if (/<\/(?:pre|code|script|style|textarea|xmp|plaintext|blockquote)>/iu.test(line)) raw = false;
+  requireFact(typeof body === 'string' && Buffer.byteLength(body, 'utf8') <= 262144 && body.split(prefix).length === 2, 'semantic_marker_missing_or_ambiguous');
+  const lines = body.split(/\r?\n/u);
+  requireFact(lines.length <= 8192, 'semantic_marker_body_too_large');
+  let fence = null, inComment = false, found;
+  const raw = [];
+  for (const line of lines) {
+    const delimiter = /^ {0,3}(`{3,}|~{3,})(.*)$/u.exec(line);
+    if (delimiter && !raw.length && !inComment) {
+      const run = delimiter[1], tail = delimiter[2];
+      if (!fence) {
+        requireFact(run[0] !== '`' || !tail.includes('`'), 'semantic_marker_invalid_fence');
+        fence = { character: run[0], length: run.length };
+      } else if (run[0] === fence.character && run.length >= fence.length && !tail.trim()) fence = null;
+    }
+    if (!fence && !inComment) {
+      for (const token of line.matchAll(/<(\/?)(pre|code|script|style|textarea|xmp|plaintext|blockquote)(?=[\s/>]|$)[^<>]*>?/giu)) {
+        const closing = token[1] === '/', tag = token[2].toLowerCase();
+        if (!closing) raw.push(tag);
+        else if (tag !== 'plaintext' && raw.at(-1) === tag && new RegExp(`^</${tag}\\s*>$`, 'iu').test(token[0])) raw.pop();
+      }
+    }
+    if (line.includes(prefix)) {
+      requireFact(!fence && !raw.length && !inComment && line.startsWith('<!-- ') && line.endsWith(' -->'), 'semantic_marker_not_authoritative');
+      found = line;
+    } else if (!fence && !raw.length) {
+      for (const token of line.matchAll(/<!--|-->/gu)) {
+        if (token[0] === '<!--') { requireFact(!inComment, 'semantic_marker_nested_comment'); inComment = true; }
+        else if (inComment) inComment = false;
+      }
+    }
   }
   requireFact(found, 'semantic_marker_missing_or_ambiguous');
   return found;
 }
+
 function admit(input, dependencies = {}) {
   const { root, eventName, event, repository, expectedHead, dependencyResult, actionResult } = input;
   requireFact(['pull_request', 'workflow_dispatch'].includes(eventName), 'semantic_unknown_event');
@@ -34,7 +57,7 @@ function admit(input, dependencies = {}) {
   }
   const pr = event.pull_request;
   requireFact(pr?.state === 'open' && Number.isSafeInteger(pr.number) && pr.number > 0 && event.number === pr.number, 'semantic_invalid_pr');
-  requireFact(repoMatches(pr.base?.repo) && repoMatches(pr.head?.repo), 'semantic_fork_or_unknown_repository');
+  requireFact(repoMatches(pr.base?.repo), 'semantic_fork_or_unknown_repository');
   requireFact(pr.head?.sha === expectedHead && ['dev', 'main'].includes(pr.base?.ref) && typeof pr.head?.ref === 'string', 'semantic_pr_head_or_base_mismatch');
   const body = String(pr.body || '');
   const hotfix = pr.base.ref === 'main' && pr.head.ref.startsWith('codex/hotfix-');
@@ -44,6 +67,7 @@ function admit(input, dependencies = {}) {
     requireFact(dependencyResult === 'success' && actionResult === 'success', 'semantic_ordinary_dependencies_failed');
     return { schema: 'platform.semantic-admission.v1', complete: true, kind: 'ordinary', head: expectedHead };
   }
+  requireFact(repoMatches(pr.head?.repo), 'semantic_fork_or_unknown_repository');
   requireFact(dependencyResult === 'skipped' && actionResult === 'skipped', 'semantic_hotfix_dependencies_not_skipped');
   const hotfixLine = markerLine(body, HOTFIX_MARKER_PREFIX);
   requireFact(/^<!-- tiangong-next-main-hotfix:v1 issue=[1-9][0-9]* main-base=[a-f0-9]{40} candidate=[a-f0-9]{40} -->$/u.test(hotfixLine), 'semantic_hotfix_marker_invalid');

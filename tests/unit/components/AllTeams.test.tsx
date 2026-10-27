@@ -526,7 +526,11 @@ describe('AllTeams component', () => {
   });
 
   it('prevents drag operations when user lacks permission', async () => {
-    renderAllTeams({ systemUserRole: undefined });
+    await act(async () => {
+      renderAllTeams({ systemUserRole: undefined });
+    });
+    expect(mockGetAllTableTeams).not.toHaveBeenCalled();
+    expect(mockGetTeamsByKeyword).not.toHaveBeenCalled();
 
     const dragButton = await screen.findByRole('button', { name: /simulate drag reorder/i });
     fireEvent.click(dragButton);
@@ -534,6 +538,7 @@ describe('AllTeams component', () => {
     expect(getMessageMock().error).toHaveBeenCalledWith(
       'You do not have permission to change the team order.',
     );
+    expect(mockUpdateSort).not.toHaveBeenCalled();
     expect(screen.queryByRole('button', { name: /save ranks/i })).not.toBeInTheDocument();
   });
 

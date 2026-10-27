@@ -15,6 +15,7 @@ whenToUpdate:
   - when change categories require different proof
   - when coverage or deploy policy changes
 checkPaths:
+  - patches/**
   - docs/agents/repo-validation.md
   - .docpact/config.yaml
   - package.json
@@ -46,9 +47,9 @@ checkPaths:
   - scripts/typescript-native-parser.*
   - scripts/i18n/locale-delivery.mjs
   - .github/workflows/**
-lastReviewedAt: 2026-10-26
-lastReviewedCommit: a5e998603ac49a97b99a29b6b14ae60bf61eb643
-lastReviewedNote: 'Platform #1342: reviewed frozen result revision and unit display, exact-version optional enrichment and legacy unknown revisions. Calculation, data-quality policy, database ownership, release and validation gates remain unchanged.'
+lastReviewedAt: 2026-10-27
+lastReviewedCommit: b169e2431847a9e5550f51d20ae24a39214864a1
+lastReviewedNote: 'Reviewed Platform #1358: exact maintained Portal patch ownership and commit-safe installed contracts; bound semantic-only Main hotfix admission preserves full-gate ownership, read-only qualification, complete inventory and resource/artifact closure. Native ESM/browser, current-source semantic and full delivery proof remain pending; no prior failure cause or release/deployment pass claimed.'
 related:
   - ../AGENTS.md
   - ../.docpact/config.yaml
@@ -308,3 +309,9 @@ For the six-family Supabase `2.118.0` update, run the mapper-independent `instal
 ## National carbon organization draft reporting
 
 For Platform #1328, run the dashboard service/page suites against the required v6 contract, including invalid or missing draft fields, localized sixth-column placement, zero values, and ten-row client pagination without extra RPCs. Browser proof uses the qualification build and intercepted synthetic snapshots, checking six-column alignment, long localized labels and rank continuity. Database #860 must be available in the selected environment before frontend publication; database counting and ordering proof stays in its SQL suite.
+
+## Maintained Portal lifecycle compatibility
+
+For #1358, `tests/unit/config/installedPortalEscape.test.ts` launches the real installed CJS package outside Jest mappers/test-ID substitution. Require committed markers, nested and sibling ordering, committed and aborted reparent, isolated StrictMode effect replay, callback publication, close/reopen, all-active dispatch order, omitted callbacks/keyboard=false, both IME gates and both listener cleanups. The intentionally naive effect-only control must fail its nested assertion; injected cleanup failures must return nonzero despite green behavioral assertions. Bind the resolved package/source hashes, not a receipt-provided arbitrary path.
+
+CJS/JSDOM success is not ESM/native-browser proof. Native qualification must resolve the actual patched ESM bundle, use default body containers, close child then parent with two real Escapes, restore opener focus and verify owned browser/server cleanup. The explicitly opted-in Main hotfix path in dependency maintenance additionally runs the unchanged complete canonical semantic qualification and resource/artifact closure. Ordinary aggregate/Action jobs must succeed; their legitimate protected-hotfix skips are accepted only by bound hotfix admission while Main Candidate owns its full gate. Keep this browser proof separate from release proof; no local result claims the historical failure's cause.

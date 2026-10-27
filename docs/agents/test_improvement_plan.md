@@ -15,6 +15,7 @@ whenToUpdate:
   - when reopen conditions for strategy work change
   - when this strategy no longer matches the maintained testing model
 checkPaths:
+  - patches/**
   - docs/agents/test_improvement_plan.md
   - docs/agents/test_todo_list.md
   - docs/agents/repo-validation.md
@@ -45,9 +46,9 @@ checkPaths:
   - pnpm-lock.yaml
   - pnpm-workspace.yaml
   - Dockerfile.app
-lastReviewedAt: 2026-10-26
-lastReviewedCommit: a5e998603ac49a97b99a29b6b14ae60bf61eb643
-lastReviewedNote: 'Platform #1342: reviewed focused frozen-metadata unit/component/browser regressions and unchanged full coverage, bootstrap, checked-push and release proof requirements.'
+lastReviewedAt: 2026-10-27
+lastReviewedCommit: b169e2431847a9e5550f51d20ae24a39214864a1
+lastReviewedNote: 'Reviewed Platform #1358: exact maintained Portal patch ownership and commit-safe installed contracts; bound semantic-only Main hotfix admission preserves full-gate ownership, read-only qualification, complete inventory and resource/artifact closure. Native ESM/browser, current-source semantic and full delivery proof remain pending; no prior failure cause or release/deployment pass claimed.'
 ---
 
 # Testing Strategy

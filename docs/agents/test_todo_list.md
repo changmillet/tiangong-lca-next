@@ -15,6 +15,7 @@ whenToUpdate:
   - when the active queue state changes
   - when present-state testing facts become stale
 checkPaths:
+  - patches/**
   - docs/agents/test_todo_list.md
   - package.json
   - .oxlintrc.json
@@ -43,9 +44,9 @@ checkPaths:
   - .github/workflows/build.yml
   - .github/workflows/release-gate.yml
   - .github/workflows/release-readiness.yml
-lastReviewedAt: 2026-10-26
-lastReviewedCommit: a5e998603ac49a97b99a29b6b14ae60bf61eb643
-lastReviewedNote: 'Platform #1342: reviewed focused frozen-metadata unit/component/browser regressions and unchanged full coverage, bootstrap, checked-push and release proof requirements.'
+lastReviewedAt: 2026-10-27
+lastReviewedCommit: b169e2431847a9e5550f51d20ae24a39214864a1
+lastReviewedNote: 'Reviewed Platform #1358: exact maintained Portal patch ownership and commit-safe installed contracts; bound semantic-only Main hotfix admission preserves full-gate ownership, read-only qualification, complete inventory and resource/artifact closure. Native ESM/browser, current-source semantic and full delivery proof remain pending; no prior failure cause or release/deployment pass claimed.'
 ---
 
 # Testing Execution State
@@ -64,6 +65,8 @@ lastReviewedNote: 'Platform #1342: reviewed focused frozen-metadata unit/compone
 This is a checked-in reference, not a per-PR execution ledger. A delivery's post-commit, hook-owned full-gate result belongs in its PR validation evidence; update this section when the reference counts, coverage policy, or queue state materially changes.
 
 ## Current State
+
+- Issue #1358 owns the separately reproduced Portal commit-lifecycle repair and exact Main semantic admission. Focused installed-package and admission regressions are local proof; native ESM/default-container/focus, current-source full semantic qualification and normal complete gates remain pending. The product patch keeps package versions/unrelated graph intact. This does not clear #1354's original allocation handler criterion or either failed f6 execution, and it creates no release/deployment authority.
 
 - repo is in full-closure maintenance mode
 - there is no active ordered coverage queue right now

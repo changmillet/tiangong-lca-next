@@ -23,6 +23,21 @@ const act = React.act || (async callback => callback());
 const antdReq = createRequire(req.resolve('antd/package.json'));
 const drawerReq = createRequire(antdReq.resolve('@rc-component/drawer/package.json'));
 const portalRoot = path.dirname(drawerReq.resolve('@rc-component/portal/package.json'));
+const control = process.env.PORTAL_ESCAPE_NEGATIVE_CONTROL;
+let controlSha256;
+if (control) {
+  assert.equal(control, 'naive-effect', 'Known negative control required');
+  const Module = require('node:module');
+  const file = path.join(__dirname, 'fixtures/portal-escape-naive-control.cjs');
+  const source = fs.readFileSync(file, 'utf8');
+  controlSha256 = crypto.createHash('sha256').update(source).digest('hex');
+  const target = path.join(portalRoot, 'lib/useEscKeyDown.js');
+  const isolated = new Module(target);
+  isolated.filename = target;
+  isolated.paths = Module._nodeModulePaths(path.dirname(target));
+  isolated._compile(source, target);
+  req.cache[target] = isolated;
+}
 const Portal = req(path.join(portalRoot, 'lib')).default;
 const hook = req(path.join(portalRoot, 'lib/useEscKeyDown'));
 const AntdDrawer = req('antd/lib/drawer').default;
@@ -64,7 +79,7 @@ const cases = {
 };
 async function main() {
   const name = process.argv[2], receiptPath = process.argv[3]; assert.ok(cases[name], 'Known contract case required');
-  const result = { schema: 'platform.portal-escape-contract.v1', case: name, mode: process.env.NODE_ENV, assertions: 'pending', cleanup: 'pending', source: { node: process.version, react: req('react/package.json').version, portal: req(path.join(portalRoot, 'package.json')).version, portalRoot: fs.realpathSync(portalRoot), files: {} }, errors: [] };
+  const result = { negativeControl: control || null, negativeControlSha256: controlSha256 || null, browserBundleExecution: 'pending-separate-stage', schema: 'platform.portal-escape-contract.v1', case: name, mode: process.env.NODE_ENV, assertions: 'pending', cleanup: 'pending', source: { node: process.version, react: req('react/package.json').version, portal: req(path.join(portalRoot, 'package.json')).version, portalRoot: fs.realpathSync(portalRoot), files: {} }, errors: [] };
   for (const rel of ['package.json', 'lib/useEscKeyDown.js', 'es/useEscKeyDown.js', 'lib/Portal.js', 'es/Portal.js', 'lib/Context.js', 'es/Context.js']) result.source.files[rel] = crypto.createHash('sha256').update(fs.readFileSync(path.join(portalRoot, rel))).digest('hex');
   try { await cases[name](); result.assertions = 'passed'; } catch (error) { result.assertions = 'failed'; result.errors.push({ phase: 'assertion', name: error.name, message: error.message }); }
   if (['keydown', 'compositionend'].includes(process.env.PORTAL_ESCAPE_INJECT_CLEANUP_FAILURE)) window.addEventListener(process.env.PORTAL_ESCAPE_INJECT_CLEANUP_FAILURE, () => {});

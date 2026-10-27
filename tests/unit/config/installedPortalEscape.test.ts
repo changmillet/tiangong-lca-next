@@ -15,6 +15,7 @@ const expectedPortalRoot = fs.realpathSync(
 );
 const cases = [
   'siblings',
+  'reopen-over-new-sibling',
   'nested',
   'nested-strict',
   'mixed',

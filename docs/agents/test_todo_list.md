@@ -45,8 +45,8 @@ checkPaths:
   - .github/workflows/release-gate.yml
   - .github/workflows/release-readiness.yml
 lastReviewedAt: 2026-10-27
-lastReviewedCommit: b169e2431847a9e5550f51d20ae24a39214864a1
-lastReviewedNote: 'Reviewed Platform #1358: exact maintained Portal patch ownership and commit-safe installed contracts; bound semantic-only Main hotfix admission preserves full-gate ownership, read-only qualification, complete inventory and resource/artifact closure. Native ESM/browser, current-source semantic and full delivery proof remain pending; no prior failure cause or release/deployment pass claimed.'
+lastReviewedCommit: 784779ce3836b1c0bd601980fd6c4d145e810efe
+lastReviewedNote: 'Reviewed Platform #1358 patch image closure at784779ce: declared tracked patch bytes bind install contexts, cache identity, manifest6, runtime, reporter and resource verification. Focused controls and typed/static review pass; fresh hosted proof remains required. Backend authority, credential isolation, canonical assertions, execution budgets and release policy are unchanged.'
 ---
 
 # Testing Execution State
@@ -66,7 +66,7 @@ This is a checked-in reference, not a per-PR execution ledger. A delivery's post
 
 ## Current State
 
-- Issue #1358 owns the separately reproduced Portal commit-lifecycle repair and exact Main semantic admission. Focused installed-package and admission regressions are local proof; native ESM/default-container/focus, current-source full semantic qualification and normal complete gates remain pending. The product patch keeps package versions/unrelated graph intact. This does not clear #1354's original allocation handler criterion or either failed f6 execution, and it creates no release/deployment authority.
+- Issue #1358 owns the separately reproduced Portal commit-lifecycle repair, maintained-patch image input closure and exact Main semantic admission. Acceptance requires installed-package, native ESM/default-container/focus, current-source canonical semantic and normal complete-gate evidence; actual executions and remaining work are recorded on that Issue/PR. Package versions and unrelated dependency resolutions remain intact. Successful new evidence does not establish #1354's historical failure cause or independently authorize publication.
 
 - repo is in full-closure maintenance mode
 - there is no active ordered coverage queue right now

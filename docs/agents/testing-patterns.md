@@ -47,8 +47,8 @@ checkPaths:
   - .github/workflows/release-gate.yml
   - .github/workflows/release-readiness.yml
 lastReviewedAt: 2026-10-27
-lastReviewedCommit: b169e2431847a9e5550f51d20ae24a39214864a1
-lastReviewedNote: 'Reviewed Platform #1358: exact maintained Portal patch ownership and commit-safe installed contracts; bound semantic-only Main hotfix admission preserves full-gate ownership, read-only qualification, complete inventory and resource/artifact closure. Native ESM/browser, current-source semantic and full delivery proof remain pending; no prior failure cause or release/deployment pass claimed.'
+lastReviewedCommit: 784779ce3836b1c0bd601980fd6c4d145e810efe
+lastReviewedNote: 'Reviewed Platform #1358 patch image closure at784779ce: declared tracked patch bytes bind install contexts, cache identity, manifest6, runtime, reporter and resource verification. Focused controls and typed/static review pass; fresh hosted proof remains required. Backend authority, credential isolation, canonical assertions, execution budgets and release policy are unchanged.'
 ---
 
 # Testing Patterns Reference
@@ -291,3 +291,5 @@ Run affected React form suites with `CI=true` so the existing act-warning guard 
 ## Installed Portal lifecycle contracts
 
 Run real package lifecycle contracts in isolated Node children with development/production React and actual unique IDs; Jest's test-mode ID substitution cannot establish multi-Portal ordering. Observe effect commit separately from render, keep a non-replayed sibling beside the replayed StrictMode subtree, and make a reparent discriminator change which subtree wins. At least one assertion preserves callback dispatch order. Check both event-listener removals and process/window disposal, propagate cleanup/receipt failure to exit status, and label in-memory negative controls explicitly. Native keyboard/default-container/focus and ESM bundle execution remain separate browser evidence.
+
+Image-input tests should bind declared patch bytes before cache lookup, then cover both dependency and candidate contexts and every manifest consumer, including the Git-free evidence reporter. Use a patch-free control and explicit path/hash/index/schema failures. Resource observer fixtures canonicalize their owned temporary root before deriving paths so macOS aliases do not replace the intended ownership assertions with an unrelated setup failure.

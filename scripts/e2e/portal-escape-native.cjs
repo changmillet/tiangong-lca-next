@@ -58,7 +58,9 @@ async function execute(options, binding) {
     const self = snapshot.rows.get(process.pid); check(self, 'resource_self_unknown');
     receipt.peakRssBytes = Math.max(receipt.peakRssBytes, state.live.reduce((sum, row) => sum + snapshot.rows.get(row.pid).rss, self.rss));
     const diskRoots = output.startsWith(root + path.sep) ? [root] : [root, output];
-    const disk = diskRoots.reduce((sum, dir) => { check(remaining() > 200, 'disk_inspection_budget'); return sum + Number(cp.execFileSync('du', ['-sk', dir], { encoding: 'utf8', timeout: Math.min(1000, Math.floor(remaining() - 100)) }).trim().split(/\s+/u)[0]) * 1024; }, 0);
+    // A cold traversal of the frozen pnpm tree takes longer than one second.
+    // Keep the probe bounded by both its own limit and the original run deadline.
+    const disk = diskRoots.reduce((sum, dir) => { check(remaining() > 200, 'disk_inspection_budget'); const bytes = Number(cp.execFileSync('du', ['-sk', dir], { encoding: 'utf8', timeout: Math.min(5000, Math.floor(remaining() - 100)) }).trim().split(/\s+/u)[0]) * 1024; check(Number.isSafeInteger(bytes) && bytes >= 0, 'disk_inspection_invalid'); return sum + bytes; }, 0);
     receipt.peakTotalOwnedDiskBytes = Math.max(receipt.peakTotalOwnedDiskBytes, disk);
     receipt.ownership = registry.evidence();
     check(receipt.peakRssBytes <= 4 * 1024 ** 3 && disk <= 12 * 1024 ** 3, 'resource_limit');
@@ -78,8 +80,10 @@ async function execute(options, binding) {
     write('intent.json', { ...intent, runtime });
     softTimer = setTimeout(() => abort('cleanup_reserve_reached'), workDeadlineMono - performance.now());
     hardTimer = setTimeout(() => { stopping = true; killOwned('SIGKILL'); receipt.failures.push({ phase: 'deadline', code: 'hard_deadline' }); receipt.finishedAt = Date.now(); write('receipt.json', receipt); process.exit(124); }, deadlineMono - performance.now() - 2000);
-    sampler = setInterval(() => { try { sample(); } catch { abort('resource_observation_failed'); } }, 1000); sample();
+    receipt.step = 'setup:resource-snapshot';
+    sampler = setInterval(() => { try { sample(); } catch (error) { receipt.failures.push({ phase: 'resource-observation', code: error.code || 'resource_observation_failed', detail: String(error.message).slice(0, 2000) }); abort('resource_observation_failed'); } }, 1000); sample();
     process.env.GOMAXPROCS = '2'; process.env.UV_THREADPOOL_SIZE = '2'; process.env.OMP_NUM_THREADS = '2';
+    receipt.step = 'setup:bundle';
     const compilerReq = createRequire(req.resolve('@umijs/max/package.json')); esbuild = compilerReq('esbuild');
     const fixture = path.join(root, 'tests/package-contracts/native-portal-escape/fixture.mjs');
     const entry = `import React from ${JSON.stringify(req.resolve('react'))};import {createRoot} from ${JSON.stringify(req.resolve('react-dom/client'))};import {flushSync} from ${JSON.stringify(req.resolve('react-dom'))};import Portal from ${JSON.stringify(path.join(binding.portalRoot, 'es/index.js'))};import {EscapeContext} from ${JSON.stringify(path.join(binding.portalRoot, 'es/useEscKeyDown.js'))};import Drawer from ${JSON.stringify(path.join(binding.antdRoot, 'es/drawer/index.js'))};import {SiderMenu} from ${JSON.stringify(path.join(binding.proRoot, 'es/layout/components/SiderMenu/index.js'))};import {mountFixture} from ${JSON.stringify(fixture)};mountFixture({React,createRoot,flushSync,Portal,Drawer,SiderMenu,EscapeContext});`;
@@ -137,7 +141,7 @@ async function execute(options, binding) {
       await race(runBrowser());
     }
     sameSources(binding); for (const [file, digest] of Object.entries(receipt.bundle.inputHashes)) check(sha(fs.readFileSync(file)) === digest, 'bundle_input_changed');
-  } catch (error) { receipt.failures.push({ phase: receipt.step || 'setup', code: /^[a-z0-9_]+$/u.test(error.code || '') ? error.code : 'native_harness_failed' }); }
+  } catch (error) { receipt.failures.push({ phase: receipt.step || 'setup', code: /^[a-z0-9_]+$/u.test(error.code || '') ? error.code : 'native_harness_failed', errorCode: error.code || null, detail: String(error.message).slice(0, 2000) }); }
   finally {
     stopping = true; if (sampler) clearInterval(sampler); if (softTimer) clearTimeout(softTimer);
     for (const [kind, close] of [['context', () => context?.close()], ['browser', () => browser?.close()], ['browser-server', () => browserServer?.close()], ['compiler', () => esbuild?.stop()], ['http-server', () => server && new Promise(resolve => { server.closeAllConnections(); server.close(resolve); })]]) { try { await bounded(close, 10000); } catch { receipt.failures.push({ phase: 'cleanup', code: `${kind}_close_failed` }); } }

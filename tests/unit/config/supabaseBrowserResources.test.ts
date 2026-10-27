@@ -27,7 +27,11 @@ afterEach(() => {
 });
 
 function fixture() {
-  const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'supabase-browser-resource-test-'));
+  // The observer deliberately requires canonical owned paths. macOS may expose
+  // os.tmpdir() through /var while realpath resolves that parent to /private/var.
+  const directory = fs.realpathSync(
+    fs.mkdtempSync(path.join(os.tmpdir(), 'supabase-browser-resource-test-')),
+  );
   directories.push(directory);
   const root = path.join(directory, 'checkout');
   const runnerTemp = path.join(directory, 'runner');

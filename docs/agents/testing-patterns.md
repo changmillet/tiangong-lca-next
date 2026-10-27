@@ -47,8 +47,8 @@ checkPaths:
   - .github/workflows/release-gate.yml
   - .github/workflows/release-readiness.yml
 lastReviewedAt: 2026-10-28
-lastReviewedCommit: db04e9d807a65bd8c98efb2fbac960d10b574596
-lastReviewedNote: 'Reviewed Platform #1349 receipt-fixture correction db04e9d8 against the Git 2.56 tracking-ref behavior observed in CI40539695158. Remote-owned exact-head fetch preserves the client checkpoint; positive idempotency and negative baseline-drift cases pass. Production guards, gate inventory, timeouts and release boundaries are unchanged. Testing patterns and troubleshooting record the fixture distinction; fresh hosted qualification remains pending.'
+lastReviewedCommit: 05b2c01e7780756d131dba20c51d666279c4e669
+lastReviewedNote: 'Reviewed Platform #1349 AllTeams test correction05b2c01e7 after CI40543182513. Awaited async act completes the no-role empty request before drag assertions; strict warning mode reproduces the old failure and all22 focused cases pass after correction. Permission/error/no-save assertions remain, with added assertions that backend reads and sort writes do not occur. Existing async testing guidance suffices; product, guards, inventory, timeouts and release boundaries are unchanged. Fresh hosted full qualification remains required.'
 ---
 
 # Testing Patterns Reference

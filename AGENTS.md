@@ -49,9 +49,9 @@ checkPaths:
   - .nvmrc
   - .husky/pre-push
   - .github/workflows/**
-lastReviewedAt: 2026-10-27
-lastReviewedCommit: b169e2431847a9e5550f51d20ae24a39214864a1
-lastReviewedNote: 'Reviewed Platform #1358: exact maintained Portal patch ownership and commit-safe installed contracts; bound semantic-only Main hotfix admission preserves full-gate ownership, read-only qualification, complete inventory and resource/artifact closure. Native ESM/browser, current-source semantic and full delivery proof remain pending; no prior failure cause or release/deployment pass claimed.'
+lastReviewedAt: 2026-10-28
+lastReviewedCommit: 55475b709eba699353b9851c17f1881b2e751e83
+lastReviewedNote: 'Reviewed Platform #1349 combined merge55475b7: current Dev preserves #1357 management UI, tests and locale artifacts; qualified Main supplies #1358 Portal patch and manifest6 image provenance. Metadata conflicts were resolved without replacing document bodies. Query, permission, canonical assertions, budgets, release and production boundaries remain unchanged. Combined-candidate execution is recorded on #1352 and is not inferred from Main proof.'
 related:
   - .docpact/config.yaml
   - docs/agents/repo-validation.md

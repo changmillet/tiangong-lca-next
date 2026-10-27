@@ -47,7 +47,7 @@ checkPaths:
   - .github/workflows/build.yml
   - .nvmrc
 lastReviewedAt: 2026-10-28
-lastReviewedCommit: 55475b709eba699353b9851c17f1881b2e751e83
+lastReviewedCommit: 5e502c85033cab89ab7b2f055b90504abb765cc0
 lastReviewedNote: 'Reviewed Platform #1349 combined merge55475b7: current Dev preserves #1357 management UI, tests and locale artifacts; qualified Main supplies #1358 Portal patch and manifest6 image provenance. Metadata conflicts were resolved without replacing document bodies. Query, permission, canonical assertions, budgets, release and production boundaries remain unchanged. Combined-candidate execution is recorded on #1352 and is not inferred from Main proof.'
 ---
 

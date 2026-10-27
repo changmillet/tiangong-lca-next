@@ -1067,6 +1067,18 @@ describe('bounded checked-push transport receipt', () => {
     const gateCount = readGateLog(current).length;
     const result = retryPush(current);
 
+    if (result.status !== 0) {
+      throw new Error(
+        `Idempotent receipt retry failed: ${JSON.stringify({
+          command: ['pnpm', 'run', 'push:retry'],
+          status: result.status,
+          signal: result.signal,
+          error: result.error?.message,
+          stdout: result.stdout?.slice(0, 8_192),
+          stderr: result.stderr?.slice(0, 8_192),
+        })}`,
+      );
+    }
     expect(result.status).toBe(0);
     expect(result.stdout).toContain('already reached the remote');
     expect(remoteSha(current)).toBe(current.head);

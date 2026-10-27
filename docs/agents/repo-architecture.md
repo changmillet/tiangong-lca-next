@@ -28,8 +28,8 @@ checkPaths:
   - tests/e2e/i18n/**
   - tests/e2e/dataset-lists/**
 lastReviewedAt: 2026-10-27
-lastReviewedCommit: 28f4fea0bc9829316938ff85fe3ac6a3ce7a7ce6
-lastReviewedNote: 'Reviewed Platform #1355: Review and All Teams reuse dataset-list presentation with responsive tabs, preserved workflow handlers, lazy column translation initialization and a bounded join-team modal. Query, permission, dependency, release and gate contracts remain unchanged. Actual validation and review evidence belong to the Issue/PR; no release qualification is claimed.'
+lastReviewedCommit: 784779ce3836b1c0bd601980fd6c4d145e810efe
+lastReviewedNote: 'Reviewed Platform #1358 patch image closure at784779ce: declared tracked patch bytes bind install contexts, cache identity, manifest6, runtime, reporter and resource verification. Focused controls and typed/static review pass; fresh hosted proof remains required. Backend authority, credential isolation, canonical assertions, execution budgets and release policy are unchanged.'
 related:
   - ../AGENTS.md
   - ../.docpact/config.yaml
@@ -64,6 +64,7 @@ This repo is a Umi `4.7.24` React 19 SPA on one native Ant Design `6.6.6` / ProC
 | `public/robots.txt`, `public/404.html`, `public/edgeone.json` | the application host's crawler and response boundary: crawling is deliberately allowed so crawlers can read noindex, the shell and the unknown-path document are noindex, and this file also owns the OAuth path rewrite and response headers |
 | `scripts/reference-data/**` | deterministic classification/location generation and fail-closed evidence validation |
 | `scripts/e2e/**`, `docker/e2e/**` | test-only exact-candidate release-E2E orchestration, deterministic closed-simulator backend profile, isolated environment, static server, preflight, diagnostics, and bounded continuation |
+| `scripts/e2e/maintained-patches.cjs` | exact maintained patch inventory and digest shared by isolated image creation, build/runtime verification and resource identity; input grammar and retirement rules belong to `dependency-maintenance.md` |
 | `scripts/qualification/**`, `playwright.closure-download.config.ts`, `tests/browser/**` | test-only exact-commit scope-closure Next adapter and loopback browser contract accepted by the Worker provider aggregator |
 | `playwright.config.ts`, `tests/e2e/i18n/**` | test-only semantic localization browser matrix, guarded production fixture ledger, and non-secret evidence reporter |
 | `playwright.dataset-lists.config.ts`, `tests/e2e/dataset-lists/**` | separately selected synthetic Chromium layout and list-request proof; local screenshots are not production or release qualification |

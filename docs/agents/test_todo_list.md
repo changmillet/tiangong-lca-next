@@ -15,6 +15,7 @@ whenToUpdate:
   - when the active queue state changes
   - when present-state testing facts become stale
 checkPaths:
+  - patches/**
   - docs/agents/test_todo_list.md
   - package.json
   - .oxlintrc.json
@@ -44,8 +45,8 @@ checkPaths:
   - .github/workflows/release-gate.yml
   - .github/workflows/release-readiness.yml
 lastReviewedAt: 2026-10-27
-lastReviewedCommit: ab62bb92d9dcefd38424cee1056744cb05059ba4
-lastReviewedNote: 'Reviewed Platform #1355 canonical locale artifact refresh after removing duplicate management headings. Translation catalogs, policies, readiness and existing production blockers remain unchanged; two generations are idempotent and all 19 locale contracts pass. Full checked-push and CI evidence remain on the Issue/PR.'
+lastReviewedCommit: 784779ce3836b1c0bd601980fd6c4d145e810efe
+lastReviewedNote: 'Reviewed Platform #1358 patch image closure at784779ce: declared tracked patch bytes bind install contexts, cache identity, manifest6, runtime, reporter and resource verification. Focused controls and typed/static review pass; fresh hosted proof remains required. Backend authority, credential isolation, canonical assertions, execution budgets and release policy are unchanged.'
 ---
 
 # Testing Execution State
@@ -64,6 +65,8 @@ lastReviewedNote: 'Reviewed Platform #1355 canonical locale artifact refresh aft
 This is a checked-in reference, not a per-PR execution ledger. A delivery's post-commit, hook-owned full-gate result belongs in its PR validation evidence; update this section when the reference counts, coverage policy, or queue state materially changes.
 
 ## Current State
+
+- Issue #1358 owns the separately reproduced Portal commit-lifecycle repair, maintained-patch image input closure and exact Main semantic admission. Acceptance requires installed-package, native ESM/default-container/focus, current-source canonical semantic and normal complete-gate evidence; actual executions and remaining work are recorded on that Issue/PR. Package versions and unrelated dependency resolutions remain intact. Successful new evidence does not establish #1354's historical failure cause or independently authorize publication.
 
 - repo is in full-closure maintenance mode
 - there is no active ordered coverage queue right now

@@ -7,6 +7,7 @@ on:
       - package.json
       - pnpm-lock.yaml
       - pnpm-workspace.yaml
+      - patches/**
       - .npmrc
       - .nvmrc
       - .github/dependabot.yml
@@ -138,8 +139,11 @@ jobs:
 
   semantic-qualification:
     name: Supabase semantic qualification (non-release)
+    needs: [dependency-gate, action-compatibility]
     if: >-
-      github.event_name != 'pull_request' || !(
+      always() && !cancelled() && (
+        (
+          (github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && !(
         (
           github.event.pull_request.base.ref == 'dev' &&
           contains(github.event.pull_request.body || '', 'tiangong-next-release-automation:v2')
@@ -151,6 +155,18 @@ jobs:
             startsWith(github.event.pull_request.head.ref, 'codex/promote-') ||
             startsWith(github.event.pull_request.head.ref, 'codex/hotfix-')
           )
+        )
+      ))) &&
+          needs.dependency-gate.result == 'success' &&
+          needs.action-compatibility.result == 'success'
+        ) ||
+        (
+          github.event_name == 'pull_request' &&
+          github.event.pull_request.base.ref == 'main' &&
+          startsWith(github.event.pull_request.head.ref, 'codex/hotfix-') &&
+          contains(github.event.pull_request.body || '', 'tiangong-next-main-semantic:v1') &&
+          needs.dependency-gate.result == 'skipped' &&
+          needs.action-compatibility.result == 'skipped'
         )
       )
     runs-on: ubuntu-latest
@@ -171,6 +187,12 @@ jobs:
           runtime: node@24.19.0
           cache: true
           install: false
+      - name: Admit exact ordinary or opted-in Main hotfix candidate
+        env:
+          DEPENDENCY_GATE_RESULT: ${{ needs.dependency-gate.result }}
+          ACTION_COMPATIBILITY_RESULT: ${{ needs.action-compatibility.result }}
+        run: >-
+          node scripts/qualification/hotfix-semantic-admission.cjs --event-path "$GITHUB_EVENT_PATH" --expected-head "$EXPECTED_HEAD" --github-output "$GITHUB_OUTPUT"
       - name: Install frozen dependencies
         run: pnpm install --frozen-lockfile
       - name: Bind runner capacity and start owned resource observation

@@ -3,6 +3,8 @@
 
 const crypto = require('node:crypto');
 const fs = require('node:fs');
+const path = require('node:path');
+const { verifyMaintainedPatches } = require('./maintained-patches.cjs');
 
 function sha256File(filePath) {
   return crypto.createHash('sha256').update(fs.readFileSync(filePath)).digest('hex');
@@ -17,6 +19,11 @@ function verifyBuildInputs(input) {
     [input.pnpmWorkspacePath, manifest.candidate.pnpmWorkspaceSha256],
     [input.environmentPath, manifest.environment.contractSha256],
   ]);
+  verifyMaintainedPatches(
+    path.dirname(input.pnpmWorkspacePath),
+    manifest.candidate.maintainedPatches,
+    manifest.candidate.maintainedPatchesSha256,
+  );
   for (const [filePath, expectedSha256] of expected) {
     const actualSha256 = sha256File(filePath);
     if (actualSha256 !== expectedSha256) {

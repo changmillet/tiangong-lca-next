@@ -15,6 +15,7 @@ whenToUpdate:
   - when protected-branch policy changes
   - when the rollout contract becomes inaccurate
 checkPaths:
+  - patches/**
   - docs/agents/prepush-gate-policy.md
   - docs/agents/repo-validation.md
   - .husky/pre-push
@@ -46,8 +47,8 @@ checkPaths:
   - scripts/reference-data/**
   - .github/workflows/**
 lastReviewedAt: 2026-10-27
-lastReviewedCommit: ab62bb92d9dcefd38424cee1056744cb05059ba4
-lastReviewedNote: 'Reviewed Platform #1355 canonical locale artifact refresh after removing duplicate management headings. Translation catalogs, policies, readiness and existing production blockers remain unchanged; two generations are idempotent and all 19 locale contracts pass. Full checked-push and CI evidence remain on the Issue/PR.'
+lastReviewedCommit: 784779ce3836b1c0bd601980fd6c4d145e810efe
+lastReviewedNote: 'Reviewed Platform #1358 patch image closure at784779ce: declared tracked patch bytes bind install contexts, cache identity, manifest6, runtime, reporter and resource verification. Focused controls and typed/static review pass; fresh hosted proof remains required. Backend authority, credential isolation, canonical assertions, execution budgets and release policy are unchanged.'
 ---
 
 # Pre-Push Gate Policy

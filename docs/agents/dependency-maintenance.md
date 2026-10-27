@@ -11,12 +11,13 @@ whenToUse:
 whenToUpdate:
   - when discovery scope, grouping, validation or activation prerequisites change
 checkPaths:
+  - patches/**
   - .github/dependabot.yml
   - .github/workflows/dependency-pr.yml
   - docs/agents/dependency-maintenance.md
-lastReviewedAt: 2026-10-26
-lastReviewedCommit: b843976e312c00fb38db8e4d40c64c760ba25834
-lastReviewedNote: 'Platform #1315: reviewed native navigation-aware identity observation at b1fa7a6d after hosted380 Chromium context-loss failure. Fresh non-null generation and exact stored owner are observed atomically before/after held-response release; existing45s authenticated/15s public budget,120s test limit, routes and dispatch/logout checks remain.160 focused checks, lint, types and locale checks pass.380 hosted result remains68pass/1fail/30skip with separate verified cleanup success. New ordinary full checked push and real three-browser qualification remain Main-owned; workflow/runtime/package/coverage/release policies are unchanged.'
+lastReviewedAt: 2026-10-27
+lastReviewedCommit: 784779ce3836b1c0bd601980fd6c4d145e810efe
+lastReviewedNote: 'Reviewed Platform #1358 patch image closure at784779ce: declared tracked patch bytes bind install contexts, cache identity, manifest6, runtime, reporter and resource verification. Focused controls and typed/static review pass; fresh hosted proof remains required. Backend authority, credential isolation, canonical assertions, execution budgets and release policy are unchanged.'
 related:
   - ../../AGENTS.md
   - repo-validation.md
@@ -39,7 +40,7 @@ Marked Dev Release PRs and Main candidates from `dev`, `codex/promote-*` or `cod
 
 The selected Action baseline is pnpm/setup3.1.1, setup-node7.1.0 and upload-artifact7.0.2, each pinned to its verified executable commit. The ordinary dependency workflow also has a bounded `action-compatibility` job with the same phase-selection predicate. It runs setup-node before verifying its exact Node24.19.0 runtime, then pnpm/setup before verifying Node24.19.0/pnpm11.24.0. Both source-bound receipts reject a changed product manifest/lock/install policy and record the installed Node binary identity. This probe does not install the product or run a second aggregate gate. It uploads only its two JSON receipts as a seven-day ZIP and requires a service artifact ID/digest. Hosted qualification must independently download that actual artifact, check ZIP integrity, exact receipt contents and source/tool/graph identities; an upload acknowledgement alone is not roundtrip proof. Existing release/browser artifact paths, archive behavior and admission guards stay intact.
 
-This workflow has read-only repository access, no production/deployment credentials and no publication command. It does not call `release:static-preflight`, manufacture a Release PR marker. The separate credential-free `semantic-qualification` job runs the complete canonical browser qualification with the same protected-phase exclusion. The existing `ci.yml` remains Manual Web Deploy and has no PR trigger. The new check does not replace any required release or main-candidate check. Unrelated feature paths gain no automatic dependency workflow.
+This workflow has read-only repository access, no production/deployment credentials and no publication command. It does not call `release:static-preflight`, manufacture a Release PR marker. The separate credential-free `semantic-qualification` job runs the complete canonical browser qualification with the same protected-phase exclusion, except the separately opted-in exact Main hotfix described below. The existing `ci.yml` remains Manual Web Deploy and has no PR trigger. The new check does not replace any required release or main-candidate check. Unrelated feature paths gain no automatic dependency workflow.
 
 Preserve the canonical gate's complete inventory and 100% source coverage. Follow [the validation guide](repo-validation.md) for affected package, parser, UI, desktop and browser proof. Run Umi-generating commands serially. Use focused proof while iterating; the final checked push owns the one local aggregate gate. The aggregate dependency job proves source compatibility. The separate browser job supplies only the exact synthetic qualification it actually executes; neither grants production locale, reference-resource or deployment readiness.
 
@@ -74,3 +75,23 @@ The ordinary dependency workflow's one `semantic-qualification` job runs unchang
 The resource observer snapshots preexisting Docker identities and context, source/tree, manifest/image labels, exact checkout output mounts, installed tools and measured runner capacity before qualification. Always-run recovery re-inspects exact fresh owned resources before deletion; final verification checks their absence and preserves preexisting/shared resources. No generic label prune or BuildKit pruning is permitted. Unattributable builder cache remains explicitly retained. The unchanged canonical browser smoke has no owner label or output mount: normal `--rm` completion plus complete inventory proves no survivor, but an ambiguous failed/cancelled survivor is retained and cleanup verification fails. A terminated hosted runner may prevent always-run recovery; absence of a receipt is not cleanup proof.
 
 Only selected credential-free JSON proof/diagnostic/resource files enter the seven-day ZIP; environment, auth state, screenshots, traces and video are excluded. Actual acceptance requires both canonical execution and resource closure, service artifact ID/digest, independent download/ZIP verification, raw canonical report hash and exact source/tool/image bindings. Local tests of the observer or workflow are not Docker capacity, browser or hosted cleanup evidence. Main promotion, release and root-integration holds remain unchanged.
+
+## Maintained Portal patch and Main hotfix qualification
+
+`patches/@rc-component__portal@2.2.1.patch` is an exact native pnpm patch for the installed latest-stable Portal lifecycle defect. `pnpm-workspace.yaml` registers it and the lock binds its SHA256; both CJS/ESM hooks, Portal wiring and declarations are maintained together. Shared Escape registration, ancestry and callbacks publish only at commit. Logical Escape ancestry is separate from DOM append ordering; nested priority, committed opening epochs, all-active fanout, omitted callbacks and both IME gates retain focused consumer contracts. This is not a determination of either historical #1354 failure's cause.
+
+Maintained patch files are dependency-image inputs. Both Docker frozen installs copy `patches/` before installation, and the generated dependency and candidate build contexts carry each declared patch. Patch-free generated contexts still contain an empty directory for the same Docker instruction. The source reader accepts plain top-level pnpm mapping keys and an empty or two-space block scalar `patchedDependencies` map; ordinary plain, single-quoted and double-quoted entries are supported. Richer, escaped, duplicate or noncanonical forms fail closed. Declared paths must remain below `patches/`, be regular tracked stage-0 `100644` files without symlink components, and match the exact locked SHA256.
+
+The sorted package/path/hash inventory and its digest bind dependency-image tags and labels, candidate manifest version 6, build/runtime verification, qualification keys and the resource observer. Missing, changed, untracked or lock-mismatched bytes fail before cache reuse. The in-container evidence reporter accepts the same manifest version without requiring Git; retained version-5 manifests cannot qualify the new source. External semantic evidence formats, assertion identities, browser inventories and execution budgets are unchanged.
+
+Use pinned `pnpm patch @rc-component/portal@2.2.1 --edit-dir <owned-directory>` and `pnpm patch-commit <owned-directory> --patches-dir patches`; edit only that extraction. Never edit installed `node_modules`, suppress patch errors or enable unused patches. Frozen installation must prove the exact patch and unchanged unrelated lock graph. On a later upstream update, review the equivalent fix and rerun CJS, ESM/native-browser and current-source semantic proof before retiring the patch; keep the behavioral regressions. [pnpm patch documentation](https://pnpm.io/11.x/cli/patch) defines the maintained mechanism.
+
+For a deliberately selected Main hotfix, the PR body additionally carries exactly one standalone semantic opt-in comment:
+
+```text
+<!-- tiangong-next-main-semantic:v1 issue=ISSUE main-base=40_HEX_BASE candidate=40_HEX_HEAD version=X.Y.Z -->
+```
+
+The separate browser job first checks canonical same-repository identity, an open Main PR on `codex/hotfix-*`, exact checkout/current fetched Main/base/head/version, one authoritative existing hotfix marker and one matching semantic marker. It reuses the bound Main context validator; missing, duplicate, quoted, malformed or stale markers fail before installation. Forks are refused for the protected Main hotfix opt-in; ordinary fork proposals retain their existing successful-job path. Unknown events are refused. Ordinary qualification requires both aggregate and Action jobs to succeed; this protected hotfix route instead requires both to be explicitly skipped, with the unchanged Main Candidate gate retaining aggregate ownership. Failed/cancelled dependencies never admit either path.
+
+This opt-in reuses the complete existing canonical 99-case job with 45-second default expectations/navigation, zero retries and unchanged test-specific budgets, resource observer, cleanup verification and artifact acknowledgement. It adds no aggregate, secret, permission, publication or deployment capability, and is separate from release proof. A source change invalidates old proof; inspect the actual exact-head artifact and resource receipts. Local installed contracts, a skipped job and the marker itself do not establish browser qualification.

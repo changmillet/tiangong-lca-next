@@ -15,6 +15,7 @@ whenToUpdate:
   - when a command, environment rule, or repo boundary becomes inaccurate
   - when the current documentation system becomes redundant or ambiguous
 checkPaths:
+  - patches/**
   - AGENTS.md
   - DEV.md
   - README.md
@@ -49,8 +50,8 @@ checkPaths:
   - .husky/pre-push
   - .github/workflows/**
 lastReviewedAt: 2026-10-27
-lastReviewedCommit: 28f4fea0bc9829316938ff85fe3ac6a3ce7a7ce6
-lastReviewedNote: 'Reviewed Platform #1355: Review and All Teams reuse dataset-list presentation with responsive tabs, preserved workflow handlers, lazy column translation initialization and a bounded join-team modal. Query, permission, dependency, release and gate contracts remain unchanged. Actual validation and review evidence belong to the Issue/PR; no release qualification is claimed.'
+lastReviewedCommit: b169e2431847a9e5550f51d20ae24a39214864a1
+lastReviewedNote: 'Reviewed Platform #1358: exact maintained Portal patch ownership and commit-safe installed contracts; bound semantic-only Main hotfix admission preserves full-gate ownership, read-only qualification, complete inventory and resource/artifact closure. Native ESM/browser, current-source semantic and full delivery proof remain pending; no prior failure cause or release/deployment pass claimed.'
 related:
   - .docpact/config.yaml
   - docs/agents/repo-validation.md
@@ -147,6 +148,7 @@ Do not start from additional governed source docs, proposal docs, or README-leve
 - `tests/package-contracts/installedTidasSdk.contract.test.mjs` resolves the real installed `@tiangong-lca/tidas-sdk` `0.5.0` package outside Jest's SDK mapper and protects all seven dataset factories, the normalized `validateEnhanced` error envelope, singleton/ordered Process review acceptance, and required Process general-comment validation
 - data workflow result fixture relationships live in `tests/data-workflows/fixtures/result/README.md`; proof selection stays in `docs/agents/repo-validation.md`
 - run Umi-generating focused tests, coverage, and `pnpm prepush:gate` serially; for ordinary delivery, use focused proof during iteration and let the push hook own the one full gate after the final controlled tracked change. Run manual hermetic browser qualification on the open business PR before merge or release-to-dev when the change risk warrants it, so a failure can be fixed on that same PR. Deterministic release/promotion pushes use only their repo-owned restricted profiles because the exact dev Release PR owns the non-browser release gate. The hook skips no-update and raw deletion-only pushes, accepts `HEAD` only as the current exact branch source, and rejects other ineligible checked ref shapes before any expensive gate.
+- maintained dependency patches use the native pnpm exact-version mechanism in `patches/`; dependency maintenance owns their source, retirement and consumer-proof contract
 - new dependencies require human approval
 - the application host's crawler and response boundary is `public/robots.txt`, `public/404.html`, `public/edgeone.json`, plus the shell `metas` in `config/config.ts`; the host is noindex by design while crawling stays allowed, and unknown paths must answer 404 rather than the application shell. The deploy bundle carries the pinned CLI's generated `.edgeone/routes.json`, whose terminal fallback is corrected to serve `public/404.html` with status 404; `scripts/edgeone` stages, corrects and verifies it, and both deploy workflows run that preparation before the deploy step
 - production-writing E2E requires a host without `CI` or `GITHUB_ACTIONS`; only after that check may the controller clear image-inherited CI markers for the local container. Authenticated mode plus two write guards remain mandatory: `E2E_ALLOW_PRODUCTION_DATA=true` and `E2E_PRODUCTION_WRITE_CONFIRMATION=I_AUTHORIZE_ONE_CODEX_E2E_PRODUCTION_PROCESS`; verified tracked evidence additionally requires `E2E_WRITE_VERIFIED_EVIDENCE=true`. Before create it writes an intent ledger, and before delete it verifies the production row's UUID, authenticated owner, and all five multilingual fields across every registry authoring language, then proves `created=cleaned` and `leaked=0`

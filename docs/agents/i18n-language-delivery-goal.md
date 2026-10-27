@@ -56,9 +56,9 @@ checkPaths:
   - .github/workflows/i18n-semantic-e2e.yml
   - .github/workflows/build.yml
   - package.json
-lastReviewedAt: 2026-10-19
-lastReviewedCommit: 474e0da1e876af360948af494cb47c6621a6995c
-lastReviewedNote: 'Platform #1316: reviewed Message-only semantic hit-through and advancing session-fixture wall time at474e0da. Incoming message styles and native notice/Notification behavior remain; original ownership/generation/stale-dispatch assertions and99-case browser inventory are unchanged. Paired component and isolated actual-App Chromium proof pass, with meaningful interception/fixed-Date negatives. Independent code and full governed-document reviews found no remaining issue after removing the new private-DOM CSS assertion. Original665 hosted browser failures remain failed; successor full ordinary push and hosted qualification are pending. Dependency, coverage, release and production policies are unchanged.'
+lastReviewedAt: 2026-10-27
+lastReviewedCommit: 784779ce3836b1c0bd601980fd6c4d145e810efe
+lastReviewedNote: 'Reviewed Platform #1358 patch image closure at784779ce: declared tracked patch bytes bind install contexts, cache identity, manifest6, runtime, reporter and resource verification. Focused controls and typed/static review pass; fresh hosted proof remains required. Backend authority, credential isolation, canonical assertions, execution budgets and release policy are unchanged.'
 baselineObservedAt: 2026-07-18
 related:
   - ../../AGENTS.md

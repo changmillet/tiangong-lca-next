@@ -36,7 +36,7 @@ async function execute(options, binding) {
   const registry = new Ownership();
   let runtime = null, runtimeEnvironment = {}, previousEnvironment = {};
   const browserCache = process.env.PLAYWRIGHT_BROWSERS_PATH || path.join(process.platform === 'darwin' ? path.join(os.homedir(), 'Library', 'Caches') : process.env.XDG_CACHE_HOME || path.join(os.homedir(), '.cache'), 'ms-playwright');
-  const receipt = { schema: 'platform.portal-native.v1', source: binding, startedAt: started, deadline, workDeadline: deadline - 120000, runtime: { path: null, toolCache: browserCache, retained: false }, browsers: [], steps: [], failures: [], ownership: [], peakRssBytes: 0, peakTotalOwnedDiskBytes: 0, cleanup: { verified: false }, nativePass: false };
+  const receipt = { schema: 'platform.portal-native.v1', source: binding, startedAt: started, deadline, workDeadline: deadline - 120000, runtime: { path: null, toolCache: browserCache, retained: false }, browsers: [], focusProbes: [], steps: [], failures: [], ownership: [], peakRssBytes: 0, peakTotalOwnedDiskBytes: 0, cleanup: { verified: false }, nativePass: false };
   let stopping = false, browserServer, browser, context, server, esbuild, sampler, softTimer, hardTimer, rejectAbort;
   const abortPromise = new Promise((_, reject) => { rejectAbort = reject; }); abortPromise.catch(() => {});
   const abort = code => { if (!stopping) { const error = new Error(code); error.code = code; rejectAbort(error); } };
@@ -118,7 +118,36 @@ async function execute(options, binding) {
       const escape = async () => { callStart = (await snapshot()).calls.length; await page.locator('#key-target').focus(); await page.keyboard.press('Escape'); };
       const top = async expected => { const value = await snapshot(); const tops = value.calls.slice(callStart).filter(call => call.top); check(tops.length === 1 && tops[0].name === expected && !value.overflow, 'wrong_native_escape_priority'); return value; };
       const cases = [];
-      receipt.step = `${name}:default-container-two-escape-focus`; await configure('drawers'); await page.getByRole('button', { name: 'Open parent', exact: true }).press('Enter'); const parent = page.getByRole('dialog', { name: 'Parent', exact: true }); await playwright.expect(parent).toBeVisible(); check(await parent.evaluate(node => !node.closest('#root')), 'not_default_body_container'); await page.getByRole('button', { name: 'Open child', exact: true }).click(); const child = page.getByRole('dialog', { name: 'Child', exact: true }); await playwright.expect(child).toBeVisible(); await page.keyboard.press('Escape'); await playwright.expect(child).toBeHidden(); await playwright.expect(parent).toBeVisible(); await playwright.expect(page.locator('#open-child')).toBeFocused(); await page.keyboard.press('Escape'); await playwright.expect(parent).toBeHidden(); await playwright.expect(page.locator('#open-parent')).toBeFocused(); let observed = await snapshot(); check(observed.calls.map(call => call.name).join(',') === 'closed-child,closed-parent' && observed.events.filter(event => event.key === 'Escape' && event.classification === 'native').length === 2, 'native_two_escape_unproved'); cases.push(observed);
+      receipt.step = `${name}:default-container-two-escape-focus`;
+      await configure('drawers');
+      const focusProbe = { browser: name }; receipt.focusProbes.push(focusProbe);
+      await page.getByRole('button', { name: 'Open parent', exact: true }).press('Enter');
+      const parent = page.getByRole('dialog', { name: 'Parent', exact: true });
+      await playwright.expect(parent).toBeVisible();
+      check(await parent.evaluate(node => !node.closest('#root')), 'not_default_body_container');
+      focusProbe.parentActivation = (await snapshot()).events.find(event => event.type === 'open-parent');
+      check(focusProbe.parentActivation?.classification === 'native' && focusProbe.parentActivation.focus === 'open-parent', 'parent_opener_focus_unproved');
+      // Drawer restores the element focused at open, not an inferred mouse trigger.
+      // Establish that precondition through bounded native keyboard navigation.
+      const openChild = page.getByRole('button', { name: 'Open child', exact: true });
+      for (let tab = 0; tab < 4 && (await snapshot()).focus !== 'open-child'; tab++) await page.keyboard.press('Tab');
+      focusProbe.beforeChildClick = await snapshot();
+      await playwright.expect(openChild).toBeFocused();
+      check(focusProbe.beforeChildClick.events.filter(event => event.key === 'Tab').every(event => event.classification === 'native'), 'native_tab_unproved');
+      await openChild.click();
+      const child = page.getByRole('dialog', { name: 'Child', exact: true });
+      await playwright.expect(child).toBeVisible();
+      focusProbe.childActivation = (await snapshot()).events.find(event => event.type === 'open-child');
+      check(focusProbe.childActivation?.classification === 'native' && focusProbe.childActivation.focus === 'open-child', 'child_opener_focus_unproved');
+      await page.keyboard.press('Escape');
+      await playwright.expect(child).toBeHidden(); await playwright.expect(parent).toBeVisible();
+      focusProbe.afterChildEscape = await snapshot();
+      await playwright.expect(page.locator('#open-child')).toBeFocused();
+      await page.keyboard.press('Escape'); await playwright.expect(parent).toBeHidden();
+      focusProbe.afterParentEscape = await snapshot();
+      await playwright.expect(page.locator('#open-parent')).toBeFocused();
+      let observed = await snapshot();
+      check(observed.calls.map(call => call.name).join(',') === 'closed-child,closed-parent' && observed.events.filter(event => event.key === 'Escape' && event.classification === 'native').length === 2, 'native_two_escape_unproved'); cases.push(observed);
       for (const scenario of ['siblings', 'nested', 'aborted-open', 'aborted-close', 'aborted-callback', 'omitted', 'keyboard-false', 'reparent', 'aborted-reparent', 'isolated-replay', 'prolayout-inline', 'ime']) {
         check(!stopping && performance.now() < workDeadlineMono, 'no_time_for_case'); receipt.step = `${name}:${scenario}`; await configure(scenario);
         if (scenario === 'siblings') { await advance(); await escape(); await top('B'); await advance(); await escape(); await top('C'); await advance(); await escape(); await top('B'); }

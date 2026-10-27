@@ -10,7 +10,7 @@ export function mountFixture({ React, createRoot, flushSync, Portal, Drawer, Sid
   const committed = new Set(), nodes = {}, replay = { A: 0, B: 0 };
   const record = (target, value) => { if (target.length >= 64) { overflow = true; return; } target.push(value); };
   const focus = () => ['open-parent', 'open-child', 'key-target'].includes(document.activeElement?.id) ? document.activeElement.id : document.activeElement?.closest('[role="dialog"]') ? 'drawer' : document.activeElement === document.body ? 'body' : 'other';
-  const keydown = event => { if (['Escape', 'Enter'].includes(event.key)) record(events, { type: 'keydown', key: event.key, classification: event.isTrusted ? 'native' : 'simulated', composing: event.isComposing, focus: focus(), imeRecent: lastComposition !== null && Date.now() - lastComposition >= 0 && Date.now() - lastComposition < 200 }); };
+  const keydown = event => { if (['Escape', 'Enter', 'Tab'].includes(event.key)) record(events, { type: 'keydown', key: event.key, classification: event.isTrusted ? 'native' : 'simulated', composing: event.isComposing, focus: focus(), imeRecent: lastComposition !== null && Date.now() - lastComposition >= 0 && Date.now() - lastComposition < 200 }); };
   const compositionend = () => { lastComposition = Date.now(); record(events, { type: 'compositionend', classification: 'simulated-control' }); };
   window.addEventListener('keydown', keydown, true); window.addEventListener('compositionend', compositionend);
   function Marker({ name }) { React.useLayoutEffect(() => { committed.add(name); return () => committed.delete(name); }, [name]); return h('span', { 'data-marker': name }); }
@@ -24,9 +24,9 @@ export function mountFixture({ React, createRoot, flushSync, Portal, Drawer, Sid
   function NativeDrawers() {
     const [parent, setParent] = React.useState(false), [child, setChild] = React.useState(false);
     return h(React.Fragment, null,
-      h('button', { id: 'open-parent', onClick: event => { record(events, { type: 'open-parent', classification: event.nativeEvent.isTrusted ? 'native' : 'simulated' }); setParent(true); } }, 'Open parent'),
+      h('button', { id: 'open-parent', onClick: event => { record(events, { type: 'open-parent', classification: event.nativeEvent.isTrusted ? 'native' : 'simulated', focus: focus() }); setParent(true); } }, 'Open parent'),
       h(Drawer, { title: 'Parent', open: parent, onClose: () => { record(calls, { name: 'closed-parent' }); setParent(false); } },
-        h('button', { id: 'open-child', onClick: event => { record(events, { type: 'open-child', classification: event.nativeEvent.isTrusted ? 'native' : 'simulated' }); setChild(true); } }, 'Open child'),
+        h('button', { id: 'open-child', onClick: event => { record(events, { type: 'open-child', classification: event.nativeEvent.isTrusted ? 'native' : 'simulated', focus: focus() }); setChild(true); } }, 'Open child'),
         h(Drawer, { title: 'Child', open: child, onClose: () => { record(calls, { name: 'closed-child' }); setChild(false); } }, 'Synthetic child')));
   }
   function Scene({ phase, name }) {

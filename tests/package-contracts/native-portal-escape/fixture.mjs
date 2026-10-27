@@ -21,12 +21,13 @@ export function mountFixture({ React, createRoot, flushSync, Portal, Drawer, Sid
   const keyed = (name, open = true) => h(P, { name, open, key: name });
   const never = new Promise(() => {});
   function Pending() { pendingRenders++; throw never; }
+  const prepareOpener = event => { const pointer = event.nativeEvent.detail > 0; if (pointer) event.currentTarget.focus(); return pointer ? 'fixture-trigger-focus-before-open' : 'targeted-native-Enter'; };
   function NativeDrawers() {
     const [parent, setParent] = React.useState(false), [child, setChild] = React.useState(false);
     return h(React.Fragment, null,
-      h('button', { id: 'open-parent', onClick: event => { focusAtOpen.parent = document.activeElement; record(events, { type: 'open-parent', classification: event.nativeEvent.isTrusted ? 'native' : 'simulated', detail: event.nativeEvent.detail, focus: focus() }); setParent(true); } }, 'Open parent'),
+      h('button', { id: 'open-parent', onClick: event => { const focusSetup = prepareOpener(event); focusAtOpen.parent = document.activeElement; record(events, { type: 'open-parent', classification: event.nativeEvent.isTrusted ? 'native' : 'simulated', detail: event.nativeEvent.detail, focus: focus(), focusSetup }); setParent(true); } }, 'Open parent'),
       h(Drawer, { title: 'Parent', open: parent, onClose: () => { record(calls, { name: 'closed-parent' }); setParent(false); } },
-        h('button', { id: 'open-child', onClick: event => { focusAtOpen.child = document.activeElement; record(events, { type: 'open-child', classification: event.nativeEvent.isTrusted ? 'native' : 'simulated', detail: event.nativeEvent.detail, focus: focus() }); setChild(true); } }, 'Open child'),
+        h('button', { id: 'open-child', onClick: event => { const focusSetup = prepareOpener(event); focusAtOpen.child = document.activeElement; record(events, { type: 'open-child', classification: event.nativeEvent.isTrusted ? 'native' : 'simulated', detail: event.nativeEvent.detail, focus: focus(), focusSetup }); setChild(true); } }, 'Open child'),
         h(Drawer, { title: 'Child', open: child, onClose: () => { record(calls, { name: 'closed-child' }); setChild(false); } }, 'Synthetic child')));
   }
   function Scene({ phase, name }) {

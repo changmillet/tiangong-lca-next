@@ -122,10 +122,11 @@ async function execute(options, binding) {
       for (const activationMode of ['keyboard', 'pointer']) {
         receipt.step = `${name}:default-container-two-escape-focus:${activationMode}`;
         await configure('drawers');
-        const focusProbe = { browser: name, activationMode, focusSetup: activationMode === 'pointer' ? 'programmatic locator.focus before native click' : 'locator.press focus before native Enter' }; receipt.focusProbes.push(focusProbe);
-        const activate = async locator => { if (activationMode === 'keyboard') return locator.press('Enter'); await locator.focus(); await playwright.expect(locator).toBeFocused(); return locator.click(); };
+        const focusProbe = { browser: name, activationMode, focusSetup: activationMode === 'pointer' ? 'programmatic fixture-trigger focus before open; native click' : 'locator.press focus before native Enter' }; receipt.focusProbes.push(focusProbe);
+        const activate = async locator => activationMode === 'keyboard' ? locator.press('Enter') : locator.click();
         const verifyActivation = (activation, opener) => {
           check(activation?.classification === 'native' && activation.focus === opener, 'native_activation_opener_focus_unproved');
+          check(activation.focusSetup === (activationMode === 'pointer' ? 'fixture-trigger-focus-before-open' : 'targeted-native-Enter'), 'focus_setup_mismatch');
           if (activationMode === 'keyboard') check(activation.detail === 0, 'keyboard_activation_unproved');
           else check(activation.detail > 0, 'pointer_activation_unproved');
         };

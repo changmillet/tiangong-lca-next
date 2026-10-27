@@ -303,7 +303,7 @@ export function readManifestCandidateIdentity(): CandidateIdentity | undefined {
   const sha256Pattern = /^[0-9a-f]{64}$/u;
   if (
     manifest.kind !== 'tiangong-next-release-e2e-candidate' ||
-    manifest.schemaVersion !== 5 ||
+    manifest.schemaVersion !== 6 ||
     !identity ||
     !/^[0-9a-f]{40}$/u.test(identity.observedHeadCommit) ||
     !sha256Pattern.test(identity.configTreeDigest) ||

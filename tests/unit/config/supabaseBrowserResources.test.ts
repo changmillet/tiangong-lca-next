@@ -39,6 +39,8 @@ function fixture() {
   fs.mkdirSync(runnerTemp);
   const state = path.join(runnerTemp, 'owned');
   const source = {
+    maintainedPatches: [] as { package: string; path: string; sha256: string }[],
+    maintainedPatchesSha256: digest('[]\n'),
     root,
     head: 'a'.repeat(40),
     tree: 'b'.repeat(40),
@@ -130,7 +132,7 @@ function fixture() {
     fs.mkdirSync(path.join(root, '.local/e2e-release/runs', runId), { recursive: true });
     const manifest = {
       kind: 'tiangong-next-release-e2e-candidate',
-      schemaVersion: 5,
+      schemaVersion: 6,
       repository: { canonical: 'tiangong-lca/platform' },
       candidate: {
         commit: source.head,
@@ -138,6 +140,8 @@ function fixture() {
         dependencyLockSha256: source.files['pnpm-lock.yaml'],
         packageJsonSha256: source.files['package.json'],
         pnpmWorkspaceSha256: source.files['pnpm-workspace.yaml'],
+        maintainedPatches: source.maintainedPatches,
+        maintainedPatchesSha256: source.maintainedPatchesSha256,
       },
       environment: {
         frontendTarget: 'qualification',
@@ -282,7 +286,7 @@ it('refuses ambiguous preexisting candidate resources before starting qualificat
   expect(f.commands.some((args) => args[1] === 'rm')).toBe(false);
 });
 
-it.each(['Id', 'label', 'image', 'mount', 'tree', 'manifest', 'context', 'head', 'lock'])(
+it.each(['Id', 'label', 'image', 'mount', 'tree', 'manifest', 'context', 'head', 'lock', 'patch'])(
   'refuses %s drift without deleting foreign resources',
   (field) => {
     const f = fixture();
@@ -298,6 +302,7 @@ it.each(['Id', 'label', 'image', 'mount', 'tree', 'manifest', 'context', 'head',
     if (field === 'context') f.driftContext();
     if (field === 'head') f.source.head = 'c'.repeat(40);
     if (field === 'lock') f.source.files['pnpm-lock.yaml'] = id('f');
+    if (field === 'patch') f.source.maintainedPatchesSha256 = id('f');
     expect(f.manager.finish().complete).toBe(false);
     expect(f.containers.size).toBe(1);
     expect(f.commands.some((args) => args[1] === 'rm')).toBe(false);
@@ -414,4 +419,35 @@ it('refuses a reused observer PID and bounds an observer or child that never exi
       delay: async () => {},
     }),
   ).rejects.toThrow('OBSERVER_CHILD_GROUP_RETAINED');
+});
+
+it('binds maintained patch bytes to dependency tags, labels and candidate manifests', () => {
+  const f = fixture();
+  f.source.maintainedPatches = [
+    { package: 'fixture@1.0.0', path: 'patches/fixture.patch', sha256: id('8') },
+  ];
+  f.source.maintainedPatchesSha256 = digest(JSON.stringify(f.source.maintainedPatches) + '\n');
+  const patchTag = expectedImageTag(f.source, 'dependency');
+  f.manager.start();
+  const owned = f.candidate();
+  f.manager.observe();
+  owned.dependency.Config.Labels[`${prefix}maintained-patches-sha256`] = id('f');
+  expect(() => validateImage(owned.dependency, f.source, [])).toThrow(
+    'DEPENDENCY_IMAGE_INPUT_MISMATCH',
+  );
+  f.source.maintainedPatchesSha256 = id('f');
+  expect(expectedImageTag(f.source, 'dependency')).not.toBe(patchTag);
+});
+
+it('rejects retained schema-5 candidate manifests before adopting or deleting resources', () => {
+  const f = fixture();
+  f.manager.start();
+  const owned = f.candidate();
+  owned.manifest.schemaVersion = 5;
+  fs.writeFileSync(
+    path.join(owned.folder, 'candidate-manifest.json'),
+    JSON.stringify(owned.manifest),
+  );
+  expect(() => f.manager.observe()).toThrow('MANIFEST_KIND_MISMATCH');
+  expect(f.commands.some((args) => args[1] === 'rm')).toBe(false);
 });

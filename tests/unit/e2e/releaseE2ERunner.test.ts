@@ -13,6 +13,9 @@ import {
 } from '../../e2e/i18n/production-backend-target';
 
 const controller = require('../../../scripts/e2e/release-e2e.cjs') as {
+  dependencyImageIdentity: (environment: any, root?: string) => any;
+  dependencyImageMatches: (image: any, identity: any, environment: any) => boolean;
+  writeMaintainedPatches: (root: string, identity: any) => void;
   QUALIFICATION_PROOF_SCHEMA_VERSION: string;
   RECEIPT_SCHEMA_VERSION: number;
   acquireInvocationLock: (command: string, lockPath: string) => () => void;
@@ -747,6 +750,13 @@ describe('release E2E controller contracts', () => {
     expect(dockerfile).toContain('ARG E2E_FRONTEND_ENV=main');
     expect(dockerfile).toContain('REACT_APP_ENV=${E2E_FRONTEND_ENV}');
     expect(dockerfile).toContain('pnpm install --frozen-lockfile --ignore-scripts');
+    for (const file of ['docker/e2e/Dockerfile', 'Dockerfile.app']) {
+      const source = fs.readFileSync(path.resolve(process.cwd(), file), 'utf8');
+      expect(source.indexOf('COPY patches/ ./patches/')).toBeGreaterThan(0);
+      expect(source.indexOf('COPY patches/ ./patches/')).toBeLessThan(
+        source.indexOf('pnpm install --frozen-lockfile'),
+      );
+    }
     expect(dockerfile).toContain('node /tmp/verify-build-input.cjs');
     expect(controllerSource).toContain('org.tiangong.lca.next.package-json-sha256');
     expect(controllerSource).toContain('org.tiangong.lca.next.dependency-lock-sha256');
@@ -770,6 +780,205 @@ describe('release E2E controller contracts', () => {
     expect(
       fs.readFileSync(path.resolve(process.cwd(), 'tests/e2e/i18n/evidence-reporter.ts'), 'utf8'),
     ).toContain('E2E_CANDIDATE_MANIFEST_PATH');
+  });
+});
+
+describe('maintained patch image inputs', () => {
+  const patches = require('../../../scripts/e2e/maintained-patches.cjs');
+  const hash = (value: string) =>
+    require('node:crypto').createHash('sha256').update(value).digest('hex');
+  function fixture() {
+    const root = makeTemporaryDirectory();
+    const write = (name: string, value: string) => {
+      fs.mkdirSync(path.dirname(path.join(root, name)), { recursive: true });
+      fs.writeFileSync(path.join(root, name), value);
+    };
+    write('package.json', '{}\n');
+    write('docker/e2e/Dockerfile', 'FROM fixture\n');
+    const patch = 'patches/@fixture__one@1.0.0.patch';
+    const update = (bytes: string) => {
+      write(patch, bytes);
+      write('pnpm-workspace.yaml', `patchedDependencies:\n  '@fixture/one@1.0.0': ${patch}\n`);
+      write('pnpm-lock.yaml', `patchedDependencies:\n  '@fixture/one@1.0.0': ${hash(bytes)}\n`);
+    };
+    update('original patch\n');
+    const environment = isolatedGitEnvironment();
+    expect(spawnSync('git', ['init', '-q'], { cwd: root, env: environment }).status).toBe(0);
+    expect(spawnSync('git', ['add', '.'], { cwd: root, env: environment }).status).toBe(0);
+    return { root, patch, write, update };
+  }
+
+  it('stages the exact declared bytes before install and binds cache tags and labels', () => {
+    const f = fixture();
+    const environment = { sha256: 'a'.repeat(64) };
+    const identity = controller.dependencyImageIdentity(environment, f.root);
+    const context = makeTemporaryDirectory();
+    controller.writeMaintainedPatches(context, identity.maintainedPatches);
+    expect(fs.readFileSync(path.join(context, f.patch))).toEqual(
+      fs.readFileSync(path.join(f.root, f.patch)),
+    );
+    const labels = {
+      'org.tiangong.lca.next.release-e2e-environment': 'true',
+      'org.tiangong.lca.next.dependency-lock-sha256': identity.dependencyLockSha256,
+      'org.tiangong.lca.next.package-json-sha256': identity.packageJsonSha256,
+      'org.tiangong.lca.next.pnpm-workspace-sha256': identity.pnpmWorkspaceSha256,
+      'org.tiangong.lca.next.maintained-patches-sha256': identity.maintainedPatches.sha256,
+      'org.tiangong.lca.next.environment-sha256': environment.sha256,
+      'org.tiangong.lca.next.dockerfile-sha256': identity.dockerfileSha256,
+    };
+    expect(
+      controller.dependencyImageMatches({ Config: { Labels: labels } }, identity, environment),
+    ).toBe(true);
+    delete (labels as Record<string, string>)['org.tiangong.lca.next.maintained-patches-sha256'];
+    expect(
+      controller.dependencyImageMatches({ Config: { Labels: labels } }, identity, environment),
+    ).toBe(false);
+    f.update('reviewed changed patch\n');
+    const changed = controller.dependencyImageIdentity(environment, f.root);
+    expect(changed.tag).not.toBe(identity.tag);
+    expect(changed.maintainedPatches.sha256).not.toBe(identity.maintainedPatches.sha256);
+    expect(() =>
+      patches.verifyMaintainedPatches(
+        f.root,
+        identity.maintainedPatches.entries,
+        identity.maintainedPatches.sha256,
+      ),
+    ).toThrow('identity mismatch');
+  });
+
+  it.each([
+    'missing',
+    'bytes',
+    'lock',
+    'declaration',
+    'traversal',
+    'symlink',
+    'directory',
+    'duplicate',
+    'unsupported',
+    'untracked',
+    'quoted-map',
+    'escaped-map',
+    'parent-symlink',
+  ])('fails closed on %s patch sources before image lookup', (kind) => {
+    const f = fixture();
+    if (kind === 'missing') fs.rmSync(path.join(f.root, f.patch));
+    if (kind === 'bytes') f.write(f.patch, 'unlocked mutation');
+    if (kind === 'lock')
+      f.write(
+        'pnpm-lock.yaml',
+        `patchedDependencies:\n  '@fixture/one@1.0.0': ${'f'.repeat(64)}\n`,
+      );
+    if (kind === 'declaration') f.write('pnpm-workspace.yaml', 'packages:\n  - .\n');
+    if (kind === 'traversal')
+      f.write(
+        'pnpm-workspace.yaml',
+        "patchedDependencies:\n  '@fixture/one@1.0.0': patches/../outside.patch\n",
+      );
+    if (kind === 'symlink' || kind === 'directory') {
+      fs.rmSync(path.join(f.root, f.patch));
+      if (kind === 'symlink')
+        fs.symlinkSync(path.join(f.root, 'package.json'), path.join(f.root, f.patch));
+      else fs.mkdirSync(path.join(f.root, f.patch));
+    }
+    if (kind === 'duplicate')
+      f.write('pnpm-workspace.yaml', 'patchedDependencies: {}\npatchedDependencies: {}\n');
+    if (kind === 'unsupported')
+      f.write(
+        'pnpm-workspace.yaml',
+        "patchedDependencies: { '@fixture/one@1.0.0': patches/one.patch }\n",
+      );
+    if (kind === 'quoted-map') f.write('pnpm-workspace.yaml', "'patchedDependencies': {}\n");
+    if (kind === 'escaped-map') f.write('pnpm-workspace.yaml', '"patched\\u0044ependencies": {}\n');
+    if (kind === 'untracked')
+      spawnSync('git', ['rm', '--cached', '-f', f.patch], {
+        cwd: f.root,
+        env: isolatedGitEnvironment(),
+      });
+    if (kind === 'parent-symlink') {
+      const moved = path.join(f.root, 'moved-patches');
+      fs.renameSync(path.join(f.root, 'patches'), moved);
+      fs.symlinkSync(moved, path.join(f.root, 'patches'));
+    }
+    expect(() => controller.dependencyImageIdentity({ sha256: 'a'.repeat(64) }, f.root)).toThrow();
+  });
+
+  it('verifies patch inventory, digests and source presence at the candidate build boundary', () => {
+    const f = fixture();
+    f.write('archive.tar', 'candidate archive');
+    f.write('environment.json', '{}');
+    const identity = patches.readMaintainedPatches(f.root);
+    const files = {
+      archivePath: 'archive.tar',
+      dependencyLockPath: 'pnpm-lock.yaml',
+      environmentPath: 'environment.json',
+      packageJsonPath: 'package.json',
+      pnpmWorkspacePath: 'pnpm-workspace.yaml',
+      manifestPath: 'candidate-manifest.json',
+    };
+    const inputs = Object.fromEntries(
+      Object.entries(files).map(([key, relative]) => [key, path.join(f.root, relative)]),
+    );
+    const manifest = {
+      candidate: {
+        archiveSha256: hash('candidate archive'),
+        dependencyLockSha256: buildVerifier.sha256File(inputs.dependencyLockPath),
+        packageJsonSha256: buildVerifier.sha256File(inputs.packageJsonPath),
+        pnpmWorkspaceSha256: buildVerifier.sha256File(inputs.pnpmWorkspacePath),
+        maintainedPatches: identity.entries,
+        maintainedPatchesSha256: identity.sha256,
+      },
+      environment: { contractSha256: hash('{}') },
+    };
+    f.write(files.manifestPath, JSON.stringify(manifest));
+    expect(() => buildVerifier.verifyBuildInputs(inputs)).not.toThrow();
+    manifest.candidate.maintainedPatchesSha256 = 'f'.repeat(64);
+    f.write(files.manifestPath, JSON.stringify(manifest));
+    expect(() => buildVerifier.verifyBuildInputs(inputs)).toThrow('identity mismatch');
+    manifest.candidate.maintainedPatchesSha256 = identity.sha256;
+    f.write(files.manifestPath, JSON.stringify(manifest));
+    f.write(f.patch, 'foreign patch');
+    expect(() => buildVerifier.verifyBuildInputs(inputs)).toThrow('disagrees with the lock');
+    fs.rmSync(path.join(f.root, f.patch));
+    expect(() => buildVerifier.verifyBuildInputs(inputs)).toThrow();
+  });
+
+  it('accepts a patch-free source and materializes an empty COPY directory', () => {
+    const f = fixture();
+    f.write('pnpm-workspace.yaml', 'packages:\n  - .\n');
+    f.write('pnpm-lock.yaml', "lockfileVersion: '9.0'\n");
+    const identity = patches.readMaintainedPatches(f.root);
+    expect(identity.entries).toEqual([]);
+    const context = makeTemporaryDirectory();
+    controller.writeMaintainedPatches(context, identity);
+    expect(fs.readdirSync(path.join(context, 'patches'))).toEqual([]);
+    expect(() => patches.verifyMaintainedPatches(f.root, [], identity.sha256)).not.toThrow();
+    expect(() => patches.verifyMaintainedPatches(f.root, undefined, undefined)).toThrow(
+      'identity mismatch',
+    );
+  });
+
+  it('binds qualification proof keys to tracked patch bytes and refuses undeclared or missing sources', () => {
+    const f = fixture();
+    f.write(
+      'docker/e2e/environment.json',
+      fs.readFileSync(path.join(process.cwd(), 'docker/e2e/environment.json'), 'utf8'),
+    );
+    const environment = isolatedGitEnvironment();
+    expect(spawnSync('git', ['init', '-q'], { cwd: f.root, env: environment }).status).toBe(0);
+    expect(spawnSync('git', ['add', '.'], { cwd: f.root, env: environment }).status).toBe(0);
+    const original = controller.qualificationIdentity(f.root);
+    f.update('reviewed changed patch\n');
+    expect(controller.qualificationIdentity(f.root).proofKey).not.toBe(original.proofKey);
+    f.write(f.patch, 'unlocked mutation');
+    expect(() => controller.qualificationIdentity(f.root)).toThrow('disagrees with the lock');
+    f.update('reviewed changed patch\n');
+    expect(
+      spawnSync('git', ['rm', '--cached', '-f', f.patch], { cwd: f.root, env: environment }).status,
+    ).toBe(0);
+    expect(() => controller.qualificationIdentity(f.root)).toThrow('tracked regular');
+    fs.rmSync(path.join(f.root, f.patch));
+    expect(() => controller.qualificationIdentity(f.root)).toThrow();
   });
 });
 
@@ -812,6 +1021,12 @@ describe('release E2E isolated runtime inputs', () => {
         return [name, filePath];
       }),
     );
+    fs.renameSync(files.pnpmWorkspace, path.join(directory, 'pnpm-workspace.yaml'));
+    files.pnpmWorkspace = path.join(directory, 'pnpm-workspace.yaml');
+    fs.writeFileSync(files.pnpmWorkspace, 'packages:\n  - .\n');
+    fs.renameSync(files.dependencyLock, path.join(directory, 'pnpm-lock.yaml'));
+    files.dependencyLock = path.join(directory, 'pnpm-lock.yaml');
+    fs.writeFileSync(files.dependencyLock, "lockfileVersion: '9.0'\n");
     const manifestPath = path.join(directory, 'manifest.json');
     fs.writeFileSync(
       manifestPath,
@@ -821,6 +1036,9 @@ describe('release E2E isolated runtime inputs', () => {
           dependencyLockSha256: buildVerifier.sha256File(files.dependencyLock),
           packageJsonSha256: buildVerifier.sha256File(files.packageJson),
           pnpmWorkspaceSha256: buildVerifier.sha256File(files.pnpmWorkspace),
+          maintainedPatches: [],
+          maintainedPatchesSha256:
+            require('../../../scripts/e2e/maintained-patches.cjs').patchInventorySha256([]),
         },
         environment: {
           contractSha256: buildVerifier.sha256File(files.environment),

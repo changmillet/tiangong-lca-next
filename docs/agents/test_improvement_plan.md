@@ -47,8 +47,8 @@ checkPaths:
   - pnpm-workspace.yaml
   - Dockerfile.app
 lastReviewedAt: 2026-10-28
-lastReviewedCommit: 5e502c85033cab89ab7b2f055b90504abb765cc0
-lastReviewedNote: 'Reviewed Platform #1349 follow-up 64403fd7ae after actual CI40546918693 and strict local reproduction. A separate async act after completed mount awaits the viewport measurement frame and recreated request continuation; a causal probe observed height and callback identity changes. All22 strict focused tests pass and independent review found no material issue. Testing patterns now documents frame ordering. Permission assertions, product, global mocks, guards, timeouts and release contracts remain unchanged; fresh hosted qualification is pending.'
+lastReviewedCommit: f23bff212b5a23d24af0f3f7c80ff6d45bf1ca73
+lastReviewedNote: 'Reviewed Platform #1363 at base f23bff212: native cache patch V6, compatible dependency graph and installed caller/worker regressions preserve fixed tool/UI/SDK/product pins, coverage thresholds, release and production boundaries. Clean frozen bytes, exact advisory partition and focused contracts pass; full and hosted qualification remain separately owned.'
 ---
 
 # Testing Strategy

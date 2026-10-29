@@ -27,9 +27,9 @@ checkPaths:
   - config/docs-capture/**
   - tests/e2e/i18n/**
   - tests/e2e/dataset-lists/**
-lastReviewedAt: 2026-10-28
-lastReviewedCommit: 55475b709eba699353b9851c17f1881b2e751e83
-lastReviewedNote: 'Reviewed Platform #1349 combined merge55475b7: current Dev preserves #1357 management UI, tests and locale artifacts; qualified Main supplies #1358 Portal patch and manifest6 image provenance. Metadata conflicts were resolved without replacing document bodies. Query, permission, canonical assertions, budgets, release and production boundaries remain unchanged. Combined-candidate execution is recorded on #1352 and is not inferred from Main proof.'
+lastReviewedAt: 2026-10-29
+lastReviewedCommit: f2dbc551fc760c655e2a5ba9118aaf79845b625b
+lastReviewedNote: 'Reviewed Platform #1364: missing solver units fall back to exact-version verified method metadata; values and valid returned units remain unchanged. Added focused row and panel regressions; existing ownership and gate contracts still apply.'
 related:
   - ../AGENTS.md
   - ../.docpact/config.yaml

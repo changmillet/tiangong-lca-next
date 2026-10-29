@@ -307,7 +307,9 @@ export function buildMergedLcaRows(
       toLangFallback(solverRow.impact_name?.trim() || methodId || '-');
     const unit = solverRow.unit?.trim();
     const unitDesc =
-      unit && unit !== UNKNOWN_LCIA_UNIT ? toLangFallback(unit) : existing?.referenceQuantityDesc;
+      unit && unit !== UNKNOWN_LCIA_UNIT
+        ? toLangFallback(unit)
+        : existing?.referenceQuantityDesc || methodMeta?.referenceQuantityDesc;
     const row: LCIAResultTable = {
       key: methodId,
       referenceToLCIAMethodDataSet: {

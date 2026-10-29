@@ -46,9 +46,9 @@ checkPaths:
   - scripts/typescript-native-parser.*
   - scripts/reference-data/**
   - .github/workflows/**
-lastReviewedAt: 2026-10-28
-lastReviewedCommit: f23bff212b5a23d24af0f3f7c80ff6d45bf1ca73
-lastReviewedNote: 'Reviewed Platform #1363 at base f23bff212: native cache patch V6, compatible dependency graph and installed caller/worker regressions preserve fixed tool/UI/SDK/product pins, coverage thresholds, release and production boundaries. Clean frozen bytes, exact advisory partition and focused contracts pass; full and hosted qualification remain separately owned.'
+lastReviewedAt: 2026-10-29
+lastReviewedCommit: 8e0d043c5cf5d1a03ffd80934035cf4a94c3aa9d
+lastReviewedNote: 'Reviewed combined Platform #1363/#1364 backmerge: preserve Main security dependency graph, maintained patches and installed regressions together with Dev exact-version LCIA unit fallback and tests. Conflict resolution changes review metadata only; combined-candidate gates and hosted qualification are recorded separately.'
 ---
 
 # Pre-Push Gate Policy

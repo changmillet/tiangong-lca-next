@@ -5,6 +5,7 @@ import { act, render, screen, waitFor } from '@testing-library/react';
 const mockGetDataSource = jest.fn();
 const mockGetLangText = jest.fn();
 const mockGetReferenceQuantityFromMethod = jest.fn();
+const mockGetVerifiedDecompressedMethodEntry = jest.fn();
 const mockQueryLcaResults = jest.fn();
 const mockIsLcaFunctionInvokeError = jest.fn();
 const mockGetPublishedLciaResultPackage = jest.fn();
@@ -47,6 +48,8 @@ jest.mock('@/services/lciaMethods/util', () => ({
   __esModule: true,
   cacheAndDecompressMethod: jest.fn(),
   getDecompressedMethod: jest.fn(),
+  getVerifiedDecompressedMethodEntry: (...args: any[]) =>
+    mockGetVerifiedDecompressedMethodEntry(...args),
   getReferenceQuantityFromMethod: (...args: any[]) => mockGetReferenceQuantityFromMethod(...args),
 }));
 
@@ -153,6 +156,7 @@ describe('ProcessLciaResultsPanel', () => {
       return '';
     });
     mockGetReferenceQuantityFromMethod.mockResolvedValue(undefined);
+    mockGetVerifiedDecompressedMethodEntry.mockResolvedValue(undefined);
     mockIsLcaFunctionInvokeError.mockReturnValue(false);
     mockQueryLcaResults.mockResolvedValue({
       snapshot_id: 'snapshot-1',
@@ -171,6 +175,52 @@ describe('ProcessLciaResultsPanel', () => {
       error: null,
     });
     mockUseLocation.mockReturnValue({ pathname: '/mydata/processes', search: '' });
+  });
+
+  it('renders an exact-version catalog unit for a new solver result without a returned unit', async () => {
+    mockGetVerifiedDecompressedMethodEntry.mockResolvedValue({
+      data: {
+        files: [
+          {
+            id: 'impact-1',
+            version: '01.00.000',
+            description: { '#text': 'Climate change' },
+            referenceQuantity: { 'common:shortDescription': { '#text': 'kg CO2-eq' } },
+          },
+        ],
+      },
+    });
+    mockQueryLcaResults.mockResolvedValue({
+      snapshot_id: 'new-snapshot',
+      result_id: 'new-result',
+      source: 'latest_ready',
+      meta: { computed_at: '2026-10-29T00:00:00Z' },
+      data: {
+        values: [
+          {
+            impact_id: 'impact-1',
+            impact_version: '01.00.000',
+            impact_name: 'LCIA Method impact-1',
+            unit: 'unknown',
+            value: 0,
+          },
+        ],
+      },
+    });
+
+    render(
+      <ProcessLciaResultsPanel
+        baseRows={[]}
+        lang='en'
+        processId='process-1'
+        processVersion='01.00.000'
+      />,
+    );
+
+    await screen.findByText('Climate change');
+    await screen.findByText('kg CO2-eq');
+    expect(screen.getByTestId('aligned-number')).toHaveTextContent('0');
+    expect(mockGetPublishedLciaResultPackage).not.toHaveBeenCalled();
   });
 
   it('loads published LCIA rows for open-data processes without querying solver', async () => {

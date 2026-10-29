@@ -46,9 +46,9 @@ checkPaths:
   - scripts/typescript-native-parser.*
   - scripts/reference-data/**
   - .github/workflows/**
-lastReviewedAt: 2026-10-28
-lastReviewedCommit: 5e502c85033cab89ab7b2f055b90504abb765cc0
-lastReviewedNote: 'Reviewed Platform #1349 follow-up 64403fd7ae after actual CI40546918693 and strict local reproduction. A separate async act after completed mount awaits the viewport measurement frame and recreated request continuation; a causal probe observed height and callback identity changes. All22 strict focused tests pass and independent review found no material issue. Testing patterns now documents frame ordering. Permission assertions, product, global mocks, guards, timeouts and release contracts remain unchanged; fresh hosted qualification is pending.'
+lastReviewedAt: 2026-10-29
+lastReviewedCommit: f2dbc551fc760c655e2a5ba9118aaf79845b625b
+lastReviewedNote: 'Reviewed Platform #1364: missing solver units fall back to exact-version verified method metadata; values and valid returned units remain unchanged. Added focused row and panel regressions; existing ownership and gate contracts still apply.'
 ---
 
 # Pre-Push Gate Policy

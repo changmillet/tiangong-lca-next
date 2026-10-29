@@ -44,9 +44,9 @@ checkPaths:
   - .github/workflows/build.yml
   - .github/workflows/release-gate.yml
   - .github/workflows/release-readiness.yml
-lastReviewedAt: 2026-10-29
-lastReviewedCommit: f2dbc551fc760c655e2a5ba9118aaf79845b625b
-lastReviewedNote: 'Reviewed Platform #1364: missing solver units fall back to exact-version verified method metadata; values and valid returned units remain unchanged. Added focused row and panel regressions; existing ownership and gate contracts still apply.'
+lastReviewedAt: '2026-10-29'
+lastReviewedCommit: 'f6aa0966f121feaeb7c82e7588a5633b7ad596af'
+lastReviewedNote: 'Reviewed combined Platform #1363/#1364 backmerge: preserve Main security dependency graph, maintained patches and installed regressions together with Dev exact-version LCIA unit fallback and tests. Conflict resolution changes review metadata only; combined-candidate gates and hosted qualification are recorded separately.'
 ---
 
 # Testing Execution State

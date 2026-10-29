@@ -46,9 +46,9 @@ checkPaths:
   - .github/workflows/release-readiness.yml
   - .github/workflows/build.yml
   - .nvmrc
-lastReviewedAt: 2026-10-28
-lastReviewedCommit: 5e502c85033cab89ab7b2f055b90504abb765cc0
-lastReviewedNote: 'Reviewed Platform #1349 combined merge55475b7: current Dev preserves #1357 management UI, tests and locale artifacts; qualified Main supplies #1358 Portal patch and manifest6 image provenance. Metadata conflicts were resolved without replacing document bodies. Query, permission, canonical assertions, budgets, release and production boundaries remain unchanged. Combined-candidate execution is recorded on #1352 and is not inferred from Main proof.'
+lastReviewedAt: 2026-10-29
+lastReviewedCommit: f2dbc551fc760c655e2a5ba9118aaf79845b625b
+lastReviewedNote: 'Reviewed Platform #1364: exact-version unit fallback adds row and panel regressions without changing bootstrap, runtime or gate commands.'
 ---
 
 # Development Bootstrap

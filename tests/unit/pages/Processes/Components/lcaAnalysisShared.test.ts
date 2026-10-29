@@ -636,6 +636,80 @@ describe('lcaAnalysisShared', () => {
       },
     });
   });
+  it.each(['', '   ', UNKNOWN_LCIA_UNIT])(
+    'fills a missing result unit (%s) from the exact method revision without saved rows',
+    (unit) => {
+      const catalogUnit = [{ '@xml:lang': 'en', '#text': 'kg CO2-eq' }];
+      const rows = buildMergedLcaRows(
+        [],
+        [{ impact_id: 'm', impact_version: '01.00.000', impact_name: 'Climate', unit, value: 0 }],
+        new Map([
+          [
+            'm',
+            { version: '01.00.000', description: 'Climate', referenceQuantityDesc: catalogUnit },
+          ],
+        ]),
+      );
+
+      expect(rows).toHaveLength(1);
+      expect(rows[0].referenceQuantityDesc).toEqual(catalogUnit);
+      expect(rows[0].meanAmount).toBe(0);
+      expect(rows[0].referenceToLCIAMethodDataSet['@version']).toBe('01.00.000');
+    },
+  );
+
+  it.each(['02.00.000', undefined, ''])(
+    'does not fill an unknown unit from a different or missing revision (%s)',
+    (version) => {
+      const rows = buildMergedLcaRows(
+        [],
+        [
+          {
+            impact_id: 'm',
+            impact_version: version,
+            impact_name: 'Climate',
+            unit: UNKNOWN_LCIA_UNIT,
+            value: 2,
+          },
+        ],
+        new Map([
+          [
+            'm',
+            { version: '01.00.000', description: 'Climate', referenceQuantityDesc: 'kg CO2-eq' },
+          ],
+        ]),
+      );
+
+      expect(rows[0].referenceQuantityDesc).toBeUndefined();
+      expect(rows[0].meanAmount).toBe(2);
+    },
+  );
+
+  it('fills the reviewed alias unit using the exact canonical method revision', () => {
+    const rows = buildMergedLcaRows(
+      [],
+      [
+        {
+          impact_id: ALIASED_ARTIFACT_LOCATOR_ID,
+          impact_version: ALIASED_METHOD_VERSION,
+          impact_name: 'Human toxicity, cancer_organics',
+          unit: UNKNOWN_LCIA_UNIT,
+          value: 3,
+        },
+      ],
+      new Map([
+        [
+          ALIASED_CANONICAL_METHOD_ID,
+          { version: ALIASED_METHOD_VERSION, referenceQuantityDesc: 'CTUh' },
+        ],
+      ]),
+    );
+
+    expect(rows[0].referenceQuantityDesc).toBe('CTUh');
+    expect(rows[0].referenceToLCIAMethodDataSet['@refObjectId']).toBe(ALIASED_CANONICAL_METHOD_ID);
+    expect(rows[0].referenceToLCIAMethodDataSet['@version']).toBe(ALIASED_METHOD_VERSION);
+  });
+
   it.each(['01.00.000', undefined, ''])(
     'never relabels a frozen or unknown revision from live metadata (%s)',
     (version) => {

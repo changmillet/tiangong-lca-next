@@ -46,9 +46,9 @@ checkPaths:
   - scripts/typescript-native-parser.*
   - scripts/reference-data/**
   - .github/workflows/**
-lastReviewedAt: 2026-10-30
-lastReviewedCommit: 2cadf125f9ebaad6a35b27e35a88b444416320bd
-lastReviewedNote: 'Reviewed Platform #1372: approved scoped Axios graph and exact redirect-callback patch preserve URI repairs, toolchain, supported consumers and unchanged full qualification requirements; baseline differences and raw/vendor audit boundaries remain explicit.'
+lastReviewedAt: 2026-10-31
+lastReviewedCommit: 1b62c203cad17417510e1af7a6e47b16c95efed8
+lastReviewedNote: 'Reviewed Platform #1381: raise the existing Zod declaration floor to ^4.6.7 while preserving the qualified installed 4.6.7 root/SDK graph, all four maintained patches, toolchain and install policy. Existing installed-consumer, full-gate, hosted semantic and Main/Dev/root qualification requirements remain unchanged.'
 ---
 
 # Pre-Push Gate Policy

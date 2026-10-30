@@ -35,7 +35,7 @@ describe('installed Umi Axios consumer contract', () => {
       signal: null,
       status: 0,
       stderr: '',
-      stdout: expect.stringMatching(/(?:#|ℹ) pass 14/u),
+      stdout: expect.stringMatching(/(?:#|ℹ) pass 17/u),
     });
   });
 });

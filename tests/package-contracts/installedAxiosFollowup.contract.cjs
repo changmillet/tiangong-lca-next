@@ -431,3 +431,272 @@ test('candidate: proxy redirect setup still precedes the three-argument configur
     },
   );
 });
+
+function credentialHeaders(req) {
+  return {
+    authorization: req.headers.authorization,
+    cookie: req.headers.cookie,
+    proxyAuthorization: req.headers['proxy-authorization'],
+  };
+}
+
+for (const variant of variants) {
+  const isCandidate = variant.label === 'candidate';
+  const destinationHeaders = {
+    Authorization: 'Bearer owned-dummy-authorization',
+    Cookie: 'owned_dummy_cookie=value',
+  };
+  const expectedDestination = {
+    authorization: destinationHeaders.Authorization,
+    cookie: destinationHeaders.Cookie,
+    proxyAuthorization: undefined,
+  };
+
+  test(`${variant.label}: same-origin redirect retains dummy destination headers and changed-origin redirect strips them`, async () => {
+    const primary = [];
+    const changed = [];
+    await serve(
+      (req, res) => {
+        changed.push(credentialHeaders(req));
+        res.end('owned changed-origin target');
+      },
+      async (otherOrigin) => {
+        await serve(
+          (req, res) => {
+            primary.push({ path: req.url, ...credentialHeaders(req) });
+            if (req.url === '/same') {
+              res.writeHead(302, { location: '/final' });
+              return res.end();
+            }
+            if (req.url === '/changed') {
+              res.writeHead(302, { location: otherOrigin + '/final' });
+              return res.end();
+            }
+            res.end('owned same-origin target');
+          },
+          async (origin) => {
+            const actual = await variant.create({ proxy: false });
+            assert.equal(
+              await actual.request(origin + '/same', { headers: destinationHeaders }),
+              'owned same-origin target',
+            );
+            assert.equal(
+              await actual.request(origin + '/changed', { headers: destinationHeaders }),
+              'owned changed-origin target',
+            );
+            assert.deepEqual(primary, [
+              { path: '/same', ...expectedDestination },
+              { path: '/final', ...expectedDestination },
+              { path: '/changed', ...expectedDestination },
+            ]);
+            assert.deepEqual(changed, [
+              { authorization: undefined, cookie: undefined, proxyAuthorization: undefined },
+            ]);
+            console.log(
+              JSON.stringify({
+                variant: variant.label,
+                sameOriginDestinationHeadersRetained: true,
+                changedOriginDestinationHeadersStripped: true,
+              }),
+            );
+          },
+        );
+      },
+    );
+  });
+
+  test(`${variant.label}: explicit proxy receives its dummy authentication and direct target excludes proxy-only headers`, async () => {
+    const proxyRequests = [];
+    const directRequests = [];
+    const dummyProxyAuth = { username: 'owned-explicit-proxy', password: 'owned-dummy-password' };
+    const expectedProxyAuth =
+      'Basic ' +
+      Buffer.from(dummyProxyAuth.username + ':' + dummyProxyAuth.password).toString('base64');
+    const suppliedProxyHeader = 'Basic owned-dummy-stale-proxy-header';
+    await serve(
+      (req, res) => {
+        directRequests.push(credentialHeaders(req));
+        res.end('owned direct target');
+      },
+      async (origin) => {
+        await serve(
+          (req, res) => {
+            proxyRequests.push({ url: req.url, ...credentialHeaders(req) });
+            res.end('owned explicit proxy');
+          },
+          async (proxyURL) => {
+            const proxy = new URL(proxyURL);
+            const actual = await variant.create({
+              proxy: {
+                host: proxy.hostname,
+                port: Number(proxy.port),
+                protocol: 'http',
+                auth: dummyProxyAuth,
+              },
+            });
+            assert.equal(
+              await actual.request(origin + '/explicit', {
+                headers: { ...destinationHeaders, 'Proxy-Authorization': suppliedProxyHeader },
+              }),
+              'owned explicit proxy',
+            );
+            assert.deepEqual(proxyRequests, [
+              {
+                url: origin + '/explicit',
+                ...expectedDestination,
+                proxyAuthorization: expectedProxyAuth,
+              },
+            ]);
+            assert.equal(
+              await actual.request(origin + '/direct', {
+                proxy: false,
+                headers: { ...destinationHeaders, 'pRoXy-aUtHoRiZaTiOn': suppliedProxyHeader },
+              }),
+              'owned direct target',
+            );
+            assert.deepEqual(
+              directRequests,
+              [
+                {
+                  ...expectedDestination,
+                  proxyAuthorization: isCandidate ? undefined : suppliedProxyHeader,
+                },
+              ],
+              'candidate removes supplied proxy-only headers case-insensitively when proxy:false; baseline forwarded them',
+            );
+            assert.equal(proxyRequests.length, 1);
+            console.log(
+              JSON.stringify({
+                variant: variant.label,
+                explicitProxyAuthentication: 'intended-proxy-only',
+                directTargetProxyAuthorization: isCandidate
+                  ? 'stripped'
+                  : 'baseline-forwarded-supplied-header',
+              }),
+            );
+          },
+        );
+      },
+    );
+  });
+
+  test(`${variant.label}: ENV proxy authentication stays at proxy across same-origin no_proxy transition`, async () => {
+    // Read precedence from installed proxy-from-env; isolate every HTTP(S), generic
+    // proxy and bypass variable it can read before enabling this owned fixture.
+    const names = [
+      'http_proxy',
+      'https_proxy',
+      'all_proxy',
+      'no_proxy',
+      'npm_config_http_proxy',
+      'npm_config_https_proxy',
+      'npm_config_proxy',
+      'npm_config_no_proxy',
+    ].flatMap((name) => [name, name.toUpperCase()]);
+    const saved = Object.fromEntries(names.map((name) => [name, process.env[name]]));
+    const proxyRequests = [];
+    const directRequests = [];
+    const expectedProxyAuth =
+      'Basic ' + Buffer.from('owned-env-proxy:owned-dummy-password').toString('base64');
+    try {
+      names.forEach((name) => delete process.env[name]);
+      await serve(
+        (req, res) => {
+          directRequests.push({ path: req.url, ...credentialHeaders(req) });
+          res.end('owned bypass target');
+        },
+        async (origin) => {
+          await serve(
+            (req, res) => {
+              proxyRequests.push({ url: req.url, ...credentialHeaders(req) });
+              const target = new URL(req.url);
+              if (target.pathname === '/stay') {
+                res.writeHead(302, { location: origin + '/stay-final' });
+                return res.end();
+              }
+              if (target.pathname === '/transition') {
+                // Simulate a legitimate process configuration change while handling
+                // this owned response. Same-origin redirects retain headers in
+                // follow-redirects, so Axios must clear proxy auth before bypass.
+                process.env.no_proxy = '127.0.0.1';
+                res.writeHead(302, { location: origin + '/final' });
+                return res.end();
+              }
+              res.end('owned ENV proxy');
+            },
+            async (proxyURL) => {
+              const proxy = new URL(proxyURL);
+              proxy.username = 'owned-env-proxy';
+              proxy.password = 'owned-dummy-password';
+              process.env.http_proxy = proxy.href;
+              const actual = await variant.create({});
+              assert.equal(
+                await actual.request(origin + '/stay', { headers: destinationHeaders }),
+                'owned ENV proxy',
+              );
+              assert.deepEqual(proxyRequests, [
+                {
+                  url: origin + '/stay',
+                  ...expectedDestination,
+                  proxyAuthorization: expectedProxyAuth,
+                },
+                {
+                  url: origin + '/stay-final',
+                  ...expectedDestination,
+                  proxyAuthorization: expectedProxyAuth,
+                },
+              ]);
+              assert.deepEqual(directRequests, []);
+              proxyRequests.length = 0;
+              const result = await actual.request(origin + '/transition', {
+                headers: destinationHeaders,
+              });
+              assert.equal(result, isCandidate ? 'owned bypass target' : 'owned ENV proxy');
+              assert.deepEqual(proxyRequests, [
+                {
+                  url: origin + '/transition',
+                  ...expectedDestination,
+                  proxyAuthorization: expectedProxyAuth,
+                },
+                ...(isCandidate
+                  ? []
+                  : [
+                      {
+                        url: origin + '/final',
+                        ...expectedDestination,
+                        proxyAuthorization: expectedProxyAuth,
+                      },
+                    ]),
+              ]);
+              assert.deepEqual(
+                directRequests,
+                isCandidate ? [{ path: '/final', ...expectedDestination }] : [],
+                'same-origin direct request retains destination credentials but contains no Proxy-Authorization',
+              );
+              console.log(
+                JSON.stringify({
+                  variant: variant.label,
+                  envProxyAuthentication: 'intended-proxy-only',
+                  sameOriginProxyPositiveControl: true,
+                  noProxyRedirectTransition: isCandidate
+                    ? 'reevaluated-and-proxy-header-stripped'
+                    : 'baseline-kept-original-proxy',
+                }),
+              );
+            },
+          );
+        },
+      );
+    } finally {
+      for (const name of names) {
+        if (saved[name] === undefined) delete process.env[name];
+        else process.env[name] = saved[name];
+      }
+      assert.deepEqual(
+        Object.fromEntries(names.map((name) => [name, process.env[name]])),
+        saved,
+        'restore all proxy environment values, including absence',
+      );
+    }
+  });
+}
